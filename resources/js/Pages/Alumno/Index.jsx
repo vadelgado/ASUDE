@@ -559,6 +559,7 @@ export default function Dashboard({ auth, alumnos }) {
                     </div>
                 </div>
             </Modal>
+            
         </AuthenticatedLayout>
     );
 }

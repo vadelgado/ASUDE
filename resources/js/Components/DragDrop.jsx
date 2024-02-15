@@ -171,10 +171,11 @@ function DragDrop({ fk_user, alumnoId }) {
 
     return (
         <section className="container flex items-center justify-center">
+
             <form onSubmit={handleSubmit} className="flex flex-col items-center">
                 <h1 className="text-2xl font-bold mb-4">Subir comprobante</h1>
 
-                <div {...getRootProps()} className="border border-black w-72 h-72 flex items-center justify-center">
+                <div {...getRootProps()} className="hover:border-blue-500 hover:border-solid hover:bg-white hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3">
                     <input {...getInputProps()} />
                     {isDragActive ? (
                         <p>Suelte los archivos aquí...</p>
@@ -196,8 +197,7 @@ function DragDrop({ fk_user, alumnoId }) {
                 </PrimaryButton>
             </form>
 
-            <form onSubmit={handleEnviar}>
-
+            <form onSubmit={handleEnviar} className="flex flex-col items-center">
 
                 <div className="mt-4">
                     <InputLabel htmlFor='valor' values='Valor Pagado'></InputLabel>
@@ -229,6 +229,7 @@ function DragDrop({ fk_user, alumnoId }) {
                 />
 
                 <input
+                    
                     name="fk_user"
                     value={fk_user}
                     onChange={(e) =>
@@ -236,6 +237,7 @@ function DragDrop({ fk_user, alumnoId }) {
                     }
                 />
                 <input
+                    
                     name="alumnoId"
                     value={alumnoId}
                     onChange={(e) =>

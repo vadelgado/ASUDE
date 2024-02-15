@@ -29,6 +29,14 @@ class ComprobantesController extends Controller
             'comprobantes' => $comprobantes,
         ]);
     }
+
+    public function indexAdmin()
+    {
+        $comprobantes = Comprobantes::with('alumno')->get();
+        return Inertia::render('Comprobantes/Index', [
+            'comprobantes' => $comprobantes
+        ]);
+    }
     
 
     /**

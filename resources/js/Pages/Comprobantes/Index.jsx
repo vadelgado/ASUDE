@@ -37,6 +37,8 @@ export default function Dashboard({ auth, comprobantes }) {
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
                                 <th className="px-2 py-2">Identificación Estudiante</th>
+                                <th className="px-2 py-2">Nombres</th>
+                                <th className="px-2 py-2">Apellidos</th>
                                 <th className="px-2 py-2">Fecha</th>
                                 <th className="px-2 py-2">Imagen</th>
                                 <th className="px-2 py-2">Valor</th>
@@ -45,6 +47,7 @@ export default function Dashboard({ auth, comprobantes }) {
                         <tbody>
                             {comprobantes.length > 0 ? (
                                 comprobantes.map((comprobante, i) => (
+                                    
                                     <tr key={comprobante.id}>
                                         <td className="border border-gray-400 px-4 py-2">
                                             {i + 1}
@@ -53,8 +56,15 @@ export default function Dashboard({ auth, comprobantes }) {
                                             {comprobante.alumno.identificacion}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
+                                            {comprobante.alumno.nombres}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            {comprobante.alumno.apellidos}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
                                             {comprobante.fecha}
                                         </td>
+
                                         <td className="border border-gray-400 px-2 py-2">
                                             <img src={comprobante.secureUrl} alt="Imagen del comprobante" />
                                         </td>
@@ -77,11 +87,16 @@ export default function Dashboard({ auth, comprobantes }) {
                             )}
                         </tbody>
                     </table>
+
+                                
+
+
+
+
                 </div>
             </div>
 
-
-
+            
         </AuthenticatedLayout>
     );
 }

@@ -21,6 +21,14 @@ class AlumnoController extends Controller
         ]);
     }
 
+    public function indexAdmin()
+    {
+        $alumnos = Alumno::all();
+        return Inertia::render('Alumno/Index', [
+            'alumnos' => $alumnos
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

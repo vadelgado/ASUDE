@@ -36,11 +36,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
 });
 
+Route::middleware('auth', 'role:admin')->group(function () {
+    // Listado de Alumnos Administrador
+    Route::get('alumnoAdmin', 'App\Http\Controllers\AlumnoController@indexAdmin')->name('alumno.indexAdmin');
+    
+    // Listado de Pagos Administrador
+    Route::get('comprobantesAdmin', 'App\Http\Controllers\ComprobantesController@indexAdmin')->name('comprobantes.indexAdmin');
+
+});
+
 Route::middleware('auth', 'role:acudiente')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');   
-// Listado de Alumnos
+    //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');   
+
+    // Listado de Alumnos
 Route::get('alumno', 'App\Http\Controllers\AlumnoController@index')->name('alumno.index');
 
 // Formulario para crear un nuevo Alumno
@@ -65,9 +75,10 @@ Route::delete('alumno/{alumno}', 'App\Http\Controllers\AlumnoController@destroy'
 Route::get('comprobantes', 'App\Http\Controllers\ComprobantesController@index')->name('comprobantes.index');
 
 // Guardar un nuevo Comprobante
-
 Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');
  
 });
+
+
 
 require __DIR__.'/auth.php';
