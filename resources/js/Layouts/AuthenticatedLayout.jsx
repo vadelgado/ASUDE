@@ -50,22 +50,48 @@ export default function Authenticated({ user, header, children }) {
                                 )}
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            {user.role === "acudiente" && (
-                                        <NavLink
-                                            href={route("comprobantes.index")}
-                                            activate={route().current("comprobantes.index") ? "true" : "false"}
-                                        >
-                                            Comprobantes
-                                        </NavLink>
-                                    )}
-                                    {user.role === "admin" && (
-                                        <NavLink
-                                            href={route("comprobantes.indexAdmin")}
-                                            activate={route().current("comprobantes.indexAdmin") ? "true" : "false"}
-                                        >
-                                            Comprobantes
-                                        </NavLink>
-                                    )}
+                                {user.role === "acudiente" && (
+                                    <NavLink
+                                        href={route("comprobantes.index")}
+                                        activate={
+                                            route().current(
+                                                "comprobantes.index"
+                                            )
+                                                ? "true"
+                                                : "false"
+                                        }
+                                    >
+                                        Comprobantes
+                                    </NavLink>
+                                )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("comprobantes.indexAdmin")}
+                                        activate={
+                                            route().current(
+                                                "comprobantes.indexAdmin"
+                                            )
+                                                ? "true"
+                                                : "false"
+                                        }
+                                    >
+                                        Comprobantes
+                                    </NavLink>                                    
+                                )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("torneo.index")}
+                                        activate={
+                                            route().current(
+                                                "torneo.index"
+                                            )
+                                                ? "true"
+                                                : "false"
+                                        }
+                                    >
+                                        Torneos
+                                    </NavLink>                                    
+                                )}
                             </div>
                         </div>
 

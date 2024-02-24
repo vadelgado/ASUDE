@@ -4,9 +4,7 @@ import soccerVideo from '/public/Soccer.mp4';
 const Video = () => {
   return (
     <div className='w-full relative'>
-<img 
-  className='absolute top-60 z-10 w-screen max-w-[300px] left-0 right-0 m-auto'
-  src="/logo-home.webp" alt="Futuras Estrellas" />
+
 
 
       <video 

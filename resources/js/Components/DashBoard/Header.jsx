@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import { Link } from "@inertiajs/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import NavLink from "../NavLink";
 import {
     ChevronDownIcon,
     PhoneIcon,
@@ -46,6 +47,12 @@ const Header = ({ auth }) => {
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
                 </div>
+                <NavLink
+                    href={route("torneo.listarTorneos")}
+                    active={route().current("torneo.listarTorneos")}
+                >
+                    Torneos
+                </NavLink>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <Popover className="relative">
                         <Popover.Button
@@ -100,21 +107,15 @@ const Header = ({ auth }) => {
                     <a
                         href="#"
                         className="text-sm font-semibold leading-6 text-gray-900"
-                    >
-                        
-                    </a>
+                    ></a>
                     <a
                         href="#"
                         className="text-sm font-semibold leading-6 text-gray-900"
-                    >
-                        
-                    </a>
+                    ></a>
                     <a
                         href="#"
                         className="text-sm font-semibold leading-6 text-gray-900"
-                    >
-                        
-                    </a>
+                    ></a>
                 </Popover.Group>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
             </nav>
@@ -201,21 +202,15 @@ const Header = ({ auth }) => {
                                 <a
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    
-                                </a>
+                                ></a>
                                 <a
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    
-                                </a>
+                                ></a>
                                 <a
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    
-                                </a>
+                                ></a>
                             </div>
                             {/* <div className="py-6">
                                 <a
