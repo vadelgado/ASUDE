@@ -47,12 +47,7 @@ const Header = ({ auth }) => {
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
                 </div>
-                <NavLink
-                    href={route("torneo.listarTorneos")}
-                    active={route().current("torneo.listarTorneos")}
-                >
-                    Torneos
-                </NavLink>
+
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <Popover className="relative">
                         <Popover.Button
@@ -117,7 +112,14 @@ const Header = ({ auth }) => {
                         className="text-sm font-semibold leading-6 text-gray-900"
                     ></a>
                 </Popover.Group>
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
+                <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <NavLink
+                        href={route("torneo.listarTorneos")}
+                        active={route().current("torneo.listarTorneos")}
+                    >
+                        Torneos
+                    </NavLink>
+                </div>
             </nav>
             <Dialog
                 as="div"
@@ -199,6 +201,15 @@ const Header = ({ auth }) => {
                                     )}
                                 </Disclosure>
                                 <hr />
+                                <a
+                                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                    href={route("torneo.listarTorneos")}
+                                    active={route().current(
+                                        "torneo.listarTorneos"
+                                    )}
+                                >
+                                    Torneos
+                                </a>
                                 <a
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
