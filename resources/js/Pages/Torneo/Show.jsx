@@ -1,37 +1,40 @@
 import { Link, Head } from "@inertiajs/react";
-import React, { useEffect } from "react";
 import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
-import Title from "./Title.jsx";
-import ListOfTournaments from "./ListOfTournaments.jsx";
+import Acordion from "./Acordion";
+import Whatsapp from "@/Components/Whatsapp";
 
-export default function ListarTorneos({ auth, torneos }) {            
-    return (
-        <>
-            <meta name="view-transition" content="same-origin" />
+export default function ListarTorneos({ auth, torneo }) {
+        return (
+                <>
+                        <Header auth={auth}></Header>
+                        <Head title={`Torneo ⚽ ${torneo.nombreTorneo}`} />
+                        <br />
+                        <main className="m-auto max-w-4xl">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 mt-20">
+                                        <div className="flex flex-col w-full relative">
+                                                <picture className="mb-8">
+                                                        <img
+                                                                className="w-full h-auto rounded-lg shadow-lg"
+                                                                src={torneo.flayer}
+                                                                alt={`Torneo ⚽ ${torneo.nombreTorneo}`}
+                                                        />
+                                                </picture>
+                                        </div>
 
-            <Header auth={auth}></Header>
-            <Head title="Torneos ⚽" />
-            <main className="m-auto max-w-4xl">
-                <Title></Title>
+                                        <aside className="mt-10 md:mt-0">
+                                                <h1 className="text-3xl font-black mb-4">
+                                                        {torneo.nombreTorneo}
+                                                </h1>
+                                                <p className="text-lg mb-4">{torneo.caracteristicas}</p>
+                                                <Whatsapp torneo={torneo}></Whatsapp>
+                                        </aside>                                        
+                                </div>
+                                <Acordion torneo={torneo}></Acordion>
+                        </main>
 
-                {torneos.length > 0 ? (
-                    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {torneos.map((torneo) => (
-                            <ListOfTournaments
-                                torneo={torneo}
-                                key={torneo.id}
-                            />
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No hay torneos disponibles</p>
-                )}
-            </main>
-
-            <Footer></Footer>
-
-            <style>{`
+                        <Footer></Footer>
+                        <style>{`
                                 .bg-dots-darker {
                                         background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
                                 }
@@ -91,6 +94,6 @@ export default function ListarTorneos({ auth, torneos }) {
                                         }
                                 }
                         `}</style>
-        </>
-    );
+                </>
+        );
 }

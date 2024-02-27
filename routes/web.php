@@ -32,6 +32,7 @@ Route::get('/dashboard', function () {
 
 // Listar Torneos Layout Principal
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
+Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

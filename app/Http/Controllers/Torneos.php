@@ -24,6 +24,25 @@ class Torneos extends Controller
             'torneos' => $torneos
         ]);
     }
+    
+    public function show($id)
+    {
+        try{
+           $torneo = torneo::find($id); 
+
+              if(!$torneo) {
+                return redirect()->route('torneo.index')->with('error', 'Torneo no encontrado');
+              }
+                return Inertia::render('Torneo/Show', [
+                    'torneo' => $torneo
+                ]);
+        } catch (\Exception $e) {
+            return redirect()->route('torneo.index')->with('error', 'Error al mostrar el torneo');
+        }
+        
+
+
+    }
 
     public function store(Request $request)
     {
