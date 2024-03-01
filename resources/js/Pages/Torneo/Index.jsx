@@ -24,6 +24,7 @@ export default function Dashboard({ auth, torneos }) {
     const sistemaJuegoInput = useRef();
     const procesoInscripcionInput = useRef();
     const reglamentacionInput = useRef();
+    const fechaInicioInput = useRef();
 
     const {
         data,
@@ -43,6 +44,7 @@ export default function Dashboard({ auth, torneos }) {
         sistemaJuego: "",
         procesoInscripcion: "",
         reglamentacion: "",
+        fechaInicio: "",
     });
 
     const openModal = (
@@ -55,6 +57,7 @@ export default function Dashboard({ auth, torneos }) {
         sistemaJuego,
         procesoInscripcion,
         reglamentacion,
+        fechaInicio,
         fk_user
     ) => {
         setModal(true);
@@ -71,6 +74,7 @@ export default function Dashboard({ auth, torneos }) {
                 sistemaJuego: "",
                 procesoInscripcion: "",
                 reglamentacion: "",
+                fechaInicio: "",
                 fk_user: fk_user,
             });
         } else {
@@ -84,6 +88,7 @@ export default function Dashboard({ auth, torneos }) {
                 sistemaJuego: sistemaJuego,
                 procesoInscripcion: procesoInscripcion,
                 reglamentacion: reglamentacion,
+                fechaInicio: fechaInicio,
                 fk_user: fk_user,
             });
         }
@@ -93,8 +98,54 @@ export default function Dashboard({ auth, torneos }) {
         setModal(false);
     };
 
+    const [requiredFields, setRequiredFields] = useState([
+        "nombreTorneo",
+        "flayer",
+        "caracteristicas",
+        "premiacion",
+        "sistemaJuego",
+        "procesoInscripcion",
+        "reglamentacion",
+        "fechaInicio",
+    ]);
+
     const save = (e) => {
         e.preventDefault();
+        // Verificar campos requeridos vacíos
+        const emptyFields = requiredFields.filter((field) => !data[field]);
+        if (emptyFields.length > 0) {
+            // Obtener nombres de las etiquetas de los campos requeridos
+            const emptyFieldLabels = emptyFields.map((field) => {
+                switch (field) {
+                    case "nombreTorneo":
+                        return "Nombre del Torneo";
+                    case "flayer":
+                        return "Flayer";
+                    case "caracteristicas":
+                        return "Características";
+                    case "premiacion":
+                        return "Premiación";
+                    case "sistemaJuego":
+                        return "Sistema de Juego";
+                    case "procesoInscripcion":
+                        return "Proceso de Inscripción";
+                    case "reglamentacion":
+                        return "Reglamentación";
+                    case "fechaInicio":
+                        return "Fecha de Inicio";
+                    default:
+                        return field;
+                }
+            });
+
+            // Mostrar mensaje de error
+            Swal.fire({
+                title: "Campos requeridos",
+                text: `Los siguientes campos son requeridos y no pueden estar vacíos: ${emptyFieldLabels.join(", ")}`,
+                icon: "error",
+            });
+            return;
+        }
         if (operation === 1) {
             post(route("torneo.store"), {
                 onSuccess: () => {
@@ -129,12 +180,16 @@ export default function Dashboard({ auth, torneos }) {
                         reset("reglamentacion");
                         reglamentacionInput.current.focus();
                     }
+                    if (errors?.fechaInicio) {
+                        reset("fechaInicio");
+                        fechaInicioInput.current.querySelector("input").focus();
+                    }
                 },
             });
         } else {
             put(route("torneo.update", { torneo: data.id }), {
                 onSuccess: () => {
-                    OK("Torneo actualizado correctamente");
+                    ok("Torneo actualizado correctamente");
                 },
                 onError: () => {
                     if (errors?.nombreTorneo) {
@@ -164,6 +219,10 @@ export default function Dashboard({ auth, torneos }) {
                     if (errors?.reglamentacion) {
                         reset("reglamentacion");
                         reglamentacionInput.current.focus();
+                    }
+                    if (errors?.fechaInicio) {
+                        reset("fechaInicio");
+                        fechaInicioInput.current.querySelector("input").focus();
                     }
                 },
             });
@@ -240,6 +299,7 @@ export default function Dashboard({ auth, torneos }) {
                                     Proceso de Inscripción
                                 </th>
                                 <th className="px-2 py-2">Reglamentación</th>
+                                <th className="px-2 py-2">Fecha de Inicio</th>
                                 <th className="px-2 py-2"></th>
                                 <th className="px-2 py-2"></th>
                             </tr>
@@ -255,9 +315,10 @@ export default function Dashboard({ auth, torneos }) {
                                             {torneo.nombreTorneo}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
-                                            <td className="border border-gray-400 px-2 py-2">
-                                                <img src={torneo.flayer} alt="Flayer" />
-                                            </td>
+                                            <img
+                                                src={torneo.flayer}
+                                                alt="Flayer"
+                                            />
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             {torneo.caracteristicas}
@@ -278,6 +339,9 @@ export default function Dashboard({ auth, torneos }) {
                                             </a>
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
+                                            {new Date(torneo.fechaInicio).toLocaleDateString()}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -289,7 +353,8 @@ export default function Dashboard({ auth, torneos }) {
                                                         torneo.premiacion,
                                                         torneo.sistemaJuego,
                                                         torneo.procesoInscripcion,
-                                                        torneo.reglamentacion
+                                                        torneo.reglamentacion,
+                                                        torneo.fechaInicio
                                                     )
                                                 }
                                             >
@@ -358,7 +423,7 @@ export default function Dashboard({ auth, torneos }) {
                         ></InputLabel>
                         <TextInput
                             id="flayer"
-                            name="flayer"
+                            name="flayer"                            
                             ref={flayerInput}
                             value={data.flayer}
                             onChange={(e) =>
@@ -382,14 +447,15 @@ export default function Dashboard({ auth, torneos }) {
                             name="caracteristicas"
                             ref={caracteristicasInput}
                             value={data.caracteristicas}
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 setData({
                                     ...data,
                                     caracteristicas: e.target.value,
-                                })
-                            }
+                                });
+                            }}
                             className="mt-1 block w-full"
                         ></TextInput>
+
                         <InputError
                             message={errors?.caracteristicas}
                             className="mt-2"
@@ -488,6 +554,32 @@ export default function Dashboard({ auth, torneos }) {
                             className="mt-2"
                         ></InputError>
                     </div>
+
+                    <div className="mt-1">
+                        <InputLabel
+                            htmlFor="fechaInicio"
+                            value="Fecha de Inicio"
+                        ></InputLabel>
+                        <TextInput
+                            id="fechaInicio"
+                            type="date"
+                            name="fechaInicio"
+                            ref={fechaInicioInput}
+                            value={data.fechaInicio}
+                            onChange={(e) =>
+                                setData({
+                                    ...data,
+                                    fechaInicio: e.target.value,
+                                })
+                            }
+                            className="mt-1 block w-full"
+                        ></TextInput>
+                        <InputError
+                            message={errors?.fechaInicio}
+                            className="mt-2"
+                        ></InputError>
+                    </div>
+
                     <div className="mt-1">
                         <PrimaryButton
                             processing={processing.toString()}

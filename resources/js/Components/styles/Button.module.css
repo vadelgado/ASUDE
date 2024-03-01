@@ -1,0 +1,11 @@
+.button {
+    transition:
+      text-shadow 0.5s ease-out,
+      box-shadow 0.3s ease-out;
+  }
+
+  .button:hover {
+    box-shadow: 0 0 10px #fff;
+    text-shadow:
+      1px 1px 20px #fff;
+  }

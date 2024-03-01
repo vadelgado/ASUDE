@@ -4,23 +4,22 @@ import Header from '@/Components/DashBoard/Header';
 import Intro from '@/Components/DashBoard/Intro';
 import PreFooter from '@/Components/DashBoard/PreFooter';
 import Video from '@/Components/DashBoard/Video';
-import Gallery from '@/Components/Gallery';
+
 //import '@fontsource-variable/onest';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
-            <Header auth={auth}></Header>
+            <Header auth={auth}></Header>            
             <Head title="Futuras Estrellas" />
-            <Video></Video>
-            <Intro></Intro> 
-            <Gallery></Gallery>
+            
+            <Video></Video>            
+            <Intro></Intro>
+
+            
             <PreFooter></PreFooter>
             <Footer></Footer>
             <style>{`
-                .bg-dots-darker {
-                    background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
-                }
                 @media (prefers-color-scheme: dark) {
                     .dark\\:bg-dots-lighter {
                         background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
@@ -28,7 +27,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 }
                 html {
                     font-family: 'Onest Variable', system-ui, sans-serif;
-                    background: #151a36;
+                    background: #D9E5AB;
                 }
 
                 h1 {

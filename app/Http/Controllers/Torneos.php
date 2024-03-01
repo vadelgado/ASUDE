@@ -54,6 +54,7 @@ class Torneos extends Controller
             'sistemaJuego' => 'required',
             'procesoInscripcion' => 'required',
             'reglamentacion' => 'required',
+            'fechaInicio' => 'required',
         ],[
             'nombreTorneo.required' => 'El campo nombre del torneo es obligatorio.',
             'flayer.required' => 'El campo flayer es obligatorio.',
@@ -62,6 +63,7 @@ class Torneos extends Controller
             'sistemaJuego.required' => 'El campo sistema de juego es obligatorio.',
             'procesoInscripcion.required' => 'El campo proceso de inscripción es obligatorio.',
             'reglamentacion.required' => 'El campo reglamentación es obligatorio.',
+            'fechaInicio.required' => 'El campo fecha de inicio es obligatorio.',
         ]);
     
         try {
@@ -73,6 +75,7 @@ class Torneos extends Controller
                 'sistemaJuego' => $request->input('sistemaJuego'),
                 'procesoInscripcion' => $request->input('procesoInscripcion'),
                 'reglamentacion' => $request->input('reglamentacion'),
+                'fechaInicio' => date('Y-m-d', strtotime($request->input('fechaInicio'))),
                 'fk_user' => Auth::user()->id,
             ]);
             return redirect()->route('torneo.index')->with('success', 'Torneo creado correctamente');
@@ -83,18 +86,37 @@ class Torneos extends Controller
 
     public function update(Request $request, $id)
     {
-        $torneo = torneo::find($id);
+        try {
+            $torneo = torneo::find($id);
+            $request->validate([
+                'nombreTorneo' => 'required',
+                'flayer' => 'required',
+                'caracteristicas' => 'required',
+                'premiacion' => 'required',
+                'sistemaJuego' => 'required',
+                'procesoInscripcion' => 'required',
+                'reglamentacion' => 'required',
+                'fechaInicio' => 'required',
+            ], [
+                'nombreTorneo.required' => 'El campo nombre del torneo es obligatorio.',
+                'flayer.required' => 'El campo flayer es obligatorio.',
+                'caracteristicas.required' => 'El campo características es obligatorio.',
+                'premiacion.required' => 'El campo premiación es obligatorio.',
+                'sistemaJuego.required' => 'El campo sistema de juego es obligatorio.',
+                'procesoInscripcion.required' => 'El campo proceso de inscripción es obligatorio.',
+                'reglamentacion.required' => 'El campo reglamentación es obligatorio.',
+                'fechaInicio.required' => 'El campo fecha de inicio es obligatorio.',
+            ]);
 
-        if(!$torneo) {
-            return redirect()->route('torneo.index')->with('error', 'Torneo no encontrado');
+            if ($request->hasAny(['nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'sistemaJuego', 'procesoInscripcion', 'reglamentacion', 'fechaInicio'])) {
+                $torneo->fill($request->input())->saveOrFail();
+                return redirect()->route('torneo.index')->with('success', 'Torneo actualizado correctamente');
+            } else {
+                return response()->json(['error' => 'Error al actualizar el torneo'], 400);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('torneo.index')->with('error', 'Error al actualizar el torneo');
         }
-
-        if ($request->hasAny(['nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'sistemaJuego', 'procesoInscripcion', 'reglamentacion'])) {
-            $torneo->fill($request->input())->saveOrFail();
-        }else{
-            return response()->json(['error' => 'Error al actualizar el torneo'], 400);
-        }
-        return redirect()->route('torneo.index')->with('success', 'Torneo actualizado correctamente');
     }
 
     public function destroy($id)

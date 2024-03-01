@@ -1,11 +1,12 @@
 export default function Title() {
     return (
         <>
-            <h1 className="font-black uppercase text-4xl md:text-6xl lg:text-8xl text-center py-8 px-4">
-                Administración
+        <br /><br />
+            <h1 className="font-black uppercase text-3xl md:text-5xl lg:text-7xl text-center py-8 px-4 mt-8 text-green-700">
+                Selecciona un
                 <span className="block text-[36px] md:text-[58px]">
                     {" "}
-                    de Torneos
+                    Torneos
                 </span>
             </h1>
         </>

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('sistemaJuego')->nullable(false)->default('próximamente');
             $table->text('procesoInscripcion')->nullable(false)->default('próximamente');
             $table->text('reglamentacion')->nullable(false)->default('próximamente');
+            $table->date('fechaInicio')->nullable(false);            
             $table->timestamps();
         });
     }

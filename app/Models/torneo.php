@@ -18,7 +18,8 @@ class torneo extends Model
         'premiacion',
         'sistemaJuego',
         'procesoInscripcion',
-        'reglamentacion'
+        'reglamentacion',
+        'fechaInicio'
     ];
 
     public function user()

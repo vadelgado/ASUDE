@@ -7,8 +7,8 @@ const WhatsappButton = ({ torneo }) => {
 
     return (
         <button onClick={handleClick}>
-            <img className="max-w-full h-auto w-20" src="/whatsapp-icon.webp" alt="Logo Futuras Estrellas" />   
-            Chat de WhatsApp
+            <h6 className='text-green-700'>Más Información</h6>
+            <img className="max-w-full h-auto w-20" src="/whatsapp-icon.webp" alt="Logo Futuras Estrellas" />               
         </button>
     );
 };

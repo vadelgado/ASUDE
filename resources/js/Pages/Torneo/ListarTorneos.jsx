@@ -5,36 +5,33 @@ import Header from "@/Components/DashBoard/Header";
 import Title from "./Title.jsx";
 import ListOfTournaments from "./ListOfTournaments.jsx";
 
-export default function ListarTorneos({ auth, torneos }) {            
-    return (
-        <>
-            <meta name="view-transition" content="same-origin" />
+export default function ListarTorneos({ auth, torneos }) {
+        return (
+                <>
+                        <Header auth={auth} />
+                        <meta name="view-transition" content="same-origin" />
 
-            <Header auth={auth}></Header>
-            <Head title="Torneos ⚽" />
-            <main className="m-auto max-w-4xl">
-                <Title></Title>
+                        <Head title="Torneos ⚽" />
+                        <main className="m-auto max-w-4xl">
+                                <Title className="mt-4" />
 
-                {torneos.length > 0 ? (
-                    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {torneos.map((torneo) => (
-                            <ListOfTournaments
-                                torneo={torneo}
-                                key={torneo.id}
-                            />
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No hay torneos disponibles</p>
-                )}
-            </main>
+                                {torneos.length > 0 ? (
+                                        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {torneos.map((torneo) => (
+                                                        <ListOfTournaments
+                                                                torneo={torneo}
+                                                                key={torneo.id}
+                                                        />
+                                                ))}
+                                        </ul>
+                                ) : (
+                                        <p>No hay torneos disponibles</p>
+                                )}
+                        </main>
 
-            <Footer></Footer>
+                        <Footer />
 
-            <style>{`
-                                .bg-dots-darker {
-                                        background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
-                                }
+                        <style>{`
                                 @media (prefers-color-scheme: dark) {
                                         .dark\\:bg-dots-lighter {
                                                 background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
@@ -42,7 +39,7 @@ export default function ListarTorneos({ auth, torneos }) {
                                 }
                                 html {
                                         font-family: 'Onest Variable', system-ui, sans-serif;
-                                        background: #151a36;
+                                        background: #D9E5AB;
                                 }
 
                                 h1 {
@@ -91,6 +88,6 @@ export default function ListarTorneos({ auth, torneos }) {
                                         }
                                 }
                         `}</style>
-        </>
-    );
+                </>
+        );
 }
