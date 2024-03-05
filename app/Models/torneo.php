@@ -27,5 +27,10 @@ class torneo extends Model
         return $this->belongsTo(User::class, 'fk_user');
     }
 
+    public function equipos()
+    {
+        return $this->hasMany(Equipos::class, 'fk_torneo');
+    }
+
     use HasFactory;
 }

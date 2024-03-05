@@ -131,4 +131,9 @@ class Torneos extends Controller
         return redirect()->route('torneo.index')->with('success', 'Torneo eliminado correctamente');
     }
 
+    public function registrarEquipo()
+    {
+        return Inertia::render('AuthEquipo/Register');
+    }
+
 }

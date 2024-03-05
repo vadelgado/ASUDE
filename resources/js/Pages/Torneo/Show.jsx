@@ -3,6 +3,7 @@ import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
 import Acordion from "./Acordion"; 
 import Whatsapp from "@/Components/Whatsapp";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function ListarTorneos({ auth, torneo }) {
         return (
@@ -28,7 +29,17 @@ export default function ListarTorneos({ auth, torneo }) {
                                                         {torneo.nombreTorneo}
                                                 </h1>
                                                 <p className="text-lg mb-4 text-green-700 font-semibold ">{torneo.caracteristicas}</p>
-                                                <Whatsapp torneo={torneo}></Whatsapp>
+                                                
+                                                <div className="flex flex-wrap">
+                                                        <div className="flex items-center">
+                                                                <Whatsapp torneo={torneo}></Whatsapp>
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                                <Link href={route('preregistro.create')}>
+                                                                        <PrimaryButton className="mt-4 md:mt-0">Pre-registro</PrimaryButton>
+                                                                </Link>
+                                                        </div>
+                                                </div>
                                         </aside>                                        
                                 </div>
                                 <Acordion torneo={torneo}></Acordion>

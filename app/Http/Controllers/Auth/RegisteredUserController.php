@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Validation\Rule;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults(),
             'celular' => 'required', 'string', 'max:15'],
+            'role' => ['required', 'string', 'max:15', Rule::in(['admin', 'acudiente', 'equipo'])],
         ]);
 
         $user = User::create([
@@ -44,7 +46,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'celular' => $request->celular,
-            'role' => 'acudiente',
+            'role' => $request -> role,
         ]);
 
         event(new Registered($user));

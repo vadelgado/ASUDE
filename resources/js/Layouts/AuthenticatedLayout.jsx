@@ -3,6 +3,9 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import HeaderLink from "@/Components/DashBoard/HeaderLink";
+import Logo from "@/Components/Logo";
+
 import { Link } from "@inertiajs/react";
 
 export default function Authenticated({ user, header, children }) {
@@ -16,9 +19,17 @@ export default function Authenticated({ user, header, children }) {
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                </Link>
+                                <HeaderLink
+                                    checkActive={false}
+                                    href="/"
+                                    className="relative z-10 flex lg:flex-1"
+                                >
+                                    <span className="sr-only">
+                                        Alianza Sureña
+                                    </span>
+                                    <Logo className="absolute h-16 w-auto m-auto blur-sm opacity-0 transition-opacity duration-300 hover:opacity-50" />
+                                    <Logo className="h-16 w-auto" />
+                                </HeaderLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -46,6 +57,16 @@ export default function Authenticated({ user, header, children }) {
                                         )}
                                     >
                                         Alumnos
+                                    </NavLink>
+                                )}
+                                {user.role === "equipo" && (
+                                    <NavLink
+                                        href={route("preregistro.listarEquipos")}
+                                        active={route().current(
+                                            "preregistro.listarEquipos"
+                                        )}
+                                    >
+                                        Mis Equipos 📝
                                     </NavLink>
                                 )}
                             </div>
@@ -76,21 +97,19 @@ export default function Authenticated({ user, header, children }) {
                                         }
                                     >
                                         Comprobantes
-                                    </NavLink>                                    
+                                    </NavLink>
                                 )}
                                 {user.role === "admin" && (
                                     <NavLink
                                         href={route("torneo.index")}
                                         activate={
-                                            route().current(
-                                                "torneo.index"
-                                            )
+                                            route().current("torneo.index")
                                                 ? "true"
                                                 : "false"
                                         }
                                     >
                                         Torneos
-                                    </NavLink>                                    
+                                    </NavLink>
                                 )}
                             </div>
                         </div>

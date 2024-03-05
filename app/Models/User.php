@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comprobantes::class, 'fk_user');
     }
+
+    public function torneos(): HasMany
+    {
+        return $this->hasMany(Torneo::class, 'fk_user');
+    }
 }

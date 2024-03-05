@@ -7,7 +7,7 @@ const Footer = () => {
                 <div className="md:flex md:justify-between">
                     <div className="mb-6 flex flex-col md:mb-0">
                         <a href="/" className="-mt-14 flex items-center justify-center">
-                            <img className="max-w-full h-auto w-40" src="/logo-home.webp" alt="Logo Futuras Estrellas" />                  
+                            <img className="max-w-full h-auto w-40" src="/logo-Footer.webp" alt="Logo Futuras Estrellas" />                  
                         </a>  
                         <div className='flex justify-center gap-x-2 mt-4'>
                             <a href="https://www.facebook.com/oscararmando.futurasestrellas" target="_blank" className="text-gray-500 hover:text-white">
