@@ -6,10 +6,9 @@ import Swal from "sweetalert2";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
-
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Index({ auth, equipos }) {
+export default function Index({ auth, equipos, categorias, torneos }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState("");
@@ -59,7 +58,7 @@ export default function Index({ auth, equipos }) {
                 id: "",
                 nombreEquipo: "",
                 fk_categoria_equipo: "",
-                escudoEquipo: "",
+                escudoEquipo: null,
                 numeroWhatsapp: "",
                 correoElectronico: "",
                 fk_user: fk_user,
@@ -82,17 +81,23 @@ export default function Index({ auth, equipos }) {
 
     const closeModal = () => {
         setModal(false);
-        reset();
     };
 
-    const [requiredFields, setRequiredFields] = useState({
-        nombreEquipo: true,
-        fk_categoria_equipo: true,
-        escudoEquipo: true,
-        numeroWhatsapp: true,
-        correoElectronico: true,
-        fk_torneo: true,
-    });
+    // funcion para manejar el cambio de archivos y almacenal la imagen en el estado
+    const handleFileChange = (e) => {
+        setData("escudoEquipo", e.target.files[0]);
+        
+    };
+    
+
+    const [requiredFields, setRequiredFields] = useState([
+        "nombreEquipo",
+        "fk_categoria_equipo",
+        "escudoEquipo",
+        "numeroWhatsapp",
+        "correoElectronico",
+        "fk_torneo",
+    ]);
 
     const save = (e) => {
         e.preventDefault();
@@ -123,15 +128,33 @@ export default function Index({ auth, equipos }) {
             );
             return;
         }
+
+        // Crear un objeto FormData para enviar datos con la imagen
+
+        const formData = new FormData();
+        formData.append("nombreEquipo", data.nombreEquipo);
+        formData.append("fk_categoria_equipo", data.fk_categoria_equipo);
+        formData.append("escudoEquipo", data.escudoEquipo);
+        formData.append("numeroWhatsapp", data.numeroWhatsapp);
+        formData.append("correoElectronico", data.correoElectronico);
+        formData.append("fk_torneo", data.fk_torneo);
+
+        //Verificar si la operación es agregar o editar
         if (operation === 1) {
+            // Agregar archivo al FormData
+            formData.append("escudoEquipo", data.escudoEquipo);
+
+            // Realizar la petición POST
             post(route("equipos.store"), {
                 preserveScroll: true,
                 onSuccess: () => {
                     closeModal();
                     ok("El equipo ha sido guardado.");
                 },
+                data: formData, // Enviar FormData en lugar de data
             });
         } else {
+            // Realizar la solicitud PUT
             put(route("equipos.update", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
@@ -142,6 +165,7 @@ export default function Index({ auth, equipos }) {
                         "success"
                     );
                 },
+                data: formData, // Enviar FormData en lugar de data
             });
         }
     };
@@ -191,7 +215,7 @@ export default function Index({ auth, equipos }) {
             {/* Head y otras importaciones... */}
             <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
                 <div className="mt-1 mb-1 flex justify-end">
-                    <PrimaryButton  onClick={() => openModal(1)} >
+                    <PrimaryButton onClick={() => openModal(1)}>
                         <i
                             className="fa-solid fa-plus-circle"
                             style={{ marginRight: "10px" }}
@@ -201,34 +225,57 @@ export default function Index({ auth, equipos }) {
                 </div>
                 <div className="bg-white grid v-screen place-items-center py-6">
                     <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
-                        {/* Thead y tr... */}
+                        <thead>
+                            <tr className="bg-gray-100">
+                                <th className="px-2 py-2">No.</th>
+                                <th className="px-2 py-2">Nombre del Equipo</th>
+                                <th className="px-2 py-2">Categoría</th>
+                                <th className="px-2 py-2">Escudo del Equipo</th>
+                                <th className="px-2 py-2">
+                                    Número de WhatsApp
+                                </th>
+                                <th className="px-2 py-2">
+                                    Correo Electrónico
+                                </th>
+                                <th className="px-2 py-2">Torneo</th>
+                                <th className="px-2 py-2">Editar</th>
+                                <th className="px-2 py-2">Eliminar</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            {equipos.length !== 0 ? (
+                            {equipos.length > 0 ? (
                                 equipos.map((equipo, index) => (
                                     <tr key={equipo.id}>
-                                        <tr className="bg-gray-100">
-                                            <th className="px-2 py-2">#</th>
-                                            <th className="px-2 py-2">
-                                                Nombre del Equipo
-                                            </th>
-                                            <th className="px-2 py-2">
-                                                Categoría
-                                            </th>
-                                            <th className="px-2 py-2">
-                                                Escudo del Equipo
-                                            </th>
-                                            <th className="px-2 py-2">
-                                                Número de WhatsApp
-                                            </th>
-                                            <th className="px-2 py-2">
-                                                Correo Electrónico
-                                            </th>
-                                            <th className="px-2 py-2">
-                                                Torneo en el que participa
-                                            </th>
-                                            <th className="px-2 py-2"></th>
-                                            <th className="px-2 py-2"></th>
-                                        </tr>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {index + 1}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {equipo.nombreEquipo}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {equipo.descripcion}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+
+
+                                        <img src={`/storage/${equipo.escudoEquipo}`} alt={equipo.nombreEquipo} height={100} width={100} />
+
+
+                                       
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {equipo.numeroWhatsapp}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {equipo.correoElectronico}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {equipo.nombreTorneo}
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                        
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2"></td>
                                     </tr>
                                 ))
                             ) : (
@@ -247,8 +294,7 @@ export default function Index({ auth, equipos }) {
                 <h2 className="p-3 text-lg font-medium text-gray-900">
                     {title}
                 </h2>
-                <form onSubmit={save} className="p-6">
-
+                <form onSubmit={save} className="p-6" encType="multipart/form-data">
                     <div className="mt-4">
                         <label
                             htmlFor="nombreEquipo"
@@ -275,8 +321,7 @@ export default function Index({ auth, equipos }) {
                         >
                             Categoría
                         </label>
-                        <input
-                            type="text"
+                        <select
                             id="fk_categoria_equipo"
                             ref={fk_categoria_equipoInput}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -284,7 +329,14 @@ export default function Index({ auth, equipos }) {
                             onChange={(e) =>
                                 setData("fk_categoria_equipo", e.target.value)
                             }
-                        />
+                        >
+                            <option value="">Selecciona una opción</option>
+                            {categorias.map((categoria) => (
+                                <option value={categoria.id} key={categoria.id}>
+                                    {categoria.descripcion}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="mt-4">
@@ -295,14 +347,12 @@ export default function Index({ auth, equipos }) {
                             Escudo del Equipo
                         </label>
                         <input
-                            type="text"
+                            type="file"
                             id="escudoEquipo"
                             ref={escudoEquipoInput}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            value={data.escudoEquipo}
-                            onChange={(e) =>
-                                setData("escudoEquipo", e.target.value)
-                            }
+                            
+                            onChange={handleFileChange}                            
                         />
                     </div>
 
@@ -314,7 +364,7 @@ export default function Index({ auth, equipos }) {
                             Número de WhatsApp
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             id="numeroWhatsapp"
                             ref={numeroWhatsAppInput}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -322,8 +372,8 @@ export default function Index({ auth, equipos }) {
                             onChange={(e) =>
                                 setData("numeroWhatsapp", e.target.value)
                             }
+                            min="0"
                         />
-
                     </div>
 
                     <div className="mt-4">
@@ -352,8 +402,7 @@ export default function Index({ auth, equipos }) {
                         >
                             Torneo en el que participa
                         </label>
-                        <input
-                            type="text"
+                        <select
                             id="fk_torneo"
                             ref={fk_torneoInput}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -361,12 +410,15 @@ export default function Index({ auth, equipos }) {
                             onChange={(e) =>
                                 setData("fk_torneo", e.target.value)
                             }
-                        />
+                        >
+                            <option value="">Selecciona una opción</option>
+                            {torneos.map((torneo) => (
+                                <option value={torneo.id}key={torneo.id}>
+                                    {torneo.nombreTorneo}
+                                </option>
+                            ))}
+                        </select>
                     </div>
-
-                    
-                    
-
 
                     <div className="mt-1">
                         <PrimaryButton
@@ -383,7 +435,6 @@ export default function Index({ auth, equipos }) {
                     </div>
                 </form>
             </Modal>
-
         </AuthenticatedLayout>
     );
 }

@@ -113,6 +113,7 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
+    Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); 
 });
 Route::get('/version', function () {
