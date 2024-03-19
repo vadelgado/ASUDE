@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import { Link } from "@inertiajs/react";
 import {
     ArrowPathIcon,
     Bars3Icon,
@@ -69,7 +70,7 @@ function classNames(...classes) {
  *
  * @returns {JSX.Element} El encabezado de la página.
  */
-export default function Example() {
+export default function Header({ auth }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
@@ -99,9 +100,38 @@ export default function Example() {
                     </button>
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
+
+                
+                    {auth.user ? (
+                        <HeaderLink
+                            href={route("dashboard")}
+                            className="text-sm font-semibold leading-6 text-black"
+                        >
+                            Dashboard <span aria-hidden="true">&rarr;</span>
+                        </HeaderLink>
+                    ) : (
+                        <>
+                            <Link
+                                href={route("login")}
+                                className="text-sm font-semibold leading-6 text-black"
+                            >
+                                Iniciar Sesión
+                            </Link>
+                            <Link
+                                href={route("register")}
+                                className="text-sm font-semibold leading-6 text-black"
+                            >
+                                Registrarse{" "}
+                                
+                            </Link>
+                        </>
+                    )}
+                
+
                     <HeaderLink
                         href={route("torneo.listarTorneos")}
                         active={route().current("torneo.listarTorneos")}
+                        className="text-sm font-semibold leading-6 text-black"
                     >
                         ⚽PRÓXIMOS TORNEOS
                     </HeaderLink>
@@ -183,15 +213,8 @@ export default function Example() {
                         </Transition>
                     </Popover>
                 </Popover.Group>
-                
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a
-                        href="#"
-                        className="text-sm font-semibold leading-6 text-black"
-                    >
-                        Log in <span aria-hidden="true">&rarr;</span>
-                    </a>
-                </div>
+
+
             </nav>
             <Dialog
                 as="div"

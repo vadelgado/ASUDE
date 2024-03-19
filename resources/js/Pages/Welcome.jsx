@@ -11,12 +11,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Header auth={auth}></Header>            
-            <Head title="Futuras Estrellas" />
-            
+            <Head title="Futuras Estrellas" />            
             <Video></Video>            
-            <Intro></Intro>
-
-            
+            <Intro></Intro>            
             <PreFooter></PreFooter>
             <Footer></Footer>
             <style>{`

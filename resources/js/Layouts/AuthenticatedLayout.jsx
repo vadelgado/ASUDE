@@ -61,12 +61,49 @@ export default function Authenticated({ user, header, children }) {
                                 )}
                                 {user.role === "equipo" && (
                                     <NavLink
-                                        href={route("preregistro.listarEquipos")}
+                                        href={route(
+                                            "preregistro.listarEquipos"
+                                        )}
                                         active={route().current(
                                             "preregistro.listarEquipos"
                                         )}
                                     >
                                         Mis Equipos 📝
+                                    </NavLink>
+                                )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route(
+                                            "preregistro.listarEquipos"
+                                        )}
+                                        active={route().current(
+                                            "preregistro.listarEquipos"
+                                        )}
+                                    >
+                                        Mis Equipos 📝
+                                    </NavLink>
+                                )}
+                                {user.role === "equipo" && (
+                                    <NavLink
+                                        href={route(
+                                            "jugadores.listarJugadores"
+                                        )}
+                                        active={route().current(
+                                            "jugadores.listarJugadores"
+                                        )}
+                                    >
+                                        👧 Jugadores 👦
+                                    </NavLink>
+                                )}
+
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("resultadoSorteo.index")}
+                                        active={route().current(
+                                            "resultadoSorteo.index"
+                                        )}
+                                    >
+                                        ✋Sorteos
                                     </NavLink>
                                 )}
                             </div>

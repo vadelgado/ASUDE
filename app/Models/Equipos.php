@@ -35,5 +35,9 @@ class Equipos extends Model
         return $this->belongsTo(Torneo::class, 'fk_torneo');
     }
 
+    public function jugadores()
+    {
+        return $this->hasMany(Jugadores::class, 'fk_equipo');
+    }
 
 }

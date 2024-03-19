@@ -213,6 +213,7 @@ export default function Index({ auth, equipos, categorias, torneos }) {
             }
         >
             {/* Head y otras importaciones... */}
+            <Head title="⚽ Equipos 🥅" />
             <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
                 <div className="mt-1 mb-1 flex justify-end">
                     <PrimaryButton onClick={() => openModal(1)}>
@@ -256,12 +257,7 @@ export default function Index({ auth, equipos, categorias, torneos }) {
                                             {equipo.descripcion}
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
-
-
-                                        <img src={`/storage/${equipo.escudoEquipo}`} alt={equipo.nombreEquipo} height={100} width={100} />
-
-
-                                       
+                                        <img src={`/escudos/${equipo.escudoEquipo}`} alt={equipo.nombreEquipo} height={100} width={100} />                                       
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             {equipo.numeroWhatsapp}

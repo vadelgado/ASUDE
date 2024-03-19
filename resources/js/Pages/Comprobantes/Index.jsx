@@ -80,19 +80,13 @@ export default function Dashboard({ auth, comprobantes }) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="11" className="text-center">
+                                    <td colSpan="4" className="border border-gray-400 px-4 py-2">
                                     Usted no ha subido ningún comprobante. 👀
                                     </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-
-                                
-
-
-
-
                 </div>
             </div>
 

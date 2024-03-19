@@ -6,17 +6,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -37,10 +26,12 @@ Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('tor
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');  
+      
 });
 
 Route::middleware('auth', 'role:admin')->group(function () {
+
     // Listado de Alumnos Administrador
     Route::get('alumnoAdmin', 'App\Http\Controllers\AlumnoController@indexAdmin')->name('alumno.indexAdmin');
     
@@ -70,15 +61,24 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     // Listado de Torneos
     Route::get('torneos', 'App\Http\Controllers\Torneos@index')->name('torneo.index');
+
+    // Sorteo de Torneos
+
+    Route::resource('resultadoSorteo', App\Http\Controllers\ResultadoSorteoController::class);   
+
+    Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
+    Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
+    
     
 });
 
 Route::middleware('auth', 'role:acudiente')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');   
 
-        // Listado de Alumnos
+    // Listado de Alumnos
     Route::get('alumno', 'App\Http\Controllers\AlumnoController@index')->name('alumno.index');
 
     // Formulario para crear un nuevo Alumno
@@ -104,18 +104,29 @@ Route::middleware('auth', 'role:acudiente')->group(function () {
 
     // Guardar un nuevo Comprobante
     Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');
+
+    
  
 });
 
-// Registrar Director Equipo
+    // Registrar Director Equipo
 Route::get('preregistro', 'App\Http\Controllers\Torneos@registrarEquipo')->name('preregistro.create');
+
+
 Route::middleware('auth', 'role:equipo')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
-    Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
+    //Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
+    //Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); 
+
+
+    // Listado de Jugadores
+    Route::get('jugadores', 'App\Http\Controllers\JugadoresController@index')->name('jugadores.listarJugadores');
+    // Formulario para crear un nuevo Jugador
+    Route::post('jugadores', 'App\Http\Controllers\JugadoresController@store')->name('jugadores.store');
 });
+
 Route::get('/version', function () {
     return 'Versión de PHP: ' . phpversion();
 });

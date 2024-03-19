@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('jugadores', function (Blueprint $table) {
             $table->id();
+            $table->string('fotoJugador', 100)->nullable(true);
             $table->string('tipoDocIdentidad', 2)->default('1')->nullable(false);
             $table->string('documentoIdentidad', 20)->nullable(false);
             $table->string('nombreJugador', 50)->nullable(false);

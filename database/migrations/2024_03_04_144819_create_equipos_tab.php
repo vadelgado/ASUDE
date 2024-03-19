@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombreEquipo')->unique()->nullable(false);
+            $table->string('nombreEquipo')->nullable(false);
             $table->unsignedBigInteger('fk_categoria_equipo')->nullable(false);
             $table->foreign('fk_categoria_equipo')->references('id')->on('categoria_equipo');
             $table->string('escudoEquipo')->nullable(false);
-            $table->string('numeroWhatsapp', 11)->nullable(false);
-            $table->string('correoElectronico')->unique()->nullable(false)->email();;
+            $table->string('numeroWhatsapp', 13)->nullable(false);
+            $table->string('correoElectronico')->nullable(false)->email();;
             $table->unsignedBigInteger('fk_user')->nullable(false);
             $table->foreign('fk_user')->references('id')->on('users');
             $table->unsignedBigInteger('fk_torneo')->nullable(false);   

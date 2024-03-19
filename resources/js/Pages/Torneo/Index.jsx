@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
+
 import Swal from "sweetalert2";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -141,7 +142,9 @@ export default function Dashboard({ auth, torneos }) {
             // Mostrar mensaje de error
             Swal.fire({
                 title: "Campos requeridos",
-                text: `Los siguientes campos son requeridos y no pueden estar vacíos: ${emptyFieldLabels.join(", ")}`,
+                text: `Los siguientes campos son requeridos y no pueden estar vacíos: ${emptyFieldLabels.join(
+                    ", "
+                )}`,
                 icon: "error",
             });
             return;
@@ -339,7 +342,9 @@ export default function Dashboard({ auth, torneos }) {
                                             </a>
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
-                                            {new Date(torneo.fechaInicio).toLocaleDateString()}
+                                            {new Date(
+                                                torneo.fechaInicio
+                                            ).toLocaleDateString()}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             <WarningButton
@@ -372,6 +377,14 @@ export default function Dashboard({ auth, torneos }) {
                                             >
                                                 <i className="fa-solid fa-trash"></i>
                                             </DangerButton>
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            <a
+                                                href={`/resultadoSorteo?team_id=${torneo.id}`}
+                                            >
+                                                <i className="fa-solid fa-dice"></i>
+                                                Mostrar
+                                            </a>
                                         </td>
                                     </tr>
                                 ))
@@ -423,7 +436,7 @@ export default function Dashboard({ auth, torneos }) {
                         ></InputLabel>
                         <TextInput
                             id="flayer"
-                            name="flayer"                            
+                            name="flayer"
                             ref={flayerInput}
                             value={data.flayer}
                             onChange={(e) =>
