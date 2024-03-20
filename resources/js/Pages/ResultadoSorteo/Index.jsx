@@ -138,22 +138,11 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
             }
         >
             <Head title="✋Sorteo" />
-
-            <div className="bg-white grid v-screen place-items-center py-6">
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    ✋Sorteo
-                </h2>
-            </div>
             <div className="bg-white grid v-screen place-items-center py-6">
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     Resultado Sorteo
                 </h2>
             </div>
-            
-            
-
-            
-
             <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
                 <div className="bg-white grid v-screen place-items-center py-6">
                     <PrimaryButton onClick={() => openModal(1)}>
@@ -161,27 +150,33 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                     </PrimaryButton>
                 </div>
                 <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
-                        <thead>
-                            <tr className="bg-gray-100">
-                                <th className="px-2 py-2">#</th>
+                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg text-center items-center">
+                        <thead >
+                            <tr className="bg-gray-100">                                
                                 <th className="px-2 py-2">Grupo</th>
                                 <th className="px-2 py-2">Pocisión</th>
+                                <th className="px-2 py-2">Escudo</th>
                                 <th className="px-2 py-2">Equipo</th>
+                                <th className="px-2 py-2">Editar</th>
+                                <th className="px-2 py-2">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
                             {resultadoSorteos.length > 0 ? (
-                                resultadoSorteos.map((resultadoSorteo, i) => (
+                                resultadoSorteos.map((resultadoSorteo) => (
                                     <tr key={resultadoSorteo.id}>
-                                        <td className="border border-gray-400 px-4 py-2">
-                                            {i + 1}
-                                        </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             {resultadoSorteo.grupo}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             {resultadoSorteo.posicion}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                        <img
+                                                src={`/escudos/${resultadoSorteo.escudoEquipo}`}
+                                                alt="Foto Jugador"
+                                                className="h-10 w-10 rounded-full"
+                                            />                                            
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             {resultadoSorteo.nombreEquipo}

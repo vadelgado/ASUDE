@@ -34,7 +34,7 @@ class ResultadoSorteoController extends Controller
                 ->where('equipos.fk_torneo', $team_id)
                 ->orderBy('grupo', 'asc')
                 ->orderBy('posicion', 'asc')
-                ->select('resultado_sorteos.*', 'equipos.nombreEquipo')
+                ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
                 ->get();
 
             //$resultadoSorteos = ResultadoSorteo::whereHas('equipo', function ($query) use ($team_id) {
