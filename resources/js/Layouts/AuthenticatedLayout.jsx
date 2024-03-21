@@ -148,6 +148,18 @@ export default function Authenticated({ user, header, children }) {
                                         Torneos
                                     </NavLink>
                                 )}
+                                {user.role === "admin" && (
+                                    <NavLink
+                                        href={route("jornadaPartido.index")}
+                                        activate={
+                                            route().current("jornadaPartido.index")
+                                                ? "true"
+                                                : "false"
+                                        }
+                                    >
+                                        Jornadas Torneo
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 

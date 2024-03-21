@@ -53,56 +53,66 @@ class ResultadoSorteoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([            
+        $request->validate([
             'grupoPosicion' => [
                 'required',
                 Rule::unique('resultado_sorteos')->where(function ($query) use ($request) {
                     return $query->where('grupoPosicion', $request->grupoPosicion);
                 }),
             ],
-            'fk_equipo' => 'required|unique:resultado_sorteos'
+            'fk_equipo' => 'required|unique:resultado_sorteos',
         ], [
             'grupoPosicion.required' => 'El Grupo y Posición es obligatorio.',
-            'grupoPosicion.unique' => 'El Grupo y Posición ya estan asignados.',
+            'grupoPosicion.unique' => 'El Grupo y Posición ya están asignados.',
             'fk_equipo.required' => 'El campo Equipo es obligatorio.',
-            'fk_equipo.unique' => 'El Equipo ya tiene resultado.',
-        ]);
-
-        $grupo = $request->input('grupo');
-        $posicion = $request->input('posicion');   
-
-        $resultadoSorteo = new ResultadoSorteo($request->input());
-        $resultadoSorteo->save(); 
-
-        
+            'fk_equipo.unique' => 'El Equipo ya tiene un resultado asignado.',
+        ]); 
+    
+        try {
+            $resultadoSorteo = new ResultadoSorteo($request->all());
+            $resultadoSorteo->save();            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Hubo un error al crear el resultado de sorteo'], 500);
+        }
     }
+    
 
     public function update(Request $request, $id)
     {
-        $request->validate([            
+        $request->validate([
             'grupoPosicion' => [
                 'required',
                 Rule::unique('resultado_sorteos')->ignore($id)->where(function ($query) use ($request) {
-                    return $query->where('grupoPosicion', $request->posicion);
+                    return $query->where('grupoPosicion', $request->grupoPosicion);
                 }),
             ],
-            'fk_equipo' => ['required', Rule::unique('resultado_sorteos', 'fk_equipo')->ignore($id)]
+            'fk_equipo' => ['required', Rule::unique('resultado_sorteos', 'fk_equipo')->ignore($id)],
         ], [
             'grupoPosicion.required' => 'El Grupo y Posición es obligatorio.',
-            'grupoPosicion.unique' => 'El Grupo y Posición ya estan asignados.',
+            'grupoPosicion.unique' => 'El Grupo y Posición ya está asignado.',
             'fk_equipo.required' => 'El campo Equipo es obligatorio.',
-            'fk_equipo.unique' => 'El Equipo ya tiene resultado.',
+            'fk_equipo.unique' => 'El Equipo ya tiene un resultado asignado.',
         ]);
     
-        $resultadoSorteo = ResultadoSorteo::find($id);
-        $resultadoSorteo->fill($request->input())->saveOrFail();        
+        try {
+            $resultadoSorteo = ResultadoSorteo::findOrFail($id);
+            $resultadoSorteo->fill($request->all())->saveOrFail();            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Hubo un error al actualizar el resultado de sorteo'], 500);
+        }
     }
+    
 
     public function destroy($id)
     {
-        $resultadoSorteo = ResultadoSorteo::find($id);
-        $resultadoSorteo->delete();
+        try {
+            $resultadoSorteo = ResultadoSorteo::findOrFail($id);
+            $resultadoSorteo->delete();            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Hubo un error al eliminar el resultado de sorteo'], 500);
+        }
     }
+    
 
 
 }

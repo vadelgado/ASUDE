@@ -39,6 +39,11 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
         setData({ grupoPosicion: "", fk_equipo: "" });
         if (op === 1) {
             setTitle("Agregar Resultado Sorteo");
+            setData({
+                id: "",
+                grupoPosicion: "",
+                fk_equipo: "",
+            });            
         } else {
             setTitle("Editar Resultado Sorteo");
             setData({

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belogsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Equipos extends Model
 {

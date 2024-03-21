@@ -1,10 +1,11 @@
-<?php
+<?php 
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belogsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class torneo extends Model
 {
@@ -30,6 +31,11 @@ class torneo extends Model
     public function equipos()
     {
         return $this->hasMany(Equipos::class, 'fk_torneo');
+    }
+
+    public function jornadaPartidos()
+    {
+        return $this->hasMany(jornadaPartido::class, 'fk_torneo');
     }
 
     use HasFactory;

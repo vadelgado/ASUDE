@@ -68,6 +68,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
     Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
+
+    // Resource jornadaPartido
+
+    Route::resource('jornadaPartido', App\Http\Controllers\JornadaPartidoController::class);
     
     
 });
