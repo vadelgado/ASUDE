@@ -13,14 +13,10 @@ import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 
 export default function Index({ auth, resultadoSorteos, equipos }) {
-
-
-
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
-    const GrupoInput = useRef();
-    const posicionInput = useRef();
+    const grupoPosicionInput = useRef();
     const fk_equipoInput = useRef();
     const {
         data,
@@ -33,23 +29,21 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
         errors,
     } = useForm({
         id: "",
-        grupo: "",
-        posicion: "",
+        grupoPosicion: "",
         fk_equipo: "",
     });
 
-    const openModal = (op, id, grupo, posicion, fk_equipo) => {
+    const openModal = (op, id, grupoPosicion, fk_equipo) => {
         setModal(true);
         setOperation(op);
-        setData({ grupo: "", posicion: "", fk_equipo: "" });
+        setData({ grupoPosicion: "", fk_equipo: "" });
         if (op === 1) {
             setTitle("Agregar Resultado Sorteo");
         } else {
             setTitle("Editar Resultado Sorteo");
             setData({
                 id: id,
-                grupo: grupo,
-                posicion: posicion,
+                grupoPosicion: grupoPosicion,
                 fk_equipo: fk_equipo,
             });
         }
@@ -73,25 +67,21 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
 
                 onError: (errors) => {
                     if (errors.grupo) {
-                        GrupoInput.current.focus();
-                    } else if (errors.posicion) {
-                        posicionInput.current.focus();
+                        grupoPosicionInput.current.focus();
                     } else if (errors.fk_equipo) {
                         fk_equipoInput.current.focus();
                     }
                 },
             });
         } else {
-            put(route("resultadoSorteo.update",data.id) , {
+            put(route("resultadoSorteo.update", data.id), {
                 onSuccess: () => {
                     closeModal();
                     ok("Resultado Sorteo actualizado correctamente");
                 },
                 onError: (errors) => {
                     if (errors.grupo) {
-                        GrupoInput.current.focus();
-                    } else if (errors.posicion) {
-                        posicionInput.current.focus();
+                        grupoPosicionInput.current.focus();
                     } else if (errors.fk_equipo) {
                         fk_equipoInput.current.focus();
                     }
@@ -151,10 +141,9 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                 </div>
                 <div className="bg-white grid v-screen place-items-center py-6">
                     <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg text-center items-center">
-                        <thead >
-                            <tr className="bg-gray-100">                                
-                                <th className="px-2 py-2">Grupo</th>
-                                <th className="px-2 py-2">Pocisión</th>
+                        <thead>
+                            <tr className="bg-gray-100">
+                                <th className="px-2 py-2">Grupo y Pocisión</th>
                                 <th className="px-2 py-2">Escudo</th>
                                 <th className="px-2 py-2">Equipo</th>
                                 <th className="px-2 py-2">Editar</th>
@@ -165,18 +154,15 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                             {resultadoSorteos.length > 0 ? (
                                 resultadoSorteos.map((resultadoSorteo) => (
                                     <tr key={resultadoSorteo.id}>
-                                        <td className="border border-gray-400 px-4 py-2">
-                                            {resultadoSorteo.grupo}
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            {resultadoSorteo.grupoPosicion}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
-                                            {resultadoSorteo.posicion}
-                                        </td>
-                                        <td className="border border-gray-400 px-2 py-2">
-                                        <img
+                                            <img
                                                 src={`/escudos/${resultadoSorteo.escudoEquipo}`}
                                                 alt="Foto Jugador"
                                                 className="h-10 w-10 rounded-full"
-                                            />                                            
+                                            />
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             {resultadoSorteo.nombreEquipo}
@@ -187,8 +173,7 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                                                     openModal(
                                                         2,
                                                         resultadoSorteo.id,
-                                                        resultadoSorteo.grupo,
-                                                        resultadoSorteo.posicion,
+                                                        resultadoSorteo.grupoPosicion,
                                                         resultadoSorteo.fk_equipo
                                                     )
                                                 }
@@ -232,49 +217,17 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                 >
                     <div className="mt-4">
                         <InputLabel
-                            htmlFor="grupo"
-                            value="Grupo"
+                            htmlFor="grupoPosicion"
+                            value="Grupo y Posición"
                             className="block text-sm font-medium text-gray-700"
                         />
                         <select
-                            name="grupo"
-                            id="grupo"
-                            ref={GrupoInput}
-                            value={data.grupo}
-                            onChange={(e) => setData("grupo", e.target.value)}
-                            className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
-                                errors["grupo"] ? "border-red-500" : ""
-                            }`}
-                        >
-                            <option value="" disabled>
-                                Seleccione...
-                            </option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                            <option value="E">E</option>
-                            <option value="F">F</option>
-                            <option value="G">G</option>
-                            <option value="H">H</option>
-                        </select>
-                        <p className="mt-2 text-sm text-red-600">
-                            {errors["grupo"]}
-                        </p>
-                    </div>
-                    <div className="mt-4">
-                        <InputLabel
-                            htmlFor="posicion"
-                            value="Posición"
-                            className="block text-sm font-medium text-gray-700"
-                        />
-                        <select
-                            name="posicion"
-                            id="posicion"
-                            ref={posicionInput}
-                            value={data.posicion}
+                            name="grupoPosicion"
+                            id="grupoPosicion"
+                            ref={grupoPosicionInput}
+                            value={data.grupoPosicion}
                             onChange={(e) =>
-                                setData("posicion", e.target.value)
+                                setData("grupoPosicion", e.target.value)
                             }
                             className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
                                 errors["posicion"] ? "border-red-500" : ""
@@ -283,19 +236,26 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                             <option value="" disabled>
                                 Seleccione...
                             </option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
+                            <option value="1 A">1 A</option>
+                            <option value="2 A">2 A</option>
+                            <option value="3 A">3 A</option>
+                            <option value="4 A">4 A</option>
+                            <option value="1 B">1 B</option>
+                            <option value="2 B ">2 B</option>
+                            <option value="3 B ">3 B</option>
+                            <option value="4 B ">4 B</option>
+                            <option value="1 C ">1 C</option>
+                            <option value="2 C">2 C</option>
+                            <option value="3 C">3 C</option>
+                            <option value="4 C">4 C</option>
+                            <option value="1 D">1 D</option>
+                            <option value="2 D">2 D</option>
+                            <option value="3 D">3 D</option>
+                            <option value="4 D">4 D</option>
+
                         </select>
                         <p className="mt-2 text-sm text-red-600">
-                            {errors["posicion"]}
+                            {errors["grupoPosicion"]}
                         </p>
                     </div>
 

@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -32,25 +32,18 @@ class ResultadoSorteoController extends Controller
             $resultadoSorteos = DB::table('resultado_sorteos')
                 ->join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
                 ->where('equipos.fk_torneo', $team_id)
-                ->orderBy('grupo', 'asc')
-                ->orderBy('posicion', 'asc')
+                ->orderBy('grupoPosicion', 'asc')                
                 ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
                 ->get();
 
             //$resultadoSorteos = ResultadoSorteo::whereHas('equipo', function ($query) use ($team_id) {
             //    $query->where('fk_torneo', $team_id);
-            //})->get();
-
-
-            
+            //})->get();            
         } else {
 
             $equipos = Equipos::all();
             $resultadoSorteos = ResultadoSorteo::all();
-        }
-    
-        
-    
+        }   
         return Inertia::render('ResultadoSorteo/Index', [
             'resultadoSorteos' => $resultadoSorteos,
             'equipos' => $equipos,            
@@ -60,22 +53,19 @@ class ResultadoSorteoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'grupo' => 'required',
-            'posicion' => [
+        $request->validate([            
+            'grupoPosicion' => [
                 'required',
                 Rule::unique('resultado_sorteos')->where(function ($query) use ($request) {
-                    return $query->where('grupo', $request->grupo)
-                                 ->where('posicion', $request->posicion);
+                    return $query->where('grupoPosicion', $request->grupoPosicion);
                 }),
             ],
             'fk_equipo' => 'required|unique:resultado_sorteos'
         ], [
-            'grupo.required' => 'El campo Grupo es obligatorio.',
-            'posicion.required' => 'El campo Posición es obligatorio.',
-            'posicion.unique' => 'La combinación de Grupo y Posición ya existe.',
+            'grupoPosicion.required' => 'El Grupo y Posición es obligatorio.',
+            'grupoPosicion.unique' => 'El Grupo y Posición ya estan asignados.',
             'fk_equipo.required' => 'El campo Equipo es obligatorio.',
-            'fk_equipo.unique' => 'El Equipo ya existe.',
+            'fk_equipo.unique' => 'El Equipo ya tiene resultado.',
         ]);
 
         $grupo = $request->input('grupo');
@@ -89,26 +79,29 @@ class ResultadoSorteoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'grupo' => 'required',
-            'posicion' => [
+        $request->validate([            
+            'grupoPosicion' => [
                 'required',
                 Rule::unique('resultado_sorteos')->ignore($id)->where(function ($query) use ($request) {
-                    return $query->where('grupo', $request->grupo)
-                                 ->where('posicion', $request->posicion);
+                    return $query->where('grupoPosicion', $request->posicion);
                 }),
             ],
             'fk_equipo' => ['required', Rule::unique('resultado_sorteos', 'fk_equipo')->ignore($id)]
         ], [
-            'grupo.required' => 'El campo Grupo es obligatorio.',
-            'posicion.required' => 'El campo Posición es obligatorio.',
-            'posicion.unique' => 'La combinación de Grupo y Posición ya existe.',
+            'grupoPosicion.required' => 'El Grupo y Posición es obligatorio.',
+            'grupoPosicion.unique' => 'El Grupo y Posición ya estan asignados.',
             'fk_equipo.required' => 'El campo Equipo es obligatorio.',
-            'fk_equipo.unique' => 'El Equipo ya existe.',
+            'fk_equipo.unique' => 'El Equipo ya tiene resultado.',
         ]);
     
         $resultadoSorteo = ResultadoSorteo::find($id);
         $resultadoSorteo->fill($request->input())->saveOrFail();        
+    }
+
+    public function destroy($id)
+    {
+        $resultadoSorteo = ResultadoSorteo::find($id);
+        $resultadoSorteo->delete();
     }
 
 

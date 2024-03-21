@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Models;
 
@@ -9,7 +9,7 @@ class ResultadoSorteo extends Model
 {
     use HasFactory;
     protected $table = 'resultado_sorteos';
-    protected $fillable = ['grupo','posicion','fk_equipo'];
+    protected $fillable = ['grupoPosicion','fk_equipo'];
     public $timestamps = true;
     
     public function equipo()

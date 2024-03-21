@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('resultado_sorteos', function (Blueprint $table) {
             $table->id();
-            $table->string('grupo',50)->nullable(false);
-            $table->string('posicion',50)->nullable(false);
+            $table->string('grupoPosicion',50)->nullable(false);
             $table->unsignedBigInteger('fk_equipo')->nullable(false);
             $table->foreign('fk_equipo')->references('id')->on('equipos');            
             $table->timestamps();
