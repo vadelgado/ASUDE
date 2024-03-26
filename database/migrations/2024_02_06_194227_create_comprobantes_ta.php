@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_alumno');
             $table->foreign('fk_alumno')->references('id')->on('alumnos');
             $table->date('fecha');
-            $table->text('secureUrl');
+            $table->text('secureUrl')->nullable();
             $table->float('valor');    
             $table->timestamps();        
         });

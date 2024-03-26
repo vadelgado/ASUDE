@@ -4,9 +4,14 @@ import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import DangerButton from "@/Components/DangerButton";
+import FormField from "@/Components/FormField";
+import ImgField from "@/Components/ImgField";
+import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import WarningButton from "@/Components/WarningButton";
 
 export default function Index({ auth, equipos, categorias, torneos }) {
     const [modal, setModal] = useState(false);
@@ -19,24 +24,34 @@ export default function Index({ auth, equipos, categorias, torneos }) {
     const correoElectronicoInput = useRef();
     const fk_torneoInput = useRef();
 
+    const InitialValues = {
+        id: "",
+        nombreEquipo: "",
+        fk_categoria_equipo: "",
+        escudoEquipo: null,
+        numeroWhatsapp: "",
+        correoElectronico: "",
+        fk_user: auth.user.id,
+        fk_torneo: "",
+    };
+
     const {
         data,
         setData,
         delete: destroy,
         post,
-        put,
         processing,
-        reset,
         errors,
-    } = useForm({
-        id: "",
-        nombreEquipo: "",
-        fk_categoria_equipo: "",
-        escudoEquipo: "",
-        numeroWhatsapp: "",
-        correoElectronico: "",
-        fk_torneo: "",
-    });
+    } = useForm(InitialValues);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        setData("escudoEquipo", e.target.files[0]);
+    };
 
     const openModal = (
         op,
@@ -54,16 +69,7 @@ export default function Index({ auth, equipos, categorias, torneos }) {
 
         if (op === 1) {
             setTitle("Agregar Equipo");
-            setData({
-                id: "",
-                nombreEquipo: "",
-                fk_categoria_equipo: "",
-                escudoEquipo: null,
-                numeroWhatsapp: "",
-                correoElectronico: "",
-                fk_user: fk_user,
-                fk_torneo: "",
-            });
+            setData(InitialValues);
         } else {
             setTitle("Editar Equipo");
             setData({
@@ -83,95 +89,27 @@ export default function Index({ auth, equipos, categorias, torneos }) {
         setModal(false);
     };
 
-    // funcion para manejar el cambio de archivos y almacenal la imagen en el estado
-    const handleFileChange = (e) => {
-        setData("escudoEquipo", e.target.files[0]);
-        
-    };
-    
-
-    const [requiredFields, setRequiredFields] = useState([
-        "nombreEquipo",
-        "fk_categoria_equipo",
-        "escudoEquipo",
-        "numeroWhatsapp",
-        "correoElectronico",
-        "fk_torneo",
-    ]);
-
     const save = (e) => {
         e.preventDefault();
-        // Validar campos requeridos
-        const emptyFields = requiredFields.filter((field) => !data[field]);
-        if (emptyFields.length > 0) {
-            // Obtener los nombres de los campos vacíos
-            const emptyFieldsNames = emptyFields.map((field) => {
-                return field === "nombreEquipo"
-                    ? "Nombre del Equipo"
-                    : field === "fk_categoria_equipo"
-                    ? "Categoría"
-                    : field === "escudoEquipo"
-                    ? "Escudo del Equipo"
-                    : field === "numeroWhatsapp"
-                    ? "Número de WhatsApp"
-                    : field === "correoElectronico"
-                    ? "Correo Electrónico"
-                    : "Torneo";
-            });
 
-            Swal.fire(
-                "¡Campos requeridos!",
-                `Los siguientes campos son requeridos: ${emptyFieldsNames.join(
-                    ", "
-                )}.`,
-                "warning"
-            );
-            return;
-        }
-
-        // Crear un objeto FormData para enviar datos con la imagen
-
-        const formData = new FormData();
-        formData.append("nombreEquipo", data.nombreEquipo);
-        formData.append("fk_categoria_equipo", data.fk_categoria_equipo);
-        formData.append("escudoEquipo", data.escudoEquipo);
-        formData.append("numeroWhatsapp", data.numeroWhatsapp);
-        formData.append("correoElectronico", data.correoElectronico);
-        formData.append("fk_torneo", data.fk_torneo);
-
-        //Verificar si la operación es agregar o editar
         if (operation === 1) {
-            // Agregar archivo al FormData
-            formData.append("escudoEquipo", data.escudoEquipo);
-
-            // Realizar la petición POST
             post(route("equipos.store"), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    closeModal();
                     ok("El equipo ha sido guardado.");
                 },
-                data: formData, // Enviar FormData en lugar de data
             });
         } else {
-            // Realizar la solicitud PUT
-            put(route("equipos.update", data.id), {
+            post(route("equipos.update", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    closeModal();
-                    Swal.fire(
-                        "¡Guardado!",
-                        "El equipo ha sido actualizado.",
-                        "success"
-                    );
+                    ok("El equipo ha sido actualizado.");
                 },
-                data: formData, // Enviar FormData en lugar de data
             });
         }
     };
 
     const ok = (mensaje) => {
-        reset();
         closeModal();
         Swal.fire({ title: mensaje, icon: "success" });
     };
@@ -203,6 +141,21 @@ export default function Index({ auth, equipos, categorias, torneos }) {
         });
     };
 
+    const handletorneos = [
+        { value: "", label: "Seleccione ...", disabled: true },
+        ...torneos.map((torneo) => ({
+            value: torneo.id,
+            label: torneo.nombreTorneo,
+        })),
+    ];
+
+    const handleCategorias = [
+        { value: "", label: "Seleccione ...", disabled: true },
+        ...categorias.map((categoria) => ({
+            value: categoria.id,
+            label: categoria.descripcion,
+        })),
+    ];
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -257,7 +210,12 @@ export default function Index({ auth, equipos, categorias, torneos }) {
                                             {equipo.descripcion}
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
-                                        <img src={`/escudos/${equipo.escudoEquipo}`} alt={equipo.nombreEquipo} height={100} width={100} />                                       
+                                            <img
+                                                src={`/storage/${equipo.escudoEquipo}`}
+                                                alt={equipo.nombreEquipo}
+                                                height={100}
+                                                width={100}
+                                            />
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             {equipo.numeroWhatsapp}
@@ -269,9 +227,36 @@ export default function Index({ auth, equipos, categorias, torneos }) {
                                             {equipo.nombreTorneo}
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
-                                        
+                                            <WarningButton
+                                                onClick={() =>
+                                                    openModal(
+                                                        2,
+                                                        equipo.id,
+                                                        equipo.nombreEquipo,
+                                                        equipo.fk_categoria_equipo,
+                                                        equipo.escudoEquipo,
+                                                        equipo.numeroWhatsapp,
+                                                        equipo.correoElectronico,
+                                                        equipo.fk_user,
+                                                        equipo.fk_torneo
+                                                    )
+                                                }
+                                            >
+                                                <i className="fa-solid fa-edit"></i>
+                                            </WarningButton>
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2"></td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <DangerButton
+                                                onClick={() =>
+                                                    eliminar(
+                                                        equipo.id,
+                                                        equipo.nombreEquipo
+                                                    )
+                                                }
+                                            >
+                                                <i className="fa-solid fa-trash"></i>
+                                            </DangerButton>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
@@ -290,131 +275,89 @@ export default function Index({ auth, equipos, categorias, torneos }) {
                 <h2 className="p-3 text-lg font-medium text-gray-900">
                     {title}
                 </h2>
-                <form onSubmit={save} className="p-6" encType="multipart/form-data">
-                    <div className="mt-4">
-                        <label
-                            htmlFor="nombreEquipo"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Nombre del Equipo
-                        </label>
-                        <input
-                            type="text"
-                            id="nombreEquipo"
-                            ref={nombreEquipoInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            value={data.nombreEquipo}
-                            onChange={(e) =>
-                                setData("nombreEquipo", e.target.value)
-                            }
-                        />
-                    </div>
+                <form
+                    onSubmit={save}
+                    className="p-6"
+                    encType="multipart/form-data"
+                >
+                    <FormField
+                        htmlFor="nombreEquipo"
+                        label="Nombre del Equipo"
+                        id="nombreEquipo"
+                        type="text"
+                        ref={nombreEquipoInput}
+                        name="nombreEquipo"
+                        placeholder="Nombre del Equipo"
+                        value={data.nombreEquipo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.nombreEquipo}
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="fk_categoria_equipo"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Categoría
-                        </label>
-                        <select
-                            id="fk_categoria_equipo"
-                            ref={fk_categoria_equipoInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            value={data.fk_categoria_equipo}
-                            onChange={(e) =>
-                                setData("fk_categoria_equipo", e.target.value)
-                            }
-                        >
-                            <option value="">Selecciona una opción</option>
-                            {categorias.map((categoria) => (
-                                <option value={categoria.id} key={categoria.id}>
-                                    {categoria.descripcion}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <SelectField
+                        htmlFor="fk_categoria_equipo"
+                        label="Categoría"
+                        id="fk_categoria_equipo"
+                        ref={fk_categoria_equipoInput}
+                        name="fk_categoria_equipo"
+                        value={data.fk_categoria_equipo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_categoria_equipo}
+                        options={handleCategorias}
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="escudoEquipo"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Escudo del Equipo
-                        </label>
-                        <input
-                            type="file"
-                            id="escudoEquipo"
-                            ref={escudoEquipoInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            
-                            onChange={handleFileChange}                            
-                        />
-                    </div>
+                    <ImgField
+                        htmlFor="escudoEquipo"
+                        label="Escudo del Equipo"
+                        id="escudoEquipo"
+                        ref={escudoEquipoInput}
+                        name="escudoEquipo"
+                        value={data.escudoEquipo}
+                        onChange={handleFileChange}
+                        errorMessage={errors.escudoEquipo}
+                        imageUrl={
+                            data.escudoEquipo
+                                ? `http://127.0.0.1:8000/storage/${data.escudoEquipo}`
+                                : null
+                        }
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="numeroWhatsapp"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Número de WhatsApp
-                        </label>
-                        <input
-                            type="number"
-                            id="numeroWhatsapp"
-                            ref={numeroWhatsAppInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            value={data.numeroWhatsapp}
-                            onChange={(e) =>
-                                setData("numeroWhatsapp", e.target.value)
-                            }
-                            min="0"
-                        />
-                    </div>
+                    <FormField
+                        htmlFor="numeroWhatsApp"
+                        label="Número de WhatsApp"
+                        id="numeroWhatsApp"
+                        type="number"
+                        ref={numeroWhatsAppInput}
+                        name="numeroWhatsapp"
+                        placeholder="Número de WhatsApp"
+                        value={data.numeroWhatsapp}
+                        onChange={handleInputChange}
+                        errorMessage={errors.numeroWhatsapp}
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="correoElectronico"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Correo Electrónico
-                        </label>
-                        <input
-                            type="text"
-                            id="correoElectronico"
-                            ref={correoElectronicoInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            value={data.correoElectronico}
-                            onChange={(e) =>
-                                setData("correoElectronico", e.target.value)
-                            }
-                        />
-                    </div>
+                    <FormField
+                        htmlFor="correoElectronico"
+                        label="Correo Electrónico"
+                        id="correoElectronico"
+                        type="email"
+                        ref={correoElectronicoInput}
+                        name="correoElectronico"
+                        placeholder="Correo Electrónico"
+                        value={data.correoElectronico}
+                        onChange={handleInputChange}
+                        errorMessage={errors.correoElectronico}
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="fk_torneo"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Torneo en el que participa
-                        </label>
-                        <select
-                            id="fk_torneo"
-                            ref={fk_torneoInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            value={data.fk_torneo}
-                            onChange={(e) =>
-                                setData("fk_torneo", e.target.value)
-                            }
-                        >
-                            <option value="">Selecciona una opción</option>
-                            {torneos.map((torneo) => (
-                                <option value={torneo.id}key={torneo.id}>
-                                    {torneo.nombreTorneo}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <SelectField
+                        htmlFor="fk_torneo"
+                        label="Torneo"
+                        id="fk_torneo"
+                        ref={fk_torneoInput}
+                        name="fk_torneo"
+                        value={data.fk_torneo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_torneo}
+                        options={handletorneos}
+                    />
 
                     <div className="mt-1">
                         <PrimaryButton
@@ -424,6 +367,7 @@ export default function Index({ auth, equipos, categorias, torneos }) {
                             <i className="fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
                     </div>
+
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
                             Cancel

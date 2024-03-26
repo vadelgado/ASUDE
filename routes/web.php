@@ -66,12 +66,23 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     Route::resource('resultadoSorteo', App\Http\Controllers\ResultadoSorteoController::class);   
 
-    Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
-    Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
+    // Resource equipos
+    Route::resource('equipos', App\Http\Controllers\EquiposController::class);
+    // Actualizar Equipo
+    Route::post('equipos/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equipos.update');
 
     // Resource jornadaPartido
-
     Route::resource('jornadaPartido', App\Http\Controllers\JornadaPartidoController::class);
+
+    // Resource lugarPartido
+    Route::resource('lugarPartido', App\Http\Controllers\LugarPartidoController::class);
+    // Actualizar Lugar Partido
+    Route::post('lugarPartido/{lugarPartido}', 'App\Http\Controllers\LugarPartidoController@update')->name('lugarPartido.update');
+
+    // Resource programacionTorneo
+    Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class);
+    
+    
     
     
 });

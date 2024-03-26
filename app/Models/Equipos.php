@@ -1,4 +1,4 @@
-<?php 
+<?php  
 
 namespace App\Models;
 
@@ -39,6 +39,16 @@ class Equipos extends Model
     public function jugadores()
     {
         return $this->hasMany(Jugadores::class, 'fk_equipo');
+    }
+
+    public function programacionTorneoLocal()
+    {
+        return $this->hasMany(ProgramacionTorneo::class, 'fk_equipoLocal');
+    }
+
+    public function programacionTorneoVisitante()
+    {
+        return $this->hasMany(ProgramacionTorneo::class, 'fk_equipoVisitante');
     }
 
 }

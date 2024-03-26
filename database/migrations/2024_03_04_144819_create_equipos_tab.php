@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombreEquipo')->nullable(false);
             $table->unsignedBigInteger('fk_categoria_equipo')->nullable(false);
             $table->foreign('fk_categoria_equipo')->references('id')->on('categoria_equipo');
-            $table->string('escudoEquipo')->nullable(false);
+            $table->string('escudoEquipo')->nullable(true);
             $table->string('numeroWhatsapp', 13)->nullable(false);
             $table->string('correoElectronico')->nullable(false)->email();;
             $table->unsignedBigInteger('fk_user')->nullable(false);

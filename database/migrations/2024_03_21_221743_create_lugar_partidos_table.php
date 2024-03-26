@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('lugar_partidos', function (Blueprint $table) {
             $table->id();
-            $table->text('nomLugar')->unique()->nullable(false);
-            $table->text('geolocalizacion')->unique()->nullable(false);
-            $table->text('direccion')->unique()->nullable(false);
-            $table->text('fotoLugar')->unique()->nullable(false);
+            $table->text('nomLugar')->nullable(false);
+            $table->text('geolocalizacion')->nullable(false);
+            $table->text('direccion')->nullable(false);
+            $table->text('fotoLugar')->nullable(true);
             
         });
     }

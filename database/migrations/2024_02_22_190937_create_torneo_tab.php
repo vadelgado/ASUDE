@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_user')->nullable(false);
             $table->foreign('fk_user')->references('id')->on('users');
             $table->text('nombreTorneo')->nullable(false);
-            $table->text('flayer')->nullable(false);
+            $table->text('flayer')->nullable(true);
             $table->text('caracteristicas')->nullable(false)->default('próximamente');
             $table->text('premiacion')->nullable(false)->default('próximamente');
             $table->text('sistemaJuego')->nullable(false)->default('próximamente');

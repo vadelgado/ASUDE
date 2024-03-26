@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Equipos;
 use App\Models\torneo;
 use Illuminate\Validation\Rule;
-
-
-
 use Inertia\Inertia;
 
 

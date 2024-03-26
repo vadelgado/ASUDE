@@ -386,6 +386,14 @@ export default function Dashboard({ auth, torneos }) {
                                                 Mostrar
                                             </a>
                                         </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            <a
+                                                href={`/programacionTorneo?team_id=${torneo.id}`}
+                                            >
+                                                <i className="fa-solid fa-dice"></i>
+                                                Mostrar
+                                            </a>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (

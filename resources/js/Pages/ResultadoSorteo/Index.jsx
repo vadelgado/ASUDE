@@ -148,11 +148,11 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                     <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg text-center items-center">
                         <thead>
                             <tr className="bg-gray-100">
-                                <th className="px-2 py-2">Grupo y Pocisión</th>
-                                <th className="px-2 py-2">Escudo</th>
-                                <th className="px-2 py-2">Equipo</th>
-                                <th className="px-2 py-2">Editar</th>
-                                <th className="px-2 py-2">Eliminar</th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm">Grupo y Pocisión</th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm">Escudo</th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm">Equipo</th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm"></th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,8 +164,8 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             <img
-                                                src={`/escudos/${resultadoSorteo.escudoEquipo}`}
-                                                alt="Foto Jugador"
+                                                src={`/storage/${resultadoSorteo.escudoEquipo}`}
+                                                alt={`Foto de ${resultadoSorteo.nombreEquipo}`}
                                                 className="h-10 w-10 rounded-full"
                                             />
                                         </td>

@@ -62,10 +62,10 @@ export default function Authenticated({ user, header, children }) {
                                 {user.role === "equipo" && (
                                     <NavLink
                                         href={route(
-                                            "preregistro.listarEquipos"
+                                            "equipos.index"
                                         )}
                                         active={route().current(
-                                            "preregistro.listarEquipos"
+                                            "equipos.index"
                                         )}
                                     >
                                         Mis Equipos 📝
@@ -74,10 +74,10 @@ export default function Authenticated({ user, header, children }) {
                                 {user.role === "admin" && (
                                     <NavLink
                                         href={route(
-                                            "preregistro.listarEquipos"
+                                            "equipos.index"
                                         )}
                                         active={route().current(
-                                            "preregistro.listarEquipos"
+                                            "equipos.index"
                                         )}
                                     >
                                         Mis Equipos 📝
