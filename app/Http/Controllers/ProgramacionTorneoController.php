@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProgramacionTorneo\StoreRequest;
+use App\Http\Requests\ProgramacionTorneo\UpdateRequest;
+
 use App\Models\programacionTorneo;
 use App\Models\jornadaPartido;
 use App\Models\lugarPartido;
@@ -86,7 +89,7 @@ class ProgramacionTorneoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         //
         $data = $request->only('HoraPartido', 'fk_jornadaPartido', 'fk_lugarPartido', 'fk_equipoLocal', 'fk_equipoVisitante');
@@ -113,7 +116,7 @@ class ProgramacionTorneoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         //
         $data = $request->only('HoraPartido', 

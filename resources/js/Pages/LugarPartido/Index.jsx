@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"; 
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import DangerButton from "@/Components/DangerButton";

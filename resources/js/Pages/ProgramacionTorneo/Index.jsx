@@ -51,7 +51,7 @@ export default function Index({
 
     const handleModal = (
         op,
-        id,   
+        id,
         HoraPartido,
         fk_jornadaPartido,
         fk_lugarPartido,
@@ -179,7 +179,13 @@ export default function Index({
                                         {i + 1}
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {new Date(`1970-01-01T${programacion.HoraPartido}`).toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}
+                                        {new Date(
+                                            `1970-01-01T${programacion.HoraPartido}`
+                                        ).toLocaleString("en-US", {
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true,
+                                        })}
                                     </td>
                                     <td className="border px-4 py-2">
                                         {programacion.jornada}
@@ -189,11 +195,19 @@ export default function Index({
                                     </td>
                                     <td className="border px-4 py-2">
                                         {programacion.nombreEquipoLocal}
-                                        <img src={`/storage/${programacion.escudoEquipoLocal}`} alt={programacion.nombreEquipoLocal} />
+                                        <img
+                                            src={`/storage/${programacion.escudoEquipoLocal}`}
+                                            alt={programacion.nombreEquipoLocal}
+                                        />
                                     </td>
                                     <td className="border px-4 py-2">
                                         {programacion.nombreEquipoVisitante}
-                                        <img src={`/storage/${programacion.escudoEquipoVisitante}`} alt={programacion.nombreEquipoVisitante} />
+                                        <img
+                                            src={`/storage/${programacion.escudoEquipoVisitante}`}
+                                            alt={
+                                                programacion.nombreEquipoVisitante
+                                            }
+                                        />
                                     </td>
                                     <td className="border px-4 py-2">
                                         <WarningButton
@@ -238,81 +252,77 @@ export default function Index({
             </div>
 
             <Modal show={modal} close={closeModal}>
-            <h2 className="text-lg font-medium text-gray-900">{title}</h2>
-            <form onSubmit={handleSubmit} className="p-6">
+                <h2 className="text-lg font-medium text-gray-900">{title}</h2>
+                <form onSubmit={handleSubmit} className="p-6">
+                    <FormField
+                        htmlFor="HoraPartido"
+                        label="Hora Partido"
+                        id="HoraPartido"
+                        type="time"
+                        name="HoraPartido"
+                        ref={HoraPartidoInput}
+                        value={data.HoraPartido}
+                        onChange={handleInputChange}
+                        error={errors.HoraPartido}
+                    />
 
-                <FormField
-                    htmlFor="HoraPartido"
-                    label="Hora Partido"
-                    id="HoraPartido"
-                    type="time"
-                    name="HoraPartido"                    
-                    ref={HoraPartidoInput}                                       
-                    value={data.HoraPartido}
-                    onChange={handleInputChange}
-                    error={errors.HoraPartido}
-                />
+                    <SelectField
+                        htmlFor="fk_jornadaPartido"
+                        label="Jornada"
+                        id="fk_jornadaPartido"
+                        name="fk_jornadaPartido"
+                        value={data.fk_jornadaPartido}
+                        options={handleJornadas}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_jornadaPartido}
+                        ref={fk_jornadaPartidoInput}
+                    />
 
-                <SelectField
-                    htmlFor="fk_jornadaPartido"
-                    label="Jornada"
-                    id="fk_jornadaPartido"
-                    name="fk_jornadaPartido"
-                    value={data.fk_jornadaPartido}
-                    options={handleJornadas}
-                    onChange={handleInputChange}
-                    errorMessage={errors.fk_jornadaPartido}
-                    ref={fk_jornadaPartidoInput}
-                />
+                    <SelectField
+                        htmlFor="fk_lugarPartido"
+                        label="Lugar"
+                        id="fk_lugarPartido"
+                        name="fk_lugarPartido"
+                        value={data.fk_lugarPartido}
+                        options={handleLugares}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_lugarPartido}
+                        ref={fk_lugarPartidoInput}
+                    />
 
-                <SelectField
-                    htmlFor="fk_lugarPartido"
-                    label="Lugar"
-                    id="fk_lugarPartido"
-                    name="fk_lugarPartido"
-                    value={data.fk_lugarPartido}
-                    options={handleLugares}
-                    onChange={handleInputChange}
-                    errorMessage={errors.fk_lugarPartido}
-                    ref={fk_lugarPartidoInput}
-                />
+                    <SelectField
+                        htmlFor="fk_equipoLocal"
+                        label="Equipo Local"
+                        id="fk_equipoLocal"
+                        name="fk_equipoLocal"
+                        value={data.fk_equipoLocal}
+                        options={handleResultadoSorteos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_equipoLocal}
+                        ref={fk_equipoLocalInput}
+                    />
 
-                <SelectField
-                    htmlFor="fk_equipoLocal"
-                    label="Equipo Local"
-                    id="fk_equipoLocal"
-                    name="fk_equipoLocal"
-                    value={data.fk_equipoLocal}
-                    options={handleResultadoSorteos}
-                    onChange={handleInputChange}
-                    errorMessage={errors.fk_equipoLocal}
-                    ref={fk_equipoLocalInput}
-                />
+                    <SelectField
+                        htmlFor="fk_equipoVisitante"
+                        label="Equipo Visitante"
+                        id="fk_equipoVisitante"
+                        name="fk_equipoVisitante"
+                        value={data.fk_equipoVisitante}
+                        options={handleResultadoSorteos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_equipoVisitante}
+                        ref={fk_equipoVisitanteInput}
+                    />
 
-                <SelectField
-                    htmlFor="fk_equipoVisitante"
-                    label="Equipo Visitante"
-                    id="fk_equipoVisitante"
-                    name="fk_equipoVisitante"
-                    value={data.fk_equipoVisitante}
-                    options={handleResultadoSorteos}
-                    onChange={handleInputChange}
-                    errorMessage={errors.fk_equipoVisitante}
-                    ref={fk_equipoVisitanteInput}
-                />
-
-                <div className="mt-4 flex justify-end">
-                    <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
-                    <PrimaryButton type="submit" className="ml-2">
-                        Guardar
-                    </PrimaryButton>
-                </div>
-
-
-
-
-            </form>
-
+                    <div className="mt-4 flex justify-end">
+                        <SecondaryButton onClick={closeModal}>
+                            Cancelar
+                        </SecondaryButton>
+                        <PrimaryButton type="submit" className="ml-2">
+                            Guardar
+                        </PrimaryButton>
+                    </div>
+                </form>
             </Modal>
         </AuthenticatedLayout>
     );

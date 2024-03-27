@@ -1,6 +1,9 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
+
+use App\Http\Request\Torneo\StoreRequest;
+use App\Http\Request\Torneo\UpdateRequest;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,7 +30,7 @@ class Torneos extends Controller
     
     public function show($id)
     {
-        try{
+        try{ 
            $torneo = torneo::find($id); 
 
               if(!$torneo) {
@@ -44,27 +47,9 @@ class Torneos extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $request->validate([
-            'nombreTorneo' => 'required',
-            'flayer' => 'required',
-            'caracteristicas' => 'required',
-            'premiacion' => 'required',
-            'sistemaJuego' => 'required',
-            'procesoInscripcion' => 'required',
-            'reglamentacion' => 'required',
-            'fechaInicio' => 'required',
-        ],[
-            'nombreTorneo.required' => 'El campo nombre del torneo es obligatorio.',
-            'flayer.required' => 'El campo flayer es obligatorio.',
-            'caracteristicas.required' => 'El campo características es obligatorio.',
-            'premiacion.required' => 'El campo premiación es obligatorio.',
-            'sistemaJuego.required' => 'El campo sistema de juego es obligatorio.',
-            'procesoInscripcion.required' => 'El campo proceso de inscripción es obligatorio.',
-            'reglamentacion.required' => 'El campo reglamentación es obligatorio.',
-            'fechaInicio.required' => 'El campo fecha de inicio es obligatorio.',
-        ]);
+        
     
         try {
             torneo::create([

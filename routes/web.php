@@ -81,6 +81,11 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     // Resource programacionTorneo
     Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class);
+
+    // Resource sistemaJuego
+    Route::resource('sistemaJuego', App\Http\Controllers\SistemaJuegoController::class);
+    // Actualizar Sistema Juego
+    Route::post('sistemaJuego/{sistemaJuego}', 'App\Http\Controllers\SistemaJuegoController@update')->name('sistemaJuego.update');
     
     
     

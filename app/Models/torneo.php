@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Models;
+namespace App\Models; 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +18,7 @@ class torneo extends Model
         'caracteristicas',
         'premiacion',
         'sistemaJuego',
-        'procesoInscripcion',
+        'procesoInscripcion', 
         'reglamentacion',
         'fechaInicio'
     ];
@@ -27,6 +27,12 @@ class torneo extends Model
     {
         return $this->belongsTo(User::class, 'fk_user');
     }
+    public function sistemaJuego()
+    {
+        return $this->belongsTo(SistemaJuego::class, 'sistemaJuego');
+    }
+
+
 
     public function equipos()
     {
