@@ -1,4 +1,4 @@
-<?php 
+<?php  
 
 namespace App\Models; 
 
@@ -17,21 +17,32 @@ class torneo extends Model
         'flayer',
         'caracteristicas',
         'premiacion',
-        'sistemaJuego',
-        'procesoInscripcion', 
+        'fk_sistema_juegos',
+        'fk_categoria_equipo',
+        'estadoTorneo',
+        'inscripcion',
+        'procesoInscripcion',
         'reglamentacion',
-        'fechaInicio'
+        'fechaInicio',
+        'fechaFin',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'fk_user');
     }
+
     public function sistemaJuego()
     {
-        return $this->belongsTo(SistemaJuego::class, 'sistemaJuego');
+        return $this->belongsTo(SistemaJuego::class, 'fk_sistema_juegos');
     }
 
+    public function categoriaEquipo()
+    {
+        return $this->belongsTo(CategoriaEquipo::class, 'fk_categoria_equipo');
+    }
+
+    
 
 
     public function equipos()

@@ -38,29 +38,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Listado de Pagos Administrador
     Route::get('comprobantesAdmin', 'App\Http\Controllers\ComprobantesController@indexAdmin')->name('comprobantes.indexAdmin');
     
-    // Listado de Torneos
-    Route::get('torneos', 'App\Http\Controllers\Torneos@index')->name('torneo.index');
-
-    // Formulario para crear un nuevo Torneo
-    Route::get('torneos/create', 'App\Http\Controllers\Torneos@create')->name('torneo.create');
-
-    // Guardar un nuevo Torneo
-    Route::post('torneos', 'App\Http\Controllers\Torneos@store')->name('torneo.store');
-
-    // Mostrar un Torneo específico
-    Route::get('torneos/{torneo}', 'App\Http\Controllers\Torneos@show')->name('torneo.show');
-
-    // Formulario para editar un Torneo existente
-    Route::get('torneos/{torneo}/edit', 'App\Http\Controllers\Torneos@edit')->name('torneo.edit');
-
-    // Actualizar un Torneo existente
-    Route::put('torneos/{torneo}', 'App\Http\Controllers\Torneos@update')->name('torneo.update');
-
-    // Eliminar un Torneo existente
-    Route::delete('torneos/{torneo}', 'App\Http\Controllers\Torneos@destroy')->name('torneo.destroy');
-
-    // Listado de Torneos
-    Route::get('torneos', 'App\Http\Controllers\Torneos@index')->name('torneo.index');
+    // Resource Torneos
+    Route::resource('torneo', App\Http\Controllers\Torneos::class);
+    // Actualizar Torneo
+    Route::post('torneo/{torneo}', 'App\Http\Controllers\Torneos@update')->name('torneo.update');
 
     // Sorteo de Torneos
 

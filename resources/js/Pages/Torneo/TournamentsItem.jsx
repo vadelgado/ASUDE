@@ -13,7 +13,7 @@ export default function TournamentsItem({ torneo }) {
             >
                 <img
                     className="aspect-[389/500] h-full object-cover w-full max-w-full rounded"
-                    src={torneo.flayer}
+                    src={`/storage/${torneo.flayer}`}
                     alt="Flayer"
                 />
             </div>

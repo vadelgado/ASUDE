@@ -16,8 +16,12 @@ class SistemaJuego extends Model
     ];
     public $timestamps = false;
 
-    public function torneos()
+    public function torneos(): HasMany
     {
-        return $this->hasMany(Torneo::class, 'sistemaJuego');
+        return $this->hasMany(Torneo::class, 'fk_sistema_juegos');
     }
+
+
+
+
 }

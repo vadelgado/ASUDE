@@ -1,124 +1,121 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
-use App\Http\Request\Torneo\StoreRequest;
-use App\Http\Request\Torneo\UpdateRequest;
+use App\Http\Requests\Torneos\StoreRequest;
+use App\Http\Requests\Torneos\UpdateRequest;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\torneo;
+use App\Models\SistemaJuego;
+use App\Models\Categorias;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class Torneos extends Controller
 {
     public function index()
     {
-        $torneos = torneo::all();
-        return Inertia::render('Torneo/Index', [
-            'torneos' => $torneos
-        ]);
-    }
 
+        $sistemaJuegos = SistemaJuego::all();
+        $categoriaEquipos = Categorias::all();
+        $torneos = torneo::all();
+        return Inertia::render('Torneo/Index', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
+    }
+    //Listar los Torneos en la vista Todos
     public function listarTorneos()
     {
+
+        $sistemaJuegos = SistemaJuego::all();
+        $categoriaEquipos = Categorias::all();
         $torneos = torneo::all();
-        return Inertia::render('Torneo/ListarTorneos', [
-            'torneos' => $torneos
-        ]);
+        return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
     }
-    
+
     public function show($id)
     {
-        try{ 
-           $torneo = torneo::find($id); 
+        try
+        {
+            $torneo = torneo::find($id);
 
-              if(!$torneo) {
-                return redirect()->route('torneo.index')->with('error', 'Torneo no encontrado');
-              }
-                return Inertia::render('Torneo/Show', [
-                    'torneo' => $torneo
-                ]);
-        } catch (\Exception $e) {
-            return redirect()->route('torneo.index')->with('error', 'Error al mostrar el torneo');
+            if (!$torneo)
+            {
+                return redirect()->route('torneo.index')
+                    ->with('error', 'Torneo no encontrado');
+            }
+            return Inertia::render('Torneo/Show', ['torneo' => $torneo]);
         }
-        
-
-
+        catch(\Exception $e)
+        {
+            return redirect()->route('torneo.index')
+                ->with('error', 'Error al mostrar el torneo');
+        }
     }
 
     public function store(StoreRequest $request)
     {
-        
-    
-        try {
-            torneo::create([
-                'nombreTorneo' => $request->input('nombreTorneo'),
-                'flayer' => $request->input('flayer'),
-                'caracteristicas' => $request->input('caracteristicas'),
-                'premiacion' => $request->input('premiacion'),
-                'sistemaJuego' => $request->input('sistemaJuego'),
-                'procesoInscripcion' => $request->input('procesoInscripcion'),
-                'reglamentacion' => $request->input('reglamentacion'),
-                'fechaInicio' => date('Y-m-d', strtotime($request->input('fechaInicio'))),
-                'fk_user' => Auth::user()->id,
-            ]);
-            return redirect()->route('torneo.index')->with('success', 'Torneo creado correctamente');
-        } catch (\Exception $e) {
-            return redirect()->route('torneo.index')->with('error', 'Error al crear el torneo');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+
+        if ($request->hasFile('flayer'))
+        {
+            $file = $request->file('flayer');
+            $routeImage = $file->store('flayer', ['disk' => 'public']);
+            $data['flayer'] = $routeImage;
         }
+
+        torneo::create($data);
+
+        return redirect()->route('torneo.index');
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        try {
-            $torneo = torneo::find($id);
-            $request->validate([
-                'nombreTorneo' => 'required',
-                'flayer' => 'required',
-                'caracteristicas' => 'required',
-                'premiacion' => 'required',
-                'sistemaJuego' => 'required',
-                'procesoInscripcion' => 'required',
-                'reglamentacion' => 'required',
-                'fechaInicio' => 'required',
-            ], [
-                'nombreTorneo.required' => 'El campo nombre del torneo es obligatorio.',
-                'flayer.required' => 'El campo flayer es obligatorio.',
-                'caracteristicas.required' => 'El campo características es obligatorio.',
-                'premiacion.required' => 'El campo premiación es obligatorio.',
-                'sistemaJuego.required' => 'El campo sistema de juego es obligatorio.',
-                'procesoInscripcion.required' => 'El campo proceso de inscripción es obligatorio.',
-                'reglamentacion.required' => 'El campo reglamentación es obligatorio.',
-                'fechaInicio.required' => 'El campo fecha de inicio es obligatorio.',
-            ]);
-
-            if ($request->hasAny(['nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'sistemaJuego', 'procesoInscripcion', 'reglamentacion', 'fechaInicio'])) {
-                $torneo->fill($request->input())->saveOrFail();
-                return redirect()->route('torneo.index')->with('success', 'Torneo actualizado correctamente');
-            } else {
-                return response()->json(['error' => 'Error al actualizar el torneo'], 400);
-            }
-        } catch (\Exception $e) {
-            return redirect()->route('torneo.index')->with('error', 'Error al actualizar el torneo');
-        }
-    }
-
-    public function destroy($id)
-    {
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
         $torneo = torneo::find($id);
 
-        if(!$torneo) {
-            return redirect()->route('torneo.index')->with('error', 'Torneo no encontrado');
+        if ($request->hasFile('flayer'))
+        {
+            $file = $request->file('flayer');
+            $routeImage = $file->store('flayer', ['disk' => 'public']);
+            $data['flayer'] = $routeImage;
+
+            if ($torneo->flayer)
+            {
+                Storage::disk('public')
+                    ->delete($torneo->flayer);
+            }
+        }
+        else
+        {
+            if ($torneo->flayer)
+            {
+                $data['flayer'] = $torneo->flayer;
+            }
+            else
+            {
+                unset($data['flayer']);
+            }
+        }
+
+        $torneo->update($data);
+
+        return redirect()->route('torneo.index', $torneo);
+
+    }
+
+    public function destroy(torneo $torneo)
+    {
+        if ($torneo->flayer)
+        {
+            Storage::disk('public')
+                ->delete($torneo->flayer);
         }
 
         $torneo->delete();
-        return redirect()->route('torneo.index')->with('success', 'Torneo eliminado correctamente');
-    }
 
-    public function registrarEquipo()
-    {
-        return Inertia::render('AuthEquipo/Register');
+        return redirect()
+            ->route('torneo.index');
     }
-
 }
+

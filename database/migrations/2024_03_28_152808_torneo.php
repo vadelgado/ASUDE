@@ -10,7 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    { 
         Schema::create('torneo', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fk_user')->nullable(false);
@@ -18,13 +18,19 @@ return new class extends Migration
             $table->text('nombreTorneo')->nullable(false);
             $table->text('flayer')->nullable(true);
             $table->text('caracteristicas')->nullable(false)->default('próximamente');
-            $table->text('premiacion')->nullable(false)->default('próximamente');
-            $table->text('sistemaJuego')->nullable(false)->default('próximamente');
+            $table->text('premiacion')->nullable(false)->default('próximamente');            
+            $table->unsignedBigInteger('fk_sistema_juegos')->nullable(false);
+            $table->foreign('fk_sistema_juegos')->references('id')->on('sistema_juegos');            
+            $table->unsignedBigInteger('fk_categoria_equipo')->nullable(false);
+            $table->foreign('fk_categoria_equipo')->references('id')->on('categoria_equipo');
+            $table->enum('estadoTorneo', ['Por Iniciar', 'En Juego', 'Finalizado'])->nullable(false)->default('Por Iniciar');
+            $table->enum('inscripcion', ['Abierta', 'Cerrada'])->nullable(false)->default('Abierta');
             $table->text('procesoInscripcion')->nullable(false)->default('próximamente');
             $table->text('reglamentacion')->nullable(false)->default('próximamente');
-            $table->date('fechaInicio')->nullable(false);            
-            $table->timestamps();
-        });
+            $table->date('fechaInicio')->nullable(false);
+            $table->date('fechaFin')->nullable(true);            
+            $table->timestamps(false);
+            });
     }
 
     /**
@@ -35,4 +41,3 @@ return new class extends Migration
         Schema::dropIfExists('torneo');
     }
 };
- 

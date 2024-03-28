@@ -1,20 +1,20 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 
 import Swal from "sweetalert2";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import PrimaryButton from "@/Components/PrimaryButton";
+import DangerButton from "@/Components/DangerButton";
+import FormField from "@/Components/FormField";
+import ImgField from "@/Components/ImgField";
+import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
-import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
-import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
-import DangerButton from "@/Components/DangerButton";
 
-export default function Dashboard({ auth, torneos }) {
+export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipos}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -22,32 +22,45 @@ export default function Dashboard({ auth, torneos }) {
     const flayerInput = useRef();
     const caracteristicasInput = useRef();
     const premiacionInput = useRef();
-    const sistemaJuegoInput = useRef();
+    const fk_sistema_juegosInput = useRef();
+    const fk_categoria_equipoInput = useRef();
+    const estadoTorneoInput = useRef();
+    const inscripcionInput = useRef();
     const procesoInscripcionInput = useRef();
     const reglamentacionInput = useRef();
     const fechaInicioInput = useRef();
+    const fechaFinInput = useRef();
 
-    const {
-        data,
-        setData,
-        delete: destroy,
-        post,
-        put,
-        processing,
-        reset,
-        errors,
-    } = useForm({
-        id: "",
+    const InitialValues = {
+        fk_user: auth.user.id,
         nombreTorneo: "",
-        flayer: "",
+        flayer: null,
         caracteristicas: "",
         premiacion: "",
-        sistemaJuego: "",
+        fk_sistema_juegos: "",
+        fk_categoria_equipo: "",
+        estadoTorneo: "",
+        inscripcion: "",
         procesoInscripcion: "",
         reglamentacion: "",
         fechaInicio: "",
-    });
-
+        fechaFin: "",
+    };
+    const {
+        data,
+        setData,
+        errors,
+        delete: destroy,
+        post,
+        processing,
+    } = useForm(InitialValues);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({ ...prevData, [name]: value }));
+    };
+    const handleFileChange = (e) => {
+        setData("flayer", e.target.files[0]);
+    };
     const openModal = (
         op,
         id,
@@ -55,29 +68,20 @@ export default function Dashboard({ auth, torneos }) {
         flayer,
         caracteristicas,
         premiacion,
-        sistemaJuego,
+        fk_sistema_juegos,
+        fk_categoria_equipo,
+        estadoTorneo,
+        inscripcion,
         procesoInscripcion,
         reglamentacion,
         fechaInicio,
-        fk_user
+        fechaFin
     ) => {
         setModal(true);
         setOperation(op);
-
         if (op === 1) {
             setTitle("Agregar Torneo");
-            setData({
-                id: "",
-                nombreTorneo: "",
-                flayer: "",
-                caracteristicas: "",
-                premiacion: "",
-                sistemaJuego: "",
-                procesoInscripcion: "",
-                reglamentacion: "",
-                fechaInicio: "",
-                fk_user: fk_user,
-            });
+            setData(InitialValues);
         } else {
             setTitle("Editar Torneo");
             setData({
@@ -86,156 +90,43 @@ export default function Dashboard({ auth, torneos }) {
                 flayer: flayer,
                 caracteristicas: caracteristicas,
                 premiacion: premiacion,
-                sistemaJuego: sistemaJuego,
+                fk_sistema_juegos: fk_sistema_juegos,
+                fk_categoria_equipo: fk_categoria_equipo,
+                estadoTorneo: estadoTorneo,
+                inscripcion: inscripcion,
                 procesoInscripcion: procesoInscripcion,
                 reglamentacion: reglamentacion,
                 fechaInicio: fechaInicio,
-                fk_user: fk_user,
+                fechaFin: fechaFin,
             });
         }
     };
-
     const closeModal = () => {
         setModal(false);
     };
 
-    const [requiredFields, setRequiredFields] = useState([
-        "nombreTorneo",
-        "flayer",
-        "caracteristicas",
-        "premiacion",
-        "sistemaJuego",
-        "procesoInscripcion",
-        "reglamentacion",
-        "fechaInicio",
-    ]);
-
     const save = (e) => {
         e.preventDefault();
-        // Verificar campos requeridos vacíos
-        const emptyFields = requiredFields.filter((field) => !data[field]);
-        if (emptyFields.length > 0) {
-            // Obtener nombres de las etiquetas de los campos requeridos
-            const emptyFieldLabels = emptyFields.map((field) => {
-                switch (field) {
-                    case "nombreTorneo":
-                        return "Nombre del Torneo";
-                    case "flayer":
-                        return "Flayer";
-                    case "caracteristicas":
-                        return "Características";
-                    case "premiacion":
-                        return "Premiación";
-                    case "sistemaJuego":
-                        return "Sistema de Juego";
-                    case "procesoInscripcion":
-                        return "Proceso de Inscripción";
-                    case "reglamentacion":
-                        return "Reglamentación";
-                    case "fechaInicio":
-                        return "Fecha de Inicio";
-                    default:
-                        return field;
-                }
-            });
-
-            // Mostrar mensaje de error
-            Swal.fire({
-                title: "Campos requeridos",
-                text: `Los siguientes campos son requeridos y no pueden estar vacíos: ${emptyFieldLabels.join(
-                    ", "
-                )}`,
-                icon: "error",
-            });
-            return;
-        }
         if (operation === 1) {
             post(route("torneo.store"), {
+                preserveScroll: true,
                 onSuccess: () => {
-                    ok("Torneo agregado correctamente");
-                },
-                onError: () => {
-                    if (errors?.nombreTorneo) {
-                        reset("nombreTorneo");
-                        nombreTorneoInput.current.focus();
-                    }
-                    if (errors?.flayer) {
-                        reset("flayer");
-                        flayerInput.current.focus();
-                    }
-                    if (errors?.caracteristicas) {
-                        reset("caracteristicas");
-                        caracteristicasInput.current.focus();
-                    }
-                    if (errors?.premiacion) {
-                        reset("premiacion");
-                        premiacionInput.current.focus();
-                    }
-                    if (errors?.sistemaJuego) {
-                        reset("sistemaJuego");
-                        sistemaJuegoInput.current.focus();
-                    }
-                    if (errors?.procesoInscripcion) {
-                        reset("procesoInscripcion");
-                        procesoInscripcionInput.current.focus();
-                    }
-                    if (errors?.reglamentacion) {
-                        reset("reglamentacion");
-                        reglamentacionInput.current.focus();
-                    }
-                    if (errors?.fechaInicio) {
-                        reset("fechaInicio");
-                        fechaInicioInput.current.querySelector("input").focus();
-                    }
+                    ok("Torneo guardado correctamente");
                 },
             });
         } else {
-            put(route("torneo.update", { torneo: data.id }), {
+            post(route("torneo.update", data.id), {
+                preserveScroll: true,
                 onSuccess: () => {
                     ok("Torneo actualizado correctamente");
-                },
-                onError: () => {
-                    if (errors?.nombreTorneo) {
-                        reset("nombreTorneo");
-                        nombreTorneoInput.current.focus();
-                    }
-                    if (errors?.flayer) {
-                        reset("flayer");
-                        flayerInput.current.focus();
-                    }
-                    if (errors?.caracteristicas) {
-                        reset("caracteristicas");
-                        caracteristicasInput.current.focus();
-                    }
-                    if (errors?.premiacion) {
-                        reset("premiacion");
-                        premiacionInput.current.focus();
-                    }
-                    if (errors?.sistemaJuego) {
-                        reset("sistemaJuego");
-                        sistemaJuegoInput.current.focus();
-                    }
-                    if (errors?.procesoInscripcion) {
-                        reset("procesoInscripcion");
-                        procesoInscripcionInput.current.focus();
-                    }
-                    if (errors?.reglamentacion) {
-                        reset("reglamentacion");
-                        reglamentacionInput.current.focus();
-                    }
-                    if (errors?.fechaInicio) {
-                        reset("fechaInicio");
-                        fechaInicioInput.current.querySelector("input").focus();
-                    }
                 },
             });
         }
     };
 
-    const ok = (mensaje) => {
-        reset();
+    const ok = (message) => {
         closeModal();
-        Swal.fire({ title: mensaje, icon: "success" });
+        Swal.fire("¡Correcto!", message, "success");
     };
 
     const eliminar = (id, nombreTorneo) => {
@@ -248,23 +139,31 @@ export default function Dashboard({ auth, torneos }) {
             cancelButtonText: "Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                destroy(route("torneo.destroy", { torneo: id }), {
+                destroy(route("torneo.destroy", id), {
+                    preserveScroll: true,
                     onSuccess: () => {
-                        Swal.fire({
-                            title: "Torneo eliminado correctamente",
-                            icon: "success",
-                        });
-                    },
-                    onError: () => {
-                        Swal.fire({
-                            title: "Ocurrió un error",
-                            icon: "error",
-                        });
+                        ok("Torneo eliminado correctamente");
                     },
                 });
             }
         });
     };
+
+    const handleSistemaJuego = [
+        {value: "", label: "Seleccione...", disabled: true},
+        ...sistemaJuegos.map((sistemaJuego) => ({
+            value: sistemaJuego.id,
+            label: sistemaJuego.nombreSistema,
+        })),
+    ];
+
+    const handleCategoriaEquipo = [
+        {value: "", label: "Seleccione...", disabled: true},
+        ...categoriaEquipos.map((categoriaEquipo) => ({
+            value: categoriaEquipo.id,
+            label: categoriaEquipo.descripcion,
+        })),
+    ];
 
     return (
         <AuthenticatedLayout
@@ -284,7 +183,7 @@ export default function Dashboard({ auth, torneos }) {
                             className="fa-solid fa-plus-circle"
                             style={{ marginRight: "10px" }}
                         ></i>
-                        Agregar
+                        Agregar Torneo
                     </PrimaryButton>
                 </div>
 
@@ -298,11 +197,15 @@ export default function Dashboard({ auth, torneos }) {
                                 <th className="px-2 py-2">Caracteristicas</th>
                                 <th className="px-2 py-2">Premiación</th>
                                 <th className="px-2 py-2">Sistema de Juego</th>
+                                <th className="px-2 py-2">Categoria</th>
+                                <th className="px-2 py-2">Estado</th>
+                                <th className="px-2 py-2">Inscripción</th>
                                 <th className="px-2 py-2">
                                     Proceso de Inscripción
                                 </th>
                                 <th className="px-2 py-2">Reglamentación</th>
                                 <th className="px-2 py-2">Fecha de Inicio</th>
+                                <th className="px-2 py-2">Fehca Cierre</th>
                                 <th className="px-2 py-2"></th>
                                 <th className="px-2 py-2"></th>
                             </tr>
@@ -319,8 +222,9 @@ export default function Dashboard({ auth, torneos }) {
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             <img
-                                                src={torneo.flayer}
-                                                alt="Flayer"
+                                                src={`/storage/${torneo.flayer}`}
+                                                alt={torneo.nombreTorneo}
+                                                className="w-32 h-auto"
                                             />
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
@@ -334,7 +238,16 @@ export default function Dashboard({ auth, torneos }) {
                                             {torneo.sistemaJuego}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
-                                            {torneo.procesoInscripcion}
+                                            {torneo.fk_sistema_juegos}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            {torneo.fk_categoria_equipo}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            {torneo.estadoTorneo}
+                                        </td>
+                                        <td className="border border-gray-400 px-2 py-2">
+                                            {torneo.inscripcion}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             <a href="{torneo.reglamentacion}">
@@ -356,10 +269,15 @@ export default function Dashboard({ auth, torneos }) {
                                                         torneo.flayer,
                                                         torneo.caracteristicas,
                                                         torneo.premiacion,
-                                                        torneo.sistemaJuego,
+                                                        torneo.fk_sistema_juegos,
+                                                        torneo.fk_categoria_equipo,
+                                                        torneo.estadoTorneo,
+                                                        torneo.inscripcion,
                                                         torneo.procesoInscripcion,
                                                         torneo.reglamentacion,
-                                                        torneo.fechaInicio
+                                                        torneo.fechaInicio,
+                                                        torneo.fechaFin,                                                        
+                                                        torneo.fk_user,
                                                     )
                                                 }
                                             >
@@ -383,7 +301,7 @@ export default function Dashboard({ auth, torneos }) {
                                                 href={`/resultadoSorteo?team_id=${torneo.id}`}
                                             >
                                                 <i className="fa-solid fa-dice"></i>
-                                                Mostrar
+                                                Resultado Sorteo
                                             </a>
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
@@ -391,7 +309,7 @@ export default function Dashboard({ auth, torneos }) {
                                                 href={`/programacionTorneo?team_id=${torneo.id}`}
                                             >
                                                 <i className="fa-solid fa-dice"></i>
-                                                Mostrar
+                                                Programación Torneo
                                             </a>
                                         </td>
                                     </tr>
@@ -412,194 +330,165 @@ export default function Dashboard({ auth, torneos }) {
                 <h2 className="p-3 text-lg font-medium text-gray-900">
                     {title}
                 </h2>
-                <form onSubmit={save} className="p-6">
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="nombreTorneo"
-                            value="Nombre del Torneo"
-                        ></InputLabel>
-                        <TextInput
-                            id="nombreTorneo"
-                            name="nombreTorneo"
-                            ref={nombreTorneoInput}
-                            value={data.nombreTorneo}
-                            onChange={(e) =>
-                                setData({
-                                    ...data,
-                                    nombreTorneo: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.nombreTorneo}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                <form onSubmit={save} className="p-6"
+                encType="multipart/form-data">
+                    <FormField
+                        htmlFor="nombreTorneo"
+                        label="Nombre Torneo"
+                        id="nombreTorneo"
+                        type="text"
+                        ref={nombreTorneoInput}
+                        name="nombreTorneo"
+                        placeholder="Nombre Torneo"
+                        value={data.nombreTorneo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.nombreTorneo}                        
+                    />
+                    <ImgField
+                        htmlFor="flayer"
+                        label="Flayer"
+                        id="flayer"
+                        ref={flayerInput}
+                        name="flayer"
+                        value={data.flayer}
+                        onChange={handleFileChange}
+                        errorMessage={errors.flayer}
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="flayer"
-                            value="Flayer"
-                        ></InputLabel>
-                        <TextInput
-                            id="flayer"
-                            name="flayer"
-                            ref={flayerInput}
-                            value={data.flayer}
-                            onChange={(e) =>
-                                setData({ ...data, flayer: e.target.value })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.flayer}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <FormField
+                        htmlFor="caracteristicas"
+                        label="Caracteristicas"
+                        id="caracteristicas"
+                        type="text"
+                        ref={caracteristicasInput}
+                        name="caracteristicas"
+                        placeholder="Caracteristicas"
+                        value={data.caracteristicas}
+                        onChange={handleInputChange}
+                        errorMessage={errors.caracteristicas}
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="caracteristicas"
-                            value="Caracteristicas"
-                        ></InputLabel>
-                        <TextInput
-                            id="caracteristicas"
-                            name="caracteristicas"
-                            ref={caracteristicasInput}
-                            value={data.caracteristicas}
-                            onChange={(e) => {
-                                setData({
-                                    ...data,
-                                    caracteristicas: e.target.value,
-                                });
-                            }}
-                            className="mt-1 block w-full"
-                        ></TextInput>
+                    <FormField
+                        htmlFor="premiacion"
+                        label="Premiación"
+                        id="premiacion"
+                        type="text"
+                        ref={premiacionInput}
+                        name="premiacion"
+                        placeholder="Premiación"
+                        value={data.premiacion}
+                        onChange={handleInputChange}
+                        errorMessage={errors.premiacion}
+                    />
 
-                        <InputError
-                            message={errors?.caracteristicas}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <SelectField
+                        htmlFor="fk_sistema_juegos"
+                        label="Sistema de Juego"
+                        id="fk_sistema_juegos"
+                        ref={fk_sistema_juegosInput}
+                        name="fk_sistema_juegos"
+                        value={data.fk_sistema_juegos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_sistema_juegos}
+                        options={handleSistemaJuego}                            
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="premiacion"
-                            value="Premiación"
-                        ></InputLabel>
-                        <TextInput
-                            id="premiacion"
-                            name="premiacion"
-                            ref={premiacionInput}
-                            value={data.premiacion}
-                            onChange={(e) =>
-                                setData({ ...data, premiacion: e.target.value })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.premiacion}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <SelectField
+                        htmlFor="fk_categoria_equipo"
+                        label="Categoria"
+                        id="fk_categoria_equipo"
+                        ref={fk_categoria_equipoInput}
+                        name="fk_categoria_equipo"
+                        value={data.fk_categoria_equipo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_categoria_equipo}
+                        options={handleCategoriaEquipo}
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="sistemaJuego"
-                            value="Sistema de Juego"
-                        ></InputLabel>
-                        <TextInput
-                            id="sistemaJuego"
-                            name="sistemaJuego"
-                            ref={sistemaJuegoInput}
-                            value={data.sistemaJuego}
-                            onChange={(e) =>
-                                setData({
-                                    ...data,
-                                    sistemaJuego: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.sistemaJuego}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <SelectField
+                        htmlFor="estadoTorneo"
+                        label="Estado"
+                        id="estadoTorneo"
+                        ref={estadoTorneoInput}
+                        name="estadoTorneo"
+                        value={data.estadoTorneo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.estadoTorneo}
+                        options={[
+                            { value: "", label: "Seleccione...", disabled: true },
+                            { value: "Por Iniciar", label: "Por Iniciar" },
+                            { value: "En Juego", label: "En Juego" },
+                            { value: "Finalizado", label: "Finalizado" },
+                        ]}
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="procesoInscripcion"
-                            value="Proceso de Inscripción"
-                        ></InputLabel>
-                        <TextInput
-                            id="procesoInscripcion"
-                            name="procesoInscripcion"
-                            ref={procesoInscripcionInput}
-                            value={data.procesoInscripcion}
-                            onChange={(e) =>
-                                setData({
-                                    ...data,
-                                    procesoInscripcion: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.procesoInscripcion}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <SelectField
+                        htmlFor="inscripcion"
+                        label="Inscripción"
+                        id="inscripcion"
+                        ref={inscripcionInput}
+                        name="inscripcion"
+                        value={data.inscripcion}
+                        onChange={handleInputChange}
+                        errorMessage={errors.inscripcion}
+                        options={[
+                            { value: "", label: "Seleccione...", disabled: true },
+                            { value: "Abierta", label: "Abierta" },
+                            { value: "Cerrada", label: "Cerrada" },
+                        ]}
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="reglamentacion"
-                            value="Reglamentación"
-                        ></InputLabel>
-                        <TextInput
-                            id="reglamentacion"
-                            name="reglamentacion"
-                            ref={reglamentacionInput}
-                            value={data.reglamentacion}
-                            onChange={(e) =>
-                                setData({
-                                    ...data,
-                                    reglamentacion: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.reglamentacion}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <FormField
+                        htmlFor="procesoInscripcion"
+                        label="Proceso de Inscripción"
+                        id="procesoInscripcion"
+                        type="text"
+                        ref={procesoInscripcionInput}
+                        name="procesoInscripcion"
+                        placeholder="Proceso de Inscripción"
+                        value={data.procesoInscripcion}
+                        onChange={handleInputChange}
+                        errorMessage={errors.procesoInscripcion}
+                    />
 
-                    <div className="mt-1">
-                        <InputLabel
-                            htmlFor="fechaInicio"
-                            value="Fecha de Inicio"
-                        ></InputLabel>
-                        <TextInput
-                            id="fechaInicio"
-                            type="date"
-                            name="fechaInicio"
-                            ref={fechaInicioInput}
-                            value={data.fechaInicio}
-                            onChange={(e) =>
-                                setData({
-                                    ...data,
-                                    fechaInicio: e.target.value,
-                                })
-                            }
-                            className="mt-1 block w-full"
-                        ></TextInput>
-                        <InputError
-                            message={errors?.fechaInicio}
-                            className="mt-2"
-                        ></InputError>
-                    </div>
+                    <FormField
+                        htmlFor="reglamentacion"
+                        label="Reglamentación"
+                        id="reglamentacion"
+                        type="text"
+                        ref={reglamentacionInput}
+                        name="reglamentacion"
+                        placeholder="Reglamentación"
+                        value={data.reglamentacion}
+                        onChange={handleInputChange}
+                        errorMessage={errors.reglamentacion}
+                    />
+
+                    <FormField
+                        htmlFor="fechaInicio"
+                        label="Fecha de Inicio"
+                        id="fechaInicio"
+                        type="date"
+                        ref={fechaInicioInput}
+                        name="fechaInicio"
+                        placeholder="Fecha de Inicio"
+                        value={data.fechaInicio}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fechaInicio}
+                    />
+
+                    <FormField
+                        htmlFor="fechaFin"
+                        label="Fecha de Cierre"
+                        id="fechaFin"
+                        type="date"
+                        ref={fechaFinInput}
+                        name="fechaFin"
+                        placeholder="Fecha de Cierre"
+                        value={data.fechaFin}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fechaFin}
+                    />
 
                     <div className="mt-1">
                         <PrimaryButton

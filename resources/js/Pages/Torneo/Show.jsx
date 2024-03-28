@@ -18,7 +18,7 @@ export default function ListarTorneos({ auth, torneo }) {
                                                 <picture className="mb-8">
                                                         <img
                                                                 className="w-full h-auto rounded-lg shadow-lg"
-                                                                src={torneo.flayer}
+                                                                src={`/storage/${torneo.flayer}`}
                                                                 alt={`Torneo ⚽ ${torneo.nombreTorneo}`}
                                                         />
                                                 </picture>
