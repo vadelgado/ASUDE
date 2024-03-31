@@ -4,15 +4,17 @@ import Header from '@/Components/DashBoard/Header';
 import Intro from '@/Components/DashBoard/Intro';
 import PreFooter from '@/Components/DashBoard/PreFooter';
 import Video from '@/Components/DashBoard/Video';
+import TablaTorneos from '@/Components/DashBoard/TablaTorneos';
 
 //import '@fontsource-variable/onest';
 
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
+export default function Welcome({ auth, torneoEnCurso }) {
     return (
         <>
             <Header auth={auth}></Header>            
             <Head title="Futuras Estrellas" />            
-            <Video></Video>            
+            <Video></Video>  
+            <TablaTorneos torneoEnCurso={torneoEnCurso}/>
             <Intro></Intro>            
             <PreFooter></PreFooter>
             <Footer></Footer>

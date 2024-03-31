@@ -1,17 +1,26 @@
+
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TorneoEnCursoController;
+use App\Models\torneo;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Inertia\Inertia; 
+
 
 Route::get('/', function () {
+    $torneoEnCurso = torneo::select('id', 'nombreTorneo')
+        ->orderByRaw("CASE WHEN estadoTorneo = 'En Juego' THEN 0 WHEN estadoTorneo = 'Finalizado' THEN 2 ELSE 1 END")
+        ->orderBy('fechaInicio')
+        ->get();
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'torneoEnCurso' => $torneoEnCurso,
     ]);
 });
 
@@ -22,6 +31,7 @@ Route::get('/dashboard', function () {
 // Listar Torneos Layout Principal
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.show');
+Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

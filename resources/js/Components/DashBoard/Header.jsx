@@ -136,7 +136,8 @@ export default function Header({ auth }) {
                         ⚽PRÓXIMOS TORNEOS
                     </HeaderLink>
                     <HeaderLink
-                        href="#"
+                        href={route('torneoEnCurso.index')}
+                        active={route().current("torneoEnCurso.index")}
                         className="text-sm font-semibold leading-6 text-black"
                     >
                         ⚽TORNEO EN CURSO
