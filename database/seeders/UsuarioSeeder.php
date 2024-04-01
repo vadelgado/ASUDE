@@ -24,11 +24,11 @@ class UsuarioSeeder extends Seeder
             'role' => 'admin'
         ],
         ['identificacion'=>'987654321',   
-            'name' => 'acudiante',
-            'email' => 'acudiante@correo.com',
+            'name' => 'acudiente',
+            'email' => 'acudiente@correo.com',
             'password' => Hash::make('padre1234'),
             'celular' => '3104557906',
-            'role' => 'acudiante'
+            'role' => 'acudiente'
         ],
             ['identificacion'=>'765432109',   
             'name' => 'Equipo',

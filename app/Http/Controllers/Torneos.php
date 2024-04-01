@@ -33,6 +33,11 @@ class Torneos extends Controller
         return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
     }
 
+    public function registrarEquipo()
+    {
+        return Inertia::render('Torneo/RegistrarEquipo');
+    }
+
     public function show($id)
     {
         try

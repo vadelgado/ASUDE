@@ -20,8 +20,7 @@ class Alumno extends Model
         'barrio',
         'celular',
         'sedeEntrenamiento',
-        'fk_user',
-        
+        'fk_user',       
         
     ];
 

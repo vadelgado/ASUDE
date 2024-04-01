@@ -235,6 +235,7 @@ function DragDrop({ fk_user, alumnoId }) {
                     onChange={(e) =>
                         setData({ ...data, fk_user: e.target.value })
                     }
+                    style={{ display: 'none' }}
                 />
                 <input
                     
@@ -243,6 +244,7 @@ function DragDrop({ fk_user, alumnoId }) {
                     onChange={(e) =>
                         setData({ ...data, alumnoId: e.target.value })
                     }
+                    style={{ display: 'none' }}
                 />
 
 

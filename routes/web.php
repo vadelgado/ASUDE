@@ -114,9 +114,7 @@ Route::middleware('auth', 'role:acudiente')->group(function () {
     Route::get('comprobantes', 'App\Http\Controllers\ComprobantesController@index')->name('comprobantes.index');
 
     // Guardar un nuevo Comprobante
-    Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');
-
-    
+    Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');   
  
 });
 
@@ -130,8 +128,6 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     //Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
     //Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); 
-
-
     // Listado de Jugadores
     Route::get('jugadores', 'App\Http\Controllers\JugadoresController@index')->name('jugadores.listarJugadores');
     // Formulario para crear un nuevo Jugador

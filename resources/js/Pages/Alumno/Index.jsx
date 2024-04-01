@@ -341,7 +341,7 @@ export default function Dashboard({ auth, alumnos }) {
                                             </WarningButton>
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
-                                            <DangerButton
+                                            <SecondaryButton className="bg-green-500"
                                                 onClick={() =>
                                                     openModalPago(
                                                         1,
@@ -350,8 +350,9 @@ export default function Dashboard({ auth, alumnos }) {
                                                     )
                                                 }
                                             >
-                                                <i className="fa-solid fa-trash"></i>
-                                            </DangerButton>
+                                                
+                                                <i  className="fa-solid fa-money-bill text-white"></i>
+                                            </SecondaryButton>
                                         </td>
                                     </tr>
                                 ))

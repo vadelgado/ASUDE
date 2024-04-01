@@ -26,7 +26,7 @@ export default function Welcome({ auth, torneoEnCurso }) {
                 }
                 html {
                     font-family: 'Onest Variable', system-ui, sans-serif;
-                    background: #D9E5AB;
+                    background: #F1F6DC;
                 }
 
                 h1 {
