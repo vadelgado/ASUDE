@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Equipos\StoreRequest;
 use App\Http\Requests\Equipos\UpdateRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Categorias;
 use App\Models\Equipos;
 use App\Models\torneo;
@@ -23,66 +24,66 @@ class EquiposController extends Controller
      */
     public function index()
     {
+        $userRole = Auth::user()->role;
         $torneos = torneo::all();
-
         $categorias = Categorias::all();
 
-        $equipos = Equipos::join(
-            "torneo",
-            "equipos.fk_torneo",
-            "=",
-            "torneo.id"
-        )
-            ->join(
-                "categoria_equipo",
-                "equipos.fk_categoria_equipo",
-                "=",
-                "categoria_equipo.id"
-            )
-            ->where("equipos.fk_user", Auth::user()->id)
-            ->select(
-                "equipos.*",
-                "torneo.nombreTorneo",
-                "categoria_equipo.descripcion"
-            )
-            ->get();
+        $equipos = Equipos::join("torneo", "equipos.fk_torneo", "=", "torneo.id")
+            ->join("categoria_equipo", "equipos.fk_categoria_equipo", "=", "categoria_equipo.id")
+            ->select("equipos.*", "torneo.nombreTorneo", "categoria_equipo.descripcion");
+
+        if ($userRole === 'admin') {
+            $equipos = $equipos->get();
+        } else if ($userRole === 'equipo') {
+            $equipos = $equipos->where("equipos.fk_user", Auth::user()->id)->get();
+        } else {
+            return redirect()->route("dashboard");
+        }
+        
 
         return Inertia::render("Equipos/Index", [
             "equipos" => $equipos,
             "torneos" => $torneos,
             "categorias" => $categorias,
+            "userRole" => $userRole
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Equipos\StoreRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(StoreRequest $request)
-    {
-        $data = $request->only(
-            "nombreEquipo",
-            "fk_categoria_equipo",
-            "escudoEquipo",
-            "numeroWhatsapp",
-            "correoElectronico",
-            "fk_torneo"
-        );
+/**
+ * Store a newly created resource in storage.
+ *
+ * @param  \App\Http\Requests\Equipos\StoreRequest  $request
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function store(StoreRequest $request)
+{
+    $userRole = Auth::user()->role;
 
-        if ($request->hasFile("escudoEquipo")) {
-            $file = $request->file("escudoEquipo");
-            $routeImage = $file->store("escudoEquipo", ["disk" => "public"]);
-            $data["escudoEquipo"] = $routeImage;
-        }
-
-        $data["fk_user"] = Auth::user()->id;
-
-        Equipos::create($data);
-
-        return redirect()->route("equipos.index");
+    if ($userRole !== 'equipo' && $userRole !== 'admin') {
+        return redirect()->route("dashboard");
     }
+
+    $data = $request->only(
+        "nombreEquipo",
+        "fk_categoria_equipo",
+        "escudoEquipo",
+        "numeroWhatsapp",
+        "correoElectronico",
+        "fk_torneo"
+    );
+
+    if ($request->hasFile("escudoEquipo")) {
+        $file = $request->file("escudoEquipo");
+        $routeImage = $file->store("escudoEquipo", ["disk" => "public"]);
+        $data["escudoEquipo"] = $routeImage;
+    }
+
+    $data["fk_user"] = Auth::user()->id;
+
+    Equipos::create($data);
+
+    return redirect()->back()->withSuccess("El equipo ha sido guardado.");
+}
 
     /**
      * Update the specified resource in storage.
@@ -120,8 +121,6 @@ class EquiposController extends Controller
         }
 
         $equipo->update($data);
-
-        return redirect()->route("equipos.index");
     }
 
     /**

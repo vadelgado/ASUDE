@@ -125,9 +125,11 @@ Route::get('preregistro', 'App\Http\Controllers\Torneos@registrarEquipo')->name(
 Route::middleware('auth', 'role:equipo')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    //Route::get('listarEquipos', 'App\Http\Controllers\EquiposController@index')->name('preregistro.listarEquipos');
-    //Route::post('listarEquipos', 'App\Http\Controllers\EquiposController@store')->name('equipos.store');
-    //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); 
+     // Resource equipos
+     Route::resource('equiposInvitados', App\Http\Controllers\EquiposController::class);
+     // Actualizar Equipo
+     Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.update');
+
     // Listado de Jugadores
     Route::get('jugadores', 'App\Http\Controllers\JugadoresController@index')->name('jugadores.listarJugadores');
     // Formulario para crear un nuevo Jugador

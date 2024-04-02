@@ -97,7 +97,7 @@ class AlumnoController extends Controller
             return response()->json(['error' => 'No se proporcionaron datos para actualizar'], 400);
         }
     
-        return redirect('alumno');
+
     }
     
     

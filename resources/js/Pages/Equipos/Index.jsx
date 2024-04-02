@@ -13,7 +13,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, equipos, categorias, torneos }) {
+export default function Index({ auth, equipos, categorias, torneos, userRole }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState("");
@@ -91,23 +91,41 @@ export default function Index({ auth, equipos, categorias, torneos }) {
 
     const save = (e) => {
         e.preventDefault();
-
-        if (operation === 1) {
-            post(route("equipos.store"), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    ok("El equipo ha sido guardado.");
-                },
-            });
-        } else {
-            post(route("equipos.update", data.id), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    ok("El equipo ha sido actualizado.");
-                },
-            });
+    
+        let routeAction = 'store';
+        let message = 'El equipo ha sido guardado.';
+    
+        if (operation !== 1) {
+            routeAction = 'update';
+            message = 'El equipo ha sido actualizado.';
         }
+    
+        let routeBase = 'equipos';
+        if (userRole === 'equipo') {
+            routeBase = 'equiposInvitados';
+        }
+    
+        const routeName = buildRouteName(routeBase, routeAction);
+        const routeParams = {};
+        if (operation !== 1) {
+            routeParams.id = data.id;
+        }
+    
+        post(route(routeName, routeParams), {
+            preserveScroll: true,
+            onSuccess: () => {
+                ok(message);
+            },
+            onError: () => {
+                error("Hubo un error al procesar la solicitud.");
+            }
+        });
     };
+    
+    const buildRouteName = (base, action) => {
+        return `${base}.${action}`;
+    };
+    
 
     const ok = (mensaje) => {
         closeModal();
