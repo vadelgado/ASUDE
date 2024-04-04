@@ -4,19 +4,18 @@ import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import DangerButton from "@/Components/DangerButton";
+import FormField from "@/Components/FormField";
+import SelectField from "@/Components/SelectField";
+import ImgField from "@/Components/ImgField";
 import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import WarningButton from "@/Components/WarningButton";
 
-
-export default function Index({
+export default function Index({ 
     auth,
     equipos,
-    categorias,
-    torneos,
     jugadores,
 }) {
     const [modal, setModal] = useState(false);
@@ -31,19 +30,9 @@ export default function Index({
     const segundoApellidoJugadorInput = useRef();
     const fechaNacimientoInput = useRef();    
     const fk_equipoInput = useRef();
-
-    const {
-        data,
-        setData,
-        delete: destroy,
-        post,
-        put,
-        processing,
-        reset,
-        errors,
-    } = useForm({
+    const InitialValues = {
         id: "",
-        fotoJugador: "",
+        fotoJugador: null,
         tipoDocIdentidad: "",
         documentoIdentidad: "",
         nombreJugador: "",
@@ -52,7 +41,25 @@ export default function Index({
         segundoApellidoJugador: "",
         fechaNacimiento: "",
         fk_equipo: "",
-    });
+    };
+    const {
+        data,
+        setData,
+        errors,
+        delete: destroy,
+        post,
+        processing,
+    } = useForm(InitialValues);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        setData("fotoJugador", e.target.files[0]);
+    };
+
 
     const openModal = (
         op,
@@ -72,18 +79,7 @@ export default function Index({
 
         if (op === 1) {
             setTitle("Nuevo Jugador");
-            setData({
-                id: "",
-                fotoJugador: null,
-                tipoDocIdentidad: "",
-                documentoIdentidad: "",
-                nombreJugador: "",
-                segundoNombreJugador: "",
-                apellidoJugador: "",
-                segundoApellidoJugador: "",
-                fechaNacimiento: "",
-                fk_equipo: "",
-            });
+            setData(InitialValues);
         } else {
             setTitle("Editar Jugador");
             setData({
@@ -105,96 +101,26 @@ export default function Index({
         setModal(false);
     };
 
-    // funcion para manejar el cambio de archivos y almacena la imagen en el estado
-    const handleFileChange = (e) => {
-        setData("fotoJugador", e.target.files[0]);
-    };
-
-    const [requiredFields, setRequiredFields] = useState([
-        "fotoJugador",
-        "tipoDocIdentidad",
-        "documentoIdentidad",
-        "nombreJugador",
-        "apellidoJugador",
-        "fechaNacimiento",
-        "fk_equipo",
-    ]);
-
     const save = (e) => {
         e.preventDefault();
-        // Validar campos requeridos
-
-        const emptyFields = requiredFields.filter((field) => !data[field]);
-        if (emptyFields.length > 0) {
-            //Obtener los nombres de los campos vacios
-            const emptyFieldsNames = emptyFields.map((field) => {
-                return field === "fotoJugador"
-                    ? "Foto Jugador"
-                    : field === "tipoDocIdentidad"
-                    ? "Tipo Documento Identidad"
-                    : field === "documentoIdentidad"
-                    ? "Documento Identidad"
-                    : field === "nombreJugador"
-                    ? "Nombre Jugador"
-                    : field === "apellidoJugador"
-                    ? "Apellido Jugador"
-                    : field === "fechaNacimiento"
-                    ? "Fecha Nacimiento"
-                    : "Equipo";
-            });
-
-            Swal.fire(
-                "Campos vacios",
-                `Los campos ${emptyFieldsNames.join(
-                    ", "
-                )} no pueden estar vacios`,
-                "error"
-            );
-            return;
-        }
-
-        // Validar que el campo fotoJugador sea una imagen
-
-        const formData = new FormData();
-        formData.append("fotoJugador", data.fotoJugador);
-        formData.append("tipoDocIdentidad", data.tipoDocIdentidad);
-        formData.append("documentoIdentidad", data.documentoIdentidad);
-        formData.append("nombreJugador", data.nombreJugador);
-        formData.append("segundoNombreJugador", data.segundoNombreJugador);
-        formData.append("apellidoJugador", data.apellidoJugador);
-        formData.append("segundoApellidoJugador", data.segundoApellidoJugador);
-        formData.append("fechaNacimiento", data.fechaNacimiento);
-        formData.append("fk_equipo", data.fk_equipo);
-
-        //Verificar si la operacion es agregar o editar
         if (operation === 1) {
-            // Agregar archivo al formData
-            formData.append("fotoJugador", data.fotoJugador);
-
-            // Realizar la peticion POST
             post(route("jugadores.store"), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    closeModal();
-                    ok("El jugador ha sido registrado");
+                    ok("El jugador ha sido creado");
                 },
-                data: formData, // Enviar FormData en lugar de data
             });
         } else {
-            //Realizar la solicitud PUT
-            put(route("jugadores.update", data.id), {
+            post(route("jugadores.update", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    closeModal();
                     ok("El jugador ha sido actualizado");
                 },
-                data: formData, // Enviar FormData en lugar de data
             });
         }
     };
 
     const ok = (mensaje) => {
-        reset();
         closeModal();
         Swal.fire({ title: mensaje, icon: "success" });
     };
@@ -227,6 +153,23 @@ export default function Index({
             }
         });
     };
+
+    const handletipoDocIdentidad = [
+        { value: "", label: "Seleccione ...", disabled: true },        
+        { value: "CC", label: "Cédula de Ciudadanía" },
+        { value: "CE", label: "Cédula de Extranjería" },
+        { value: "TI", label: "Tarjeta de Identidad" },
+        { value: "RC", label: "Registro Civil" },
+        { value: "PA", label: "Pasaporte" },
+    ];
+
+    const handleEquipos = [
+        { value: "", label: "Seleccione ...", disabled: true },
+        ...equipos.map((equipo) => ({
+            value: equipo.id,
+            label: equipo.nombreEquipo,
+        })),
+    ];
 
     return (
         <AuthenticatedLayout
@@ -305,7 +248,7 @@ export default function Index({
                                             {jugador.fk_equipo}
                                         </td>
                                         <td className="px-2 py-2">
-                                            <SecondaryButton
+                                            <WarningButton
                                                 onClick={() =>
                                                     openModal(
                                                         2,
@@ -329,7 +272,7 @@ export default function Index({
                                                     }}
                                                 ></i>
                                                 Editar
-                                            </SecondaryButton>
+                                            </WarningButton>
                                             <SecondaryButton
                                                 onClick={() =>
                                                     eliminar(
@@ -370,214 +313,116 @@ export default function Index({
                     className="p-6"
                     encType="multipart/form-data"
                 >
-                    <div className="mt-4">
-                        <InputLabel
-                            htmlFor="fotoJugador"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Foto Jugador
-                        </InputLabel>
-                        <TextInput
-                            type="file"
-                            id="fotoJugador"
-                            ref={fotoJugadorInput}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            onChange={handleFileChange}
-                        />
-                        <InputError 
-                        message={errors.fotoJugador} 
-                         className="mt-2"/>
-                    </div>
+                    <ImgField
+                        htmlFor="fotoJugador"
+                        label="Foto Jugador"
+                        id="fotoJugador"
+                        name="fotoJugador"
+                        ref={fotoJugadorInput}
+                        onChange={handleFileChange}
+                        value={data.fotoJugador}
+                        errorMessage={errors.fotoJugador}                        
+                    />
+                    <SelectField
+                        htmlFor="tipoDocIdentidad"
+                        label="Tipo Doc Identidad"
+                        id="tipoDocIdentidad"
+                        name="tipoDocIdentidad"
+                        value={data.tipoDocIdentidad}                        
+                        options={handletipoDocIdentidad} 
+                        onChange={handleInputChange}
+                        errorMessage={errors.tipoDocIdentidad}
+                        ref={tipoDocIdentidadInput}                        
+                        
+                    />
 
-                    <div className="mt-4">
-                        <InputLabel
-                            htmlFor="tipoDocIdentidad"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Tipo Documento Identidad
-                        </InputLabel>
-                        <select
-                            id="tipoDocIdentidad"
-                            ref={tipoDocIdentidadInput}
-                            value={data.tipoDocIdentidad}
-                            onChange={(e) =>
-                                setData("tipoDocIdentidad", e.target.value)
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        >
-                            <option value="">Seleccione</option>
-                            <option value="Registro Civil">
-                                Registro Civil
-                            </option>
-                            <option value="Cédula de Ciudadanía">
-                                Cédula de Ciudadanía
-                            </option>
-                            <option value="Tarjeta de Identidad">
-                                Tarjeta de Identidad
-                            </option>
-                            <option value="Cédula de Extranjería">
-                                Cédula de Extranjería
-                            </option>
-                            <option value="Pasaporte">Pasaporte</option>
-                        </select>
+                    <FormField
+                        htmlFor="documentoIdentidad"
+                        label="# Documento"
+                        id="documentoIdentidad"
+                        type="number"
+                        name="documentoIdentidad"
+                        value={data.documentoIdentidad}
+                        onChange={handleInputChange}
+                        errorMessage={errors.documentoIdentidad}
+                        ref={documentoIdentidadInput}
+                        
+                    />
 
-                        {errors["tipoDocIdentidad"] && (
-                            <p className="mt-2 text-sm text-red-600">
-                                {errors["tipoDocIdentidad"]}
-                            </p>
-                        )}
-                    </div>
+                    <FormField
+                        htmlFor="nombreJugador"
+                        label="Nombre Jugador"
+                        id="nombreJugador"
+                        type="text"
+                        name="nombreJugador"
+                        value={data.nombreJugador}
+                        onChange={handleInputChange}
+                        errorMessage={errors.nombreJugador}
+                        ref={nombreJugadorInput}
+                        
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="documentoIdentidad"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            # Documento Identidad
-                        </label>
-                        <input
-                            type="number"
-                            id="documentoIdentidad"
-                            ref={documentoIdentidadInput}
-                            value={data.documentoIdentidad}
-                            onChange={(e) =>
-                                setData("documentoIdentidad", e.target.value)
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                    </div>
+                    <FormField
+                        htmlFor="segundoNombreJugador"
+                        label="Segundo Nombre Jugador"
+                        id="segundoNombreJugador"
+                        type="text"
+                        name="segundoNombreJugador"
+                        value={data.segundoNombreJugador}
+                        onChange={handleInputChange}
+                        errorMessage={errors.segundoNombreJugador}
+                        ref={segundoNombreJugadorInput}
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="nombreJugador"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Nombre Jugador
-                        </label>
-                        <input
-                            type="text"
-                            id="nombreJugador"
-                            ref={nombreJugadorInput}
-                            value={data.nombreJugador}
-                            onChange={(e) =>
-                                setData("nombreJugador", e.target.value)
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                    </div>
+                    <FormField
+                        htmlFor="apellidoJugador"
+                        label="Apellido Jugador"
+                        id="apellidoJugador"
+                        type="text"
+                        name="apellidoJugador"
+                        value={data.apellidoJugador}
+                        onChange={handleInputChange}
+                        errorMessage={errors.apellidoJugador}
+                        ref={apellidoJugadorInput}
+                        
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="segundoNombreJugador"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Segundo Nombre Jugador
-                        </label>
-                        <input
-                            type="text"
-                            id="segundoNombreJugador"
-                            ref={segundoNombreJugadorInput}
-                            value={data.segundoNombreJugador}
-                            onChange={(e) =>
-                                setData("segundoNombreJugador", e.target.value)
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                    </div>
+                    <FormField
+                        htmlFor="segundoApellidoJugador"
+                        label="Segundo Apellido Jugador"
+                        id="segundoApellidoJugador"
+                        type="text"
+                        name="segundoApellidoJugador"
+                        value={data.segundoApellidoJugador}
+                        onChange={handleInputChange}
+                        errorMessage={errors.segundoApellidoJugador}
+                        ref={segundoApellidoJugadorInput}
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="apellidoJugador"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Apellido Jugador
-                        </label>
-                        <input
-                            type="text"
-                            id="apellidoJugador"
-                            ref={apellidoJugadorInput}
-                            value={data.apellidoJugador}
-                            onChange={(e) =>
-                                setData("apellidoJugador", e.target.value)
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                    </div>
+                    <FormField
+                        htmlFor="fechaNacimiento"
+                        label="Fecha Nacimiento"
+                        id="fechaNacimiento"
+                        type="date"
+                        name="fechaNacimiento"
+                        value={data.fechaNacimiento}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fechaNacimiento}
+                        ref={fechaNacimientoInput}
+                        
+                    />
 
-                    <div className="mt-4">
-                        <label
-                            htmlFor="segundoApellidoJugador"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Segundo Apellido Jugador
-                        </label>
-                        <input
-                            type="text"
-                            id="segundoApellidoJugador"
-                            ref={segundoApellidoJugadorInput}
-                            value={data.segundoApellidoJugador}
-                            onChange={(e) =>
-                                setData(
-                                    "segundoApellidoJugador",
-                                    e.target.value
-                                )
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                    </div>
-
-                    <div className="mt-4">
-                        <label
-                            htmlFor="fechaNacimiento"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Fecha Nacimiento
-                        </label>
-                        <input
-                            type="date"
-                            id="fechaNacimiento"
-                            ref={fechaNacimientoInput}
-                            value={data.fechaNacimiento}
-                            onChange={(e) =>
-                                setData("fechaNacimiento", e.target.value)
-                            }
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
-                    </div>
-
-                    <div className="mt-4">
-                        <label
-                            htmlFor="fk_equipo"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Equipo
-                        </label>
-                        <select
-                            id="fk_equipo"
-                            ref={fk_equipoInput}
-                            value={data.fk_equipo}
-                            onChange={(e) =>
-                                setData("fk_equipo", e.target.value)
-                            }
-                            className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
-                                errors["fk_equipo"] ? "border-red-500" : ""
-                            }`}
-                        >
-                            <option value="" disabled
-                            >Seleccione</option>
-                            {equipos.map((equipo) => (
-                                <option key={equipo.id} value={equipo.id}>
-                                    {equipo.nombreEquipo}
-                                </option>
-                            ))}
-                        </select>
-                        {errors["fk_equipo"] && (
-                    <p className="mt-2 text-sm text-red-600">
-                        {errors["fk_equipo"]}
-                    </p>
-                )}
-                    </div>
-
+                    <SelectField
+                        htmlFor="fk_equipo"
+                        label="Equipo"
+                        id="fk_equipo"
+                        name="fk_equipo"
+                        value={data.fk_equipo}
+                        options={handleEquipos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_equipo}
+                        ref={fk_equipoInput}                        
+                    />
                     <div className="mt-1">
                         <PrimaryButton
                             processing={processing.toString()}

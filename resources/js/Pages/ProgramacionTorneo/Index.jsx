@@ -263,7 +263,7 @@ export default function Index({
                         ref={HoraPartidoInput}
                         value={data.HoraPartido}
                         onChange={handleInputChange}
-                        error={errors.HoraPartido}
+                        errorMessage={errors.HoraPartido}
                     />
 
                     <SelectField

@@ -150,7 +150,7 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4" style={{ display: 'none' }}>
+                <div className="mt-4" style={{ display: "none" }}>
                     <InputLabel htmlFor="role" value="Role" />
 
                     <TextInput
@@ -166,14 +166,12 @@ export default function Register() {
                     <InputError message={errors.role} className="mt-2" />
                 </div>
 
-
-
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href={route("login")}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="bg-blue-500 text-white hover:bg-blue-700 hover:text-shadow-md rounded-full py-2 px-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        ¿Ya registrado?
+                        <i className="fas fa-sign-in-alt mr-2"></i> Iniciar Sesión
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>
