@@ -24,7 +24,7 @@ class JugadoresController extends Controller
             'equipos' => $equipos
         ]);
     }
-
+ 
     public function store(Request $request)
     {
         try {

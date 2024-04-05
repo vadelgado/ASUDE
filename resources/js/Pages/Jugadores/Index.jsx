@@ -15,7 +15,7 @@ import WarningButton from "@/Components/WarningButton";
 
 export default function Index({ 
     auth,
-    equipos,
+    equipos, 
     jugadores,
 }) {
     const [modal, setModal] = useState(false);

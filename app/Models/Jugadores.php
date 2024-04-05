@@ -14,14 +14,19 @@ class Jugadores extends Model
 
     protected $fillable = [
         'fotoJugador',
-        'tipoDocIdentidad',
-        'documentoIdentidad',
-        'nombreJugador',
-        'segundoNombreJugador',
-        'apellidoJugador',
-        'segundoApellidoJugador',
+        'nombreCompleto',
+        'autografo',
+        'tipoIdentificacion',
+        'numeroIdentificacion',
+        'numeroSerie',
         'fechaNacimiento',
-        'fk_equipo'
+        'lugarNacimiento',
+        'institucionEducativa',
+        'grado',
+        'ciudadInstitucionEducativa',
+        'telefonoInstitucionEducativa',
+        'fk_equipo',
+        'estado',
     ];
 
     public function equipo()
