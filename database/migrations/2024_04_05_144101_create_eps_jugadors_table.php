@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('eps_jugadors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fk_jugador')->constrained('jugadores');
+            $table->is_boolean('afiliadoEPS');
+            $table->string('nombreEPS')->nullable();
+            $table->string('lugarAtencionEmergenciaEPS')->nullable();
             $table->timestamps();
         });
     }

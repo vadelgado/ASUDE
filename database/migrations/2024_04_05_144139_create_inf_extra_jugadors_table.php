@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('inf_extra_jugadors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fk_jugador')->constrained('jugadores');
+            $table->string('posicionHabitualCancha');
+            $table->string('peso');
+            $table->string('estatura');
+            $table->boolean('esCapitan')->default(false)->comment('true para capitan, false para no capitan');
             $table->timestamps();
         });
     }

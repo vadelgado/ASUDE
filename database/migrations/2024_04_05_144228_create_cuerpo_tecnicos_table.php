@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('cuerpo_tecnicos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fk_equipo')->constrained('equipos');
+            $table->string('fotoCuerpoTecnico')->nullable();
+            $table->string('nombreCompleto');
+            $table->string('autografo')->nullable();            
+            $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE', 'PA'])->default('CC');
+            $table->string('numeroIdentificacion', 11);
+            $table->string('telefonoFijo', 11)->nullable();
+            $table->string('telefonoCelular', 11);
+            $table->string('correoElectronico')->unique();
             $table->timestamps();
         });
     }

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('sesion_imagen_jugadors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fk_jugador')->constrained('jugadores');
+            $table->string('nombreAcudiente');
+            $table->string('firmaAcudiente')->nullable();
+            $table->string('cedulaAcudiente',11);
             $table->timestamps();
         });
     }
