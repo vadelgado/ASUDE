@@ -55,5 +55,10 @@ class torneo extends Model
         return $this->hasMany(jornadaPartido::class, 'fk_torneo');
     }
 
+    public function programaTorneo()
+    {
+        return $this->hasMany(programacionTorneo::class, 'fk_torneo');
+    }
+
     use HasFactory;
 }

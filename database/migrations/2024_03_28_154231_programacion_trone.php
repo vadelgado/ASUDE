@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('programacion_torneos', function (Blueprint $table) {
             $table->id();
             $table->Time('HoraPartido');
+
+            $table->unsignedBigInteger('fk_torneo')->nullable(false);
+            $table->foreign('fk_torneo')->references('id')->on('torneo');
             
             $table->unsignedBigInteger('fk_jornadaPartido')->nullable(false);
             $table->foreign('fk_jornadaPartido')->references('id')->on('jornada_partidos');
@@ -22,16 +25,17 @@ return new class extends Migration
             $table->foreign('fk_lugarPartido')->references('id')->on('lugar_partidos');
             
             $table->unsignedBigInteger('fk_equipoLocal')->nullable(false);
-            $table->foreign('fk_equipoLocal')->references('id')->on('equipos');
+            $table->foreign('fk_equipoLocal')->references('id')->on('resultado_sorteos');
 
             $table->unsignedBigInteger('fk_equipoVisitante')->nullable(false);
-            $table->foreign('fk_equipoVisitante')->references('id')->on('equipos');
+            $table->foreign('fk_equipoVisitante')->references('id')->on('resultado_sorteos');
 
             $table->timestamps();
         });
     
 
     Schema::table('programacion_torneos', function (Blueprint $table) {
+        $table->index('fk_torneo');
         $table->index('fk_jornadaPartido');
         $table->index('fk_lugarPartido');
         $table->index('fk_equipoLocal');

@@ -14,10 +14,11 @@ import WarningButton from "@/Components/WarningButton";
 
 export default function Index({
     auth,
-    programacionTorneo,
+    programacionTorneo, 
     jornadas,
     lugares,
     resultadoSorteos,
+    fk_torneo,
 }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
@@ -29,6 +30,7 @@ export default function Index({
     const fk_equipoVisitanteInput = useRef();
     const InitialValues = {
         HoraPartido: "",
+        fk_torneo: fk_torneo,
         fk_jornadaPartido: "",
         fk_lugarPartido: "",
         fk_equipoLocal: "",
@@ -53,6 +55,7 @@ export default function Index({
         op,
         id,
         HoraPartido,
+        fk_torneo,
         fk_jornadaPartido,
         fk_lugarPartido,
         fk_equipoLocal,
@@ -68,6 +71,7 @@ export default function Index({
             setData({
                 id: id,
                 HoraPartido: HoraPartido,
+                fk_torneo: fk_torneo,
                 fk_jornadaPartido: fk_jornadaPartido,
                 fk_lugarPartido: fk_lugarPartido,
                 fk_equipoLocal: fk_equipoLocal,
@@ -134,7 +138,7 @@ export default function Index({
         { value: "", label: "Seleccione ...", disabled: true },
         ...resultadoSorteos.map((sorteo) => ({
             value: sorteo.id,
-            label: `${sorteo.nombreEquipo} - ${sorteo.grupoPosicion}`,
+            label: `${sorteo.grupoPosicion} - ${sorteo.nombreEquipo}`,
         })),
     ];
 
@@ -194,18 +198,18 @@ export default function Index({
                                         {programacion.nomLugar}
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {programacion.nombreEquipoLocal}
+                                        {programacion.localEquipo}
                                         <img
-                                            src={`/storage/${programacion.escudoEquipoLocal}`}
-                                            alt={programacion.nombreEquipoLocal}
+                                            src={`/storage/${programacion.localEscudo}`}
+                                            alt={programacion.localEquipo}
                                         />
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {programacion.nombreEquipoVisitante}
+                                        {programacion.visitanteEquipo}
                                         <img
-                                            src={`/storage/${programacion.escudoEquipoVisitante}`}
+                                            src={`/storage/${programacion.visitanteEscudo}`}
                                             alt={
-                                                programacion.nombreEquipoVisitante
+                                                programacion.visitanteEquipo
                                             }
                                         />
                                     </td>
@@ -216,6 +220,7 @@ export default function Index({
                                                     2,
                                                     programacion.id,
                                                     programacion.HoraPartido,
+                                                    programacion.fk_torneo,
                                                     programacion.fk_jornadaPartido,
                                                     programacion.fk_lugarPartido,
                                                     programacion.fk_equipoLocal,
@@ -264,6 +269,12 @@ export default function Index({
                         value={data.HoraPartido}
                         onChange={handleInputChange}
                         errorMessage={errors.HoraPartido}
+                    />
+
+                    <input
+                       
+                        name="fk_torneo"
+                        value={data.fk_torneo}
                     />
 
                     <SelectField

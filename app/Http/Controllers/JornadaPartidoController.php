@@ -37,7 +37,7 @@ class JornadaPartidoController extends Controller
         ], [
             'fechaJornada.required' => 'La fecha de la jornada es requerida',
             'fechaJornada.date' => 'La fecha de la jornada no es válida',
-            'jornada.required' => 'La jornada es requerida',
+            'jornada.required' => 'La jornada es requerida', 
             'jornada.max' => 'La jornada no puede tener más de 100 caracteres',
             'jornada.unique' => 'La jornada ya existe para el torneo seleccionado',
             'fk_torneo.required' => 'El torneo es requerido',

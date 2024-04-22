@@ -17,4 +17,21 @@ class ResultadoSorteo extends Model
     {
         return $this->belongsTo(Equipos::class,'fk_equipo');
     }
+
+    public function torneo()
+    {
+        return $this->belongsTo(torneo::class,'fk_torneo');
+    }
+
+    public function programacionTorneoLocal()
+    {
+        return $this->hasMany(programacionTorneo::class,'fk_equipoLocal');
+    }
+
+    public function programacionTorneoVisitante()
+    {
+        return $this->hasMany(programacionTorneo::class,'fk_equipoVisitante');
+    }
+
+
 }

@@ -61,9 +61,7 @@ export default function Authenticated({ user, header, children }) {
                                 )}
                                 {user.role === "equipo" && (
                                     <NavLink
-                                        href={route(
-                                            "equiposInvitados.index"
-                                        )}
+                                        href={route("equiposInvitados.index")}
                                         active={route().current(
                                             "equiposInvitados.index"
                                         )}
@@ -73,9 +71,7 @@ export default function Authenticated({ user, header, children }) {
                                 )}
                                 {user.role === "admin" && (
                                     <NavLink
-                                        href={route(
-                                            "equipos.index"
-                                        )}
+                                        href={route("equipos.index")}
                                         active={route().current(
                                             "equipos.index"
                                         )}
@@ -98,12 +94,12 @@ export default function Authenticated({ user, header, children }) {
 
                                 {user.role === "admin" && (
                                     <NavLink
-                                        href={route("resultadoSorteo.index")}
+                                        href={route("lugarPartido.index")}
                                         active={route().current(
-                                            "resultadoSorteo.index"
+                                            "lugarPartido.index"
                                         )}
                                     >
-                                        ✋Sorteos
+                                        📍 Lugar Partidos
                                     </NavLink>
                                 )}
                             </div>
@@ -125,13 +121,9 @@ export default function Authenticated({ user, header, children }) {
                                 {user.role === "admin" && (
                                     <NavLink
                                         href={route("comprobantes.indexAdmin")}
-                                        activate={
-                                            route().current(
-                                                "comprobantes.indexAdmin"
-                                            )
-                                                ? "true"
-                                                : "false"
-                                        }
+                                        active={route().current(
+                                            "comprobantes.indexAdmin"
+                                        )}
                                     >
                                         Comprobantes
                                     </NavLink>
@@ -139,11 +131,7 @@ export default function Authenticated({ user, header, children }) {
                                 {user.role === "admin" && (
                                     <NavLink
                                         href={route("torneo.index")}
-                                        activate={
-                                            route().current("torneo.index")
-                                                ? "true"
-                                                : "false"
-                                        }
+                                        active={route().current("torneo.index")}
                                     >
                                         Torneos
                                     </NavLink>
@@ -151,13 +139,11 @@ export default function Authenticated({ user, header, children }) {
                                 {user.role === "admin" && (
                                     <NavLink
                                         href={route("jornadaPartido.index")}
-                                        activate={
-                                            route().current("jornadaPartido.index")
-                                                ? "true"
-                                                : "false"
-                                        }
+                                        active={route().current(
+                                            "jornadaPartido.index"
+                                        )}
                                     >
-                                        Jornadas Torneo
+                                        Jornadas Torneos
                                     </NavLink>
                                 )}
                             </div>

@@ -11,7 +11,7 @@ import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import WarningButton from "@/Components/WarningButton";
+import WarningButton from "@/Components/WarningButton"; 
 
 export default function Index({ auth, equipos, categorias, torneos, userRole }) {
     const [modal, setModal] = useState(false);

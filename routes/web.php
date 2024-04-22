@@ -71,7 +71,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::post('lugarPartido/{lugarPartido}', 'App\Http\Controllers\LugarPartidoController@update')->name('lugarPartido.update');
 
     // Resource programacionTorneo
-    Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class);
+    Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class); 
 
     // Resource sistemaJuego
     Route::resource('sistemaJuego', App\Http\Controllers\SistemaJuegoController::class);
