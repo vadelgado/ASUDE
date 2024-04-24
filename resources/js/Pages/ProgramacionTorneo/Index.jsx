@@ -90,17 +90,22 @@ export default function Index({
             post(route("programacionTorneo.store"), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    closeModal();
+                    ok("Partido agregado correctamente");
                 },
             });
         } else {
             put(route("programacionTorneo.update", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    closeModal();
+                    ok("Partido actualizado correctamente");
                 },
             });
         }
+    };
+
+    const ok = (message) => {
+        Swal.fire("Correcto", message, "success");
+        closeModal();
     };
 
     const handleDelete = (id) => {
@@ -157,7 +162,7 @@ export default function Index({
                 <div className="mt-2 mb-3 flex justify-end">
                     <PrimaryButton onClick={() => handleModal(1)}>
                         <i className="fa-solid fa-plus-circle"></i>
-                        Añadir Lugar
+                        Programar Partido
                     </PrimaryButton>
                 </div>
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Requests\ProgramacionTorneo;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -21,15 +22,31 @@ class UpdateRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            'HoraPartido' => 'required|date_format:H:i',
-            'fk_jornadaPartido' => 'required|exists:jornada_partidos,id',
-            'fk_lugarPartido' => 'required|exists:lugar_partidos,id',
-            'fk_equipoLocal' => 'required|exists:equipos,id',
-            'fk_equipoVisitante' => 'required|exists:equipos,id',
-        ];
-    }
+{
+    $id = $this->route('programacionTorneo'); 
+    return [
+        'HoraPartido' => 'required',
+        'fk_jornadaPartido' => [
+            'required',
+            Rule::unique('programacion_torneos')->where(function ($query) {
+                return $query->where('fk_jornadaPartido', $this->input('fk_jornadaPartido'))
+                             ->where(function ($q) {
+                                 $q->where('fk_equipoLocal', $this->input('fk_equipoLocal'))
+                                   ->orWhere('fk_equipoVisitante', $this->input('fk_equipoLocal'));
+                             })
+                             ->orWhere(function ($q) {
+                                 $q->where('fk_equipoLocal', $this->input('fk_equipoVisitante'))
+                                   ->orWhere('fk_equipoVisitante', $this->input('fk_equipoVisitante'));
+                             });
+            })->ignore($id, 'id'),
+        ],
+        'fk_lugarPartido' => 'required',
+        'fk_equipoLocal' => 'required|different:fk_equipoVisitante|not_in:' . $this->input('fk_equipoVisitante'),
+        'fk_equipoVisitante' => 'required|different:fk_equipoLocal|not_in:' . $this->input('fk_equipoLocal'),
+    ];
+}
+
+    
 
     /**
      * Get the error messages for the defined validation rules.
@@ -42,13 +59,14 @@ class UpdateRequest extends FormRequest
             'HoraPartido.required' => 'La hora del partido es requerida',
             'HoraPartido.date_format' => 'La hora del partido debe tener el formato HH:MM',
             'fk_jornadaPartido.required' => 'La jornada del partido es requerida',
-            'fk_jornadaPartido.exists' => 'La jornada del partido no existe',
+            'fk_jornadaPartido.unique' => 'Favor revisar las llaves de juego',
             'fk_lugarPartido.required' => 'El lugar del partido es requerido',
-            'fk_lugarPartido.exists' => 'El lugar del partido no existe',
             'fk_equipoLocal.required' => 'El equipo local es requerido',
-            'fk_equipoLocal.exists' => 'El equipo local no existe',
+            'fk_equipoLocal.different' => 'El equipo visitante y local no pueden ser iguales',
+            'fk_equipoLocal.not_in' => 'El equipo local y visitante no pueden ser iguales',
+            'fk_equipoVisitante.different' => 'El equipo local y visitante no pueden ser iguales',
+            'fk_equipoVisitante.not_in' => 'El equipo local y visitante no pueden ser iguales',
             'fk_equipoVisitante.required' => 'El equipo visitante es requerido',
-            'fk_equipoVisitante.exists' => 'El equipo visitante no existe',
         ];
     }
 }
