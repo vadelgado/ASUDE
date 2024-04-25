@@ -10,7 +10,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class JugadoresController extends Controller
-{ 
+{  
     public function index()
     {
         $equipos = Equipos::where('fk_user', Auth::user()->id)->get();

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\belogsTo;
 class Jugadores extends Model
 {
     protected $table = 'jugadores';
-
+ 
     protected $fillable = [
         'fotoJugador',
         'nombreCompleto',

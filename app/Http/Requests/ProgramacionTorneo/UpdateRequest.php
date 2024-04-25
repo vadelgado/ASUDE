@@ -56,17 +56,16 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'HoraPartido.required' => 'La hora del partido es requerida',
-            'HoraPartido.date_format' => 'La hora del partido debe tener el formato HH:MM',
-            'fk_jornadaPartido.required' => 'La jornada del partido es requerida',
-            'fk_jornadaPartido.unique' => 'Favor revisar las llaves de juego',
-            'fk_lugarPartido.required' => 'El lugar del partido es requerido',
-            'fk_equipoLocal.required' => 'El equipo local es requerido',
-            'fk_equipoLocal.different' => 'El equipo visitante y local no pueden ser iguales',
-            'fk_equipoLocal.not_in' => 'El equipo local y visitante no pueden ser iguales',
-            'fk_equipoVisitante.different' => 'El equipo local y visitante no pueden ser iguales',
-            'fk_equipoVisitante.not_in' => 'El equipo local y visitante no pueden ser iguales',
-            'fk_equipoVisitante.required' => 'El equipo visitante es requerido',
+            'HoraPartido.required' => 'Por favor, ingresa la hora del partido.',            
+            'fk_jornadaPartido.required' => 'La jornada del partido es requerida.',
+            'fk_jornadaPartido.unique' => 'Revisar Jornada Equipo Local y visitante alguno se esta repitiendo.',
+            'fk_lugarPartido.required' => 'El lugar del partido es requerido.',
+            'fk_equipoLocal.required' => 'Por favor, selecciona el equipo local.',
+            'fk_equipoLocal.different' => 'El equipo local y el equipo visitante deben ser diferentes.',
+            'fk_equipoLocal.not_in' => 'El equipo local no puede ser el mismo que el equipo visitante.',
+            'fk_equipoVisitante.required' => 'Por favor, selecciona el equipo visitante.',
+            'fk_equipoVisitante.different' => 'El equipo local y el equipo visitante deben ser diferentes.',
+            'fk_equipoVisitante.not_in' => 'El equipo visitante no puede ser el mismo que el equipo local.',
         ];
     }
 }
