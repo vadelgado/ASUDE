@@ -19,7 +19,7 @@ use Inertia\Inertia;
 class ProgramacionTorneoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. 
      */
     public function index(Request $request)
     {

@@ -130,10 +130,12 @@ Route::middleware('auth', 'role:equipo')->group(function () {
      // Actualizar Equipo
      Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.update');
 
-    // Listado de Jugadores
-    Route::get('jugadores', 'App\Http\Controllers\JugadoresController@index')->name('jugadores.listarJugadores');
-    // Formulario para crear un nuevo Jugador
-    Route::post('jugadores', 'App\Http\Controllers\JugadoresController@store')->name('jugadores.store');
+    //Jugadores
+    Route::resource('jugadores', App\Http\Controllers\JugadoresController::class);
+    // Actualizar Jugador
+    Route::post('jugadores/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadores.update');
+    //toggle estado jugador
+    Route::post('jugadores/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadores.toggle');
 });
 
 Route::get('/version', function () {

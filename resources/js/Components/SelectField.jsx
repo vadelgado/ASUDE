@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 
-const SelectField = forwardRef(
+const SelectField = forwardRef( 
   (
     {
       htmlFor,
@@ -16,7 +16,7 @@ const SelectField = forwardRef(
     },
     ref
   ) => (
-    <div>
+    <div className="mt-1">
       <InputLabel htmlFor={htmlFor} value={label} />
       <select
         name={name}

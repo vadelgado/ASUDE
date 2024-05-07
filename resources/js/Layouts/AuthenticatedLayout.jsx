@@ -82,10 +82,10 @@ export default function Authenticated({ user, header, children }) {
                                 {user.role === "equipo" && (
                                     <NavLink
                                         href={route(
-                                            "jugadores.listarJugadores"
+                                            "jugadores.index"
                                         )}
                                         active={route().current(
-                                            "jugadores.listarJugadores"
+                                            "jugadores.index"
                                         )}
                                     >
                                         👧 Jugadores 👦

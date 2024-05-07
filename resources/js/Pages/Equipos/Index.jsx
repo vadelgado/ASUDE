@@ -275,6 +275,46 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                                 <i className="fa-solid fa-trash"></i>
                                             </DangerButton>
                                         </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <a
+                                                href={`/jugadores?equipo_id=${equipo.id}`}
+                                                className="text-blue-600 hover:text-blue-900"
+                                            >
+                                                <i className="fa-solid fa-users"></i>
+                                            </a>
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <a
+                                               
+                                                className="text-blue-600 hover:text-blue-900"
+                                            >
+                                                <i class="fa-solid fa-image"></i>
+                                            </a>
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <a
+                                               
+                                                className="text-blue-600 hover:text-blue-900"
+                                            >
+                                                <i class="fa-solid fa-notes-medical"></i>
+                                            </a>
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <a
+                                               
+                                                className="text-blue-600 hover:text-blue-900"
+                                            >
+                                                <i class="fa-solid fa-futbol"></i>
+                                            </a>
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            <a
+                                               
+                                                className="text-blue-600 hover:text-blue-900"
+                                            >
+                                                <i class="fa-solid fa-file-contract"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
