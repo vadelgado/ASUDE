@@ -12,7 +12,7 @@ import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, equipo_id, jugadores, equipo }) {
+export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -142,14 +142,18 @@ export default function Index({ auth, equipo_id, jugadores, equipo }) {
     const save = (e) => {
         e.preventDefault();
         if (operation === 1) {
-            post(route("jugadores.store"), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    ok("El jugador ha sido creado");
-                },
-            });
+            post(
+                userRole === 'admin' ? route("jugadoresAdmin.store") : route("jugadores.store"), 
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        ok("El jugador ha sido creado");
+                    },
+                }
+            );
         } else {
-            post(route("jugadores.update", data.id), {
+            post(
+                userRole === 'admin' ? route("jugadoresAdmin.update", data.id) : route("jugadores.update", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     ok("El jugador ha sido actualizado");
@@ -175,7 +179,8 @@ export default function Index({ auth, equipo_id, jugadores, equipo }) {
             cancelButtonText: "No",
         }).then((result) => {
             if (result.isConfirmed) {
-                post(route("jugadores.toggle", id), {
+                post(
+                    userRole === 'admin' ? route("jugadoresAdmin.toggle", id) :route("jugadores.toggle", id)  , {
                     preserveScroll: true,
                     onSuccess: () => {
                         ok("El jugador ha sido actualizado");
@@ -187,7 +192,7 @@ export default function Index({ auth, equipo_id, jugadores, equipo }) {
                             icon: "error",
                         });
                     },
-                });
+                });  
             }
         });
     };

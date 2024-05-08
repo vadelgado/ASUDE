@@ -277,7 +277,7 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             <a
-                                                href={`/jugadores?equipo_id=${equipo.id}`}
+                                                href={userRole === 'admin' ? `/jugadoresAdmin?equipo_id=${equipo.id}` : `/jugadores?equipo_id=${equipo.id}`}
                                                 className="text-blue-600 hover:text-blue-900"
                                             >
                                                 <i className="fa-solid fa-users"></i>
@@ -285,34 +285,10 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             <a
-                                               
+                                               href={userRole === 'admin' ? `/cuerpoTecnicoAdmin?equipo_id=${equipo.id}` : `/cuerpoTecnico?equipo_id=${equipo.id}`}
                                                 className="text-blue-600 hover:text-blue-900"
                                             >
-                                                <i class="fa-solid fa-image"></i>
-                                            </a>
-                                        </td>
-                                        <td className="border border-gray-400 px-4 py-2">
-                                            <a
-                                               
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                <i class="fa-solid fa-notes-medical"></i>
-                                            </a>
-                                        </td>
-                                        <td className="border border-gray-400 px-4 py-2">
-                                            <a
-                                               
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                <i class="fa-solid fa-futbol"></i>
-                                            </a>
-                                        </td>
-                                        <td className="border border-gray-400 px-4 py-2">
-                                            <a
-                                               
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                <i class="fa-solid fa-file-contract"></i>
+                                            <i class="fa-solid fa-person-chalkboard"></i>
                                             </a>
                                         </td>
                                     </tr>

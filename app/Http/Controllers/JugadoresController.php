@@ -17,17 +17,20 @@ class JugadoresController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'equipo_id' => 'required|integer|exists:equipos,id,fk_user,' . Auth::user()->id,
+            'equipo_id' => 'required|integer|exists:equipos,id',
         ]);
     
         $equipo_id = $request->input('equipo_id');
-
+    
         if ($equipo_id) {      
             //Nombre del equipo
-            $equipo = Equipos::find($equipo_id)->nombreEquipo;
-            
+            $equipo = Equipos::find($equipo_id)->nombreEquipo;  
+            $userRole = Auth::user()->role;          
+    
             $jugadores = Jugadores::join('equipos', 'jugadores.fk_equipo', '=', 'equipos.id')
-                ->where('equipos.fk_user', Auth::user()->id)
+                ->when($userRole !== 'admin', function ($query) {
+                    return $query->where('equipos.fk_user', Auth::user()->id);
+                })
                 ->when($equipo_id, function ($query) use ($equipo_id) {
                     return $query->where('equipos.id', $equipo_id);
                 })
@@ -37,6 +40,7 @@ class JugadoresController extends Controller
                 'jugadores' => $jugadores,                
                 'equipo_id' => $equipo_id,
                 'equipo' => $equipo,
+                'userRole' => $userRole,
             ]);
         } else {
             return Inertia::render('Dashboard');

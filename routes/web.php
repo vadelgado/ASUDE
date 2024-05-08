@@ -78,6 +78,20 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Actualizar Sistema Juego
     Route::post('sistemaJuego/{sistemaJuego}', 'App\Http\Controllers\SistemaJuegoController@update')->name('sistemaJuego.update');
     
+
+    //JugadoresAdmin
+    Route::resource('jugadoresAdmin', App\Http\Controllers\JugadoresController::class);
+    // Actualizar JugadorAdmin
+    Route::post('jugadoresAdmin/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadoresAdmin.update');
+    //toggle estado jugadorAdmin
+    Route::post('jugadoresAdmin/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadoresAdmin.toggle');
+
+    //CuerpoTecnicoAdmin
+    Route::resource('cuerpoTecnicoAdmin', App\Http\Controllers\CuerpoTecnicoController::class);
+    // Actualizar CuerpoTecnicoAdmin
+    Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnicoAdmin.update');
+    //toggle estado cuerpoTecnicoAdmin
+    Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnicoAdmin.toggle');
     
     
     
@@ -136,6 +150,13 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     Route::post('jugadores/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadores.update');
     //toggle estado jugador
     Route::post('jugadores/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadores.toggle');
+
+    //CuerpoTecnico
+    Route::resource('cuerpoTecnico', App\Http\Controllers\CuerpoTecnicoController::class);
+    // Actualizar CuerpoTecnico
+    Route::post('cuerpoTecnico/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnico.update');
+    //toggle estado cuerpoTecnico
+    Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
 });
 
 Route::get('/version', function () {
