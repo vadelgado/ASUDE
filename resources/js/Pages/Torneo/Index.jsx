@@ -25,6 +25,10 @@ export default function Dashboard({
     const [operation, setOperation] = useState(1);
     const nombreTorneoInput = useRef();
     const flayerInput = useRef();
+    const imgBannerSuperiorInput = useRef();
+    const imgBannerInferiorIzInput = useRef();
+    const imgBannerInferiorDeInput = useRef();
+    const AvalInput = useRef();
     const ApoyoPrincipalInput = useRef();
     const cantidadEquiposParticipantesInput = useRef();
     const caracteristicasInput = useRef();
@@ -42,6 +46,10 @@ export default function Dashboard({
         fk_user: auth.user.id,
         nombreTorneo: "",
         flayer: null,
+        imgBannerSuperior: null,
+        imgBannerInferiorIz: null,
+        imgBannerInferiorDe: null,
+        Aval: "",
         ApoyoPrincipal: "",
         cantidadEquiposParticipantes: "",
         caracteristicas: "",
@@ -67,14 +75,18 @@ export default function Dashboard({
         const { name, value } = e.target;
         setData((prevData) => ({ ...prevData, [name]: value }));
     };
-    const handleFileChange = (e) => {
-        setData("flayer", e.target.files[0]);
+    const handleFileChange = (field, e) => {
+        setData(field, e.target.files[0]);
     };
     const openModal = (
         op,
         id,
         nombreTorneo,
         flayer,
+        imgBannerSuperior,
+        imgBannerInferiorIz,
+        imgBannerInferiorDe,
+        Aval,
         ApoyoPrincipal,
         cantidadEquiposParticipantes,
         caracteristicas,
@@ -99,6 +111,10 @@ export default function Dashboard({
                 id: id,
                 nombreTorneo: nombreTorneo,
                 flayer: flayer,
+                imgBannerSuperior: imgBannerSuperior,
+                imgBannerInferiorIz: imgBannerInferiorIz,
+                imgBannerInferiorDe: imgBannerInferiorDe,
+                Aval: Aval,
                 ApoyoPrincipal: ApoyoPrincipal,
                 cantidadEquiposParticipantes: cantidadEquiposParticipantes,
                 caracteristicas: caracteristicas,
@@ -287,6 +303,10 @@ export default function Dashboard({
                                                         torneo.id,
                                                         torneo.nombreTorneo,
                                                         torneo.flayer,
+                                                        torneo.imgBannerSuperior,
+                                                        torneo.imgBannerInferiorIz,
+                                                        torneo.imgBannerInferiorDe,
+                                                        torneo.Aval,
                                                         torneo.ApoyoPrincipal,
                                                         torneo.cantidadEquiposParticipantes,
                                                         torneo.caracteristicas,
@@ -358,7 +378,6 @@ export default function Dashboard({
                     className="p-6 grid grid-cols-2 gap-4 "
                     encType="multipart/form-data"
                 >
-
                     <FormField
                         htmlFor="nombreTorneo"
                         label="Nombre Torneo"
@@ -371,6 +390,7 @@ export default function Dashboard({
                         onChange={handleInputChange}
                         errorMessage={errors.nombreTorneo}
                     />
+
                     <ImgField
                         htmlFor="flayer"
                         label="Flayer"
@@ -378,8 +398,60 @@ export default function Dashboard({
                         ref={flayerInput}
                         name="flayer"
                         value={data.flayer}
-                        onChange={handleFileChange}
+                        onChange={(e) => handleFileChange("flayer", e)}
                         errorMessage={errors.flayer}
+                    />
+
+                    <ImgField
+                        htmlFor="imgBannerSuperior"
+                        label="Banner Superior"
+                        id="imgBannerSuperior"
+                        ref={imgBannerSuperiorInput}
+                        name="imgBannerSuperior"
+                        value={data.imgBannerSuperior}
+                        onChange={(e) =>
+                            handleFileChange("imgBannerSuperior", e)
+                        }
+                        errorMessage={errors.imgBannerSuperior}
+                    />
+
+                    <ImgField
+                        htmlFor="imgBannerInferiorIz"
+                        label="Banner Inferior Izquierdo"
+                        id="imgBannerInferiorIz"
+                        ref={imgBannerInferiorIzInput}
+                        name="imgBannerInferiorIz"
+                        value={data.imgBannerInferiorIz}
+                        onChange={(e) =>
+                            handleFileChange("imgBannerInferiorIz", e)
+                        }
+                        errorMessage={errors.imgBannerInferiorIz}
+                    />
+
+                    <ImgField
+                        htmlFor="imgBannerInferiorDe"
+                        label="Banner Inferior Derecho"
+                        id="imgBannerInferiorDe"
+                        ref={imgBannerInferiorDeInput}
+                        name="imgBannerInferiorDe"
+                        value={data.imgBannerInferiorDe}
+                        onChange={(e) =>
+                            handleFileChange("imgBannerInferiorDe", e)
+                        }
+                        errorMessage={errors.imgBannerInferiorDe}
+                    />
+
+                    <FormField
+                        htmlFor="Aval"
+                        label="Aval"
+                        id="Aval"
+                        type="text"
+                        ref={AvalInput}
+                        name="Aval"
+                        placeholder="Aval"
+                        value={data.Aval}
+                        onChange={handleInputChange}
+                        errorMessage={errors.Aval}
                     />
 
                     <FormField

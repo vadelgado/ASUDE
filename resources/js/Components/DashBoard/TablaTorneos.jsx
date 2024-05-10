@@ -2,7 +2,7 @@
 import React from "react";
 
 const TablaTorneos = (torneoEnCurso) => {
-    return (
+    return ( 
         <section className="pt-24">
             <h2 className="text-lg text-center font-medium uppercase lg:text-2xl text-black">
                 CAMPEONATOS
@@ -27,7 +27,7 @@ const TablaTorneos = (torneoEnCurso) => {
                             <tr>
                                 <th className="w-1/3">
                                     <a
-                                        href={`https://futurasestrellas.netlify.app/partidos/${torneo.id}`}
+                                        href={`/tablaGrupos?torneo_id=${torneo.id}`}
                                         className="text-blue-500 hover:underline text-pretty"
                                     >
                                         <em>Ver Grupos</em>

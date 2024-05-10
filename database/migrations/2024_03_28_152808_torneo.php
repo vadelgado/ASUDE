@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreign('fk_user')->references('id')->on('users');
             $table->text('nombreTorneo')->nullable(false);
             $table->text('flayer')->nullable(true);
+            $table->text('imgBannerSuperior')->nullable(true);
+            $table->text('imgBannerInferiorIz')->nullable(true);
+            $table->text('imgBannerInferiorDe')->nullable(true);
+            $table->text('Aval')->nullable(true);
             $table->text('ApoyoPrincipal')->nullable(true);
             $table->unsignedInteger('cantidadEquiposParticipantes')->nullable(false);
             $table->text('caracteristicas')->nullable(false)->default('próximamente');

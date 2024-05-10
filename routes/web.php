@@ -32,6 +32,7 @@ Route::get('/dashboard', function () {
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.show');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
+Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

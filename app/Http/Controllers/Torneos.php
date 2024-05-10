@@ -60,14 +60,21 @@ class Torneos extends Controller
 
     public function store(StoreRequest $request)
     {
-        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','imgBannerSuperior','imgBannerInferiorIz','imgBannerInferiorDe','Aval','ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
 
-        if ($request->hasFile('flayer'))
-        {
-            $file = $request->file('flayer');
-            $routeImage = $file->store('flayer', ['disk' => 'public']);
-            $data['flayer'] = $routeImage;
+
+
+        $files = ['flayer', 'imgBannerSuperior', 'imgBannerInferiorIz', 'imgBannerInferiorDe'];
+
+        foreach ($files as $file) {
+            if ($request->hasFile($file)) {
+                $fileInstance = $request->file($file);
+                $routeImage = $fileInstance->store($file, ['disk' => 'public']);
+                $data[$file] = $routeImage;
+            }
         }
+
+
 
         torneo::create($data); 
 
@@ -76,30 +83,26 @@ class Torneos extends Controller
 
     public function update(UpdateRequest $request, $id)
     {
-        $data = $request->only('fk_user', 'nombreTorneo', 'flayer', 'ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','imgBannerSuperior','imgBannerInferiorIz','imgBannerInferiorDe','Aval', 'ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
         $torneo = torneo::find($id);
 
-        if ($request->hasFile('flayer'))
-        {
-            $file = $request->file('flayer');
-            $routeImage = $file->store('flayer', ['disk' => 'public']);
-            $data['flayer'] = $routeImage;
+        $files = ['flayer', 'imgBannerSuperior', 'imgBannerInferiorIz', 'imgBannerInferiorDe'];
 
-            if ($torneo->flayer)
-            {
-                Storage::disk('public')
-                    ->delete($torneo->flayer);
-            }
-        }
-        else
-        {
-            if ($torneo->flayer)
-            {
-                $data['flayer'] = $torneo->flayer;
-            }
-            else
-            {
-                unset($data['flayer']);
+        foreach ($files as $file) {
+            if ($request->hasFile($file)) {
+                $fileInstance = $request->file($file);
+                $routeImage = $fileInstance->store($file, ['disk' => 'public']);
+                $data[$file] = $routeImage;
+        
+                if ($torneo->$file) {
+                    Storage::disk('public')->delete($torneo->$file);
+                }
+            } else {
+                if ($torneo->$file) {
+                    $data[$file] = $torneo->$file;
+                } else {
+                    unset($data[$file]);
+                }
             }
         }
 
@@ -111,12 +114,14 @@ class Torneos extends Controller
 
     public function destroy(torneo $torneo)
     {
-        if ($torneo->flayer)
-        {
-            Storage::disk('public')
-                ->delete($torneo->flayer);
+        
+        $files = ['flayer', 'imgBannerSuperior', 'imgBannerInferiorIz', 'imgBannerInferiorDe'];
+        
+        foreach ($files as $file) {
+            if ($torneo->$file) {
+                Storage::disk('public')->delete($torneo->$file);
+            }
         }
-
         $torneo->delete();
 
         return redirect()
