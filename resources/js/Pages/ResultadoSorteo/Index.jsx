@@ -12,7 +12,7 @@ import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 
-export default function Index({ auth, resultadoSorteos, equipos }) {
+export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposParticipantes }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -220,49 +220,37 @@ export default function Index({ auth, resultadoSorteos, equipos }) {
                     className="p-6"
                     encType="multipart/form-data"
                 >
-                    <div className="mt-4">
-                        <InputLabel
-                            htmlFor="grupoPosicion"
-                            value="Grupo y Posición"
-                            className="block text-sm font-medium text-gray-700"
-                        />
-                        <select
-                            name="grupoPosicion"
-                            id="grupoPosicion"
-                            ref={grupoPosicionInput}
-                            value={data.grupoPosicion}
-                            onChange={(e) =>
-                                setData("grupoPosicion", e.target.value)
-                            }
-                            className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
-                                errors["posicion"] ? "border-red-500" : ""
-                            }`}
-                        >
-                            <option value="" disabled>
-                                Seleccione...
+                <div className="mt-4">
+                    <InputLabel
+                        htmlFor="grupoPosicion"
+                        value="Grupo y Posición"
+                        className="block text-sm font-medium text-gray-700"
+                    />
+                    <select
+                        name="grupoPosicion"
+                        id="grupoPosicion"
+                        ref={grupoPosicionInput}
+                        value={data.grupoPosicion}
+                        onChange={(e) =>
+                            setData("grupoPosicion", e.target.value)
+                        }
+                        className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
+                            errors["posicion"] ? "border-red-500" : ""
+                        }`}
+                    >
+                        <option value="" disabled>
+                            Seleccione...
+                        </option>
+                        {[...Array(cantidadEquiposParticipantes).keys()].map((_, index) => (
+                            <option key={index + 1} value={index + 1}>
+                                {index + 1}
                             </option>
-                            <option value="1 A">1 A</option>
-                            <option value="2 A">2 A</option>
-                            <option value="3 A">3 A</option>
-                            <option value="4 A">4 A</option>
-                            <option value="1 B">1 B</option>
-                            <option value="2 B ">2 B</option>
-                            <option value="3 B ">3 B</option>
-                            <option value="4 B ">4 B</option>
-                            <option value="1 C ">1 C</option>
-                            <option value="2 C">2 C</option>
-                            <option value="3 C">3 C</option>
-                            <option value="4 C">4 C</option>
-                            <option value="1 D">1 D</option>
-                            <option value="2 D">2 D</option>
-                            <option value="3 D">3 D</option>
-                            <option value="4 D">4 D</option>
-
-                        </select>
-                        <p className="mt-2 text-sm text-red-600">
-                            {errors["grupoPosicion"]}
-                        </p>
-                    </div>
+                        ))}
+                    </select>
+                    <p className="mt-2 text-sm text-red-600">
+                        {errors["grupoPosicion"]}
+                    </p>
+                </div>
 
                     <div className="mt-4">
                         <InputLabel

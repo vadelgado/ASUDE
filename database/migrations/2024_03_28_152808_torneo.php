@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up(): void 
     { 
         Schema::create('torneo', function (Blueprint $table) {
             $table->id();
@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('fk_user')->references('id')->on('users');
             $table->text('nombreTorneo')->nullable(false);
             $table->text('flayer')->nullable(true);
+            $table->text('ApoyoPrincipal')->nullable(true);
+            $table->unsignedInteger('cantidadEquiposParticipantes')->nullable(false);
             $table->text('caracteristicas')->nullable(false)->default('próximamente');
             $table->text('premiacion')->nullable(false)->default('próximamente');            
             $table->unsignedBigInteger('fk_sistema_juegos')->nullable(false);

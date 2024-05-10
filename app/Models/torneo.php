@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Relations\belogsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class torneo extends Model
-{
+{ 
     protected $table = 'torneo';
 
     protected $fillable = [
         'fk_user',
         'nombreTorneo',
         'flayer',
+        'ApoyoPrincipal',
+        'cantidadEquiposParticipantes', 
         'caracteristicas',
         'premiacion',
         'fk_sistema_juegos',

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Torneos\StoreRequest;
 use App\Http\Requests\Torneos\UpdateRequest;
-
+ 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\torneo;
@@ -60,7 +60,7 @@ class Torneos extends Controller
 
     public function store(StoreRequest $request)
     {
-        $data = $request->only('fk_user', 'nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
 
         if ($request->hasFile('flayer'))
         {
@@ -69,14 +69,14 @@ class Torneos extends Controller
             $data['flayer'] = $routeImage;
         }
 
-        torneo::create($data);
+        torneo::create($data); 
 
         return redirect()->route('torneo.index');
     }
 
     public function update(UpdateRequest $request, $id)
     {
-        $data = $request->only('fk_user', 'nombreTorneo', 'flayer', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer', 'ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
         $torneo = torneo::find($id);
 
         if ($request->hasFile('flayer'))

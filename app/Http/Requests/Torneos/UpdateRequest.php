@@ -21,10 +21,12 @@ class UpdateRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
+    { 
         return [
             'nombreTorneo' => 'required|string|max:65535',
             'flayer' => 'nullable',
+            'ApoyoPrincipal' => 'nullable|string|max:65535',
+            'cantidadEquiposParticipantes' => 'required|integer|min:2',
             'caracteristicas' => 'required|string|max:65535',
             'premiacion' => 'required|string|max:65535',
             'fk_sistema_juegos' => 'required|exists:sistema_juegos,id',
@@ -34,7 +36,7 @@ class UpdateRequest extends FormRequest
             'procesoInscripcion' => 'required|string|max:65535',
             'reglamentacion' => 'required|string|max:65535',
             'fechaInicio' => 'required|date',
-            'fechaFin' => 'nullable|date',
+            'fechaFin' => 'nullable|date', 
         ];
     }
 
@@ -49,6 +51,11 @@ class UpdateRequest extends FormRequest
             'nombreTorneo.required' => 'El nombre del torneo es obligatorio.',
             'nombreTorneo.string' => 'El nombre del torneo debe ser una cadena de texto.',
             'nombreTorneo.max' => 'El nombre del torneo no puede exceder los 65535 caracteres.',
+            'ApoyoPrincipal.string' => 'El Apoyo Principal debe ser una cadena de texto.',
+            'ApoyoPrincipal.max' => 'El Apoyo Principal no puede exceder los 65535 caracteres.',            
+            'cantidadEquiposParticipantes.required' => 'La cantidad de equipos participantes es obligatoria.',
+            'cantidadEquiposParticipantes.integer' => 'La cantidad de equipos participantes debe ser un número entero.',
+            'cantidadEquiposParticipantes.min' => 'La cantidad de equipos participantes debe ser Mayor 2.',            
             'caracteristicas.required' => 'Las características del torneo son obligatorias.',
             'caracteristicas.string' => 'Las características del torneo deben ser una cadena de texto.',
             'caracteristicas.max' => 'Las características del torneo no pueden exceder los 65535 caracteres.',

@@ -157,6 +157,9 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     Route::post('cuerpoTecnico/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnico.update');
     //toggle estado cuerpoTecnico
     Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
+
+    //Preplanilla
+    Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
 });
 
 Route::get('/version', function () {

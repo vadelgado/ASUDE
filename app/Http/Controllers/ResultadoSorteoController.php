@@ -20,16 +20,17 @@ class ResultadoSorteoController extends Controller
         $team_id = $request->input('team_id');
 
         if ($team_id) {
-            // los equipos que perteneces al torno con id = $team_id
-
-            
+            // los equipos que perteneces al torno con id = $team_id            
             $equipos = Equipos::where('fk_torneo', $team_id)->get();
 
+            //Cantidad equipos participantes
+
+            $cantidadEquiposParticipantes = torneo::find($team_id)->cantidadEquiposParticipantes;
+            //dd($cantidadEquiposParticipantes);
             //los resultados de los sorteos de los equipos que pertenecen al torneo con id = $team_id y sus respectivos equipos nombre del equipo de la tabla equipos
             $resultadoSorteos = DB::table('resultado_sorteos')
                 ->join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
-                ->where('equipos.fk_torneo', $team_id)
-                ->orderBy('grupoPosicion', 'asc')                
+                ->where('equipos.fk_torneo', $team_id)              
                 ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
                 ->get();           
         } else {
@@ -39,7 +40,8 @@ class ResultadoSorteoController extends Controller
         }   
         return Inertia::render('ResultadoSorteo/Index', [
             'resultadoSorteos' => $resultadoSorteos,
-            'equipos' => $equipos,            
+            'equipos' => $equipos,   
+            'cantidadEquiposParticipantes' => $cantidadEquiposParticipantes,         
         ]);    
     }
     

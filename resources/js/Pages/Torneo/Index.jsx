@@ -14,12 +14,19 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipos}) {
+export default function Dashboard({
+    auth,
+    torneos,
+    sistemaJuegos,
+    categoriaEquipos,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
     const nombreTorneoInput = useRef();
     const flayerInput = useRef();
+    const ApoyoPrincipalInput = useRef();
+    const cantidadEquiposParticipantesInput = useRef();
     const caracteristicasInput = useRef();
     const premiacionInput = useRef();
     const fk_sistema_juegosInput = useRef();
@@ -35,6 +42,8 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
         fk_user: auth.user.id,
         nombreTorneo: "",
         flayer: null,
+        ApoyoPrincipal: "",
+        cantidadEquiposParticipantes: "",
         caracteristicas: "",
         premiacion: "",
         fk_sistema_juegos: "",
@@ -66,6 +75,8 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
         id,
         nombreTorneo,
         flayer,
+        ApoyoPrincipal,
+        cantidadEquiposParticipantes,
         caracteristicas,
         premiacion,
         fk_sistema_juegos,
@@ -88,6 +99,8 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                 id: id,
                 nombreTorneo: nombreTorneo,
                 flayer: flayer,
+                ApoyoPrincipal: ApoyoPrincipal,
+                cantidadEquiposParticipantes: cantidadEquiposParticipantes,
                 caracteristicas: caracteristicas,
                 premiacion: premiacion,
                 fk_sistema_juegos: fk_sistema_juegos,
@@ -150,7 +163,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
     };
 
     const handleSistemaJuego = [
-        {value: "", label: "Seleccione...", disabled: true},
+        { value: "", label: "Seleccione...", disabled: true },
         ...sistemaJuegos.map((sistemaJuego) => ({
             value: sistemaJuego.id,
             label: sistemaJuego.nombreSistema,
@@ -158,7 +171,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
     ];
 
     const handleCategoriaEquipo = [
-        {value: "", label: "Seleccione...", disabled: true},
+        { value: "", label: "Seleccione...", disabled: true },
         ...categoriaEquipos.map((categoriaEquipo) => ({
             value: categoriaEquipo.id,
             label: categoriaEquipo.descripcion,
@@ -194,6 +207,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                                 <th className="px-2 py-2">#</th>
                                 <th className="px-2 py-2">Nombre Torneo</th>
                                 <th className="px-2 py-2">Flayer</th>
+                                <th className="px-2 py-2">Cantidad Equipo</th>
                                 <th className="px-2 py-2">Caracteristicas</th>
                                 <th className="px-2 py-2">Premiación</th>
                                 <th className="px-2 py-2">Sistema de Juego</th>
@@ -205,7 +219,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                                 </th>
                                 <th className="px-2 py-2">Reglamentación</th>
                                 <th className="px-2 py-2">Fecha de Inicio</th>
-                                <th className="px-2 py-2">Fehca Cierre</th>
+                                <th className="px-2 py-2">Fecha Cierre</th>
                                 <th className="px-2 py-2"></th>
                                 <th className="px-2 py-2"></th>
                             </tr>
@@ -226,6 +240,11 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                                                 alt={torneo.nombreTorneo}
                                                 className="w-32 h-auto"
                                             />
+                                        </td>
+                                        <td className="border border-gray-400 px-4 py-2">
+                                            {
+                                                torneo.cantidadEquiposParticipantes
+                                            }
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
                                             {torneo.caracteristicas}
@@ -259,6 +278,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                                                 torneo.fechaInicio
                                             ).toLocaleDateString()}
                                         </td>
+
                                         <td className="border border-gray-400 px-2 py-2">
                                             <WarningButton
                                                 onClick={() =>
@@ -267,6 +287,8 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                                                         torneo.id,
                                                         torneo.nombreTorneo,
                                                         torneo.flayer,
+                                                        torneo.ApoyoPrincipal,
+                                                        torneo.cantidadEquiposParticipantes,
                                                         torneo.caracteristicas,
                                                         torneo.premiacion,
                                                         torneo.fk_sistema_juegos,
@@ -276,8 +298,8 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                                                         torneo.procesoInscripcion,
                                                         torneo.reglamentacion,
                                                         torneo.fechaInicio,
-                                                        torneo.fechaFin,                                                        
-                                                        torneo.fk_user,
+                                                        torneo.fechaFin,
+                                                        torneo.fk_user
                                                     )
                                                 }
                                             >
@@ -330,8 +352,13 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                 <h2 className="p-3 text-lg font-medium text-gray-900">
                     {title}
                 </h2>
-                <form onSubmit={save} className="p-6"
-                encType="multipart/form-data">
+
+                <form
+                    onSubmit={save}
+                    className="p-6 grid grid-cols-2 gap-4 "
+                    encType="multipart/form-data"
+                >
+
                     <FormField
                         htmlFor="nombreTorneo"
                         label="Nombre Torneo"
@@ -342,7 +369,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                         placeholder="Nombre Torneo"
                         value={data.nombreTorneo}
                         onChange={handleInputChange}
-                        errorMessage={errors.nombreTorneo}                        
+                        errorMessage={errors.nombreTorneo}
                     />
                     <ImgField
                         htmlFor="flayer"
@@ -353,6 +380,32 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                         value={data.flayer}
                         onChange={handleFileChange}
                         errorMessage={errors.flayer}
+                    />
+
+                    <FormField
+                        htmlFor="ApoyoPrincipal"
+                        label="Apoyo Principal"
+                        id="ApoyoPrincipal"
+                        type="text"
+                        ref={ApoyoPrincipalInput}
+                        name="ApoyoPrincipal"
+                        placeholder="Apoyo Principal"
+                        value={data.ApoyoPrincipal}
+                        onChange={handleInputChange}
+                        errorMessage={errors.ApoyoPrincipal}
+                    />
+
+                    <FormField
+                        htmlFor="cantidadEquiposParticipantes"
+                        label="Cantidad de Equipos"
+                        id="cantidadEquiposParticipantes"
+                        type="number"
+                        ref={cantidadEquiposParticipantesInput}
+                        name="cantidadEquiposParticipantes"
+                        placeholder="Cantidad de Equipos"
+                        value={data.cantidadEquiposParticipantes}
+                        onChange={handleInputChange}
+                        errorMessage={errors.cantidadEquiposParticipantes}
                     />
 
                     <FormField
@@ -390,7 +443,7 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                         value={data.fk_sistema_juegos}
                         onChange={handleInputChange}
                         errorMessage={errors.fk_sistema_juegos}
-                        options={handleSistemaJuego}                            
+                        options={handleSistemaJuego}
                     />
 
                     <SelectField
@@ -415,7 +468,11 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                         onChange={handleInputChange}
                         errorMessage={errors.estadoTorneo}
                         options={[
-                            { value: "", label: "Seleccione...", disabled: true },
+                            {
+                                value: "",
+                                label: "Seleccione...",
+                                disabled: true,
+                            },
                             { value: "Por Iniciar", label: "Por Iniciar" },
                             { value: "En Juego", label: "En Juego" },
                             { value: "Finalizado", label: "Finalizado" },
@@ -432,7 +489,11 @@ export default function Dashboard({ auth, torneos, sistemaJuegos,categoriaEquipo
                         onChange={handleInputChange}
                         errorMessage={errors.inscripcion}
                         options={[
-                            { value: "", label: "Seleccione...", disabled: true },
+                            {
+                                value: "",
+                                label: "Seleccione...",
+                                disabled: true,
+                            },
                             { value: "Abierta", label: "Abierta" },
                             { value: "Cerrada", label: "Cerrada" },
                         ]}
