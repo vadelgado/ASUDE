@@ -45,7 +45,7 @@ class TablasGruposController extends Controller
             })
         ->select('evisitante.nombreEquipo as visitante','lugar_partidos.nomLugar','elocal.nombreEquipo as local','jornada_partidos.jornada','programacion_torneos.HoraPartido', 'torneo.nombreTorneo')
             ->get();
-        dd($tablasGrupos);  
+        dd($programacionTorneo);  
         return Inertia::render('ResultadoSorteo/ShouwTablaGrupos');
     }
 

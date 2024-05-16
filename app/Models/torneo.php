@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class torneo extends Model
 { 
     protected $table = 'torneo';
-
+ 
     protected $fillable = [
         'fk_user',
         'nombreTorneo',
@@ -20,6 +20,7 @@ class torneo extends Model
         'imgBannerInferiorDe',
         'Aval',
         'ApoyoPrincipal',
+        'cantidadGrupos',
         'cantidadEquiposParticipantes', 
         'caracteristicas',
         'premiacion',

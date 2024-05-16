@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('imgBannerInferiorDe')->nullable(true);
             $table->text('Aval')->nullable(true);
             $table->text('ApoyoPrincipal')->nullable(true);
+            $table->unsignedInteger('cantidadGrupos')->nullable(false);
             $table->unsignedInteger('cantidadEquiposParticipantes')->nullable(false);
             $table->text('caracteristicas')->nullable(false)->default('próximamente');
             $table->text('premiacion')->nullable(false)->default('próximamente');            
@@ -33,11 +34,11 @@ return new class extends Migration
             $table->enum('inscripcion', ['Abierta', 'Cerrada'])->nullable(false)->default('Abierta');
             $table->text('procesoInscripcion')->nullable(false)->default('próximamente');
             $table->text('reglamentacion')->nullable(false)->default('próximamente');
-            $table->date('fechaInicio')->nullable(false);
+            $table->date('fechaInicio')->nullable(true);
             $table->date('fechaFin')->nullable(true);            
             $table->timestamps(false);
             });
-    }
+    } 
 
     /**
      * Reverse the migrations.

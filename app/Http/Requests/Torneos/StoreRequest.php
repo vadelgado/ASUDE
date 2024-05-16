@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     { 
         return [
-            'fk_user' => 'required|exists:users,id',
+            'fk_user' => 'required|exists:users,id', 
             'nombreTorneo' => 'required|string|max:65535',
             'flayer' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'imgBannerSuperior' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -31,6 +31,7 @@ class StoreRequest extends FormRequest
             'imgBannerInferiorDe' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'Aval' => 'nullable|string|max:65535',
             'ApoyoPrincipal' => 'nullable|string|max:65535',
+            'cantidadGrupos' => 'nullable|integer|min:1',
             'cantidadEquiposParticipantes' => 'required|integer|min:2',
             'caracteristicas' => 'required|string|max:65535',
             'premiacion' => 'required|string|max:65535',
@@ -40,7 +41,7 @@ class StoreRequest extends FormRequest
             'inscripcion' => 'required|in:Abierta,Cerrada',
             'procesoInscripcion' => 'required|string|max:65535',
             'reglamentacion' => 'required|string|max:65535',
-            'fechaInicio' => 'required|date',
+            'fechaInicio' => 'nullable|date',
             'fechaFin' => 'nullable|date', 
         ];
     }
@@ -73,10 +74,12 @@ class StoreRequest extends FormRequest
             'Aval.string' => 'El Aval debe ser una cadena de texto.',
             'Aval.max' => 'El Aval no puede exceder los 65535 caracteres.',
             'ApoyoPrincipal.string' => 'El Apoyo Principal debe ser una cadena de texto.',
-            'ApoyoPrincipal.max' => 'El Apoyo Principal no puede exceder los 65535 caracteres.',            
+            'ApoyoPrincipal.max' => 'El Apoyo Principal no puede exceder los 65535 caracteres.',
+            'cantidadGrupos.integer' => 'La cantidad de grupos debe ser un número entero.',
+            'cantidadGrupos.min' => 'La cantidad de grupos debe ser Mayor o igual a 1.',
             'cantidadEquiposParticipantes.required' => 'La cantidad de equipos participantes es obligatoria.',
             'cantidadEquiposParticipantes.integer' => 'La cantidad de equipos participantes debe ser un número entero.',
-            'cantidadEquiposParticipantes.min' => 'La cantidad de equipos participantes debe ser Mayor 2.',            
+            'cantidadEquiposParticipantes.min' => 'La cantidad de equipos participantes debe ser Mayor o igual a 2.',            
             'caracteristicas.required' => 'Las características del torneo son obligatorias.',
             'caracteristicas.string' => 'Las características del torneo deben ser una cadena de texto.',
             'caracteristicas.max' => 'Las características del torneo no pueden exceder los 65535 caracteres.',
@@ -97,7 +100,6 @@ class StoreRequest extends FormRequest
             'reglamentacion.required' => 'La reglamentación del torneo es obligatoria.',
             'reglamentacion.string' => 'La reglamentación del torneo debe ser una cadena de texto.',
             'reglamentacion.max' => 'La reglamentación del torneo no puede exceder los 65535 caracteres.',
-            'fechaInicio.required' => 'La fecha de inicio del torneo es obligatoria.',
             'fechaInicio.date' => 'La fecha de inicio del torneo debe ser una fecha válida.',
             'fechaFin.date' => 'La fecha de fin del torneo debe ser una fecha válida.',
 

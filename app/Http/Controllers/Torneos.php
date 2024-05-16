@@ -38,7 +38,7 @@ class Torneos extends Controller
         return Inertia::render('AuthEquipo/Register');
     }
 
-    public function show($id)
+    public function show($id) 
     {
         try
         {
@@ -60,7 +60,7 @@ class Torneos extends Controller
 
     public function store(StoreRequest $request)
     {
-        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','imgBannerSuperior','imgBannerInferiorIz','imgBannerInferiorDe','Aval','ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','imgBannerSuperior','imgBannerInferiorIz','imgBannerInferiorDe','Aval','ApoyoPrincipal','cantidadGrupos', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
 
 
 
@@ -83,7 +83,7 @@ class Torneos extends Controller
 
     public function update(UpdateRequest $request, $id)
     {
-        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','imgBannerSuperior','imgBannerInferiorIz','imgBannerInferiorDe','Aval', 'ApoyoPrincipal', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
+        $data = $request->only('fk_user', 'nombreTorneo', 'flayer','imgBannerSuperior','imgBannerInferiorIz','imgBannerInferiorDe','Aval', 'ApoyoPrincipal','cantidadGrupos', 'cantidadEquiposParticipantes', 'caracteristicas', 'premiacion', 'fk_sistema_juegos', 'fk_categoria_equipo', 'estadoTorneo', 'inscripcion', 'procesoInscripcion', 'reglamentacion', 'fechaInicio', 'fechaFin');
         $torneo = torneo::find($id);
 
         $files = ['flayer', 'imgBannerSuperior', 'imgBannerInferiorIz', 'imgBannerInferiorDe'];

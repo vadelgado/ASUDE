@@ -30,6 +30,7 @@ export default function Dashboard({
     const imgBannerInferiorDeInput = useRef();
     const AvalInput = useRef();
     const ApoyoPrincipalInput = useRef();
+    const cantidadGruposInput = useRef();
     const cantidadEquiposParticipantesInput = useRef();
     const caracteristicasInput = useRef();
     const premiacionInput = useRef();
@@ -51,6 +52,7 @@ export default function Dashboard({
         imgBannerInferiorDe: null,
         Aval: "",
         ApoyoPrincipal: "",
+        cantidadGrupos: "",
         cantidadEquiposParticipantes: "",
         caracteristicas: "",
         premiacion: "",
@@ -88,6 +90,7 @@ export default function Dashboard({
         imgBannerInferiorDe,
         Aval,
         ApoyoPrincipal,
+        cantidadGrupos,
         cantidadEquiposParticipantes,
         caracteristicas,
         premiacion,
@@ -116,6 +119,7 @@ export default function Dashboard({
                 imgBannerInferiorDe: imgBannerInferiorDe,
                 Aval: Aval,
                 ApoyoPrincipal: ApoyoPrincipal,
+                cantidadGrupos: cantidadGrupos,
                 cantidadEquiposParticipantes: cantidadEquiposParticipantes,
                 caracteristicas: caracteristicas,
                 premiacion: premiacion,
@@ -194,6 +198,25 @@ export default function Dashboard({
         })),
     ];
 
+    function splitTextIntoLines(text, maxLineLength) {
+        const words = text.split(" ");
+        const lines = [];
+        let currentLine = "";
+
+        for (const word of words) {
+            if ((currentLine + word).length <= maxLineLength) {
+                currentLine += " " + word;
+            } else {
+                lines.push(currentLine);
+                currentLine = word;
+            }
+        }
+
+        lines.push(currentLine); // push the last line
+
+        return lines;
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -216,8 +239,198 @@ export default function Dashboard({
                     </PrimaryButton>
                 </div>
 
+                <h1>Listado de Torneos</h1>
+
+                {torneos.length > 0 ? (
+                    torneos.map((torneo, i) => (
+                        <ul key={torneo.id} className="grid grid-cols-1 gap-4">
+                            <li className="border border-gray-400 mb-10 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
+                                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-medium">
+                                    <strong>Información General:</strong>{" "}
+                                    Información del torneo 1
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Nombre del Torneo:</strong>{" "}
+                                    {torneo.nombreTorneo}
+                                </p>
+                                <div>
+                                    
+                                        <WarningButton
+                                            onClick={() =>
+                                                openModal(
+                                                    2,
+                                                    torneo.id,
+                                                    torneo.nombreTorneo,
+                                                    torneo.flayer,
+                                                    torneo.imgBannerSuperior,
+                                                    torneo.imgBannerInferiorIz,
+                                                    torneo.imgBannerInferiorDe,
+                                                    torneo.Aval,
+                                                    torneo.ApoyoPrincipal,
+                                                    torneo.cantidadGrupos,
+                                                    torneo.cantidadEquiposParticipantes,
+                                                    torneo.caracteristicas,
+                                                    torneo.premiacion,
+                                                    torneo.fk_sistema_juegos,
+                                                    torneo.fk_categoria_equipo,
+                                                    torneo.estadoTorneo,
+                                                    torneo.inscripcion,
+                                                    torneo.procesoInscripcion,
+                                                    torneo.reglamentacion,
+                                                    torneo.fechaInicio,
+                                                    torneo.fechaFin,
+                                                    torneo.fk_user
+                                                )
+                                            }
+                                        >
+                                            <i className="fa-solid fa-edit"></i>
+                                        </WarningButton>                                  
+                                    
+                                        <DangerButton
+                                            onClick={() =>
+                                                eliminar(
+                                                    torneo.id,
+                                                    torneo.nombreTorneo
+                                                )
+                                            }
+                                        >
+                                            <i className="fa-solid fa-trash"></i>
+                                        </DangerButton>
+
+                                        <a
+                                            href={`/resultadoSorteo?team_id=${torneo.id}`}
+                                        >
+                                            <i className="fa-solid fa-dice"></i>
+                                            Resultado Sorteo
+                                        </a>
+
+                                        <a
+                                            href={`/programacionTorneo?team_id=${torneo.id}`}
+                                        >
+                                            <i className="fa-solid fa-dice"></i>
+                                            Programación Torneo
+                                        </a>
+
+                                </div>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Cantidad de Grupos:</strong>{" "}
+                                    {torneo.cantidadGrupos}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>
+                                        Cantidad de Equipos Participantes:
+                                    </strong>{" "}
+                                    {torneo.cantidadEquiposParticipantes}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Estado del Torneo:</strong>{" "}
+                                    {torneo.estadoTorneo}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Proceso de Inscripción:</strong>{" "}
+                                    {torneo.procesoInscripcion}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Fecha de Inicio:</strong>{" "}
+                                    {torneo.fechaInicio}
+                                </p>
+
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Fecha de Fin:</strong>{" "}
+                                    {torneo.fechaFin}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Imagen y Publicidad:</strong>{" "}
+                                    Información de imagen y publicidad del
+                                    torneo 1
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Flayer</strong>
+                                    <img
+                                        src={`/storage/${torneo.flayer}`}
+                                        alt={torneo.nombreTorneo}
+                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
+                                    />
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>
+                                        Imagen del Banner Inferior Izquierdo
+                                    </strong>
+                                    <img
+                                        src={`/storage/${torneo.imgBannerInferiorIz}`}
+                                        alt={torneo.nombreTorneo}
+                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
+                                    />
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>
+                                        Imagen del Banner Inferior Derecho
+                                    </strong>
+                                    <img
+                                        src={`/storage/${torneo.imgBannerInferiorDe}`}
+                                        alt={torneo.nombreTorneo}
+                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
+                                    />
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Imagen del Banner Superior</strong>
+                                    <img
+                                        src={`/storage/${torneo.imgBannerSuperior}`}
+                                        alt={torneo.nombreTorneo}
+                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
+                                    />
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Detalles del Torneo:</strong>{" "}
+                                    Información detallada del torneo 1
+                                </p>
+                                <br />
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Aval:</strong> {torneo.Aval}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Apoyo Principal:</strong>{" "}
+                                    {torneo.ApoyoPrincipal}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Características del Torneo:</strong>{" "}
+                                    {splitTextIntoLines(
+                                        torneo.caracteristicas,
+                                        62
+                                    ).map((line, index) => (
+                                        <p key={index}>{line}</p>
+                                    ))}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Premiación:</strong>{" "}
+                                    {splitTextIntoLines(
+                                        torneo.premiacion,
+                                        62
+                                    ).map((line, index) => (
+                                        <p key={index}>{line}</p>
+                                    ))}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Sistema de Juego:</strong>{" "}
+                                    {torneo.fk_sistema_juegos}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Categoría de Equipos:</strong>{" "}
+                                    {torneo.fk_categoria_equipo}
+                                </p>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Reglamentación:</strong>{" "}
+                                    {torneo.reglamentacion}
+                                </p>
+                            </li>
+                        </ul>
+                    ))
+                ) : (
+                    <p>No hay torneos</p>
+                )}
+
                 <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
+                    {/*                     <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
@@ -295,65 +508,7 @@ export default function Dashboard({
                                             ).toLocaleDateString()}
                                         </td>
 
-                                        <td className="border border-gray-400 px-2 py-2">
-                                            <WarningButton
-                                                onClick={() =>
-                                                    openModal(
-                                                        2,
-                                                        torneo.id,
-                                                        torneo.nombreTorneo,
-                                                        torneo.flayer,
-                                                        torneo.imgBannerSuperior,
-                                                        torneo.imgBannerInferiorIz,
-                                                        torneo.imgBannerInferiorDe,
-                                                        torneo.Aval,
-                                                        torneo.ApoyoPrincipal,
-                                                        torneo.cantidadEquiposParticipantes,
-                                                        torneo.caracteristicas,
-                                                        torneo.premiacion,
-                                                        torneo.fk_sistema_juegos,
-                                                        torneo.fk_categoria_equipo,
-                                                        torneo.estadoTorneo,
-                                                        torneo.inscripcion,
-                                                        torneo.procesoInscripcion,
-                                                        torneo.reglamentacion,
-                                                        torneo.fechaInicio,
-                                                        torneo.fechaFin,
-                                                        torneo.fk_user
-                                                    )
-                                                }
-                                            >
-                                                <i className="fa-solid fa-edit"></i>
-                                            </WarningButton>
-                                        </td>
-                                        <td className="border border-gray-400 px-2 py-2">
-                                            <DangerButton
-                                                onClick={() =>
-                                                    eliminar(
-                                                        torneo.id,
-                                                        torneo.nombreTorneo
-                                                    )
-                                                }
-                                            >
-                                                <i className="fa-solid fa-trash"></i>
-                                            </DangerButton>
-                                        </td>
-                                        <td className="border border-gray-400 px-2 py-2">
-                                            <a
-                                                href={`/resultadoSorteo?team_id=${torneo.id}`}
-                                            >
-                                                <i className="fa-solid fa-dice"></i>
-                                                Resultado Sorteo
-                                            </a>
-                                        </td>
-                                        <td className="border border-gray-400 px-2 py-2">
-                                            <a
-                                                href={`/programacionTorneo?team_id=${torneo.id}`}
-                                            >
-                                                <i className="fa-solid fa-dice"></i>
-                                                Programación Torneo
-                                            </a>
-                                        </td>
+
                                     </tr>
                                 ))
                             ) : (
@@ -364,7 +519,7 @@ export default function Dashboard({
                                 </tr>
                             )}
                         </tbody>
-                    </table>
+                    </table> */}
                 </div>
             </div>
 
@@ -375,7 +530,7 @@ export default function Dashboard({
 
                 <form
                     onSubmit={save}
-                    className="p-6 grid grid-cols-2 gap-4 "
+                    className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 "
                     encType="multipart/form-data"
                 >
                     <FormField
@@ -465,6 +620,19 @@ export default function Dashboard({
                         value={data.ApoyoPrincipal}
                         onChange={handleInputChange}
                         errorMessage={errors.ApoyoPrincipal}
+                    />
+
+                    <FormField
+                        htmlFor="cantidadGrupos"
+                        label="Cantidad de Grupos"
+                        id="cantidadGrupos"
+                        type="number"
+                        ref={cantidadGruposInput}
+                        name="cantidadGrupos"
+                        placeholder="Cantidad de Grupos"
+                        value={data.cantidadGrupos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.cantidadGrupos}
                     />
 
                     <FormField
@@ -623,18 +791,20 @@ export default function Dashboard({
                         errorMessage={errors.fechaFin}
                     />
 
-                    <div className="mt-1">
-                        <PrimaryButton
-                            processing={processing.toString()}
-                            className="mt-2"
-                        >
-                            <i className="fa-solid fa-save"></i>Guardar
-                        </PrimaryButton>
-                    </div>
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancel
-                        </SecondaryButton>
+                    <div className="">
+                        <div className="mt-1">
+                            <PrimaryButton
+                                processing={processing.toString()}
+                                className="mt-2"
+                            >
+                                <i className="fa-solid fa-save"></i>Guardar
+                            </PrimaryButton>
+                        </div>
+                        <div className="mt-6 flex justify-end">
+                            <SecondaryButton onClick={closeModal}>
+                                Cancel
+                            </SecondaryButton>
+                        </div>
                     </div>
                 </form>
             </Modal>
