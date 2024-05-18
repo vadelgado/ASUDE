@@ -13,6 +13,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
+import Textarea2 from "@/Components/Textarea2";
 
 export default function Dashboard({
     auth,
@@ -234,8 +235,8 @@ export default function Dashboard({
                         <i
                             className="fa-solid fa-plus-circle"
                             style={{ marginRight: "10px" }}
-                        ></i>
-                        Agregar Torneo
+                        >Agregar Torneo</i>
+                        
                     </PrimaryButton>
                 </div>
 
@@ -245,188 +246,185 @@ export default function Dashboard({
                     torneos.map((torneo, i) => (
                         <ul key={torneo.id} className="grid grid-cols-1 gap-4">
                             <li className="border border-gray-400 mb-10 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
-                                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-medium">
-                                    <strong>Información General:</strong>{" "}
-                                    Información del torneo 1
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Nombre del Torneo:</strong>{" "}
                                     {torneo.nombreTorneo}
-                                </p>
-                                <div>
-                                    
-                                        <WarningButton
-                                            onClick={() =>
-                                                openModal(
-                                                    2,
-                                                    torneo.id,
-                                                    torneo.nombreTorneo,
-                                                    torneo.flayer,
-                                                    torneo.imgBannerSuperior,
-                                                    torneo.imgBannerInferiorIz,
-                                                    torneo.imgBannerInferiorDe,
-                                                    torneo.Aval,
-                                                    torneo.ApoyoPrincipal,
-                                                    torneo.cantidadGrupos,
-                                                    torneo.cantidadEquiposParticipantes,
-                                                    torneo.caracteristicas,
-                                                    torneo.premiacion,
-                                                    torneo.fk_sistema_juegos,
-                                                    torneo.fk_categoria_equipo,
-                                                    torneo.estadoTorneo,
-                                                    torneo.inscripcion,
-                                                    torneo.procesoInscripcion,
-                                                    torneo.reglamentacion,
-                                                    torneo.fechaInicio,
-                                                    torneo.fechaFin,
-                                                    torneo.fk_user
-                                                )
-                                            }
-                                        >
-                                            <i className="fa-solid fa-edit"></i>
-                                        </WarningButton>                                  
-                                    
-                                        <DangerButton
-                                            onClick={() =>
-                                                eliminar(
-                                                    torneo.id,
-                                                    torneo.nombreTorneo
-                                                )
-                                            }
-                                        >
-                                            <i className="fa-solid fa-trash"></i>
-                                        </DangerButton>
-
-                                        <a
-                                            href={`/resultadoSorteo?team_id=${torneo.id}`}
-                                        >
-                                            <i className="fa-solid fa-dice"></i>
-                                            Resultado Sorteo
-                                        </a>
-
-                                        <a
-                                            href={`/programacionTorneo?team_id=${torneo.id}`}
-                                        >
-                                            <i className="fa-solid fa-dice"></i>
-                                            Programación Torneo
-                                        </a>
-
                                 </div>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                <div>
+                                    <a class="text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#2557D6]/50 me-2 mb-2"
+                                        onClick={() =>
+                                            openModal(
+                                                2,
+                                                torneo.id,
+                                                torneo.nombreTorneo,
+                                                torneo.flayer,
+                                                torneo.imgBannerSuperior,
+                                                torneo.imgBannerInferiorIz,
+                                                torneo.imgBannerInferiorDe,
+                                                torneo.Aval,
+                                                torneo.ApoyoPrincipal,
+                                                torneo.cantidadGrupos,
+                                                torneo.cantidadEquiposParticipantes,
+                                                torneo.caracteristicas,
+                                                torneo.premiacion,
+                                                torneo.fk_sistema_juegos,
+                                                torneo.fk_categoria_equipo,
+                                                torneo.estadoTorneo,
+                                                torneo.inscripcion,
+                                                torneo.procesoInscripcion,
+                                                torneo.reglamentacion,
+                                                torneo.fechaInicio,
+                                                torneo.fechaFin,
+                                                torneo.fk_user
+                                            )
+                                        }
+                                    >
+                                        <i className="fa-solid fa-edit"> Editar</i>
+                                    </a>
+
+                                    <a class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2"
+                                        onClick={() =>
+                                            eliminar(
+                                                torneo.id,
+                                                torneo.nombreTorneo
+                                            )
+                                        }
+                                    >
+                                        <i className="fa-solid fa-trash"> Eliminar</i>
+                                    </a>
+
+                                    <a class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                        href={`/resultadoSorteo?team_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-dice"> Resultado Sorteo</i>
+                                        
+                                    </a>
+
+                                    <a class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+                                        href={`/programaciónTorneo?team_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-dice"> Programacion Torneo</i>
+                                        
+                                    </a>
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Cantidad de Grupos:</strong>{" "}
                                     {torneo.cantidadGrupos}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>
                                         Cantidad de Equipos Participantes:
                                     </strong>{" "}
                                     {torneo.cantidadEquiposParticipantes}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Estado del Torneo:</strong>{" "}
                                     {torneo.estadoTorneo}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Proceso de Inscripción:</strong>{" "}
                                     {torneo.procesoInscripcion}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Fecha de Inicio:</strong>{" "}
                                     {torneo.fechaInicio}
-                                </p>
+                                </div>
 
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Fecha de Fin:</strong>{" "}
                                     {torneo.fechaFin}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Detalles del Torneo:</strong>{" "}
+                                    Información detallada del torneo 1
+                                </div>
+                                <br />
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Aval:</strong> {torneo.Aval}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Apoyo Principal:</strong>{" "}
+                                    {torneo.ApoyoPrincipal}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Características del Torneo:</strong>{" "}
+                                    {splitTextIntoLines(
+                                        torneo.caracteristicas,
+                                        62
+                                    ).map((line, index) => (
+                                        <div key={index}>{line}</div>
+                                    ))}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Premiación:</strong>{" "}
+                                    {splitTextIntoLines(
+                                        torneo.premiacion,
+                                        62
+                                    ).map((line, index) => (
+                                        <div key={index}>{line}</div>
+                                    ))}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Sistema de Juego:</strong>{" "}
+                                    {torneo.fk_sistema_juegos}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Categoría de Equipos:</strong>{" "}
+                                    {torneo.fk_categoria_equipo}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Reglamentación:</strong>{" "}
+                                    {torneo.reglamentacion}
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Imagen y Publicidad:</strong>{" "}
                                     Información de imagen y publicidad del
                                     torneo 1
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Flayer</strong>
                                     <img
                                         src={`/storage/${torneo.flayer}`}
                                         alt={torneo.nombreTorneo}
                                         className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
                                     />
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>
-                                        Imagen del Banner Inferior Izquierdo
-                                    </strong>
-                                    <img
-                                        src={`/storage/${torneo.imgBannerInferiorIz}`}
-                                        alt={torneo.nombreTorneo}
-                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
-                                    />
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>
-                                        Imagen del Banner Inferior Derecho
-                                    </strong>
-                                    <img
-                                        src={`/storage/${torneo.imgBannerInferiorDe}`}
-                                        alt={torneo.nombreTorneo}
-                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
-                                    />
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                </div>
+                                <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                        <strong>
+                                            Imagen del Banner Inferior Izquierdo
+                                        </strong>
+                                        <img
+                                            src={`/storage/${torneo.imgBannerInferiorIz}`}
+                                            alt={torneo.nombreTorneo}
+                                            className="w-16 h-auto sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56"
+                                        />
+                                    </div>
+                                    <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                        <strong>
+                                            Imagen del Banner Inferior Derecho
+                                        </strong>
+                                        <img
+                                            src={`/storage/${torneo.imgBannerInferiorDe}`}
+                                            alt={torneo.nombreTorneo}
+                                            className="w-16 h-auto sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Imagen del Banner Superior</strong>
                                     <img
                                         src={`/storage/${torneo.imgBannerSuperior}`}
                                         alt={torneo.nombreTorneo}
-                                        className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
+                                        className="w-32*1.1 h-auto sm:w-48*1.1 md:w-64*1.1 lg:w-80*1.1 xl:w-96*1.1 2xl:w-112*1.1"
                                     />
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Detalles del Torneo:</strong>{" "}
-                                    Información detallada del torneo 1
-                                </p>
-                                <br />
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Aval:</strong> {torneo.Aval}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Apoyo Principal:</strong>{" "}
-                                    {torneo.ApoyoPrincipal}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Características del Torneo:</strong>{" "}
-                                    {splitTextIntoLines(
-                                        torneo.caracteristicas,
-                                        62
-                                    ).map((line, index) => (
-                                        <p key={index}>{line}</p>
-                                    ))}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Premiación:</strong>{" "}
-                                    {splitTextIntoLines(
-                                        torneo.premiacion,
-                                        62
-                                    ).map((line, index) => (
-                                        <p key={index}>{line}</p>
-                                    ))}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Sistema de Juego:</strong>{" "}
-                                    {torneo.fk_sistema_juegos}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Categoría de Equipos:</strong>{" "}
-                                    {torneo.fk_categoria_equipo}
-                                </p>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Reglamentación:</strong>{" "}
-                                    {torneo.reglamentacion}
-                                </p>
+                                </div>
                             </li>
                         </ul>
                     ))
                 ) : (
-                    <p>No hay torneos</p>
+                    <div>No hay torneos</div>
                 )}
 
                 <div className="bg-white grid v-screen place-items-center py-6">
@@ -739,7 +737,7 @@ export default function Dashboard({
                         ]}
                     />
 
-                    <FormField
+                    <Textarea2
                         htmlFor="procesoInscripcion"
                         label="Proceso de Inscripción"
                         id="procesoInscripcion"
@@ -791,20 +789,14 @@ export default function Dashboard({
                         errorMessage={errors.fechaFin}
                     />
 
-                    <div className="">
-                        <div className="mt-1">
-                            <PrimaryButton
-                                processing={processing.toString()}
-                                className="mt-2"
-                            >
-                                <i className="fa-solid fa-save"></i>Guardar
-                            </PrimaryButton>
-                        </div>
-                        <div className="mt-6 flex justify-end">
-                            <SecondaryButton onClick={closeModal}>
-                                Cancel
-                            </SecondaryButton>
-                        </div>
+                    <div className=" space-x-4 mt-20">
+                        <PrimaryButton processing={processing.toString()}>
+                            <i className="fa-solid fa-save"></i>
+                            <span>Guardar</span>
+                        </PrimaryButton>
+                        <SecondaryButton onClick={closeModal}>
+                            Cancel
+                        </SecondaryButton>
                     </div>
                 </form>
             </Modal>
