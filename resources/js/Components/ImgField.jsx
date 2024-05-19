@@ -25,9 +25,9 @@ const ImgField = forwardRef(
 
         return (
             <div>
-                <InputLabel htmlFor={htmlFor} value={label} />
-                <TextInput
-                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                <InputLabel class="block my-2 mb-2 text-sm font-medium text-gray-900" htmlFor={htmlFor} value={label} />
+                <input
+                    class="block w-full text-sm text-blue-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50  focus:outline-none"
                     id={id}
                     type="file"
                     name={name}

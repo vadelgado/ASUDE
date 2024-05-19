@@ -1,28 +1,50 @@
 import { Link, Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
+import React from "react";
 
-
-export default function ListarTorneos({ auth }) {
+export default function ListarTorneos({ auth, tablasGrupos,torneo }) {
+    
         return (
-                
-                <>
-                        <Header auth={auth}></Header>
-                        <Head title={`Torneo ⚽ Tabla de Grupos`} />
-                        <h2>
-                            <span>👉📝Tabla de Grupos👈</span>
-                        </h2>
-                        <br />
-                        <main className="m-auto max-w-4xl">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 mt-20">
+        <>
+            <Header auth={auth}></Header>
+            <Head title={`Torneo ⚽ Tabla de Grupos`} />
+            <h2>
+                <span>👉📝Tabla de Grupos👈</span>
+            </h2>
+            <br />
+            <main className="m-auto my-7 max-w-4xl">
+                <div className="bg-white grid v-screen place-items-center py-6">
+                    <table className="table-auto border-gray-400">
+                        <thead>
+                            <tr>
+  
 
-                                 
-                                </div>
-                                
-                        </main>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tablasGrupos.map((tablaGrupo, index) => (
+                                <tr key={index}>
+                                    <td className="border px-4 py-2">
+                                        {tablaGrupo.grupoPosision}
+                                    </td>
+                                    <td className="border px-4 py-2">
+                                        <img
+                                            src={`/storage/${tablaGrupo.escudoEquipo}`}
+                                            alt={tablaGrupo.nombreEquipo}
+                                            className="w-16 h-16 rounded-full"
+                                        />
+                                        {tablaGrupo.nombreEquipo}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
 
-                        <Footer></Footer>
-                        <style>{`
+            <Footer></Footer>
+            <style>{`
                                 @media (prefers-color-scheme: dark) {
                                         .dark\\:bg-dots-lighter {
                                                 background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
@@ -79,9 +101,6 @@ export default function ListarTorneos({ auth }) {
                                         }
                                 }
                         `}</style>
-                </>
-        );
+        </>
+    );
 }
-
-
-

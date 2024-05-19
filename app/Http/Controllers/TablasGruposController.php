@@ -29,7 +29,7 @@ class TablasGruposController extends Controller
             ->when($torneo_id, function ($query) use ($torneo_id) {
                 return $query->where('torneo.id', $torneo_id);
             })
-            ->select('equipos.nombreEquipo', 'resultado_sorteos.grupoPosicion')
+            ->select('equipos.nombreEquipo','equipos.escudoEquipo' , 'resultado_sorteos.grupoPosicion')
             ->get();
 
         $programacionTorneo = programacionTorneo::join('torneo', 'programacion_torneos.fk_torneo', '=', 'torneo.id')
@@ -45,8 +45,13 @@ class TablasGruposController extends Controller
             })
         ->select('evisitante.nombreEquipo as visitante','lugar_partidos.nomLugar','elocal.nombreEquipo as local','jornada_partidos.jornada','programacion_torneos.HoraPartido', 'torneo.nombreTorneo')
             ->get();
-        dd($programacionTorneo);  
-        return Inertia::render('ResultadoSorteo/ShouwTablaGrupos');
+        
+        $torneo = torneo::where('id', $torneo_id)->first()
+            ->select('torneo.nombreTorneo','torneo.cantidadGrupos','torneo.cantidadEquiposParticipantes')
+            ->get();
+        //dd($torneo);  
+        return Inertia::render('ResultadoSorteo/ShouwTablaGrupos', ['tablasGrupos' => $tablasGrupos, 'programacionTorneo' => $programacionTorneo
+        ,'torneo' => $torneo]); 
     }
 
     /**

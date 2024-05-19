@@ -235,8 +235,9 @@ export default function Dashboard({
                         <i
                             className="fa-solid fa-plus-circle"
                             style={{ marginRight: "10px" }}
-                        >Agregar Torneo</i>
-                        
+                        >
+                            Agregar Torneo
+                        </i>
                     </PrimaryButton>
                 </div>
 
@@ -246,12 +247,9 @@ export default function Dashboard({
                     torneos.map((torneo, i) => (
                         <ul key={torneo.id} className="grid grid-cols-1 gap-4">
                             <li className="border border-gray-400 mb-10 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
-                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
-                                    <strong>Nombre del Torneo:</strong>{" "}
-                                    {torneo.nombreTorneo}
-                                </div>
                                 <div>
-                                    <a class="text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#2557D6]/50 me-2 mb-2"
+                                    <a
+                                        class="text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#2557D6]/50 me-2 mb-2"
                                         onClick={() =>
                                             openModal(
                                                 2,
@@ -279,10 +277,14 @@ export default function Dashboard({
                                             )
                                         }
                                     >
-                                        <i className="fa-solid fa-edit"> Editar</i>
+                                        <i className="fa-solid fa-edit">
+                                            {" "}
+                                            Editar
+                                        </i>
                                     </a>
 
-                                    <a class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2"
+                                    <a
+                                        class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2"
                                         onClick={() =>
                                             eliminar(
                                                 torneo.id,
@@ -290,22 +292,35 @@ export default function Dashboard({
                                             )
                                         }
                                     >
-                                        <i className="fa-solid fa-trash"> Eliminar</i>
+                                        <i className="fa-solid fa-trash">
+                                            {" "}
+                                            Eliminar
+                                        </i>
                                     </a>
 
-                                    <a class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                    <a
+                                        class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
                                         href={`/resultadoSorteo?team_id=${torneo.id}`}
                                     >
-                                        <i className="fa-solid fa-dice"> Resultado Sorteo</i>
-                                        
+                                        <i className="fa-solid fa-dice">
+                                            {" "}
+                                            Resultado Sorteo
+                                        </i>
                                     </a>
 
-                                    <a class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
-                                        href={`/programaciónTorneo?team_id=${torneo.id}`}
+                                    <a
+                                        class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+                                        href={`/programacionTorneo?team_id=${torneo.id}`}
                                     >
-                                        <i className="fa-solid fa-dice"> Programacion Torneo</i>
-                                        
+                                        <i className="fa-solid fa-calendar-days">
+                                            {" "}
+                                            Programacion Torneo
+                                        </i>
                                     </a>
+                                </div>
+                                <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                                    <strong>Nombre del Torneo:</strong>{" "}
+                                    {torneo.nombreTorneo}
                                 </div>
                                 <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Cantidad de Grupos:</strong>{" "}
@@ -522,9 +537,14 @@ export default function Dashboard({
             </div>
 
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="p-3 text-lg font-medium text-gray-900">
+                <h2 className="p-4 text-2xl font-semibold text-white border-b border-gray-300 bg-gray-800 rounded-t-md">
                     {title}
                 </h2>
+
+                <p className="text-red-500 pl-4">
+                    Los campos marcados con un{" "}
+                    <span className="font-bold">*</span> son obligatorios
+                </p>
 
                 <form
                     onSubmit={save}
@@ -533,7 +553,12 @@ export default function Dashboard({
                 >
                     <FormField
                         htmlFor="nombreTorneo"
-                        label="Nombre Torneo"
+                        label={
+                            <>
+                                <span>Nombre Torneo</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
                         id="nombreTorneo"
                         type="text"
                         ref={nombreTorneoInput}
@@ -542,6 +567,196 @@ export default function Dashboard({
                         value={data.nombreTorneo}
                         onChange={handleInputChange}
                         errorMessage={errors.nombreTorneo}
+                    />
+
+                    <FormField
+                        htmlFor="Aval"
+                        label="Aval"
+                        id="Aval"
+                        type="text"
+                        ref={AvalInput}
+                        name="Aval"
+                        placeholder="Aval"
+                        value={data.Aval}
+                        onChange={handleInputChange}
+                        errorMessage={errors.Aval}
+                    />
+
+                    <FormField
+                        htmlFor="ApoyoPrincipal"
+                        label="Apoyo Principal"
+                        id="ApoyoPrincipal"
+                        type="text"
+                        ref={ApoyoPrincipalInput}
+                        name="ApoyoPrincipal"
+                        placeholder="Apoyo Principal"
+                        value={data.ApoyoPrincipal}
+                        onChange={handleInputChange}
+                        errorMessage={errors.ApoyoPrincipal}
+                    />
+
+                    <FormField
+                        htmlFor="cantidadGrupos"
+                        label={
+                            <>
+                                <span>Cantidad de Grupos</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="cantidadGrupos"
+                        type="number"
+                        ref={cantidadGruposInput}
+                        name="cantidadGrupos"
+                        placeholder="Cantidad de Grupos"
+                        value={data.cantidadGrupos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.cantidadGrupos}
+                    />
+
+                    <FormField
+                        htmlFor="cantidadEquiposParticipantes"
+                        label={
+                            <>
+                                <span>Cantidad de Equipos</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="cantidadEquiposParticipantes"
+                        type="number"
+                        ref={cantidadEquiposParticipantesInput}
+                        name="cantidadEquiposParticipantes"
+                        placeholder="Cantidad de Equipos"
+                        value={data.cantidadEquiposParticipantes}
+                        onChange={handleInputChange}
+                        errorMessage={errors.cantidadEquiposParticipantes}
+                    />
+
+                    <FormField
+                        htmlFor="reglamentacion"
+                        label={
+                            <>
+                                <span>Reglamentación</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="reglamentacion"
+                        type="text"
+                        ref={reglamentacionInput}
+                        name="reglamentacion"
+                        placeholder="Reglamentación"
+                        value={data.reglamentacion}
+                        onChange={handleInputChange}
+                        errorMessage={errors.reglamentacion}
+                    />
+
+                    <FormField
+                        htmlFor="fechaInicio"
+                        label="Fecha de Inicio"
+                        id="fechaInicio"
+                        type="date"
+                        ref={fechaInicioInput}
+                        name="fechaInicio"
+                        placeholder="Fecha de Inicio"
+                        value={data.fechaInicio}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fechaInicio}
+                    />
+
+                    <FormField
+                        htmlFor="fechaFin"
+                        label="Fecha de Cierre"
+                        id="fechaFin"
+                        type="date"
+                        ref={fechaFinInput}
+                        name="fechaFin"
+                        placeholder="Fecha de Cierre"
+                        value={data.fechaFin}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fechaFin}
+                    />
+                    <SelectField
+                        htmlFor="fk_sistema_juegos"
+                        label={
+                            <>
+                                <span>Sistema de Juego</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="fk_sistema_juegos"
+                        ref={fk_sistema_juegosInput}
+                        name="fk_sistema_juegos"
+                        value={data.fk_sistema_juegos}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_sistema_juegos}
+                        options={handleSistemaJuego}
+                    />
+
+                    <SelectField
+                        htmlFor="fk_categoria_equipo"
+                        label={
+                            <>
+                                <span>Categoría</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="fk_categoria_equipo"
+                        ref={fk_categoria_equipoInput}
+                        name="fk_categoria_equipo"
+                        value={data.fk_categoria_equipo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_categoria_equipo}
+                        options={handleCategoriaEquipo}
+                    />
+
+                    <SelectField
+                        htmlFor="estadoTorneo"
+                        label={
+                            <>
+                                <span>Estado</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="estadoTorneo"
+                        ref={estadoTorneoInput}
+                        name="estadoTorneo"
+                        value={data.estadoTorneo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.estadoTorneo}
+                        options={[
+                            {
+                                value: "",
+                                label: "Seleccione...",
+                                disabled: true,
+                            },
+                            { value: "Por Iniciar", label: "Por Iniciar" },
+                            { value: "En Juego", label: "En Juego" },
+                            { value: "Finalizado", label: "Finalizado" },
+                        ]}
+                    />
+
+                    <SelectField
+                        htmlFor="inscripcion"
+                        label={
+                            <>
+                                <span>Inscripción</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="inscripcion"
+                        ref={inscripcionInput}
+                        name="inscripcion"
+                        value={data.inscripcion}
+                        onChange={handleInputChange}
+                        errorMessage={errors.inscripcion}
+                        options={[
+                            {
+                                value: "",
+                                label: "Seleccione...",
+                                disabled: true,
+                            },
+                            { value: "Abierta", label: "Abierta" },
+                            { value: "Cerrada", label: "Cerrada" },
+                        ]}
                     />
 
                     <ImgField
@@ -594,61 +809,14 @@ export default function Dashboard({
                         errorMessage={errors.imgBannerInferiorDe}
                     />
 
-                    <FormField
-                        htmlFor="Aval"
-                        label="Aval"
-                        id="Aval"
-                        type="text"
-                        ref={AvalInput}
-                        name="Aval"
-                        placeholder="Aval"
-                        value={data.Aval}
-                        onChange={handleInputChange}
-                        errorMessage={errors.Aval}
-                    />
-
-                    <FormField
-                        htmlFor="ApoyoPrincipal"
-                        label="Apoyo Principal"
-                        id="ApoyoPrincipal"
-                        type="text"
-                        ref={ApoyoPrincipalInput}
-                        name="ApoyoPrincipal"
-                        placeholder="Apoyo Principal"
-                        value={data.ApoyoPrincipal}
-                        onChange={handleInputChange}
-                        errorMessage={errors.ApoyoPrincipal}
-                    />
-
-                    <FormField
-                        htmlFor="cantidadGrupos"
-                        label="Cantidad de Grupos"
-                        id="cantidadGrupos"
-                        type="number"
-                        ref={cantidadGruposInput}
-                        name="cantidadGrupos"
-                        placeholder="Cantidad de Grupos"
-                        value={data.cantidadGrupos}
-                        onChange={handleInputChange}
-                        errorMessage={errors.cantidadGrupos}
-                    />
-
-                    <FormField
-                        htmlFor="cantidadEquiposParticipantes"
-                        label="Cantidad de Equipos"
-                        id="cantidadEquiposParticipantes"
-                        type="number"
-                        ref={cantidadEquiposParticipantesInput}
-                        name="cantidadEquiposParticipantes"
-                        placeholder="Cantidad de Equipos"
-                        value={data.cantidadEquiposParticipantes}
-                        onChange={handleInputChange}
-                        errorMessage={errors.cantidadEquiposParticipantes}
-                    />
-
-                    <FormField
+                    <Textarea2
                         htmlFor="caracteristicas"
-                        label="Caracteristicas"
+                        label={
+                            <>
+                                <span>Características</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
                         id="caracteristicas"
                         type="text"
                         ref={caracteristicasInput}
@@ -659,9 +827,14 @@ export default function Dashboard({
                         errorMessage={errors.caracteristicas}
                     />
 
-                    <FormField
+                    <Textarea2
                         htmlFor="premiacion"
-                        label="Premiación"
+                        label={
+                            <>
+                                <span>Premiación</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
                         id="premiacion"
                         type="text"
                         ref={premiacionInput}
@@ -672,74 +845,14 @@ export default function Dashboard({
                         errorMessage={errors.premiacion}
                     />
 
-                    <SelectField
-                        htmlFor="fk_sistema_juegos"
-                        label="Sistema de Juego"
-                        id="fk_sistema_juegos"
-                        ref={fk_sistema_juegosInput}
-                        name="fk_sistema_juegos"
-                        value={data.fk_sistema_juegos}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fk_sistema_juegos}
-                        options={handleSistemaJuego}
-                    />
-
-                    <SelectField
-                        htmlFor="fk_categoria_equipo"
-                        label="Categoria"
-                        id="fk_categoria_equipo"
-                        ref={fk_categoria_equipoInput}
-                        name="fk_categoria_equipo"
-                        value={data.fk_categoria_equipo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fk_categoria_equipo}
-                        options={handleCategoriaEquipo}
-                    />
-
-                    <SelectField
-                        htmlFor="estadoTorneo"
-                        label="Estado"
-                        id="estadoTorneo"
-                        ref={estadoTorneoInput}
-                        name="estadoTorneo"
-                        value={data.estadoTorneo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.estadoTorneo}
-                        options={[
-                            {
-                                value: "",
-                                label: "Seleccione...",
-                                disabled: true,
-                            },
-                            { value: "Por Iniciar", label: "Por Iniciar" },
-                            { value: "En Juego", label: "En Juego" },
-                            { value: "Finalizado", label: "Finalizado" },
-                        ]}
-                    />
-
-                    <SelectField
-                        htmlFor="inscripcion"
-                        label="Inscripción"
-                        id="inscripcion"
-                        ref={inscripcionInput}
-                        name="inscripcion"
-                        value={data.inscripcion}
-                        onChange={handleInputChange}
-                        errorMessage={errors.inscripcion}
-                        options={[
-                            {
-                                value: "",
-                                label: "Seleccione...",
-                                disabled: true,
-                            },
-                            { value: "Abierta", label: "Abierta" },
-                            { value: "Cerrada", label: "Cerrada" },
-                        ]}
-                    />
-
                     <Textarea2
                         htmlFor="procesoInscripcion"
-                        label="Proceso de Inscripción"
+                        label={
+                            <>
+                                <span>Proceso de Inscripción</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
                         id="procesoInscripcion"
                         type="text"
                         ref={procesoInscripcionInput}
@@ -748,45 +861,6 @@ export default function Dashboard({
                         value={data.procesoInscripcion}
                         onChange={handleInputChange}
                         errorMessage={errors.procesoInscripcion}
-                    />
-
-                    <FormField
-                        htmlFor="reglamentacion"
-                        label="Reglamentación"
-                        id="reglamentacion"
-                        type="text"
-                        ref={reglamentacionInput}
-                        name="reglamentacion"
-                        placeholder="Reglamentación"
-                        value={data.reglamentacion}
-                        onChange={handleInputChange}
-                        errorMessage={errors.reglamentacion}
-                    />
-
-                    <FormField
-                        htmlFor="fechaInicio"
-                        label="Fecha de Inicio"
-                        id="fechaInicio"
-                        type="date"
-                        ref={fechaInicioInput}
-                        name="fechaInicio"
-                        placeholder="Fecha de Inicio"
-                        value={data.fechaInicio}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fechaInicio}
-                    />
-
-                    <FormField
-                        htmlFor="fechaFin"
-                        label="Fecha de Cierre"
-                        id="fechaFin"
-                        type="date"
-                        ref={fechaFinInput}
-                        name="fechaFin"
-                        placeholder="Fecha de Cierre"
-                        value={data.fechaFin}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fechaFin}
                     />
 
                     <div className=" space-x-4 mt-20">

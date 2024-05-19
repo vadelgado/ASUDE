@@ -49,6 +49,7 @@ export default function Modal({ children, show = false, maxWidth = '2xl', closea
                         className={`relative bg-white rounded-lg overflow-auto shadow-xl transform transition-all sm:w-full sm:mx-auto max-h-[80vh] ${maxWidthClass}`}
                     >
                         {children}
+                        <p className="text-red-500 pl-4">Los campos marcados con un <span className="font-bold">*</span> son obligatorios</p>
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>
