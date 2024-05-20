@@ -26,10 +26,9 @@ class TablasGruposController extends Controller
 
         $tablasGrupos = ResultadoSorteo::join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
             ->join('torneo', 'equipos.fk_torneo', '=', 'torneo.id')
-            ->when($torneo_id, function ($query) use ($torneo_id) {
-                return $query->where('torneo.id', $torneo_id);
-            })
+            ->where('torneo.id', $torneo_id)
             ->select('equipos.nombreEquipo','equipos.escudoEquipo' , 'resultado_sorteos.grupoPosicion')
+            ->orderBy('resultado_sorteos.grupoPosicion')
             ->get();
 
         $programacionTorneo = programacionTorneo::join('torneo', 'programacion_torneos.fk_torneo', '=', 'torneo.id')
@@ -37,20 +36,19 @@ class TablasGruposController extends Controller
             ->join('lugar_partidos', 'programacion_torneos.fk_lugarPartido', '=', 'lugar_partidos.id')
             ->join('resultado_sorteos as local', 'programacion_torneos.fk_equipoLocal', '=', 'local.id')
             ->join('resultado_sorteos as visitante', 'programacion_torneos.fk_equipoVisitante', '=', 'visitante.id')
-
             ->join('equipos as elocal', 'local.fk_equipo', '=', 'elocal.id')
             ->join('equipos as evisitante', 'visitante.fk_equipo', '=', 'evisitante.id')
-            ->when($torneo_id, function ($query) use ($torneo_id) {
-                return $query->where('torneo.id', $torneo_id);
-            })
-        ->select('evisitante.nombreEquipo as visitante','lugar_partidos.nomLugar','elocal.nombreEquipo as local','jornada_partidos.jornada','programacion_torneos.HoraPartido', 'torneo.nombreTorneo')
+            ->select('evisitante.nombreEquipo as visitante','lugar_partidos.nomLugar','elocal.nombreEquipo as local','jornada_partidos.jornada','programacion_torneos.HoraPartido', 'torneo.nombreTorneo')
+            ->where('torneo.id', $torneo_id)
             ->get();
         
-        $torneo = torneo::where('id', $torneo_id)->first()
+        $torneo = torneo::where('id', $torneo_id)
             ->select('torneo.nombreTorneo','torneo.cantidadGrupos','torneo.cantidadEquiposParticipantes')
             ->get();
         //dd($torneo);  
-        return Inertia::render('ResultadoSorteo/ShouwTablaGrupos', ['tablasGrupos' => $tablasGrupos, 'programacionTorneo' => $programacionTorneo
+        return Inertia::render('ResultadoSorteo/ShouwTablaGrupos', 
+        ['tablasGrupos' => $tablasGrupos, 
+        'programacionTorneo' => $programacionTorneo
         ,'torneo' => $torneo]); 
     }
 

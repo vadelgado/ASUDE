@@ -22,7 +22,7 @@ class ResultadoSorteo extends Model
     {
         return $this->belongsTo(torneo::class,'fk_torneo');
     }
-
+ 
     public function programacionTorneoLocal()
     {
         return $this->hasMany(programacionTorneo::class,'fk_equipoLocal');

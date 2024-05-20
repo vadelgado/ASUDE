@@ -25,7 +25,7 @@ class Equipos extends Model
     {
         return $this->belongsTo(Categorias::class, 'fk_categoria_equipo');
     }
-
+ 
     public function user()
     {
         return $this->belongsTo(User::class, 'fk_user');

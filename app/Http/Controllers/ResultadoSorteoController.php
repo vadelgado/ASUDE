@@ -9,6 +9,7 @@ use App\Models\Equipos;
 use App\Models\torneo;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -32,6 +33,7 @@ class ResultadoSorteoController extends Controller
                 ->join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
                 ->where('equipos.fk_torneo', $team_id)              
                 ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
+                ->orderBy('resultado_sorteos.grupoPosicion')
                 ->get();           
         } else {
 
@@ -48,20 +50,41 @@ class ResultadoSorteoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'grupoPosicion' => [
-                'required',
-                Rule::unique('resultado_sorteos')->where(function ($query) use ($request) {
-                    return $query->where('grupoPosicion', $request->grupoPosicion);
-                }),
-            ],
+        $rules = [
+            'grupoPosicion' => 'required',
             'fk_equipo' => 'required|unique:resultado_sorteos',
-        ], [
+        ];
+    
+        $messages = [
             'grupoPosicion.required' => 'El Grupo y Posición es obligatorio.',
-            'grupoPosicion.unique' => 'El Grupo y Posición ya están asignados.',
             'fk_equipo.required' => 'El campo Equipo es obligatorio.',
             'fk_equipo.unique' => 'El Equipo ya tiene un resultado asignado.',
-        ]); 
+        ];
+    
+        $validator = Validator::make($request->all(), $rules, $messages);
+    
+        $validator->after(function ($validator) use ($request) {
+            $equipo = Equipos::find($request->fk_equipo);
+            if ($equipo) {
+                $exists = ResultadoSorteo::where('grupoPosicion', $request->grupoPosicion)
+                    ->whereHas('equipo', function ($query) use ($equipo) {
+                        $query->where('fk_torneo', $equipo->fk_torneo);
+                    })
+                    ->exists();
+    
+                if ($exists) {
+                    $validator->errors()->add('grupoPosicion', 'El Grupo y Posición ya están asignados en el torneo.');
+                }
+            } else {
+                $validator->errors()->add('fk_equipo', 'El Equipo especificado no existe.');
+            }
+        });
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        
+        
     
         try {
             $resultadoSorteo = new ResultadoSorteo($request->all());
@@ -77,9 +100,23 @@ class ResultadoSorteoController extends Controller
         $request->validate([
             'grupoPosicion' => [
                 'required',
-                Rule::unique('resultado_sorteos')->ignore($id)->where(function ($query) use ($request) {
-                    return $query->where('grupoPosicion', $request->grupoPosicion);
-                }),
+                Rule::unique('resultado_sorteos')
+                    ->where(function ($query) use ($request) {
+                        $equipo = Equipos::find($request->fk_equipo);
+                        if ($equipo) {
+                            // Hacemos una subconsulta para obtener el torneo y luego filtramos
+                            $query->where('resultado_sorteos.grupoPosicion', $request->grupoPosicion)
+                                  ->where('resultado_sorteos.fk_equipo', function ($subQuery) use ($equipo) {
+                                      $subQuery->select('id')
+                                               ->from('equipos')
+                                               ->where('fk_torneo', $equipo->fk_torneo)
+                                               ->limit(1);
+                                  });
+                        } else {
+                            // Manejar el caso donde el equipo no se encuentra
+                            $query->whereRaw('1 = 0'); // Siempre falso
+                        }
+                    }),
             ],
             'fk_equipo' => ['required', Rule::unique('resultado_sorteos', 'fk_equipo')->ignore($id)],
         ], [

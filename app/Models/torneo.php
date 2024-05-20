@@ -12,6 +12,7 @@ class torneo extends Model
     protected $table = 'torneo';
  
     protected $fillable = [
+        
         'fk_user',
         'nombreTorneo',
         'flayer',
