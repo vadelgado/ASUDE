@@ -24,23 +24,23 @@ class EquiposController extends Controller
      */
     public function index()
     {
-        $userRole = Auth::user()->role;
+        $userRole = Auth::user()->role; 
         $torneos = torneo::all();
         $categorias = Categorias::all();
 
-        $equipos = Equipos::join("torneo", "equipos.fk_torneo", "=", "torneo.id")
-            ->join("categoria_equipo", "equipos.fk_categoria_equipo", "=", "categoria_equipo.id")
-            ->select("equipos.*", "torneo.nombreTorneo", "categoria_equipo.descripcion");
+        $equipos = Equipos::join("categoria_equipo", "equipos.fk_categoria_equipo", "=", "categoria_equipo.id")
+            ->select("equipos.*", "categoria_equipo.descripcion");
 
-        if ($userRole === 'admin') {
+        if ($userRole === 'admin') {            
             $equipos = $equipos->get();
+            
         } else if ($userRole === 'equipo') {
             $equipos = $equipos->where("equipos.fk_user", Auth::user()->id)->get();
         } else {
             return redirect()->route("dashboard");
         }
         
-
+        //DD($equipos);
         return Inertia::render("Equipos/Index", [
             "equipos" => $equipos,
             "torneos" => $torneos,
@@ -69,7 +69,7 @@ public function store(StoreRequest $request)
         "escudoEquipo",
         "numeroWhatsapp",
         "correoElectronico",
-        "fk_torneo"
+        
     );
 
     if ($request->hasFile("escudoEquipo")) {
@@ -99,8 +99,7 @@ public function store(StoreRequest $request)
             "fk_categoria_equipo",
             "escudoEquipo",
             "numeroWhatsapp",
-            "correoElectronico",
-            "fk_torneo"
+            "correoElectronico",   
         );
         $equipo = Equipos::find($id);
 

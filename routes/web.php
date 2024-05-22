@@ -94,6 +94,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
     //toggle estado cuerpoTecnicoAdmin
     Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnicoAdmin.toggle');
     
+    // Resource Inscripciones
+    Route::resource('inscripciones', App\Http\Controllers\InscripcionesController::class);
+
     
     
 });
@@ -161,6 +164,9 @@ Route::middleware('auth', 'role:equipo')->group(function () {
 
     //Preplanilla
     Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
+
+    //Resource Inscripciones
+    Route::resource('inscripcionesEquipo', App\Http\Controllers\InscripcionesController::class);
 });
 
 Route::get('/version', function () {

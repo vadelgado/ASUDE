@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belogsTo;
 
-class programacionTorneo extends Model
+class programacionTorneo extends Model 
 {
     use HasFactory;
     protected $table = 'programacion_torneos';

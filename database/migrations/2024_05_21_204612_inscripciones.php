@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('equipos', function (Blueprint $table) {
+        Schema::create('inscripciones', function (Blueprint $table) {
             $table->id();
-            $table->string('nombreEquipo')->nullable(false);            
-            $table->foreignId('fk_categoria_equipo')->constrained('categoria_equipo');
-            $table->string('escudoEquipo')->nullable(false);
-            $table->string('numeroWhatsapp', 13);
-            $table->string('correoElectronico')->email();
             $table->foreignId('fk_user')->constrained('users');
-            $table->timestamps();            
+            $table->foreignId('fk_torneo')->constrained('torneo');
+            $table->foreignId('fk_equipo')->constrained('equipos');
+            $table->enum('estadoInscripcion', ['Aceptada', 'Rechazada', 'Pendiente'])->default('Pendiente');
+            $table->text('observacion')->nullable();
+            $table->timestamps();
         });
     }
+    
+    
 
     /**
      * Reverse the migrations.

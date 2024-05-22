@@ -12,7 +12,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({
+export default function Index({ 
     auth,
     programacionTorneo, 
     jornadas,

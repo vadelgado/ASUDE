@@ -19,7 +19,7 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
     const grupoPosicionInput = useRef();
     const fk_equipoInput = useRef();
     const {
-        data,
+        data, 
         setData,
         delete: destroy,
         post,

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Equipos;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-
+ 
 class StoreRequest extends FormRequest
 {
     /**
@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
             'escudoEquipo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'numeroWhatsapp' => 'required',
             'correoElectronico' => 'required',
-            'fk_torneo' => 'required',
+            
         ];
     }
 
@@ -49,7 +49,7 @@ class StoreRequest extends FormRequest
             'escudoEquipo.max' => 'El archivo no puede exceder los 2048 KB.',
             'numeroWhatsapp.required' => 'El campo número de WhatsApp es obligatorio.',
             'correoElectronico.required' => 'El campo correo electrónico es obligatorio.',
-            'fk_torneo.required' => 'El campo torneo es obligatorio.',
+            
         ];
     }
 }

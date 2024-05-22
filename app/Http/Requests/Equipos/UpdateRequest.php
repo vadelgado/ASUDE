@@ -4,7 +4,7 @@ namespace App\Http\Requests\Equipos;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-
+ 
 class UpdateRequest extends FormRequest
 {
     /**
@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
             'escudoEquipo' => 'nullable',
             'numeroWhatsapp' => 'required',
             'correoElectronico' => 'required',
-            'fk_torneo' => 'required',
+            
             ];
     }
 
@@ -50,7 +50,7 @@ class UpdateRequest extends FormRequest
             'escudoEquipo.max' => 'El archivo no puede exceder los 2048 KB.',
             'numeroWhatsapp.required' => 'El campo número de WhatsApp es obligatorio.',
             'correoElectronico.required' => 'El campo correo electrónico es obligatorio.',
-            'fk_torneo.required' => 'El campo torneo es obligatorio.',
+            
         ];
     }
 }

@@ -12,13 +12,12 @@ class Equipos extends Model
     protected $table = 'equipos';
 
     protected $fillable = [
-        'nombreEquipo',
+        'nombreEquipo', 
         'fk_categoria_equipo',
         'escudoEquipo',
         'numeroWhatsapp',
         'correoElectronico',
-        'fk_user',
-        'fk_torneo'
+        'fk_user', 
     ];  
     
     public function categoria_equipo()
@@ -29,11 +28,6 @@ class Equipos extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'fk_user');
-    }
-
-    public function torneo()
-    {
-        return $this->belongsTo(Torneo::class, 'fk_torneo');
     }
 
     public function jugadores()

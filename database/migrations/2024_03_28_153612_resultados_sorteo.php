@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('resultado_sorteos', function (Blueprint $table) {
-            $table->id();
-            $table->integer('grupoPosicion')->nullable(false);
-            $table->unsignedBigInteger('fk_equipo')->nullable(false);
-            $table->foreign('fk_equipo')->references('id')->on('equipos');            
+            $table->id();     
+            $table->foreignId('fk_equipo')->constrained('equipos');      
+            $table->foreignId('fk_torneo')->constrained('torneo');
+            $table->unsignedTinyInteger('puesto');
             $table->timestamps();
         });
     }

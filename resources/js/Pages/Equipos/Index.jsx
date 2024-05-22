@@ -11,9 +11,15 @@ import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import WarningButton from "@/Components/WarningButton"; 
+import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, equipos, categorias, torneos, userRole }) {
+export default function Index({
+    auth,
+    equipos,
+    categorias,
+    torneos,
+    userRole,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState("");
@@ -22,7 +28,6 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
     const escudoEquipoInput = useRef();
     const numeroWhatsAppInput = useRef();
     const correoElectronicoInput = useRef();
-    const fk_torneoInput = useRef();
 
     const InitialValues = {
         id: "",
@@ -32,7 +37,6 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
         numeroWhatsapp: "",
         correoElectronico: "",
         fk_user: auth.user.id,
-        fk_torneo: "",
     };
 
     const {
@@ -61,8 +65,7 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
         escudoEquipo,
         numeroWhatsapp,
         correoElectronico,
-        fk_user,
-        fk_torneo
+        fk_user
     ) => {
         setModal(true);
         setOperation(op);
@@ -80,7 +83,6 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                 numeroWhatsapp: numeroWhatsapp,
                 correoElectronico: correoElectronico,
                 fk_user: fk_user,
-                fk_torneo: fk_torneo,
             });
         }
     };
@@ -91,26 +93,26 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
 
     const save = (e) => {
         e.preventDefault();
-    
-        let routeAction = 'store';
-        let message = 'El equipo ha sido guardado.';
-    
+
+        let routeAction = "store";
+        let message = "El equipo ha sido guardado.";
+
         if (operation !== 1) {
-            routeAction = 'update';
-            message = 'El equipo ha sido actualizado.';
+            routeAction = "update";
+            message = "El equipo ha sido actualizado.";
         }
-    
-        let routeBase = 'equipos';
-        if (userRole === 'equipo') {
-            routeBase = 'equiposInvitados';
+
+        let routeBase = "equipos";
+        if (userRole === "equipo") {
+            routeBase = "equiposInvitados";
         }
-    
+
         const routeName = buildRouteName(routeBase, routeAction);
         const routeParams = {};
         if (operation !== 1) {
             routeParams.id = data.id;
         }
-    
+
         post(route(routeName, routeParams), {
             preserveScroll: true,
             onSuccess: () => {
@@ -118,14 +120,13 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
             },
             onError: () => {
                 error("Hubo un error al procesar la solicitud.");
-            }
+            },
         });
     };
-    
+
     const buildRouteName = (base, action) => {
         return `${base}.${action}`;
     };
-    
 
     const ok = (mensaje) => {
         closeModal();
@@ -209,7 +210,7 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                 <th className="px-2 py-2">
                                     Correo Electrónico
                                 </th>
-                                <th className="px-2 py-2">Torneo</th>
+                                <th className="px-2 py-2">Preinscribir</th>
                                 <th className="px-2 py-2">Editar</th>
                                 <th className="px-2 py-2">Eliminar</th>
                             </tr>
@@ -242,7 +243,38 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                             {equipo.correoElectronico}
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
-                                            {equipo.nombreTorneo}
+                                            {userRole === "admin" && (
+                                                <a
+                                                    className="text-white bg-[#5d1df2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+                                                    href={`/inscripciones?equipo_id=${equipo.id}`}
+                                                >
+                                                    <i
+                                                        className="fa-solid fa-book"
+                                                        style={{
+                                                            marginRight: "5px",
+                                                        }}
+                                                    >
+                                                        {" "}
+                                                        Torneos
+                                                    </i>
+                                                </a>
+                                            )}
+                                            {userRole === "equipo" && (
+                                                <a
+                                                    className="text-white bg-[#5d1df2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+                                                    href={`/inscripcionesEquipo?equipo_id=${equipo.id}`}
+                                                >
+                                                    <i
+                                                        className="fa-solid fa-book"
+                                                        style={{
+                                                            marginRight: "5px",
+                                                        }}
+                                                    >
+                                                        {" "}
+                                                        Torneos
+                                                    </i>
+                                                </a>
+                                            )}
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             <WarningButton
@@ -255,8 +287,7 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                                         equipo.escudoEquipo,
                                                         equipo.numeroWhatsapp,
                                                         equipo.correoElectronico,
-                                                        equipo.fk_user,
-                                                        equipo.fk_torneo
+                                                        equipo.fk_user
                                                     )
                                                 }
                                             >
@@ -277,7 +308,11 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             <a
-                                                href={userRole === 'admin' ? `/jugadoresAdmin?equipo_id=${equipo.id}` : `/jugadores?equipo_id=${equipo.id}`}
+                                                href={
+                                                    userRole === "admin"
+                                                        ? `/jugadoresAdmin?equipo_id=${equipo.id}`
+                                                        : `/jugadores?equipo_id=${equipo.id}`
+                                                }
                                                 className="text-blue-600 hover:text-blue-900"
                                             >
                                                 <i className="fa-solid fa-users"></i>
@@ -285,10 +320,14 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                                         </td>
                                         <td className="border border-gray-400 px-4 py-2">
                                             <a
-                                               href={userRole === 'admin' ? `/cuerpoTecnicoAdmin?equipo_id=${equipo.id}` : `/cuerpoTecnico?equipo_id=${equipo.id}`}
+                                                href={
+                                                    userRole === "admin"
+                                                        ? `/cuerpoTecnicoAdmin?equipo_id=${equipo.id}`
+                                                        : `/cuerpoTecnico?equipo_id=${equipo.id}`
+                                                }
                                                 className="text-blue-600 hover:text-blue-900"
                                             >
-                                            <i class="fa-solid fa-person-chalkboard"></i>
+                                                <i className="fa-solid fa-person-chalkboard"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -379,18 +418,6 @@ export default function Index({ auth, equipos, categorias, torneos, userRole }) 
                         value={data.correoElectronico}
                         onChange={handleInputChange}
                         errorMessage={errors.correoElectronico}
-                    />
-
-                    <SelectField
-                        htmlFor="fk_torneo"
-                        label="Torneo"
-                        id="fk_torneo"
-                        ref={fk_torneoInput}
-                        name="fk_torneo"
-                        value={data.fk_torneo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fk_torneo}
-                        options={handletorneos}
                     />
 
                     <div className="mt-1">

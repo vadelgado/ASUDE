@@ -31,11 +31,11 @@ class ProgramacionTorneoController extends Controller
             $jornadas = jornadaPartido::where('fk_torneo', $team_id)->get();
             //lugares de los partidos disponibles
             $lugares = lugarPartido::all();
-            $equipos = equipos::all();
+            
             //los resultados de los sorteos de los equipos que pertenecen al torneo con id = $team_id y sus respectivos equipos nombre del equipo de la tabla equipos
             $resultadoSorteos = DB::table('resultado_sorteos')
                 ->join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
-                ->where('equipos.fk_torneo', $team_id)
+                
                 ->orderBy('grupoPosicion', 'asc')                
                 ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
                 ->get();
@@ -48,13 +48,13 @@ class ProgramacionTorneoController extends Controller
                 ->join('equipos as localEquipo', 'local.fk_equipo', '=', 'localEquipo.id')
                 ->join('equipos as visitanteEquipo', 'visitante.fk_equipo', '=', 'visitanteEquipo.id')
                 ->select('programacion_torneos.*', 'jornada_partidos.jornada', 'lugar_partidos.nomLugar', 'localEquipo.nombreEquipo as localEquipo', 'visitanteEquipo.nombreEquipo as visitanteEquipo', 'localEquipo.escudoEquipo as localEscudo', 'visitanteEquipo.escudoEquipo as visitanteEscudo')
-                ->where('programacion_torneos.fk_torneo', $team_id)
+                
                 ->get();            
         } else {
-            $jornadas = jornadaPartido::all();
-            $lugares = lugarPartido::all();
-            $resultadoSorteos = resultadoSorteo::all();
-            $programacionTorneo = programacionTorneo::all();
+            $jornadas = null;
+            $lugares = null;
+            $resultadoSorteos = null;
+            $programacionTorneo = null;
         }
 
 
@@ -75,43 +75,24 @@ class ProgramacionTorneoController extends Controller
         //
     }
 
-    /** 
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRequest $request)
     {        
-        $data = $request->only('HoraPartido','fk_torneo','fk_jornadaPartido', 'fk_lugarPartido', 'fk_equipoLocal', 'fk_equipoVisitante');
+        $data = $request->only('HoraPartido',
+                                'fk_jornadaPartido',
+                                'fk_lugarPartido',
+                                'posicion_local',
+                                'posicion_visitante');
         programacionTorneo::create($data);        
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(programacionTorneo $programacionTorneo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(programacionTorneo $programacionTorneo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRequest $request, $id)
     {
         //
-        $data = $request->only('HoraPartido',
-                                'fk_torneo', 
+        $data = $request->only('HoraPartido',                                 
                                'fk_jornadaPartido', 
                                'fk_lugarPartido', 
-                               'fk_equipoLocal', 
-                               'fk_equipoVisitante');
+                               'posicion_local', 
+                               'posicion_visitante');
         $programacionTorneo = programacionTorneo::find($id);
         $programacionTorneo->update($data);        
     }
@@ -119,7 +100,7 @@ class ProgramacionTorneoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(programacionTorneo $programacionTorneo)
+    public function destroy($id)
     {
         $programacionTorneo->delete();       
     }

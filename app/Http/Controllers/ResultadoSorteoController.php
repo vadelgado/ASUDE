@@ -22,7 +22,9 @@ class ResultadoSorteoController extends Controller
 
         if ($team_id) {
             // los equipos que perteneces al torno con id = $team_id            
-            $equipos = Equipos::where('fk_torneo', $team_id)->get();
+            $equipos = Equipos::join('inscripciones', 'equipos.id', '=', 'inscripciones.fk_equipo')
+                ->join('torneo', 'inscripciones.fk_torneo', '=', 'torneo.id')
+            ->where('inscripciones.fk_torneo', $team_id)->get();
 
             //Cantidad equipos participantes
 
@@ -30,10 +32,8 @@ class ResultadoSorteoController extends Controller
             //dd($cantidadEquiposParticipantes);
             //los resultados de los sorteos de los equipos que pertenecen al torneo con id = $team_id y sus respectivos equipos nombre del equipo de la tabla equipos
             $resultadoSorteos = DB::table('resultado_sorteos')
-                ->join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
-                ->where('equipos.fk_torneo', $team_id)              
-                ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
-                ->orderBy('resultado_sorteos.grupoPosicion')
+                ->join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')                             
+                ->select('resultado_sorteos.*', 'equipos.nombreEquipo', 'equipos.escudoEquipo')                
                 ->get();           
         } else {
 
@@ -50,7 +50,7 @@ class ResultadoSorteoController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
+        $rules = [ 
             'grupoPosicion' => 'required',
             'fk_equipo' => 'required|unique:resultado_sorteos',
         ];

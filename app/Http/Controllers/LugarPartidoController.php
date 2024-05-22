@@ -79,7 +79,7 @@ class LugarPartidoController extends Controller
 
         $lugarPartido->delete();
 
-        return redirect()->route('lugarPartido.index');
+        
     }
 
 }

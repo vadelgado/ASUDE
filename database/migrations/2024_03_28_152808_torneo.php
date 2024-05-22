@@ -35,9 +35,9 @@ return new class extends Migration
             $table->text('procesoInscripcion')->nullable(false)->default('próximamente');
             $table->text('reglamentacion')->nullable(false)->default('próximamente');
             $table->date('fechaInicio')->nullable(true);
-            $table->date('fechaFin')->nullable(true);            
-            $table->timestamps(false);
-            });
+            $table->date('fechaFin')->nullable(true);    
+            $table->timestamps();        
+            }); 
     } 
 
     /**
