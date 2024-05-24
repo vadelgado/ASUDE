@@ -9,14 +9,13 @@ use Illuminate\Database\Eloquent\Relations\belogsTo;
 class programacionTorneo extends Model 
 {
     use HasFactory;
-    protected $table = 'programacion_torneos';
-    protected $fillable = ['HoraPartido','fk_torneo', 'fk_jornadaPartido', 'fk_lugarPartido', 'fk_equipoLocal', 'fk_equipoVisitante'];
+    protected $table = 'programacion_torneos'; 
+    protected $fillable = ['HoraPartido',     
+    'fk_jornadaPartido', 
+    'fk_lugarPartido', 
+    'posicion_local', 
+    'posicion_visitante'];
     public $timestamps = false;
-
-    public function torneo()
-    {
-        return $this->belongsTo(torneo::class, 'fk_torneo');
-    }
 
     public function jornadaPartido()
     {
@@ -27,17 +26,5 @@ class programacionTorneo extends Model
     {
         return $this->belongsTo(lugarPartido::class, 'fk_lugarPartido');
     }
-
-    public function equipoLocal()
-    {
-        return $this->belongsTo(resultado_sorteos::class, 'fk_equipoLocal');
-    }
-
-    public function equipoVisitante()
-    {
-        return $this->belongsTo(resultado_sorteos::class, 'fk_equipoVisitante');
-    }
-
-    
 
 }

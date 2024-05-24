@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LugarPartido\StoreRequest;
 use App\Http\Requests\LugarPartido\UpdateRequest;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage; 
+use App\Models\torneo;
 
 use App\Models\lugarPartido;
 
@@ -17,16 +18,26 @@ use Illuminate\Validation\Rule;
 class LugarPartidoController extends Controller
 {
 
-    public function index()
+    public function index( Request $request) 
     {
+        //id del torneo
+        $torneo_id = $request->input('torneo_id');
+        $torneo = torneo::where('id' ,$torneo_id)
+            ->select('torneo.nombreTorneo', 'torneo.id', 'torneo.fechaInicio', 'torneo.fechaFin')
+            ->get();
+        $lugarPartidos = lugarPartido::join('torneo', 'lugar_partidos.fk_torneo', '=', 'torneo.id')
+            ->where('fk_torneo', $torneo_id)
+            ->select('lugar_partidos.*', 'torneo.nombreTorneo')
+            ->orderBy('lugar_partidos.nomLugar')            
+            ->get();
         return Inertia::render('LugarPartido/Index', [
-            'lugarPartidos' => lugarPartido::all()
-        ]);   
+            'lugarPartidos' => $lugarPartidos, 
+            'torneo' => $torneo]);   
     }
 
     public function store(StoreRequest $request)
     {
-        $data = $request->only('nomLugar', 'geolocalizacion', 'direccion');
+        $data = $request->only('nomLugar', 'geolocalizacion', 'direccion', 'fk_torneo');
 
         if($request->hasFile('fotoLugar')) {
             $file = $request->file('fotoLugar');
@@ -35,14 +46,12 @@ class LugarPartidoController extends Controller
         }
 
         LugarPartido::create($data);
-
-        return redirect()->route('lugarPartido.index');
     }
 
     public function update(UpdateRequest $request, $id)
     {
         
-        $data = $request->only('nomLugar', 'geolocalizacion', 'direccion');
+        $data = $request->only('nomLugar', 'geolocalizacion', 'direccion', 'fk_torneo');
         $lugarPartido = LugarPartido::find($id);
 
         if($request->hasFile('fotoLugar')) {
@@ -64,7 +73,6 @@ class LugarPartidoController extends Controller
 
         $lugarPartido->update($data);
 
-        return redirect()->route('lugarPartido.index', $lugarPartido);
     }
     
 

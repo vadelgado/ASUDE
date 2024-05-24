@@ -172,9 +172,17 @@ export default function Index({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Pre Inscripciones
-                </h2>
+                <div className="flex justify-center items-center py-1 px-2">
+                    <h2 className="flex items-center font-semibold text-xl text-gray-800 leading-tight">
+                        Pre Inscripciones equipo
+                        <img
+                            src={`/storage/${equipo.escudoEquipo}`}
+                            alt={`Escudo equipo ${equipo.escudoEquipo}`}
+                            className="h-10 w-10 rounded-full ml-2"
+                        />
+                        {equipo.nombreEquipo}
+                    </h2>
+                </div>
             }
         >
             <Head title="Programación Torneo" />
@@ -195,7 +203,6 @@ export default function Index({
                         <tr>
                             <th className="border px-4 py-2">#</th>
                             <th className="border px-4 py-2">Torneo</th>
-                            <th className="border px-4 py-2">Equipo</th>
                             <th className="border px-4 py-2">Estado</th>
                             <th className="border px-4 py-2">Observación</th>
                             <th className="px-2 py-2"></th>
@@ -213,52 +220,57 @@ export default function Index({
                                     {inscripcion.nombreTorneo}
                                 </td>
                                 <td className="border px-4 py-2">
-                                    <div className="flex flex-center">
-                                        <img
-                                            src={`/storage/${inscripcion.escudoEquipo}`}
-                                            alt={inscripcion.nombreTorneo}
-                                            className="h-10 w-10 rounded-full"
-                                        />
-                                        {inscripcion.nombreEquipo}
-                                    </div>
-                                </td>
-                                <td className="border px-4 py-2">
-                                    {inscripcion.estadoInscripcion}
+                                    <span
+                                        className={`flex gap-x-2 rounded-full text-xs text-white py-1 px-2 ${
+                                            inscripcion.estadoInscripcion ===
+                                            "Pendiente"
+                                                ? "bg-yellow-600"
+                                                : inscripcion.estadoInscripcion ===
+                                                  "Aceptada"
+                                                ? "bg-green-600"
+                                                : inscripcion.estadoInscripcion ===
+                                                  "Rechazada"
+                                                ? "bg-red-600"
+                                                : ""
+                                        }`}
+                                    >
+                                        {inscripcion.estadoInscripcion}
+                                    </span>
                                 </td>
                                 <td className="border border-gray-400 px-4 py-2">
                                     {inscripcion.observacion}
                                 </td>
                                 {auth.user.role === "admin" ? (
-                                <td className="border border-gray-400 px-4 py-2">
-                                    <PrimaryButton
-                                        onClick={() =>
-                                            handleModal(
-                                                2,
-                                                inscripcion.id,
-                                                inscripcion.fk_torneo,
-                                                inscripcion.fk_equipo,
-                                                inscripcion.estadoInscripcion,
-                                                inscripcion.observacion
-                                            )
-                                        }
-                                    >
-                                        Editar
-                                    </PrimaryButton>
-                                </td>
+                                    <td className="border border-gray-400 px-4 py-2">
+                                        <PrimaryButton
+                                            onClick={() =>
+                                                handleModal(
+                                                    2,
+                                                    inscripcion.id,
+                                                    inscripcion.fk_torneo,
+                                                    inscripcion.fk_equipo,
+                                                    inscripcion.estadoInscripcion,
+                                                    inscripcion.observacion
+                                                )
+                                            }
+                                        >
+                                            Editar
+                                        </PrimaryButton>
+                                    </td>
                                 ) : null}
                                 {auth.user.role === "admin" ? (
-                                <td className="border border-gray-400 px-4 py-2">
-                                    <DangerButton
-                                        onClick={() =>
-                                            eliminar(
-                                                inscripcion.id,
-                                                inscripcion.nombreTorneo
-                                            )
-                                        }
-                                    >
-                                        <i className="fa-solid fa-trash"></i>
-                                    </DangerButton>
-                                </td>
+                                    <td className="border border-gray-400 px-4 py-2">
+                                        <DangerButton
+                                            onClick={() =>
+                                                eliminar(
+                                                    inscripcion.id,
+                                                    inscripcion.nombreTorneo
+                                                )
+                                            }
+                                        >
+                                            <i className="fa-solid fa-trash"></i>
+                                        </DangerButton>
+                                    </td>
                                 ) : null}
                             </tr>
                         ))}
@@ -267,9 +279,20 @@ export default function Index({
             </div>
 
             <Modal show={modal} close={closeModal}>
-                <h2 className="text-lg font-medium text-gray-900">{title}</h2>
+            <div className="flex justify-center items-center py-1 px-2 my-3">
+                    <h2 className="flex items-center font-semibold text-xl text-gray-800 leading-tight">
+                    {title}
+                        <img
+                            src={`/storage/${equipo.escudoEquipo}`}
+                            alt={`Escudo equipo ${equipo.nombreTorneo}`}
+                            className="h-10 w-10 rounded-full ml-2"
+                        />
+                        {equipo.nombreEquipo}
+                    </h2>
+                </div>                
                 <form onSubmit={handleSubmit} className="p-6">
                     {auth.user.role === "admin" ? (
+                        
                         <SelectField
                             htmlFor="fk_torneo"
                             label={
@@ -286,8 +309,10 @@ export default function Index({
                             options={handleSelectTorneos}
                             errorMessage={errors.fk_torneo}
                         />
+
                     ) : auth.user.role === "equipo" ? (
                         <>
+                           
                             <SelectField
                                 htmlFor="fk_torneo"
                                 label={
@@ -304,6 +329,7 @@ export default function Index({
                                 options={handleSelectTorneos}
                                 errorMessage={errors.fk_torneo}
                             />
+                            
                             {selectedTorneo && (
                                 <>
                                     <img
@@ -314,7 +340,7 @@ export default function Index({
                                 </>
                             )}
                         </>
-                    ) :  null}
+                    ) : null}
 
                     {auth.user.role === "admin" ? (
                         <SelectField

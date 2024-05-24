@@ -229,6 +229,8 @@ export default function Dashboard({
         >
             <Head title="Torneos" />
 
+            
+
             <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
                 <div className="mt-1 mb-1 flex justify-end">
                     <PrimaryButton onClick={() => openModal(1)}>
@@ -284,6 +286,45 @@ export default function Dashboard({
                                     </a>
 
                                     <a
+                                        class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+                                        href={`/jornadaPartido?torneo_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-sun">
+                                            {" "}
+                                            Jornadas Torneo
+                                        </i>
+                                    </a>
+
+                                    <a
+                                        class="text-white bg-[#cf1df2] hover:bg-[#cf1df2]/90 focus:ring-4 focus:outline-none focus:ring-[#cf1df2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#cf1df2]/55 me-2 mb-2"
+                                        href={`/lugarPartido?torneo_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-location-dot">
+                                            {" "}
+                                            Lugares Partidos
+                                        </i>
+                                    </a>
+                                    <a
+                                        class="text-white bg-[#f23d1d] hover:bg-[#f23d1d]/90 focus:ring-4 focus:outline-none focus:ring-[#f23d1d]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#f23d1d]/55 me-2 mb-2"
+                                        href={`/programacionTorneo?team_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-calendar-days">
+                                            {" "}
+                                            Programacion Torneo
+                                        </i>
+                                    </a>
+
+                                    <a
+                                        class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                        href={`/resultadoSorteo?team_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-dice">
+                                            {" "}
+                                            Sorteo
+                                        </i>
+                                    </a>
+
+                                    <a
                                         class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2"
                                         onClick={() =>
                                             eliminar(
@@ -297,26 +338,7 @@ export default function Dashboard({
                                             Eliminar
                                         </i>
                                     </a>
-
-                                    <a
-                                        class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
-                                        href={`/resultadoSorteo?team_id=${torneo.id}`}
-                                    >
-                                        <i className="fa-solid fa-dice">
-                                            {" "}
-                                            Resultado Sorteo
-                                        </i>
-                                    </a>
-
-                                    <a
-                                        class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
-                                        href={`/programacionTorneo?team_id=${torneo.id}`}
-                                    >
-                                        <i className="fa-solid fa-calendar-days">
-                                            {" "}
-                                            Programacion Torneo
-                                        </i>
-                                    </a>
+                                    
                                 </div>
                                 <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                     <strong>Nombre del Torneo:</strong>{" "}

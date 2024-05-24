@@ -78,11 +78,7 @@ class InscripcionesController extends Controller
             $data['fk_torneo'] = $request->input('fk_torneo');            
             $data['estadoInscripcion'] = 'Pendiente';
             $data['fk_user'] = Auth::user()->id;
-            $data['fk_equipo'] = $request->input('fk_equipo');
-            
-
-         
-             
+            $data['fk_equipo'] = $request->input('fk_equipo');             
          }
          Inscripciones::create($data);       
      }

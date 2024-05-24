@@ -12,7 +12,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Dashboard({ auth, lugarPartidos }) {
+export default function Dashboard({ auth, lugarPartidos,torneo }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -25,6 +25,7 @@ export default function Dashboard({ auth, lugarPartidos }) {
         geolocalizacion: "",
         direccion: "",
         fotoLugar: null,
+        fk_torneo: torneo[0].id, 
     };
     const {
         data,
@@ -50,7 +51,8 @@ export default function Dashboard({ auth, lugarPartidos }) {
         nomLugar,
         geolocalizacion,
         direccion,
-        fotoLugar
+        fotoLugar,
+        fk_torneo
     ) => {
         setModal(true);
         setOperation(op);
@@ -61,6 +63,7 @@ export default function Dashboard({ auth, lugarPartidos }) {
                 geolocalizacion: "",
                 direccion: "",
                 fotoLugar: null,
+                fk_torneo: torneo[0].id, 
             });
         } else {
             setTitle("Editar Lugar Partido");
@@ -70,6 +73,7 @@ export default function Dashboard({ auth, lugarPartidos }) {
                 geolocalizacion: geolocalizacion,
                 direccion: direccion,
                 fotoLugar: fotoLugar,
+                fk_torneo: torneo[0].id,
             });
         }
     };
@@ -132,7 +136,7 @@ export default function Dashboard({ auth, lugarPartidos }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Lugar Partido
+                    Lugares Partidos para el torneo {torneo[0].nombreTorneo} del {torneo[0].fechaInicio} al {torneo[0].fechaFin}
                 </h2>
             }
         >
@@ -198,7 +202,8 @@ export default function Dashboard({ auth, lugarPartidos }) {
                                                     lugarPartido.nomLugar,
                                                     lugarPartido.geolocalizacion,
                                                     lugarPartido.direccion,
-                                                    lugarPartido.fotoLugar
+                                                    lugarPartido.fotoLugar,
+                                                    lugarPartido.fk_torneo
                                                 )
                                             }
                                         >
@@ -236,6 +241,15 @@ export default function Dashboard({ auth, lugarPartidos }) {
             <Modal show={modal} onClose={closeModal}>
                 <h2 className="text-lg font-medium text-gray-900">{title}</h2>
                 <form onSubmit={save} className="p-6">
+                    
+                    <input 
+                    type="text"
+                    value={data.fk_torneo}
+                    name="fk_torneo"
+                    hidden
+                    readonly                    
+                    />
+
                     <FormField
                         htmlFor="nomLugar"
                         label="Nombre"

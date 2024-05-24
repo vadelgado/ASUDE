@@ -23,7 +23,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
 {
-    $id = $this->route('programacionTorneo'); 
+    $id = $this->route('programacionTorneo');  
     return [
         'HoraPartido' => 'required',
         'fk_jornadaPartido' => [

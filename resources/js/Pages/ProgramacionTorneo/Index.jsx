@@ -158,6 +158,7 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
 
+
             <div className="bg-white grid v-screen place-items-center">
                 <div className="mt-2 mb-3 flex justify-end">
                     <PrimaryButton onClick={() => handleModal(1)}>

@@ -92,16 +92,7 @@ export default function Authenticated({ user, header, children }) {
                                     </NavLink>
                                 )}
 
-                                {user.role === "admin" && (
-                                    <NavLink
-                                        href={route("lugarPartido.index")}
-                                        active={route().current(
-                                            "lugarPartido.index"
-                                        )}
-                                    >
-                                        📍 Lugar Partidos
-                                    </NavLink>
-                                )}
+
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 {user.role === "acudiente" && (
@@ -134,16 +125,6 @@ export default function Authenticated({ user, header, children }) {
                                         active={route().current("torneo.index")}
                                     >
                                         Torneos
-                                    </NavLink>
-                                )}
-                                {user.role === "admin" && (
-                                    <NavLink
-                                        href={route("jornadaPartido.index")}
-                                        active={route().current(
-                                            "jornadaPartido.index"
-                                        )}
-                                    >
-                                        Jornadas Torneos
                                     </NavLink>
                                 )}
                             </div>

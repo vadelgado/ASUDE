@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
-{
+{ 
     /**
      * Run the migrations.
      */
@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('programacion_torneos', function (Blueprint $table) {
             $table->id();
+
             $table->Time('HoraPartido');
             
             $table->foreignId('fk_jornadaPartido')->constrained('jornada_partidos');
 
             $table->foreignId('fk_lugarPartido')->constrained('lugar_partidos');
             
-            $table->unsignedTinyInteger('posicion_local')->nullable(false);
+            $table->unsignedTinyInteger('posicion_local');
 
-            $table->unsignedTinyInteger('posicion_visitante')->nullable(false);
+            $table->unsignedTinyInteger('posicion_visitante');
             $table->timestamps();
         });
     

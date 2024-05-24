@@ -10,11 +10,16 @@ class lugarPartido extends Model
 {
     use HasFactory;
     protected $table = 'lugar_partidos';
-    protected $fillable = ['nomLugar', 'geolocalizacion', 'direccion', 'fotoLugar'];
+    protected $fillable = ['nomLugar', 'geolocalizacion', 'direccion', 'fotoLugar', 'fk_torneo'];
     public $timestamps = false;
     
     public function programacionTorneo()
     {
         return $this->hasMany(programacionTorneo::class, 'fk_lugarPartido');
+    } 
+
+    public function torneo()
+    {
+        return $this->belongsTo(torneo::class, 'fk_torneo');
     }
 }

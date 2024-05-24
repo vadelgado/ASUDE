@@ -16,7 +16,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
     const fechaJornadaInput = useRef();
-    const fk_torneoInput = useRef();
+    
     const jornadaInput = useRef();
     const {
         data,
@@ -30,16 +30,16 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
     } = useForm({
         id: "",
         fechaJornada: "",
-        fk_torneo: "",
+        fk_torneo: torneo[0].id, 
         jornada: "",
     });
 
-    const openModal = (op, id, fechaJornada, fk_torneo, jornada) => {
+    const openModal = (op, id, fechaJornada, fk_torneo,  jornada) => {
         setModal(true);
         setOperation(op);
         setData({
             fechaJornada: fechaJornada,
-            fk_torneo: fk_torneo,
+            fk_torneo: torneo[0].id,
             jornada: jornada,
         });
         if (op === 1) {
@@ -47,7 +47,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
             setData({
                 id: "",
                 fechaJornada: "",
-                fk_torneo: "",
+                fk_torneo: torneo[0].id,
                 jornada: "",
             });
         } else {
@@ -55,7 +55,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
             setData({
                 id: id,
                 fechaJornada: fechaJornada,
-                fk_torneo: fk_torneo,
+                fk_torneo: torneo[0].id,
                 jornada: jornada,
             });
         }
@@ -78,8 +78,6 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                 onError: () => {
                     if (errors.fechaJornada) {
                         fechaJornadaInput.current.focus();
-                    } else if (errors.fk_torneo) {
-                        torneoInput.current.focus();
                     } else if (errors.jornada) {
                         jornadaInput.current.focus();
                     }
@@ -94,9 +92,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
 
                 onError: () => {
                     if (errors.fechaJornada) {
-                        fechaJornadaInput.current.focus();
-                    } else if (errors.fk_torneo) {
-                        torneoInput.current.focus();
+                        fechaJornadaInput.current.focus(); 
                     } else if (errors.jornada) {
                         jornadaInput.current.focus();
                     }
@@ -139,7 +135,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     {" "}
-                    🕛 Jornadas de Juego
+                    🕛 Jornadas de Juego para el torneo {torneo[0].nombreTorneo} del {torneo[0].fechaInicio} al {torneo[0].fechaFin}
                 </h2>
             }
         >
@@ -162,8 +158,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
-                                <th className="px-2 py-2">Fecha</th>
-                                <th className="px-2 py-2">Toreno</th>
+                                <th className="px-2 py-2">Fecha</th> 
                                 <th className="px-2 py-2">Jornada</th>
                                 <th className="px-2 py-2">Editar</th>
                                 <th className="px-2 py-2">Eliminar</th>
@@ -179,9 +174,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                                         <td className="border border-gray-400 px-2 py-2">
                                             {jornadaPartido.fechaJornada}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
-                                            {jornadaPartido.nombreTorneo}
-                                        </td>
+
                                         <td className="border border-gray-400 px-2 py-2">
                                             {jornadaPartido.jornada}
                                         </td>
@@ -232,7 +225,11 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                         {title}
                     </h2>
                     <form onSubmit={save}>
+
+                            
+
                         <div className="mt-4">
+
                             <InputLabel
                                 htmlFor="fechaJornada"
                                 value="Fecha Jornada"
@@ -259,35 +256,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                             </p>
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel
-                                htmlFor="fk_torneo"
-                                value="Torneo"
-                                className="block text-sm font-medium text-gray-700"
-                            />
-                            <select
-                                id="fk_torneo"
-                                ref={fk_torneoInput}
-                                name="fk_torneo"
-                                value={data.fk_torneo}
-                                onChange={(e) =>
-                                    setData("fk_torneo", e.target.value)
-                                }
-                                className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
-                                    errors["fk_torneo"] ? "border-red-500" : ""
-                                }`}
-                            >
-                            <option value="">Selecciona una opción</option>
-                            {torneo.map((torneo) => (
-                                <option value={torneo.id}key={torneo.id}>
-                                    {torneo.nombreTorneo}
-                                </option>
-                            ))}
-                        </select>
-                            <p className="mt-2 text-sm text-red-600">
-                                {errors["torneo"]}
-                            </p>
-                        </div>
+
 
                         <div className="mt-4">
                             <InputLabel

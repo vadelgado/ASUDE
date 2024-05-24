@@ -11,16 +11,23 @@ use Inertia\Inertia;
 class JornadaPartidoController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $torneo = torneo::all();
-        $jornadaPartidos = jornadaPartido::join('torneo', 'jornada_partidos.fk_torneo', '=', 'torneo.id')
-            ->select('jornada_partidos.*', 'torneo.nombreTorneo')
-            ->orderBy('jornada_partidos.fechaJornada', 'desc')
-            ->orderBy('jornada_partidos.jornada', 'desc')
+        //id del torneo
+        $torneo_id = $request->input('torneo_id');
+        $torneo = torneo::where('id' ,$torneo_id)
+            ->select('torneo.nombreTorneo', 'torneo.id', 'torneo.flayer', 'torneo.fechaInicio', 'torneo.fechaFin')
             ->get();
-        
-        return Inertia::render('JornadaPartido/Index', ['jornadaPartidos' => $jornadaPartidos, 'torneo' => $torneo]);
+        $jornadaPartidos = jornadaPartido::join('torneo', 'jornada_partidos.fk_torneo', '=', 'torneo.id')
+            ->where('fk_torneo', $torneo_id)
+            ->select('jornada_partidos.*', 'torneo.nombreTorneo')
+            ->orderBy('jornada_partidos.fechaJornada')
+            
+            ->get();
+        //dd($torneo, $jornadaPartidos  );
+        return Inertia::render('JornadaPartido/Index', [
+            'jornadaPartidos' => $jornadaPartidos, 
+            'torneo' => $torneo]);
     }
 
     public function store(Request $request)
@@ -37,15 +44,14 @@ class JornadaPartidoController extends Controller
         ], [
             'fechaJornada.required' => 'La fecha de la jornada es requerida',
             'fechaJornada.date' => 'La fecha de la jornada no es válida',
-            'jornada.required' => 'La jornada es requerida', 
+            'jornada.required' => 'La jornada es requerida',
             'jornada.max' => 'La jornada no puede tener más de 100 caracteres',
             'jornada.unique' => 'La jornada ya existe para el torneo seleccionado',
             'fk_torneo.required' => 'El torneo es requerido',
             'fk_torneo.exists' => 'El torneo no existe',
         ]);
-    
         try {
-            jornadaPartido::create($request->all())->saveOrFail();            
+            jornadaPartido::create($request->all());
         } catch (\Exception $e) {
             return response()->json(['message' => 'Hubo un error al crear la jornada'], 500);
         }
@@ -55,6 +61,7 @@ class JornadaPartidoController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $request->validate([
             'fechaJornada' => ['required', 'date'],
             'jornada' => ['required', 'max:100',
