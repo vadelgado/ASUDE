@@ -10,7 +10,7 @@ class ResultadoSorteo extends Model
 {
     use HasFactory;
     protected $table = 'resultado_sorteos';
-    protected $fillable = ['grupoPosicion','fk_equipo'];
+    protected $fillable = ['fk_equipo','fk_torneo', 'puesto'];
     public $timestamps = true;
     
     public function equipo()

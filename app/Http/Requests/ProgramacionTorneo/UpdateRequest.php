@@ -31,18 +31,18 @@ class UpdateRequest extends FormRequest
             Rule::unique('programacion_torneos')->where(function ($query) {
                 return $query->where('fk_jornadaPartido', $this->input('fk_jornadaPartido'))
                              ->where(function ($q) {
-                                 $q->where('fk_equipoLocal', $this->input('fk_equipoLocal'))
-                                   ->orWhere('fk_equipoVisitante', $this->input('fk_equipoLocal'));
+                                 $q->where('posicion_local', $this->input('posicion_local'))
+                                   ->orWhere('posicion_visitante', $this->input('posicion_local'));
                              })
                              ->orWhere(function ($q) {
-                                 $q->where('fk_equipoLocal', $this->input('fk_equipoVisitante'))
-                                   ->orWhere('fk_equipoVisitante', $this->input('fk_equipoVisitante'));
+                                 $q->where('posicion_local', $this->input('posicion_visitante'))
+                                   ->orWhere('posicion_visitante', $this->input('posicion_visitante'));
                              });
             })->ignore($id, 'id'),
         ],
         'fk_lugarPartido' => 'required',
-        'fk_equipoLocal' => 'required|different:fk_equipoVisitante|not_in:' . $this->input('fk_equipoVisitante'),
-        'fk_equipoVisitante' => 'required|different:fk_equipoLocal|not_in:' . $this->input('fk_equipoLocal'),
+        'posicion_local' => 'required|different:posicion_visitante|not_in:' . $this->input('posicion_visitante'),
+        'posicion_visitante' => 'required|different:posicion_local|not_in:' . $this->input('posicion_local'),
     ];
 }
 
@@ -60,12 +60,12 @@ class UpdateRequest extends FormRequest
             'fk_jornadaPartido.required' => 'La jornada del partido es requerida.',
             'fk_jornadaPartido.unique' => 'Revisar Jornada Equipo Local y visitante alguno se esta repitiendo.',
             'fk_lugarPartido.required' => 'El lugar del partido es requerido.',
-            'fk_equipoLocal.required' => 'Por favor, selecciona el equipo local.',
-            'fk_equipoLocal.different' => 'El equipo local y el equipo visitante deben ser diferentes.',
-            'fk_equipoLocal.not_in' => 'El equipo local no puede ser el mismo que el equipo visitante.',
-            'fk_equipoVisitante.required' => 'Por favor, selecciona el equipo visitante.',
-            'fk_equipoVisitante.different' => 'El equipo local y el equipo visitante deben ser diferentes.',
-            'fk_equipoVisitante.not_in' => 'El equipo visitante no puede ser el mismo que el equipo local.',
+            'posicion_local.required' => 'Por favor, selecciona el equipo local.',
+            'posicion_local.different' => 'El equipo local y el equipo visitante deben ser diferentes.',
+            'posicion_local.not_in' => 'El equipo local no puede ser el mismo que el equipo visitante.',
+            'posicion_visitante.required' => 'Por favor, selecciona el equipo visitante.',
+            'posicion_visitante.different' => 'El equipo local y el equipo visitante deben ser diferentes.',
+            'posicion_visitante.not_in' => 'El equipo visitante no puede ser el mismo que el equipo local.',
         ];
     }
 }

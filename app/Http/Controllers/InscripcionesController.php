@@ -56,6 +56,7 @@ class InscripcionesController extends Controller
             'inscripciones' => $inscripciones,
             'fk_equipo' => $equipo_id,
             'userRole' => Auth::user()->role,
+            //dd($torneo, $equipo, $inscripciones, $equipo_id)
         ]);   
     }
      
@@ -80,6 +81,7 @@ class InscripcionesController extends Controller
             $data['fk_user'] = Auth::user()->id;
             $data['fk_equipo'] = $request->input('fk_equipo');             
          }
+            dd($data);   
          Inscripciones::create($data);       
      }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombreEquipo')->nullable(false);            
             $table->foreignId('fk_categoria_equipo')->constrained('categoria_equipo');
-            $table->string('escudoEquipo')->nullable(false);
+            $table->string('escudoEquipo')->nullable(true);
             $table->string('numeroWhatsapp', 13);
             $table->string('correoElectronico')->email();
             $table->foreignId('fk_user')->constrained('users');

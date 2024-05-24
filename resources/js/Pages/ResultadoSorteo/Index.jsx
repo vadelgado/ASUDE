@@ -1,25 +1,29 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import WarningButton from "@/Components/WarningButton";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Swal from "sweetalert2";
-import TextInput from "@/Components/TextInput";
 import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
+import SelectField from "@/Components/SelectField";
 
-export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposParticipantes }) {
+export default function Index({
+    auth,
+    resultadoSorteos,
+    equipos,
+    cantidadEquiposParticipantes,
+    torneo_id,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
-    const grupoPosicionInput = useRef();
+    const puestoInput = useRef();
     const fk_equipoInput = useRef();
     const {
-        data, 
+        data,
         setData,
         delete: destroy,
         post,
@@ -29,27 +33,33 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
         errors,
     } = useForm({
         id: "",
-        grupoPosicion: "",
+        puesto: "",
         fk_equipo: "",
+        fk_torneo: torneo_id,
     });
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevData) => ({ ...prevData, [name]: value }));
+    };
 
-    const openModal = (op, id, grupoPosicion, fk_equipo) => {
+    const openModal = (op, id, puesto, fk_equipo, fk_torneo) => {
         setModal(true);
         setOperation(op);
-        setData({ grupoPosicion: "", fk_equipo: "" });
         if (op === 1) {
             setTitle("Agregar Resultado Sorteo");
             setData({
                 id: "",
-                grupoPosicion: "",
+                puesto: "",
                 fk_equipo: "",
-            });            
+                fk_torneo: torneo_id,
+            });
         } else {
             setTitle("Editar Resultado Sorteo");
             setData({
                 id: id,
-                grupoPosicion: grupoPosicion,
+                puesto: puesto,
                 fk_equipo: fk_equipo,
+                fk_torneo: torneo_id,
             });
         }
     };
@@ -58,8 +68,9 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
         setModal(false);
     };
 
-    const save = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+
         if (operation === 1) {
             post(route("resultadoSorteo.store"), {
                 onSuccess: () => {
@@ -123,6 +134,22 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
             });
     };
 
+    const handleSelectPuestos = [
+        { value: "", label: "Seleccione ..."},
+        ...Array.from({ length: cantidadEquiposParticipantes }, (_, i) => ({
+            value: i + 1,
+            label: `Equipo ${i + 1}`,
+        })),
+    ];
+
+    const handleSelectEquipos = [
+        { value: "", label: "Seleccione ..."},
+        ...equipos.map((equipo) => ({
+            value: equipo.id,
+            label: equipo.nombreEquipo,
+        })),
+    ];
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -148,9 +175,12 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
                     <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg text-center items-center">
                         <thead>
                             <tr className="bg-gray-100">
-                                <th className="px-2 py-2 uppercase font-semibold text-sm">Grupo y Pocisión</th>
-                                <th className="px-2 py-2 uppercase font-semibold text-sm">Escudo</th>
-                                <th className="px-2 py-2 uppercase font-semibold text-sm">Equipo</th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm">
+                                    Grupo y Posición
+                                </th>
+                                <th className="px-2 py-2 uppercase font-semibold text-sm">
+                                    Equipo
+                                </th>
                                 <th className="px-2 py-2 uppercase font-semibold text-sm"></th>
                                 <th className="px-2 py-2 uppercase font-semibold text-sm"></th>
                             </tr>
@@ -160,16 +190,14 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
                                 resultadoSorteos.map((resultadoSorteo) => (
                                     <tr key={resultadoSorteo.id}>
                                         <td className="border border-gray-400 px-2 py-2">
-                                            {resultadoSorteo.grupoPosicion}
+                                            {resultadoSorteo.puesto}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
-                                            <img
+                                        <td className="flex flex-auto border border-gray-400 px-2 py-2">
+                                        <img
                                                 src={`/storage/${resultadoSorteo.escudoEquipo}`}
                                                 alt={`Foto de ${resultadoSorteo.nombreEquipo}`}
                                                 className="h-10 w-10 rounded-full"
                                             />
-                                        </td>
-                                        <td className="border border-gray-400 px-2 py-2">
                                             {resultadoSorteo.nombreEquipo}
                                         </td>
                                         <td className="border border-gray-400 px-2 py-2">
@@ -178,8 +206,9 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
                                                     openModal(
                                                         2,
                                                         resultadoSorteo.id,
-                                                        resultadoSorteo.grupoPosicion,
-                                                        resultadoSorteo.fk_equipo
+                                                        resultadoSorteo.puesto,
+                                                        resultadoSorteo.fk_equipo,
+                                                        resultadoSorteo.fk_torneo
                                                     )
                                                 }
                                             >
@@ -215,74 +244,50 @@ export default function Index({ auth, resultadoSorteos, equipos,cantidadEquiposP
                 <h2 className="p-3 text-lg font-medium text-gray-900">
                     {title}
                 </h2>
-                <form
-                    onSubmit={save}
-                    className="p-6"
-                    encType="multipart/form-data"
-                >
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="grupoPosicion"
-                        value="Grupo y Posición"
-                        className="block text-sm font-medium text-gray-700"
+                <form onSubmit={handleSubmit} className="p-6">
+                    <input
+                        type="text"
+                        value={data.fk_torneo}
+                        name="fk_torneo"
+                        hidden
+                        readOnly
                     />
-                    <select
-                        name="grupoPosicion"
-                        id="grupoPosicion"
-                        ref={grupoPosicionInput}
-                        value={data.grupoPosicion}
-                        onChange={(e) =>
-                            setData("grupoPosicion", e.target.value)
-                        }
-                        className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
-                            errors["posicion"] ? "border-red-500" : ""
-                        }`}
-                    >
-                        <option value="" disabled>
-                            Seleccione...
-                        </option>
-                        {[...Array(cantidadEquiposParticipantes).keys()].map((_, index) => (
-                            <option key={index + 1} value={index + 1}>
-                                {index + 1}
-                            </option>
-                        ))}
-                    </select>
-                    <p className="mt-2 text-sm text-red-600">
-                        {errors["grupoPosicion"]}
-                    </p>
-                </div>
 
-                    <div className="mt-4">
-                        <InputLabel
-                            htmlFor="fk_equipo"
-                            value="Equipo"
-                            className="block text-sm font-medium text-gray-700"
-                        />
-                        <select
-                            name="fk_equipo"
-                            id="fk_equipo"
-                            ref={fk_equipoInput}
-                            value={data.fk_equipo}
-                            onChange={(e) =>
-                                setData("fk_equipo", e.target.value)
-                            }
-                            className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${
-                                errors["fk_equipo"] ? "border-red-500" : ""
-                            }`}
-                        >
-                            <option value="" disabled>
-                                Seleccione...
-                            </option>
-                            {equipos.map((equipo) => (
-                                <option key={equipo.id} value={equipo.id}>
-                                    {equipo.nombreEquipo}
-                                </option>
-                            ))}
-                        </select>
-                        <p className="mt-2 text-sm text-red-600">
-                            {errors["fk_equipo"]}
-                        </p>
-                    </div>
+                    <SelectField
+                        htmlFor="puesto"
+                        label={
+                            <>
+                                <span>Puesto</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="puesto"
+                        ref={puestoInput}
+                        name="puesto"
+                        value={data.puesto}
+                        onChange={handleInputChange}
+                        options={handleSelectPuestos}
+                        errorMessage={errors.puesto}
+                    />
+
+                        <SelectField
+                        htmlFor="fk_equipo"
+                        label={
+                            <>
+                                <span>Equipo</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="fk_equipo"
+                        ref={fk_equipoInput}
+                        name="fk_equipo"
+                        value={data.fk_equipo}
+                        onChange={handleInputChange}
+                        options={handleSelectEquipos}
+                        errorMessage={errors.fk_equipo}
+                    />
+
+
 
                     <div>
                         <PrimaryButton

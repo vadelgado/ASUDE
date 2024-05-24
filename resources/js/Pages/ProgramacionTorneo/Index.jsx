@@ -12,13 +12,13 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ 
+export default function Index({
     auth,
-    programacionTorneo, 
+    programacionTorneo,
     jornadas,
     lugares,
     resultadoSorteos,
-    fk_torneo,
+    cantidadEquipos,
 }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
@@ -26,15 +26,14 @@ export default function Index({
     const HoraPartidoInput = useRef();
     const fk_jornadaPartidoInput = useRef();
     const fk_lugarPartidoInput = useRef();
-    const fk_equipoLocalInput = useRef();
-    const fk_equipoVisitanteInput = useRef();
+    const posicion_localInput = useRef();
+    const posicion_visitanteInput = useRef();
     const InitialValues = {
         HoraPartido: "",
-        fk_torneo: fk_torneo,
         fk_jornadaPartido: "",
         fk_lugarPartido: "",
-        fk_equipoLocal: "",
-        fk_equipoVisitante: "",
+        posicion_local: "",
+        posicion_visitante: "",
     };
     const {
         data,
@@ -55,11 +54,10 @@ export default function Index({
         op,
         id,
         HoraPartido,
-        fk_torneo,
         fk_jornadaPartido,
         fk_lugarPartido,
-        fk_equipoLocal,
-        fk_equipoVisitante
+        posicion_local,
+        posicion_visitante
     ) => {
         setModal(true);
         setOperation(op);
@@ -71,11 +69,10 @@ export default function Index({
             setData({
                 id: id,
                 HoraPartido: HoraPartido,
-                fk_torneo: fk_torneo,
                 fk_jornadaPartido: fk_jornadaPartido,
                 fk_lugarPartido: fk_lugarPartido,
-                fk_equipoLocal: fk_equipoLocal,
-                fk_equipoVisitante: fk_equipoVisitante,
+                posicion_local: posicion_local,
+                posicion_visitante: posicion_visitante,
             });
         }
     };
@@ -139,11 +136,11 @@ export default function Index({
         })),
     ];
 
-    const handleResultadoSorteos = [
+    const handleCantidadEquipos = [
         { value: "", label: "Seleccione ...", disabled: true },
-        ...resultadoSorteos.map((sorteo) => ({
-            value: sorteo.id,
-            label: `${sorteo.grupoPosicion} - ${sorteo.nombreEquipo}`,
+        ...Array.from({ length: cantidadEquipos }, (_, i) => ({
+            value: i + 1,
+            label: `Equipo ${i + 1}`,
         })),
     ];
 
@@ -157,7 +154,6 @@ export default function Index({
             }
         >
             <Head title="Programación Torneo" />
-
 
             <div className="bg-white grid v-screen place-items-center">
                 <div className="mt-2 mb-3 flex justify-end">
@@ -204,20 +200,10 @@ export default function Index({
                                         {programacion.nomLugar}
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {programacion.localEquipo}
-                                        <img
-                                            src={`/storage/${programacion.localEscudo}`}
-                                            alt={programacion.localEquipo}
-                                        />
+                                        {programacion.posicion_local}
                                     </td>
                                     <td className="border px-4 py-2">
-                                        {programacion.visitanteEquipo}
-                                        <img
-                                            src={`/storage/${programacion.visitanteEscudo}`}
-                                            alt={
-                                                programacion.visitanteEquipo
-                                            }
-                                        />
+                                        {programacion.posicion_visitante}
                                     </td>
                                     <td className="border px-4 py-2">
                                         <WarningButton
@@ -226,11 +212,10 @@ export default function Index({
                                                     2,
                                                     programacion.id,
                                                     programacion.HoraPartido,
-                                                    programacion.fk_torneo,
                                                     programacion.fk_jornadaPartido,
                                                     programacion.fk_lugarPartido,
-                                                    programacion.fk_equipoLocal,
-                                                    programacion.fk_equipoVisitante
+                                                    programacion.posicion_local,
+                                                    programacion.posicion_visitante
                                                 )
                                             }
                                         >
@@ -277,11 +262,7 @@ export default function Index({
                         errorMessage={errors.HoraPartido}
                     />
 
-                    <input
-                       
-                        name="fk_torneo"
-                        value={data.fk_torneo}
-                    />
+
 
                     <SelectField
                         htmlFor="fk_jornadaPartido"
@@ -308,27 +289,27 @@ export default function Index({
                     />
 
                     <SelectField
-                        htmlFor="fk_equipoLocal"
+                        htmlFor="posicion_local"
                         label="Equipo Local"
-                        id="fk_equipoLocal"
-                        name="fk_equipoLocal"
-                        value={data.fk_equipoLocal}
-                        options={handleResultadoSorteos}
+                        id="posicion_local"
+                        name="posicion_local"
+                        value={data.posicion_local}
+                        options={handleCantidadEquipos}
                         onChange={handleInputChange}
-                        errorMessage={errors.fk_equipoLocal}
-                        ref={fk_equipoLocalInput}
+                        errorMessage={errors.posicion_local}
+                        ref={posicion_localInput}
                     />
 
                     <SelectField
-                        htmlFor="fk_equipoVisitante"
+                        htmlFor="posicion_visitante"
                         label="Equipo Visitante"
-                        id="fk_equipoVisitante"
-                        name="fk_equipoVisitante"
-                        value={data.fk_equipoVisitante}
-                        options={handleResultadoSorteos}
+                        id="posicion_visitante"
+                        name="posicion_visitante"
+                        value={data.posicion_visitante}
+                        options={handleCantidadEquipos}
                         onChange={handleInputChange}
-                        errorMessage={errors.fk_equipoVisitante}
-                        ref={fk_equipoVisitanteInput}
+                        errorMessage={errors.posicion_visitante}
+                        ref={posicion_visitanteInput}
                     />
 
                     <div className="mt-4 flex justify-end">

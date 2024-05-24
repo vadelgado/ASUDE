@@ -316,7 +316,7 @@ export default function Dashboard({
 
                                     <a
                                         class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
-                                        href={`/resultadoSorteo?team_id=${torneo.id}`}
+                                        href={`/resultadoSorteo?torneo_id=${torneo.id}`}
                                     >
                                         <i className="fa-solid fa-dice">
                                             {" "}
