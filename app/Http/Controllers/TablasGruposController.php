@@ -25,13 +25,13 @@ class TablasGruposController extends Controller
         $torneo_id = $request->input('torneo_id');
 
         $tablasGrupos = ResultadoSorteo::join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
-            ->join('torneo', 'equipos.fk_torneo', '=', 'torneo.id')
+            ->join('torneo', 'resultado_sorteos.fk_torneo', '=', 'torneo.id')
             ->where('torneo.id', $torneo_id)
-            ->select('equipos.nombreEquipo','equipos.escudoEquipo' , 'resultado_sorteos.grupoPosicion')
-            ->orderBy('resultado_sorteos.grupoPosicion')
+            ->select('equipos.nombreEquipo','equipos.escudoEquipo' , 'resultado_sorteos.puesto')
+            ->orderBy('resultado_sorteos.puesto', 'asc')
             ->get();
 
-        $programacionTorneo = programacionTorneo::join('torneo', 'programacion_torneos.fk_torneo', '=', 'torneo.id')
+        /*$programacionTorneo = programacionTorneo::join('torneo', 'programacion_torneos.fk_torneo', '=', 'torneo.id')
             ->join('jornada_partidos', 'programacion_torneos.fk_jornadaPartido', '=', 'jornada_partidos.id')
             ->join('lugar_partidos', 'programacion_torneos.fk_lugarPartido', '=', 'lugar_partidos.id')
             ->join('resultado_sorteos as local', 'programacion_torneos.fk_equipoLocal', '=', 'local.id')
@@ -40,16 +40,17 @@ class TablasGruposController extends Controller
             ->join('equipos as evisitante', 'visitante.fk_equipo', '=', 'evisitante.id')
             ->select('evisitante.nombreEquipo as visitante','lugar_partidos.nomLugar','elocal.nombreEquipo as local','jornada_partidos.jornada','programacion_torneos.HoraPartido', 'torneo.nombreTorneo')
             ->where('torneo.id', $torneo_id)
-            ->get();
+            ->get();*/
         
         $torneo = torneo::where('id', $torneo_id)
-            ->select('torneo.nombreTorneo','torneo.cantidadGrupos','torneo.cantidadEquiposParticipantes')
+            ->select('torneo.nombreTorneo','torneo.cantidadGrupos','torneo.cantidadEquiposParticipantes',
+            'torneo.imgBannerSuperior')
             ->get();
         //dd($torneo);  
         return Inertia::render('ResultadoSorteo/ShouwTablaGrupos', 
         ['tablasGrupos' => $tablasGrupos, 
-        'programacionTorneo' => $programacionTorneo
-        ,'torneo' => $torneo]); 
+        /*'programacionTorneo' => $programacionTorneo*/
+        'torneo' => $torneo]); 
     }
 
     /**

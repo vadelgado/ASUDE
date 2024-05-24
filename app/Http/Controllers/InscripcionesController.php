@@ -81,7 +81,7 @@ class InscripcionesController extends Controller
             $data['fk_user'] = Auth::user()->id;
             $data['fk_equipo'] = $request->input('fk_equipo');             
          }
-            dd($data);   
+            //dd($data);   
          Inscripciones::create($data);       
      }
 
