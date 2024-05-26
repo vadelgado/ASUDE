@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('fk_equipo')->constrained('equipos');
             $table->string('fotoCuerpoTecnico')->nullable();
             $table->string('nombreCompleto');            
-            $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE', 'PA'])->default('CC');
+            $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE', 'PA']);
             $table->string('numeroIdentificacion', 11);
             $table->string('telefonoFijo', 11)->nullable();
             $table->string('telefonoCelular', 11);

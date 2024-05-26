@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();            
             $table->string('nombreCompleto');    
             $table->string('foto')->nullable();        
-            $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE', 'PA', 'RC'])->default('TI');
+            $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE', 'PA', 'RC']);
             $table->string('numeroIdentificacion', 11);
             $table->string('numeroSerie', 11);
             $table->date('fechaNacimiento');
