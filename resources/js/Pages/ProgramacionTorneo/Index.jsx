@@ -91,7 +91,7 @@ export default function Index({
                 },
             });
         } else {
-            put(route("programacionTorneo.update", data.id), {
+            put(route("programaciontorneo.updatepost", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     ok("Partido actualizado correctamente");

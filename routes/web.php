@@ -52,7 +52,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource Torneos
     Route::resource('torneo', App\Http\Controllers\Torneos::class);
     // Actualizar Torneo
-    Route::post('torneo/{torneo}', 'App\Http\Controllers\Torneos@update')->name('torneo.update');
+    Route::post('torneo/{torneo}', 'App\Http\Controllers\Torneos@update')->name('torneo.updatepost');
 
     // Sorteo de Torneos
 
@@ -61,7 +61,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource equipos
     Route::resource('equipos', App\Http\Controllers\EquiposController::class);
     // Actualizar Equipo
-    Route::post('equipos/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equipos.update');
+    Route::post('equipos/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equipos.updatepost');
 
     // Resource jornadaPartido
     Route::resource('jornadaPartido', App\Http\Controllers\JornadaPartidoController::class);
@@ -69,7 +69,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource lugarPartido
     Route::resource('lugarPartido', App\Http\Controllers\LugarPartidoController::class);
     // Actualizar Lugar Partido
-    Route::post('lugarPartido/{lugarPartido}', 'App\Http\Controllers\LugarPartidoController@update')->name('lugarPartido.update');
+    Route::post('lugarPartido/{lugarPartido}', 'App\Http\Controllers\LugarPartidoController@update')->name('lugarPartido.updatepost');
 
     // Resource programacionTorneo
     Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class); 
@@ -77,20 +77,20 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource sistemaJuego
     Route::resource('sistemaJuego', App\Http\Controllers\SistemaJuegoController::class);
     // Actualizar Sistema Juego
-    Route::post('sistemaJuego/{sistemaJuego}', 'App\Http\Controllers\SistemaJuegoController@update')->name('sistemaJuego.update');
+    Route::post('sistemaJuego/{sistemaJuego}', 'App\Http\Controllers\SistemaJuegoController@update')->name('sistemaJuego.updatepost');
     
 
     //JugadoresAdmin
     Route::resource('jugadoresAdmin', App\Http\Controllers\JugadoresController::class);
     // Actualizar JugadorAdmin
-    Route::post('jugadoresAdmin/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadoresAdmin.update');
+    Route::post('jugadoresAdmin/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadoresAdmin.updatepost');
     //toggle estado jugadorAdmin
     Route::post('jugadoresAdmin/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadoresAdmin.toggle');
 
     //CuerpoTecnicoAdmin
     Route::resource('cuerpoTecnicoAdmin', App\Http\Controllers\CuerpoTecnicoController::class);
     // Actualizar CuerpoTecnicoAdmin
-    Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnicoAdmin.update');
+    Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnicoAdmin.updatepost');
     //toggle estado cuerpoTecnicoAdmin
     Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnicoAdmin.toggle');
     
@@ -146,19 +146,19 @@ Route::middleware('auth', 'role:equipo')->group(function () {
      // Resource equipos
      Route::resource('equiposInvitados', App\Http\Controllers\EquiposController::class);
      // Actualizar Equipo
-     Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.update');
+     Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.updatepost');
 
     //Jugadores
     Route::resource('jugadores', App\Http\Controllers\JugadoresController::class);
     // Actualizar Jugador
-    Route::post('jugadores/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadores.update');
+    Route::post('jugadores/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadores.updatepost');
     //toggle estado jugador
     Route::post('jugadores/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadores.toggle');
 
     //CuerpoTecnico
     Route::resource('cuerpoTecnico', App\Http\Controllers\CuerpoTecnicoController::class);
     // Actualizar CuerpoTecnico
-    Route::post('cuerpoTecnico/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnico.update');
+    Route::post('cuerpoTecnico/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnico.updatepost');
     //toggle estado cuerpoTecnico
     Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
 

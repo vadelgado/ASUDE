@@ -149,7 +149,7 @@ export default function Dashboard({
                 },
             });
         } else {
-            post(route("torneo.update", data.id), {
+            post(route("torneo.updatepost", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     ok("Torneo actualizado correctamente");

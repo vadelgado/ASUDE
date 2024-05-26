@@ -153,7 +153,7 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
             );
         } else {
             post(
-                userRole === 'admin' ? route("jugadoresAdmin.update", data.id) : route("jugadores.update", data.id), {
+                userRole === 'admin' ? route("jugadoresAdmin.updatepost", data.id) : route("jugadores.updatepost", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     ok("El jugador ha sido actualizado");

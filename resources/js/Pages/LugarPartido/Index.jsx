@@ -92,7 +92,7 @@ export default function Dashboard({ auth, lugarPartidos,torneo }) {
                 },
             });
         } else {
-            post(route("lugarPartido.update", data.id), {
+            post(route("lugarPartido.updatepost", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     ok("Lugar partido actualizado.");

@@ -62,7 +62,7 @@ export default function Index({ auth, sistemaJuegos }) {
                 },
             });
         } else {
-            post(route("sistemaJuego.update", data.id), {
+            post(route("sistemaJuego.updatepost", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {                    
                     ok("Sistema de juego actualizado correctamente");

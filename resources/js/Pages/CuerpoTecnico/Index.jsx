@@ -136,7 +136,7 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
             });
         } else {
             post(
-                userRole === 'admin' ? route("cuerpoTecnicoAdmin.update", data.id) : route("cuerpoTecnico.update", data.id), {
+                userRole === 'admin' ? route("cuerpoTecnicoAdmin.updatepost", data.id) : route("cuerpoTecnico.updatepost", data.id), {
                 preserveScroll: true,
                 onSuccess: () => {
                     ok("Cuerpo Técnico actualizado correctamente");
