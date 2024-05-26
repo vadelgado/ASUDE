@@ -163,7 +163,7 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
 
     //Preplanilla
-    Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
+     Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
 
     //Resource Inscripciones
     Route::resource('inscripcionesEquipo', App\Http\Controllers\InscripcionesController::class);
