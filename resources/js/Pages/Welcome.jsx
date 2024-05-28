@@ -1,21 +1,25 @@
-import { Link, Head } from '@inertiajs/react';
-import Footer from '@/Components/DashBoard/Footer';
-import Header from '@/Components/DashBoard/Header';
-import Intro from '@/Components/DashBoard/Intro';
-import PreFooter from '@/Components/DashBoard/PreFooter';
-import Video from '@/Components/DashBoard/Video';
-import TablaTorneos from '@/Components/DashBoard/TablaTorneos';
+import { Link, Head } from "@inertiajs/react";
+
+import Footer from "@/Components/DashBoard/Footer";
+import Header from "@/Components/DashBoard/Header";
+import Intro from "@/Components/DashBoard/Intro";
+import PreFooter from "@/Components/DashBoard/PreFooter";
+import Carousel from "@/Components/DashBoard/Carousel";
+import TournamentSchedule from "@/Components/DashBoard/TournamentSchedule";
+
+import TablaTorneos from "@/Components/DashBoard/TablaTorneos";
 
 //import '@fontsource-variable/onest';
 
 export default function Welcome({ auth, torneoEnCurso }) {
     return (
         <>
-            <Header auth={auth}></Header>            
-            <Head title="Futuras Estrellas" />            
-            <Video></Video>  
-            <TablaTorneos torneoEnCurso={torneoEnCurso}/>
-            <Intro></Intro>            
+            <Head title="Alianza Sureña" />
+            <Header auth={auth}></Header>  
+            <TournamentSchedule/>
+            <Carousel/>
+            <TablaTorneos torneoEnCurso={torneoEnCurso} />
+            <Intro></Intro>
             <PreFooter></PreFooter>
             <Footer></Footer>
             <style>{`

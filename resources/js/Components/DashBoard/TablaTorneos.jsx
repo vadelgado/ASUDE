@@ -3,8 +3,8 @@ import React from "react";
 
 const TablaTorneos = (torneoEnCurso) => {
     return ( 
-        <section className="pt-24">
-            <h2 className="text-lg text-center font-medium uppercase lg:text-2xl text-black">
+        <section className="pt-40 mx-20">
+            <h2 className="text-lg mx text-center font-medium uppercase lg:text-2xl text-black">
                 CAMPEONATOS
             </h2>
             <table className="mt-10 w-full text-center text-black lg:text-lg">
