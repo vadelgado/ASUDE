@@ -50,8 +50,10 @@ class torneo extends Model
         return $this->belongsTo(CategoriaEquipo::class, 'fk_categoria_equipo');
     }
 
-    
-
+    public function fases()
+    {
+        return $this->hasMany(Fases::class, 'fk_torneo');
+    }
 
     public function equipos()
     {

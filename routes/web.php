@@ -97,6 +97,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource Inscripciones
     Route::resource('inscripciones', App\Http\Controllers\InscripcionesController::class);
 
+    // Resource Fases
+
+    Route::resource('fases', App\Http\Controllers\FasesController::class);
+
     
     
 });

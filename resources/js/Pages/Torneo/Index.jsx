@@ -325,6 +325,16 @@ export default function Dashboard({
                                     </a>
 
                                     <a
+                                        class="text-white bg-[#0e3f0c] hover:bg-[#0e3f0c]/80 focus:ring-4 focus:outline-none focus:ring-[#0e3f0c]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#0e3f0c]/80 dark:focus:ring-[#0e3f0c]/40 me-2 mb-2"
+                                        href={`/fases?torneo_id=${torneo.id}`}
+                                    >
+                                        <i className="fa-solid fa-trash">
+                                            {" "}
+                                            Fases Torneo
+                                        </i>
+                                    </a>
+
+                                    <a
                                         class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2"
                                         onClick={() =>
                                             eliminar(
@@ -338,6 +348,7 @@ export default function Dashboard({
                                             Eliminar
                                         </i>
                                     </a>
+
                                     
                                 </div>
                                 <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
