@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProgramacionesFaces;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProgramacionesFacesController extends Controller
 {
@@ -12,7 +13,7 @@ class ProgramacionesFacesController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('ProgramacionesFaces/Index');
     }
 
     /**

@@ -11,7 +11,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
-
+import { Button } from "@nextui-org/react";
 export default function Index({
     auth,
     programacionTorneo,
@@ -155,6 +155,15 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
 
+            <div className="flex flex-wrap gap-4 items-center">
+                <Button color="default">Default</Button>
+                <Button color="primary">Primary</Button>
+                <Button color="secondary">Secondary</Button>
+                <Button color="success">Success</Button>
+                <Button color="warning">Warning</Button>
+                <Button color="danger">Danger</Button>
+            </div>
+
             <div className="bg-white grid v-screen place-items-center">
                 <div className="mt-2 mb-3 flex justify-end">
                     <PrimaryButton onClick={() => handleModal(1)}>
@@ -261,8 +270,6 @@ export default function Index({
                         onChange={handleInputChange}
                         errorMessage={errors.HoraPartido}
                     />
-
-
 
                     <SelectField
                         htmlFor="fk_jornadaPartido"

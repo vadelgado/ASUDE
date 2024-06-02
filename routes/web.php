@@ -101,6 +101,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     Route::resource('fases', App\Http\Controllers\FasesController::class);
 
+    // Resource ProgramacionesFaces
+
+    Route::resource('programacionesFaces', App\Http\Controllers\ProgramacionesFacesController::class);
+
     
     
 });
