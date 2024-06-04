@@ -19,4 +19,9 @@ class Fases extends Model
     {
         return $this->belongsTo(Torneo::class, 'fk_torneo');
     }
+
+    public function programaciones()
+    {
+        return $this->hasMany(ProgramacionesFaces::class, 'fk_fase');
+    }
 }

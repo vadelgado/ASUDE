@@ -7,7 +7,7 @@ use App\Models\torneo;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia; 
+use Inertia\Inertia;
 
 
 Route::get('/', function () {
@@ -37,18 +37,17 @@ Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::clas
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');  
-      
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware('auth', 'role:admin')->group(function () {
 
     // Listado de Alumnos Administrador
     Route::get('alumnoAdmin', 'App\Http\Controllers\AlumnoController@indexAdmin')->name('alumno.indexAdmin');
-    
+
     // Listado de Pagos Administrador
     Route::get('comprobantesAdmin', 'App\Http\Controllers\ComprobantesController@indexAdmin')->name('comprobantes.indexAdmin');
-    
+
     // Resource Torneos
     Route::resource('torneo', App\Http\Controllers\Torneos::class);
     // Actualizar Torneo
@@ -56,7 +55,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     // Sorteo de Torneos
 
-    Route::resource('resultadoSorteo', App\Http\Controllers\ResultadoSorteoController::class);   
+    Route::resource('resultadoSorteo', App\Http\Controllers\ResultadoSorteoController::class);
 
     // Resource equipos
     Route::resource('equipos', App\Http\Controllers\EquiposController::class);
@@ -72,13 +71,13 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::post('lugarPartido/{lugarPartido}', 'App\Http\Controllers\LugarPartidoController@update')->name('lugarPartido.updatepost');
 
     // Resource programacionTorneo
-    Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class); 
+    Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class);
 
     // Resource sistemaJuego
     Route::resource('sistemaJuego', App\Http\Controllers\SistemaJuegoController::class);
     // Actualizar Sistema Juego
     Route::post('sistemaJuego/{sistemaJuego}', 'App\Http\Controllers\SistemaJuegoController@update')->name('sistemaJuego.updatepost');
-    
+
 
     //JugadoresAdmin
     Route::resource('jugadoresAdmin', App\Http\Controllers\JugadoresController::class);
@@ -93,7 +92,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnicoAdmin.updatepost');
     //toggle estado cuerpoTecnicoAdmin
     Route::post('cuerpoTecnicoAdmin/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnicoAdmin.toggle');
-    
+
     // Resource Inscripciones
     Route::resource('inscripciones', App\Http\Controllers\InscripcionesController::class);
 
@@ -104,9 +103,6 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource ProgramacionesFaces
 
     Route::resource('programacionesFaces', App\Http\Controllers\ProgramacionesFacesController::class);
-
-    
-    
 });
 
 Route::middleware('auth', 'role:acudiente')->group(function () {
@@ -140,21 +136,20 @@ Route::middleware('auth', 'role:acudiente')->group(function () {
     Route::get('comprobantes', 'App\Http\Controllers\ComprobantesController@index')->name('comprobantes.index');
 
     // Guardar un nuevo Comprobante
-    Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');   
- 
+    Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');
 });
 
-    // Registrar Director Equipo
+// Registrar Director Equipo
 Route::get('preregistro', 'App\Http\Controllers\Torneos@registrarEquipo')->name('preregistro.create');
 
 
 Route::middleware('auth', 'role:equipo')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-     // Resource equipos
-     Route::resource('equiposInvitados', App\Http\Controllers\EquiposController::class);
-     // Actualizar Equipo
-     Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.updatepost');
+    // Resource equipos
+    Route::resource('equiposInvitados', App\Http\Controllers\EquiposController::class);
+    // Actualizar Equipo
+    Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.updatepost');
 
     //Jugadores
     Route::resource('jugadores', App\Http\Controllers\JugadoresController::class);
@@ -171,7 +166,7 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
 
     //Preplanilla
-     Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
+    Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
 
     //Resource Inscripciones
     Route::resource('inscripcionesEquipo', App\Http\Controllers\InscripcionesController::class);
@@ -182,4 +177,4 @@ Route::get('/version', function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

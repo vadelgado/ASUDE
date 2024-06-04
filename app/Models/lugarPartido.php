@@ -22,4 +22,9 @@ class lugarPartido extends Model
     {
         return $this->belongsTo(torneo::class, 'fk_torneo');
     }
+
+    public function programacionFase()
+    {
+        return $this->hasMany(ProgramacionesFaces::class, 'fk_lugarPartido');
+    }
 }

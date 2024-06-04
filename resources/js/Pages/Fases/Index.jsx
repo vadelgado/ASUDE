@@ -13,13 +13,13 @@ import WarningButton from "@/Components/WarningButton"; // Importamos un botón 
 
 export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
     // Estado para manejar si el modal está abierto o cerrado.
-    const [modal, setModal] = useState(false); 
+    const [modal, setModal] = useState(false);
     // Estado para manejar el título del modal.
-    const [title, setTitle] = useState(""); 
+    const [title, setTitle] = useState("");
     // Estado para manejar si estamos agregando (1) o editando (2) una fase.
-    const [operation, setOperation] = useState(1); 
+    const [operation, setOperation] = useState(1);
     // Referencia para el input del nombre de la fase.
-    const NombreFaseInput = useRef(); 
+    const NombreFaseInput = useRef();
 
     // Valores iniciales del formulario.
     const initialValues = {
@@ -127,23 +127,24 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Fases para el torneo {torneo[0].nombreTorneo} del {torneo[0].fechaInicio} al {torneo[0].fechaFin}
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    Fases para el torneo {torneo[0].nombreTorneo} del{" "}
+                    {torneo[0].fechaInicio} al {torneo[0].fechaFin}
                 </h2>
             }
         >
             <Head title="Fases Partidos" />
 
-            <div className="bg-white grid v-screen place-items-center">
-                <div className="mt-2 mb-3 flex justify-end">
+            <div className="grid bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => handleModal(1)}>
                         <i className="fa-solid fa-plus-circle"> Añadir Fase</i>
                     </PrimaryButton>
                 </div>
             </div>
 
-            <div className="bg-white grid v-screen place-items-center py-6">
-                <table className="table-auto border-gray-400">
+            <div className="grid py-6 bg-white v-screen place-items-center">
+                <table className="border-gray-400 table-auto">
                     <thead>
                         <tr className="bg-gray-100">
                             <th className="px-2 py-2">#</th>
@@ -156,23 +157,56 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
                         {fases.length > 0 ? (
                             fases.map((fase, i) => (
                                 <tr key={fase.id}>
-                                    <td className="border border-gray-400 px-4 py-2">{i + 1}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{fase.nombreFase}</td>
-                                    <td className="border border-gray-400 px-4 py-2">
-                                        <WarningButton onClick={() => handleModal(2, fase.id, fase.nombreFase)}>
+                                    <td className="px-4 py-2 border border-gray-400">
+                                        {i + 1}
+                                    </td>
+                                    <td className="px-4 py-2 border border-gray-400">
+                                        {fase.nombreFase}
+                                    </td>
+                                    <td className="px-4 py-2 border border-gray-400">
+                                        <WarningButton
+                                            onClick={() =>
+                                                handleModal(
+                                                    2,
+                                                    fase.id,
+                                                    fase.nombreFase
+                                                )
+                                            }
+                                        >
                                             <i className="fa-solid fa-pencil"></i>
                                         </WarningButton>
                                     </td>
-                                    <td className="border border-gray-400 px-4 py-2">
-                                        <DangerButton onClick={() => deleteFase(fase.id, fase.nombreFase)}>
+                                    <td className="px-4 py-2 border border-gray-400">
+                                        <DangerButton
+                                            onClick={() =>
+                                                deleteFase(
+                                                    fase.id,
+                                                    fase.nombreFase
+                                                )
+                                            }
+                                        >
                                             <i className="fa-solid fa-trash"></i>
                                         </DangerButton>
+                                    </td>
+                                    <td className="px-4 py-2 border border-gray-400">
+                                        <a
+                                            class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                            href={`/programacionesFaces?fase_id=${fase.id}`}
+                                        >
+                                            <i class="fa-regular fa-futbol">
+                                                {" "}
+                                                Partidos
+                                            </i>
+                                        </a>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="border px-4 py-2 text-center">
+                                <td
+                                    colSpan="4"
+                                    className="px-4 py-2 text-center border"
+                                >
                                     No hay Fases Registradas
                                 </td>
                             </tr>
@@ -185,7 +219,7 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
                 <h2 className="text-lg font-medium text-gray-900">{title}</h2>
                 <form onSubmit={save} className="p-6">
                     {/* Campo de entrada solo lectura para fk_torneo */}
-                    <input 
+                    <input
                         type="text"
                         value={data.fk_torneo}
                         name="fk_torneo"
@@ -205,14 +239,19 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
                         errorMessage={errors.nombreFase}
                     />
                     <div className="mt-6">
-                        <PrimaryButton processing={processing ? "true" : "false"} className="mt-2">
+                        <PrimaryButton
+                            processing={processing ? "true" : "false"}
+                            className="mt-2"
+                        >
                             <i className="fa-solid fa-save">
                                 {processing ? " Procesando..." : " Guardar"}
                             </i>
                         </PrimaryButton>
                     </div>
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
+                    <div className="flex justify-end mt-6">
+                        <SecondaryButton onClick={closeModal}>
+                            Cancelar
+                        </SecondaryButton>
                     </div>
                 </form>
             </Modal>

@@ -45,4 +45,14 @@ class Equipos extends Model
         return $this->hasMany(ProgramacionTorneo::class, 'fk_equipoVisitante');
     }
 
+    public function programacionFaseLocal()
+    {
+        return $this->hasMany(ProgramacionesFaces::class, 'fk_equipo_local');
+    }
+
+    public function programacionFaseVisitante()
+    {
+        return $this->hasMany(ProgramacionesFaces::class, 'fk_equipo_visitante');
+    }
+
 }
