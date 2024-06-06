@@ -33,6 +33,7 @@ Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name(
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.showUno');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
+Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -72,6 +73,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     // Resource programacionTorneo
     Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class);
+    // Actualizar Programacion Torneo
+    Route::post('programacionTorneo/{programacionTorneo}', 'App\Http\Controllers\ProgramacionTorneoController@update')->name('programaciontorneo.updatepost');
 
     // Resource sistemaJuego
     Route::resource('sistemaJuego', App\Http\Controllers\SistemaJuegoController::class);

@@ -11,7 +11,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
-import { Button } from "@nextui-org/react";
+
 export default function Index({
     auth,
     programacionTorneo,
@@ -148,40 +148,33 @@ export default function Index({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Dashboard
                 </h2>
             }
         >
             <Head title="Programación Torneo" />
 
-            <div className="flex flex-wrap gap-4 items-center">
-                <Button color="default">Default</Button>
-                <Button color="primary">Primary</Button>
-                <Button color="secondary">Secondary</Button>
-                <Button color="success">Success</Button>
-                <Button color="warning">Warning</Button>
-                <Button color="danger">Danger</Button>
-            </div>
 
-            <div className="bg-white grid v-screen place-items-center">
-                <div className="mt-2 mb-3 flex justify-end">
+
+            <div className="grid bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => handleModal(1)}>
                         <i className="fa-solid fa-plus-circle"></i>
                         Programar Partido
                     </PrimaryButton>
                 </div>
             </div>
-            <div className="bg-white grid v-screen place-items-center py-6">
-                <table className="table-auto border-gray-400">
+            <div className="grid py-6 bg-white v-screen place-items-center">
+                <table className="border-gray-400 table-auto">
                     <thead>
                         <tr>
-                            <th className="border px-4 py-2">#</th>
-                            <th className="border px-4 py-2">Hora</th>
-                            <th className="border px-4 py-2">Jornada</th>
-                            <th className="border px-4 py-2">Lugar</th>
-                            <th className="border px-4 py-2">Local</th>
-                            <th className="border px-4 py-2">Visitante</th>
+                            <th className="px-4 py-2 border">#</th>
+                            <th className="px-4 py-2 border">Hora</th>
+                            <th className="px-4 py-2 border">Jornada</th>
+                            <th className="px-4 py-2 border">Lugar</th>
+                            <th className="px-4 py-2 border">Local</th>
+                            <th className="px-4 py-2 border">Visitante</th>
                             <th className="px-2 py-2"></th>
                             <th className="px-2 py-2"></th>
                         </tr>
@@ -190,10 +183,10 @@ export default function Index({
                         {programacionTorneo.length > 0 ? (
                             programacionTorneo.map((programacion, i) => (
                                 <tr key={programacion.id}>
-                                    <td className="border border-gray-400 px-4 py-2">
+                                    <td className="px-4 py-2 border border-gray-400">
                                         {i + 1}
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         {new Date(
                                             `1970-01-01T${programacion.HoraPartido}`
                                         ).toLocaleString("en-US", {
@@ -202,19 +195,19 @@ export default function Index({
                                             hour12: true,
                                         })}
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         {programacion.jornada}
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         {programacion.nomLugar}
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         {programacion.posicion_local}
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         {programacion.posicion_visitante}
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         <WarningButton
                                             onClick={() =>
                                                 handleModal(
@@ -231,7 +224,7 @@ export default function Index({
                                             <i className="fa-solid fa-pencil"></i>
                                         </WarningButton>
                                     </td>
-                                    <td className="border px-4 py-2">
+                                    <td className="px-4 py-2 border">
                                         <DangerButton
                                             onClick={() =>
                                                 handleDelete(programacion.id)
@@ -246,7 +239,7 @@ export default function Index({
                             <tr>
                                 <td
                                     colSpan="7"
-                                    className="border px-4 py-2 text-center"
+                                    className="px-4 py-2 text-center border"
                                 >
                                     No hay datos registrados
                                 </td>
@@ -319,7 +312,7 @@ export default function Index({
                         ref={posicion_visitanteInput}
                     />
 
-                    <div className="mt-4 flex justify-end">
+                    <div className="flex justify-end mt-4">
                         <SecondaryButton onClick={closeModal}>
                             Cancelar
                         </SecondaryButton>

@@ -11,6 +11,7 @@ class ProgramacionTorneo extends Model
     use HasFactory;
 
     protected $table = 'programacion_torneos'; 
+    protected $primaryKey = 'id';
     protected $fillable = [
         'HoraPartido',     
         'fk_jornadaPartido', 
@@ -32,11 +33,11 @@ class ProgramacionTorneo extends Model
 
     public function localEquipo()
     {
-        return $this->belongsTo(Equipo::class, 'posicion_local');
+        return $this->belongsTo(Equipos::class, 'posicion_local');
     }
 
     public function visitanteEquipo()
     {
-        return $this->belongsTo(Equipo::class, 'posicion_visitante');
+        return $this->belongsTo(Equipos::class, 'posicion_visitante');
     }
 }

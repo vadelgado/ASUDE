@@ -51,60 +51,81 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
         <>
             <Header auth={auth}></Header>
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
-            <h2 className="text-center text-3xl font-bold mt-32">
+            <h2 className="mt-32 text-3xl font-bold text-center">
                 <span>👉📝Tabla de Grupos👈</span>
             </h2>
             <main className="px-2">
-                <div className="flex justify-center items-center py-8">
+                <div className="flex items-center justify-center py-8">
                     <img
                         src={`/storage/${torneo[0].imgBannerSuperior}`}
                         alt={torneo[0].nombreTorneo}
-                        className=" flex items-center w-auto h-auto mr-2"
+                        className="flex items-center w-auto h-auto mr-2 "
                     />
                 </div>
-                <div className="text-primary text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-    <div className="overflow-x-auto">
-        <div className="min-w-full overflow-hidden overflow-x-auto">
-            <table className="w-full text-black">
-                <thead>
-                    <tr className="bg-gradient-to-b from-white/20 via-transparent to-transparent p-4">
-                        {secuenciaLetras.map((letra, index) => (
-                            <th key={index} className="px-4 py-2 text-center font-bold">
-                                {letra}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.from({ length: equiposPorGrupo }).map((_, filaIndex) => (
-                        <tr key={filaIndex}>
-                            {grupos.map((grupo, colIndex) => (
-                                <td key={colIndex} className="px-4 py-2">
-                                    {grupo[filaIndex] && (
-                                        <div className="flex items-center justify-center">
-                                            <span className="mr-2">
-                                                {grupo[filaIndex].puesto}
-                                            </span>
-                                            <img
-                                                src={`/storage/${grupo[filaIndex].escudoEquipo}`}
-                                                alt={grupo[filaIndex].nombreEquipo}
-                                                className="w-6 h-6 sm:w-8 sm:h-8 rounded-full mr-2"
-                                            />
-                                            <span className="text-center whitespace-nowrap">
-                                                {grupo[filaIndex].nombreEquipo}
-                                            </span>
-                                        </div>
-                                    )}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
+                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-full overflow-hidden overflow-x-auto">
+                            <table className="w-full text-black">
+                                <thead>
+                                    <tr className="p-4 bg-gradient-to-b from-white/20 via-transparent to-transparent">
+                                        {secuenciaLetras.map((letra, index) => (
+                                            <th
+                                                key={index}
+                                                className="px-4 py-2 font-bold text-center"
+                                            >
+                                                {letra}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Array.from({
+                                        length: equiposPorGrupo,
+                                    }).map((_, filaIndex) => (
+                                        <tr key={filaIndex}>
+                                            {grupos.map((grupo, colIndex) => (
+                                                <td
+                                                    key={colIndex}
+                                                    className="px-4 py-2"
+                                                >
+                                                    {grupo[filaIndex] && (
+                                                        <div className="flex items-center justify-center">
+                                                            <span className="mr-2">
+                                                                {
+                                                                    grupo[
+                                                                        filaIndex
+                                                                    ].puesto
+                                                                }
+                                                            </span>
+                                                            <img
+                                                                src={`/storage/${grupo[filaIndex].escudoEquipo}`}
+                                                                alt={
+                                                                    grupo[
+                                                                        filaIndex
+                                                                    ]
+                                                                        .nombreEquipo
+                                                                }
+                                                                className="w-6 h-6 mr-2 rounded-full sm:w-8 sm:h-8"
+                                                            />
+                                                            <span className="text-center whitespace-nowrap">
+                                                                {
+                                                                    grupo[
+                                                                        filaIndex
+                                                                    ]
+                                                                        .nombreEquipo
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <Footer></Footer>

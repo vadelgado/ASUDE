@@ -4,18 +4,18 @@ import React from "react";
 const TablaTorneos = (torneoEnCurso) => {
     return ( 
         <section className="pt-40 mx-20">
-            <h2 className="text-lg mx text-center font-medium uppercase lg:text-2xl text-black">
+            <h2 className="text-lg font-medium text-center text-black uppercase mx lg:text-2xl">
                 CAMPEONATOS
             </h2>
-            <table className="mt-10 w-full text-center text-black lg:text-lg">
+            <table className="w-full mt-10 text-center text-black lg:text-lg">
                 <tbody>
                     {torneoEnCurso.torneoEnCurso.map((torneo, index) => (
                         <React.Fragment key={index}>
-                            <tr className="mb-10 bg-gradient-to-b from-white/20 via-transparent to-transparent p-4">
+                            <tr className="p-4 mb-10 bg-gradient-to-b from-white/20 via-transparent to-transparent">
                                 <th className="py-3" colSpan="3">
                                     <a
                                         href={`https://futurasestrellas.netlify.app/tabla-grupos/${torneo.id}`}
-                                        className="text-orange-500 font-black text-pretty hover:underline"
+                                        className="font-black text-orange-500 text-pretty hover:underline"
                                     >
                                         {torneo.nombreTorneo}
                                     </a>
@@ -35,7 +35,7 @@ const TablaTorneos = (torneoEnCurso) => {
                                 </th>
                                 <th className="w-1/3">
                                     <a
-                                        href={`https://futurasestrellas.netlify.app/resultados/${torneo.id}`}
+                                        href={`/tablasJuego?torneo_id=${torneo.id}`}
                                         className="text-blue-500 hover:underline text-pretty"
                                     >
                                         <em>Ver Partidos</em>

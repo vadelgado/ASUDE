@@ -11,6 +11,7 @@ class jornadaPartido extends Model
 {
     use HasFactory;
     protected $table = 'jornada_partidos';
+    protected $primaryKey = 'id';
     protected $fillable = ['fechaJornada','jornada','fk_torneo'];
     public $timestamps = false;    
 
