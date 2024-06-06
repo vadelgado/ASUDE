@@ -179,15 +179,15 @@ export default function Index({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     ⚽ Equipos 🥅
                 </h2>
             }
         >
             {/* Head y otras importaciones... */}
             <Head title="⚽ Equipos 🥅" />
-            <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="mt-1 mb-1 flex justify-end">
+            <div className="grid py-6 overflow-x-auto bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-1 mb-1">
                     <PrimaryButton onClick={() => openModal(1)}>
                         <i
                             className="fa-solid fa-plus-circle"
@@ -196,8 +196,8 @@ export default function Index({
                         Agregar
                     </PrimaryButton>
                 </div>
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">No.</th>
@@ -219,16 +219,16 @@ export default function Index({
                             {equipos.length > 0 ? (
                                 equipos.map((equipo, index) => (
                                     <tr key={equipo.id}>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {index + 1}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {equipo.nombreEquipo}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {equipo.descripcion}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             <img
                                                 src={`/storage/${equipo.escudoEquipo}`}
                                                 alt={equipo.nombreEquipo}
@@ -236,13 +236,13 @@ export default function Index({
                                                 width={100}
                                             />
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {equipo.numeroWhatsapp}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {equipo.correoElectronico}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {userRole === "admin" && (
                                                 <a
                                                     className="text-white bg-[#5d1df2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
@@ -276,7 +276,7 @@ export default function Index({
                                                 </a>
                                             )}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -294,7 +294,7 @@ export default function Index({
                                                 <i className="fa-solid fa-edit"></i>
                                             </WarningButton>
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             <DangerButton
                                                 onClick={() =>
                                                     eliminar(
@@ -306,7 +306,7 @@ export default function Index({
                                                 <i className="fa-solid fa-trash"></i>
                                             </DangerButton>
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             <a
                                                 href={
                                                     userRole === "admin"
@@ -318,7 +318,7 @@ export default function Index({
                                                 <i className="fa-solid fa-users"></i>
                                             </a>
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             <a
                                                 href={
                                                     userRole === "admin"
@@ -365,7 +365,7 @@ export default function Index({
                         onChange={handleInputChange}
                         errorMessage={errors.nombreEquipo}
                     />
-
+            
                     <SelectField
                         htmlFor="fk_categoria_equipo"
                         label="Categoría"
@@ -377,7 +377,7 @@ export default function Index({
                         errorMessage={errors.fk_categoria_equipo}
                         options={handleCategorias}
                     />
-
+            
                     <ImgField
                         htmlFor="escudoEquipo"
                         label="Escudo del Equipo"
@@ -393,7 +393,7 @@ export default function Index({
                                 : null
                         }
                     />
-
+            
                     <FormField
                         htmlFor="numeroWhatsApp"
                         label="Número de WhatsApp"
@@ -406,7 +406,7 @@ export default function Index({
                         onChange={handleInputChange}
                         errorMessage={errors.numeroWhatsapp}
                     />
-
+            
                     <FormField
                         htmlFor="correoElectronico"
                         label="Correo Electrónico"
@@ -419,7 +419,7 @@ export default function Index({
                         onChange={handleInputChange}
                         errorMessage={errors.correoElectronico}
                     />
-
+            
                     <div className="mt-1">
                         <PrimaryButton
                             processing={processing.toString()}
@@ -428,8 +428,8 @@ export default function Index({
                             <i className="fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
                     </div>
-
-                    <div className="mt-6 flex justify-end">
+            
+                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal}>
                             Cancel
                         </SecondaryButton>
