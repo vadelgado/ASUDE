@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Jugadores;
 use App\Models\Equipos;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Http\Requests\Jugadores\StoreRequest;
 use App\Http\Requests\Jugadores\UpdateRequest;
 use Illuminate\Support\Facades\Storage;
@@ -42,6 +43,41 @@ class JugadoresController extends Controller
                 'equipo' => $equipo,
                 'userRole' => $userRole,
             ]);
+        } else {
+            return Inertia::render('Dashboard');
+        }
+    }
+
+    public function generatePDF(Request $request)
+    {
+        $request->validate([
+            'equipo_id' => 'required|integer|exists:equipos,id',
+        ]);
+    
+        $equipo_id = $request->input('equipo_id');
+    
+        if ($equipo_id) {      
+            //Nombre del equipo
+            $equipo = Equipos::find($equipo_id)->nombreEquipo;  
+            $userRole = Auth::user()->role;          
+    
+            $jugadores = Jugadores::join('equipos', 'jugadores.fk_equipo', '=', 'equipos.id')
+                ->when($userRole !== 'admin', function ($query) {
+                    return $query->where('equipos.fk_user', Auth::user()->id);
+                })
+                ->when($equipo_id, function ($query) use ($equipo_id) {
+                    return $query->where('equipos.id', $equipo_id);
+                })
+                ->select('jugadores.*', 'equipos.nombreEquipo')
+                ->get();
+                $pdf = PDF::loadView('pdf.jugadores', compact('jugadores', 'equipo'));
+                $pdf->setPaper([0, 0, 612.283, 935.433], 'landscape'); // Set the paper size to 216mm x 330mm
+                return response()->streamDownload(function () use ($pdf) {
+                    echo $pdf->output();
+                }, 'jugadores.pdf', [
+                    'Content-Type' => 'application/pdf',
+                ]);
+                
         } else {
             return Inertia::render('Dashboard');
         }

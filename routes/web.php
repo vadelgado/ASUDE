@@ -7,6 +7,7 @@ use App\Models\torneo;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\JugadoresController;
 use Inertia\Inertia;
 
 
@@ -88,6 +89,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::post('jugadoresAdmin/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadoresAdmin.updatepost');
     //toggle estado jugadorAdmin
     Route::post('jugadoresAdmin/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadoresAdmin.toggle');
+
+    //pdfJugadores
+    Route::get('/jugadores/pdf', [JugadoresController::class, 'generatePDF'])->name('jugadores.pdf');
 
     //CuerpoTecnicoAdmin
     Route::resource('cuerpoTecnicoAdmin', App\Http\Controllers\CuerpoTecnicoController::class);

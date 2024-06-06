@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { useForm } from "@inertiajs/react";
+
+import { useForm, Link } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
@@ -12,7 +13,13 @@ import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
+export default function Index({
+    auth,
+    equipo_id,
+    jugadores,
+    equipo,
+    userRole,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -54,7 +61,7 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
         setData,
         errors,
         delete: destroy,
-        post, 
+        post,
         processing,
     } = useForm(InitialValues);
 
@@ -143,7 +150,9 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
         e.preventDefault();
         if (operation === 1) {
             post(
-                userRole === 'admin' ? route("jugadoresAdmin.store") : route("jugadores.store"), 
+                userRole === "admin"
+                    ? route("jugadoresAdmin.store")
+                    : route("jugadores.store"),
                 {
                     preserveScroll: true,
                     onSuccess: () => {
@@ -153,12 +162,16 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
             );
         } else {
             post(
-                userRole === 'admin' ? route("jugadoresAdmin.updatepost", data.id) : route("jugadores.updatepost", data.id), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    ok("El jugador ha sido actualizado");
-                },
-            });
+                userRole === "admin"
+                    ? route("jugadoresAdmin.updatepost", data.id)
+                    : route("jugadores.updatepost", data.id),
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        ok("El jugador ha sido actualizado");
+                    },
+                }
+            );
         }
     };
 
@@ -180,19 +193,23 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
         }).then((result) => {
             if (result.isConfirmed) {
                 post(
-                    userRole === 'admin' ? route("jugadoresAdmin.toggle", id) :route("jugadores.toggle", id)  , {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        ok("El jugador ha sido actualizado");
-                    },
-                    onError: () => {
-                        Swal.fire({
-                            title: "Error",
-                            text: "El jugador no ha sido actualizado",
-                            icon: "error",
-                        });
-                    },
-                });  
+                    userRole === "admin"
+                        ? route("jugadoresAdmin.toggle", id)
+                        : route("jugadores.toggle", id),
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            ok("El jugador ha sido actualizado");
+                        },
+                        onError: () => {
+                            Swal.fire({
+                                title: "Error",
+                                text: "El jugador no ha sido actualizado",
+                                icon: "error",
+                            });
+                        },
+                    }
+                );
             }
         });
     };
@@ -239,7 +256,7 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     ⚽ Jugadores 👦👧
                 </h2>
             }
@@ -248,8 +265,8 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
             <Head title="⚽ Jugadores 👦👧" />
 
             {/* Contenido de la vista... */}
-            <div className="text-left bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="mt-1 mb-1 flex justify-end">
+            <div className="grid py-6 overflow-x-auto text-left bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-1 mb-1">
                     <PrimaryButton onClick={() => openModal(1)}>
                         <i
                             className="fa-solid fa-plus-circle"
@@ -257,15 +274,28 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                         ></i>
                         Agregar Jugador
                     </PrimaryButton>
+                    <PrimaryButton>
+                        <a
+                            href={route("jugadores.pdf", { equipo_id })}
+                            target="_blank"
+                            download
+                        >
+                            <i
+                                className="fa-solid fa-file-pdf"
+                                style={{ marginRight: "10px" }}
+                            ></i>
+                            Descargar PDF
+                        </a>
+                    </PrimaryButton>
                 </div>
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <div className="w-full text-left mt-2 ml-6">
-                        <span className="font-bold italic">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    <div className="w-full mt-2 ml-6 text-left">
+                        <span className="italic font-bold">
                             NOMBRE EQUIPO:{" "}
                         </span>
                         <span className="inline-block">{equipo}</span>
                     </div>
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
+                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">N°</th>
@@ -346,8 +376,6 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                                                         jugador.estadoEPS,
                                                         jugador.nombreEPS,
                                                         jugador.lugarAtencionEPS
-
-                                                        
                                                     )
                                                 }
                                             >
@@ -387,7 +415,7 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                 </h2>
                 <form
                     onSubmit={save}
-                    className="p-6 grid grid-cols-2 gap-4 "
+                    className="grid grid-cols-2 gap-4 p-6 "
                     encType="multipart/form-data"
                 >
                     <FormField
@@ -551,7 +579,11 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                         name="estadoEPS"
                         value={data.estadoEPS}
                         options={[
-                            { value: "", label: "Seleccione ...", disabled: true },
+                            {
+                                value: "",
+                                label: "Seleccione ...",
+                                disabled: true,
+                            },
                             { value: "1", label: "Activo" },
                             { value: "0", label: "Inactivo" },
                         ]}
@@ -559,7 +591,6 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                         errorMessage={errors.estadoEPS}
                         ref={estadoEPSInput}
                     />
-
 
                     <FormField
                         htmlFor="nombreEPS"
@@ -585,8 +616,6 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                         ref={lugarAtencionEPSInput}
                     />
 
-
-
                     <div className="mt-1">
                         <PrimaryButton
                             processing={processing.toString()}
@@ -595,7 +624,7 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole}) {
                             <i className="fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
                     </div>
-                    <div className="mt-6 flex justify-end">
+                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal}>
                             Cancel
                         </SecondaryButton>
