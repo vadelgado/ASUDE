@@ -53,23 +53,12 @@ class CuerpoTecnicoController extends Controller
         }
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRequest $request)
     {
         $data = $request->only(
             'fk_equipo',
             'fotoCuerpoTecnico',
+            'cargo',
             'nombreCompleto',
             'tipoIdentificacion',
             'numeroIdentificacion',
@@ -94,23 +83,12 @@ class CuerpoTecnicoController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(cuerpoTecnico $cuerpoTecnico)
-    {
-        //
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->only(
             'fk_equipo',
             'fotoCuerpoTecnico',
+            'cargo',
             'nombreCompleto',
             'tipoIdentificacion',
             'numeroIdentificacion',

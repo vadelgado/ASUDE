@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+ 
 return new class extends Migration 
 {
     /**
@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cuerpo_tecnico', function (Blueprint $table) {
-            $table->id();
+            $table->id();            
             $table->foreignId('fk_equipo')->constrained('equipos');
             $table->string('fotoCuerpoTecnico')->nullable();
+            $table->enum('cargo', ['D.L.', 'D.T.', 'A.T.', 'P.F.', 'P.S.', 'U.T.']);
             $table->string('nombreCompleto');            
             $table->enum('tipoIdentificacion', ['TI', 'CC', 'CE', 'PA']);
             $table->string('numeroIdentificacion', 11);

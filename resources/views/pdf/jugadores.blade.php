@@ -49,7 +49,8 @@
 
 <body>
     <h1 style="font-size: 10pt;">PLANILLA DE INSCRIPCIÓN</h1>
-    <p style="font-style: italic; text-align: center;"><strong style="font-style: normal">Corporación Deportiva Los Paisitas "DEPORTE CON SENTIDO
+    <p style="font-style: italic; text-align: center;"><strong style="font-style: normal">Corporación Deportiva Los
+            Paisitas "DEPORTE CON SENTIDO
             SOCIAL"</strong>
         <br />
         Los abajo firmantes aceptamos y reconocemos el reglamento que
@@ -71,12 +72,27 @@
                 <th>FIRMA AUTOGRAFA</th>
                 <th>TARJETA DE<br />IDENTIDAD</th>
                 <th>SERIAL<br />FOLIO</th>
-                <th>FECHA DE<br />NACIMIENTO</th>
+                <th colspan="3">FECHA DE<br />NACIMIENTO</th>
                 <th>LUGAR DE<br />NACIMIENTO</th>
                 <th>ESTABLECIMIENTO<br />EDUCATIVO DONDE<br />CURSA ESTUDIOS</th>
                 <th>GRADO</th>
                 <th>CIUDAD</th>
                 <th>TELÉFONO<br />ESTABLECIMIENTO<br />EDUCATIVO</th>
+            </tr>
+            <tr>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th>dia</th>
+                <th>mes</th>
+                <th>año</th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
+                <th style="background-color: black;"></th>
             </tr>
         </thead>
         <tbody>
@@ -87,7 +103,9 @@
                 <td></td>
                 <td>{{ $jugador->numeroIdentificacion }}</td>
                 <td>{{ $jugador->numeroSerie }}</td>
-                <td>{{ $jugador->fechaNacimiento }}</td>
+                <td>{{ date('d', strtotime($jugador->fechaNacimiento)) }}</td>
+                <td>{{ date('m', strtotime($jugador->fechaNacimiento)) }}</td>
+                <td>{{ date('Y', strtotime($jugador->fechaNacimiento)) }}</td>
                 <td>{{ $jugador->lugarNacimiento }}</td>
                 <td>{{ $jugador->institucionEducativa }}</td>
                 <td>{{ $jugador->grado }}</td>
@@ -97,14 +115,10 @@
             @endforeach
         </tbody>
     </table>
-    <br />
     <table>
         <thead>
             <tr>
-                <th class="section-title" colspan="6">FIRMA Y SELLO AUTORIDAD COMPETENTE</th>
-            </tr>
-            <tr>
-                <th>N°</th>
+                <th> </th>
                 <th>NOMBRES Y APELLIDOS</th>
                 <th>FIRMA AUTOGRAFA</th>
                 <th>CÉDULA</th>
@@ -113,8 +127,18 @@
                 <th>CORREO ELECTRÓNICO</th>
             </tr>
         </thead>
-        <tbody class="signature-section">
-
+        <tbody>
+            @foreach ($cuerpoTecnico as $tecnico)
+            <tr>
+                <td>{{ $tecnico->cargo }}</td>
+                <td>{{ ucfirst(strtolower($tecnico->nombreCompleto)) }}</td>
+                <td></td>
+                <td>{{ $tecnico->numeroIdentificacion }}</td>
+                <td>{{ $tecnico->telefonoFijo }}</td>
+                <td>{{ $tecnico->telefonoCelular }}</td>
+                <td>{{ $tecnico->correoElectronico }}</td>
+            </tr>
+            @endforeach
         </tbody>
     </table>
     <br />
@@ -127,77 +151,6 @@
             </tr>
         </tbody>
     </table>
-</body>
-
-</html>
-
-<table>
-    <thead>
-        <tr>
-            <th style="font-size: 10pt;" colspan="11">NOMBRE EQUIPO: ALIANZA IPIALES</th>
-        </tr>
-        <tr>
-            <th>N°</th>
-            <th>NOMBRES Y APELLIDOS</th>
-            <th>FIRMA AUTOGRAFA</th>
-            <th>TARJETA DE<br />IDENTIDAD</th>
-            <th>SERIAL<br />FOLIO</th>
-            <th>FECHA DE<br />NACIMIENTO</th>
-            <th>LUGAR DE<br />NACIMIENTO</th>
-            <th>ESTABLECIMIENTO<br />EDUCATIVO DONDE<br />CURSA ESTUDIOS</th>
-            <th>GRADO</th>
-            <th>CIUDAD</th>
-            <th>TELÉFONO<br />ESTABLECIMIENTO<br />EDUCATIVO</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($jugadores as $jugador)
-        <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ ucfirst(strtolower($jugador->nombreCompleto)) }}</td>
-            <td></td>
-            <td>{{ $jugador->numeroIdentificacion }}</td>
-            <td>{{ $jugador->numeroSerie }}</td>
-            <td>{{ $jugador->fechaNacimiento }}</td>
-            <td>{{ $jugador->lugarNacimiento }}</td>
-            <td>{{ $jugador->institucionEducativa }}</td>
-            <td>{{ $jugador->grado }}</td>
-            <td>{{ $jugador->ciudadInstitucionEducativa }}</td>
-            <td>{{ $jugador->telefonoInstitucionEducativa }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-<br />
-<table>
-    <thead>
-        <tr>
-            <th class="section-title" colspan="6">FIRMA Y SELLO AUTORIDAD COMPETENTE</th>
-        </tr>
-        <tr>
-            <th>N°</th>
-            <th>NOMBRES Y APELLIDOS</th>
-            <th>FIRMA AUTOGRAFA</th>
-            <th>CÉDULA</th>
-            <th>TEL. FIJO</th>
-            <th>TEL. CELULAR</th>
-            <th>CORREO ELECTRÓNICO</th>
-        </tr>
-    </thead>
-    <tbody class="signature-section">
-
-    </tbody>
-</table>
-<br />
-<table>
-    <tbody>
-        <tr>
-            <td>Firma y Sello Alcalde Municipal</td>
-            <td>Firma y Sello Gerente de Deportes</td>
-            <td>Firma y Sello Presidente JAC</td>
-        </tr>
-    </tbody>
-</table>
 </body>
 
 </html>
