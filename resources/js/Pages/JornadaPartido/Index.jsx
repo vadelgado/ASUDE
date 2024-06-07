@@ -133,28 +133,28 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     {" "}
-                    🕛 Jornadas de Juego para el torneo {torneo[0].nombreTorneo} del {torneo[0].fechaInicio} al {torneo[0].fechaFin}
+                    🕛 Jornadas de Juego para la Primera Ronda del torneo {torneo[0].nombreTorneo}  {torneo[0].fechaInicio} al {torneo[0].fechaFin}
                 </h2>
             }
         >
             <Head title=" 🕛 Jornadas" />
 
-            <div className="bg-white grid v-screen place-items-center py-6">
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Programación de Jornadas
+            <div className="grid py-6 bg-white v-screen place-items-center">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    Primera Ronda
                 </h2>
             </div>
 
-            <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="bg-white grid v-screen place-items-center py-6">
+            <div className="grid py-6 overflow-x-auto bg-white v-screen place-items-center">
+                <div className="grid py-6 bg-white v-screen place-items-center">
                     <PrimaryButton onClick={() => openModal(1)}>
                         <i className="fa-solid fa-plus-circle">Añadir</i>
                     </PrimaryButton>
                 </div>
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg text-center items-center">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    <table className="items-center table text-center border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
@@ -168,17 +168,17 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                             {jornadaPartidos.length > 0 ? (
                                 jornadaPartidos.map((jornadaPartido, index) => (
                                     <tr key={jornadaPartido.id}>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {index + 1}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {jornadaPartido.fechaJornada}
                                         </td>
 
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {jornadaPartido.jornada}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -193,7 +193,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                                                 <i className="fa-solid fa-pencil"></i>
                                             </WarningButton>
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <DangerButton
                                                 onClick={() =>
                                                     eliminar(jornadaPartido.id)
@@ -208,7 +208,7 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
                                 <tr>
                                     <td
                                         colSpan="5"
-                                        className="border border-gray-400 px-4 py-2"
+                                        className="px-4 py-2 border border-gray-400"
                                     >
                                         No hay datos 👀
                                     </td>
@@ -220,8 +220,8 @@ export default function Index({ auth, jornadaPartidos, torneo }) {
             </div>
 
             <Modal show={modal} close={closeModal}>
-                <div className="bg-white p-4">
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <div className="p-4 bg-white">
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
                         {title}
                     </h2>
                     <form onSubmit={save}>

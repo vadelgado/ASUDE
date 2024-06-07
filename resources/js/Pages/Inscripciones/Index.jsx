@@ -172,23 +172,36 @@ export default function Index({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <div className="flex justify-center items-center py-1 px-2">
-                    <h2 className="flex items-center font-semibold text-xl text-gray-800 leading-tight">
+                <div className="flex items-center justify-center px-2 py-1">
+                    <h2 className="flex items-center text-xl font-semibold leading-tight text-gray-800">
                         Pre Inscripciones equipo
-                        <img
-                            src={`/storage/${equipo.escudoEquipo}`}
-                            alt={`Escudo equipo ${equipo.escudoEquipo}`}
-                            className="h-10 w-10 rounded-full ml-2"
-                        />
-                        {equipo.nombreEquipo}
+                        {auth.user.role === "admin" ? (
+                            <>
+                                <img
+                                    src={`/storage/${equipo.escudoEquipo}`}
+                                    alt={`Escudo equipo ${equipo.escudoEquipo}`}
+                                    className="w-10 h-10 ml-2 rounded-full"
+                                />
+                                {equipo.nombreEquipo}
+                            </>
+                        ) : auth.user.role === "equipo" ? (
+                            <>
+                                <img
+                                    src={`/storage/${equipo.escudoEquipo}`}
+                                    alt={`Escudo equipo ${equipo.escudoEquipo}`}
+                                    className="w-10 h-10 ml-2 rounded-full"
+                                />
+                                {equipo.nombreEquipo}
+                            </>
+                        ) : null}
                     </h2>
                 </div>
             }
         >
             <Head title="Programación Torneo" />
 
-            <div className="bg-white grid v-screen place-items-center">
-                <div className="mt-2 mb-3 flex justify-end">
+            <div className="grid bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => handleModal(1)}>
                         <i className="fa-solid fa-plus-circle">
                             {" "}
@@ -197,14 +210,14 @@ export default function Index({
                     </PrimaryButton>
                 </div>
             </div>
-            <div className="bg-white grid v-screen place-items-center py-6">
-                <table className="table-auto border-gray-400">
+            <div className="grid py-6 bg-white v-screen place-items-center">
+                <table className="border-gray-400 table-auto">
                     <thead>
                         <tr>
-                            <th className="border px-4 py-2">#</th>
-                            <th className="border px-4 py-2">Torneo</th>
-                            <th className="border px-4 py-2">Estado</th>
-                            <th className="border px-4 py-2">Observación</th>
+                            <th className="px-4 py-2 border">#</th>
+                            <th className="px-4 py-2 border">Torneo</th>
+                            <th className="px-4 py-2 border">Estado</th>
+                            <th className="px-4 py-2 border">Observación</th>
                             <th className="px-2 py-2"></th>
                             <th className="px-2 py-2"></th>
                             <th className="px-2 py-2"></th>
@@ -213,13 +226,13 @@ export default function Index({
                     <tbody>
                         {inscripciones.map((inscripcion, index) => (
                             <tr key={inscripcion.id}>
-                                <td className="border px-4 py-2">
+                                <td className="px-4 py-2 border">
                                     {index + 1}
                                 </td>
-                                <td className="border px-4 py-2">
+                                <td className="px-4 py-2 border">
                                     {inscripcion.nombreTorneo}
                                 </td>
-                                <td className="border px-4 py-2">
+                                <td className="px-4 py-2 border">
                                     <span
                                         className={`flex gap-x-2 rounded-full text-xs text-white py-1 px-2 ${
                                             inscripcion.estadoInscripcion ===
@@ -237,11 +250,11 @@ export default function Index({
                                         {inscripcion.estadoInscripcion}
                                     </span>
                                 </td>
-                                <td className="border border-gray-400 px-4 py-2">
+                                <td className="px-4 py-2 border border-gray-400">
                                     {inscripcion.observacion}
                                 </td>
                                 {auth.user.role === "admin" ? (
-                                    <td className="border border-gray-400 px-4 py-2">
+                                    <td className="px-4 py-2 border border-gray-400">
                                         <PrimaryButton
                                             onClick={() =>
                                                 handleModal(
@@ -259,7 +272,7 @@ export default function Index({
                                     </td>
                                 ) : null}
                                 {auth.user.role === "admin" ? (
-                                    <td className="border border-gray-400 px-4 py-2">
+                                    <td className="px-4 py-2 border border-gray-400">
                                         <DangerButton
                                             onClick={() =>
                                                 eliminar(
@@ -279,20 +292,19 @@ export default function Index({
             </div>
 
             <Modal show={modal} close={closeModal}>
-            <div className="flex justify-center items-center py-1 px-2 my-3">
-                    <h2 className="flex items-center font-semibold text-xl text-gray-800 leading-tight">
-                    {title}
+                <div className="flex items-center justify-center px-2 py-1 my-3">
+                    <h2 className="flex items-center text-xl font-semibold leading-tight text-gray-800">
+                        {title}
                         <img
                             src={`/storage/${equipo.escudoEquipo}`}
                             alt={`Escudo equipo ${equipo.nombreTorneo}`}
-                            className="h-10 w-10 rounded-full ml-2"
+                            className="w-10 h-10 ml-2 rounded-full"
                         />
                         {equipo.nombreEquipo}
                     </h2>
-                </div>                
+                </div>
                 <form onSubmit={handleSubmit} className="p-6">
                     {auth.user.role === "admin" ? (
-                        
                         <SelectField
                             htmlFor="fk_torneo"
                             label={
@@ -309,10 +321,8 @@ export default function Index({
                             options={handleSelectTorneos}
                             errorMessage={errors.fk_torneo}
                         />
-
                     ) : auth.user.role === "equipo" ? (
                         <>
-                           
                             <SelectField
                                 htmlFor="fk_torneo"
                                 label={
@@ -329,11 +339,11 @@ export default function Index({
                                 options={handleSelectTorneos}
                                 errorMessage={errors.fk_torneo}
                             />
-                            
+
                             {selectedTorneo && (
                                 <>
                                     <img
-                                        className="w-1/2 h-1/2 mx-auto mt-4"
+                                        className="w-1/2 mx-auto mt-4 h-1/2"
                                         src={`/storage/${selectedTorneo.flayer}`}
                                         alt={`Torneo ⚽ ${selectedTorneo.nombreTorneo}`}
                                     />
@@ -376,7 +386,7 @@ export default function Index({
                         />
                     ) : null}
 
-                    <div className="mt-4 flex justify-end">
+                    <div className="flex justify-end mt-4">
                         <SecondaryButton onClick={closeModal}>
                             Cancelar
                         </SecondaryButton>

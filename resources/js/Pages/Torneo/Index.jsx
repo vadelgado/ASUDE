@@ -222,7 +222,7 @@ export default function Dashboard({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Torneos ⚽
                 </h2>
             }
@@ -231,8 +231,8 @@ export default function Dashboard({
 
             
 
-            <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="mt-1 mb-1 flex justify-end">
+            <div className="grid py-6 overflow-x-auto bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-1 mb-1">
                     <PrimaryButton onClick={() => openModal(1)}>
                         <i
                             className="fa-solid fa-plus-circle"
@@ -248,7 +248,7 @@ export default function Dashboard({
                 {torneos.length > 0 ? (
                     torneos.map((torneo, i) => (
                         <ul key={torneo.id} className="grid grid-cols-1 gap-4">
-                            <li className="border border-gray-400 mb-10 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
+                            <li className="p-4 mb-10 border border-gray-400 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
                                 <div>
                                     <a
                                         class="text-white bg-[#2557D6] hover:bg-[#2557D6]/90 focus:ring-4 focus:ring-[#2557D6]/50 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#2557D6]/50 me-2 mb-2"
@@ -291,7 +291,7 @@ export default function Dashboard({
                                     >
                                         <i className="fa-solid fa-sun">
                                             {" "}
-                                            Jornadas Torneo
+                                            PRIMERA RONDA
                                         </i>
                                     </a>
 
@@ -437,7 +437,7 @@ export default function Dashboard({
                                         className="w-32 h-auto sm:w-48 md:w-64 lg:w-80 xl:w-96 2xl:w-112"
                                     />
                                 </div>
-                                <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2">
                                     <div className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
                                         <strong>
                                             Imagen del Banner Inferior Izquierdo
@@ -475,8 +475,8 @@ export default function Dashboard({
                     <div>No hay torneos</div>
                 )}
 
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    {/*                     <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    {/*                     <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
@@ -503,52 +503,52 @@ export default function Dashboard({
                             {torneos.length > 0 ? (
                                 torneos.map((torneo, i) => (
                                     <tr key={torneo.id}>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {i + 1}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {torneo.nombreTorneo}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <img
                                                 src={`/storage/${torneo.flayer}`}
                                                 alt={torneo.nombreTorneo}
                                                 className="w-32 h-auto"
                                             />
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {
                                                 torneo.cantidadEquiposParticipantes
                                             }
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.caracteristicas}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.premiacion}
                                         </td>
 
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.sistemaJuego}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.fk_sistema_juegos}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.fk_categoria_equipo}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.estadoTorneo}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {torneo.inscripcion}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <a href="{torneo.reglamentacion}">
                                                 {torneo.reglamentacion}
                                             </a>
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {new Date(
                                                 torneo.fechaInicio
                                             ).toLocaleDateString()}
@@ -570,18 +570,18 @@ export default function Dashboard({
             </div>
 
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="p-4 text-2xl font-semibold text-white border-b border-gray-300 bg-gray-800 rounded-t-md">
+                <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                     {title}
                 </h2>
 
-                <p className="text-red-500 pl-4">
+                <p className="pl-4 text-red-500">
                     Los campos marcados con un{" "}
                     <span className="font-bold">*</span> son obligatorios
                 </p>
 
                 <form
                     onSubmit={save}
-                    className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 "
+                    className="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2 "
                     encType="multipart/form-data"
                 >
                     <FormField
@@ -896,7 +896,7 @@ export default function Dashboard({
                         errorMessage={errors.procesoInscripcion}
                     />
 
-                    <div className=" space-x-4 mt-20">
+                    <div className="mt-20 space-x-4 ">
                         <PrimaryButton processing={processing.toString()}>
                             <i className="fa-solid fa-save"></i>
                             <span>Guardar</span>

@@ -40,16 +40,16 @@ class TablasJuego extends Controller
     
         $programacionTorneos = DB::table('programacion_torneos as p')
             ->join('jornada_partidos as jp', 'p.fk_jornadaPartido', '=', 'jp.id')
-            ->join('resultado_sorteos as rs', function ($join) {
+            ->leftJoin('resultado_sorteos as rs', function ($join) {
                 $join->on('p.posicion_local', '=', 'rs.puesto')
                     ->on('rs.fk_torneo', '=', 'jp.fk_torneo');
             })
-            ->join('resultado_sorteos as rs2', function ($join) {
+            ->leftJoin('resultado_sorteos as rs2', function ($join) {
                 $join->on('p.posicion_visitante', '=', 'rs2.puesto')
                     ->on('rs2.fk_torneo', '=', 'jp.fk_torneo');
             })
-            ->join('equipos as e1', 'rs.fk_equipo', '=', 'e1.id')
-            ->join('equipos as e2', 'rs2.fk_equipo', '=', 'e2.id')
+            ->leftJoin('equipos as e1', 'rs.fk_equipo', '=', 'e1.id')
+            ->leftJoin('equipos as e2', 'rs2.fk_equipo', '=', 'e2.id')
             ->where('jp.fk_torneo', $torneo_id)
             ->select(
                 'p.id',
@@ -58,13 +58,18 @@ class TablasJuego extends Controller
                 'p.fk_lugarPartido',
                 'e1.nombreEquipo as local',
                 'e2.nombreEquipo as visitante',
+                'e1.escudoEquipo as local_escudo',
+                'e2.escudoEquipo as visitante_escudo',
                 'rs.puesto as local_puesto',
                 'rs2.puesto as visitante_puesto',
+                'p.posicion_local',
+                'p.posicion_visitante',
+
             )
             ->orderBy('jp.jornada')
             ->orderBy('p.HoraPartido')
             ->get();
-    
+    //dd($programacionTorneos);
         // Convertir hora a formato AM/PM y agrupar por jornada
         $programacionTorneos = $programacionTorneos->map(function ($item) {
             $item->HoraPartido = date('h:i A', strtotime($item->HoraPartido));
