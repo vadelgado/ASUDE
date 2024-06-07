@@ -28,9 +28,9 @@ export default function Header({ auth }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className="fixed top-0 w-full z-50 bg-green-300 bg-opacity-25 h-30">
+        <header className="fixed top-0 w-full z-50 bg-[#2E8B57] h-30">
             <div className="bg-[#46C655] text-[#000000] text-xs sm:text-sm">
-                <div className="container mx-auto flex flex-col md:flex-row justify-center items-center py-2 px-4">
+                <div className="container flex flex-col items-center justify-center px-4 py-2 mx-auto md:flex-row">
                     <div className="flex items-center mb-2 md:mb-0">
                         <span className="mr-2">
                             <i className="fa-brands fa-whatsapp"></i>{" "}
@@ -48,7 +48,7 @@ export default function Header({ auth }) {
                 </div>
             </div>
             <nav
-                className="mx-auto flex max-w-7xl items-center justify-between p-6 px-7 lg:px-8"
+                className="flex items-center justify-between p-6 mx-auto max-w-7xl px-7 lg:px-8"
                 aria-label="Global"
             >
                 <HeaderLink
@@ -57,8 +57,8 @@ export default function Header({ auth }) {
                     className="relative z-10 flex lg:flex-1"
                 >
                     <span className="sr-only">Alianza Sureña</span>
-                    <Logo className="absolute h-16 w-auto m-auto blur-sm opacity-0 transition-opacity duration-300 hover:opacity-50" />
-                    <Logo className="h-16 w-auto" />
+                    <Logo className="absolute w-auto h-16 m-auto transition-opacity duration-300 opacity-0 blur-sm hover:opacity-50" />
+                    <Logo className="w-auto h-16" />
                 </HeaderLink>
 
                 <div className="flex lg:hidden">
@@ -68,7 +68,7 @@ export default function Header({ auth }) {
                         onClick={() => setMobileMenuOpen(true)}
                     >
                         <span className="sr-only">Abri Menu</span>
-                        <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                        <Bars3Icon className="w-6 h-6" aria-hidden="true" />
                     </button>
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
@@ -96,12 +96,12 @@ export default function Header({ auth }) {
                 onClose={setMobileMenuOpen}
             >
                 <div className="fixed inset-0 z-10" />
-                <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto backdrop-blur-sm bg-green-950 bg-opacity-40 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full px-6 py-6 overflow-y-auto backdrop-blur-sm bg-green-950 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
                         <HeaderLink
                             checkActive={false}
                             href="/"
-                            className="relative z-10 flex lg:flex-1 h-16"
+                            className="relative z-10 flex h-16 lg:flex-1"
                         >
                             
                         </HeaderLink>
@@ -111,11 +111,11 @@ export default function Header({ auth }) {
                             onClick={() => setMobileMenuOpen(false)}
                         >
                             <span className="sr-only">Close menu</span>
-                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            <XMarkIcon className="w-6 h-6" aria-hidden="true" />
                         </button>
                     </div>
-                    <div className="mt-20 flow-root">
-                        <div className=" divide-y divide-gray-500/10">
+                    <div className="flow-root mt-20">
+                        <div className="divide-y divide-gray-500/10">
                             <div className="space-y-2">
                                 <Link
                                     href={route("torneo.listarTorneos")}
@@ -125,7 +125,7 @@ export default function Header({ auth }) {
                                 </Link>
                                 <Link
                                     href={route("torneoEnCurso.index")}
-                                    className="block  px-4 text-base font-medium text-black hover:bg-gray-50"
+                                    className="block px-4 text-base font-medium text-black hover:bg-gray-50"
                                 >
                                     ⚽TORNEO EN CURSO2
                                 </Link>
@@ -138,11 +138,11 @@ export default function Header({ auth }) {
             <nav className="fixed bottom-0 left-0 right-0 bg-[#46C655] text-white py-3 flex justify-around items-center md:hidden">
  
                 <a href="tel:+573183773718" className="flex flex-col items-center">
-                    <PhoneIcon className="h-6 w-6 mb-1" aria-hidden="true" />
+                    <PhoneIcon className="w-6 h-6 mb-1" aria-hidden="true" />
                     <span className="text-xs">Llamar</span>
                 </a>
                 <a href="https://wa.me/573183773718" className="flex flex-col items-center">
-                    <ArrowPathIcon className="h-6 w-6 mb-1" aria-hidden="true" />
+                    <ArrowPathIcon className="w-6 h-6 mb-1" aria-hidden="true" />
                     <span className="text-xs">WhatsApp</span>
                 </a>
             </nav>
