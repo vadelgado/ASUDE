@@ -24,6 +24,7 @@ class TablasJuego extends Controller
         ]);
     
         $torneo_id = $request->input('torneo_id');
+
         $torneo = torneo::where('id', $torneo_id)
             ->select(
                 'torneo.nombreTorneo',
@@ -37,8 +38,11 @@ class TablasJuego extends Controller
                 'torneo.reglamentacion'
             )
             ->first();
+
+        $programaciones_faces = DB::table('programaciones_faces as pf')
+            ->join()
     
-        $programacionTorneos = DB::table('programacion_torneos as p')
+       /* $programacionTorneos = DB::table('programacion_torneos as p')
             ->join('jornada_partidos as jp', 'p.fk_jornadaPartido', '=', 'jp.id')
             ->leftJoin('resultado_sorteos as rs', function ($join) {
                 $join->on('p.posicion_local', '=', 'rs.puesto')
@@ -68,18 +72,19 @@ class TablasJuego extends Controller
             )
             ->orderBy('jp.jornada')
             ->orderBy('p.HoraPartido')
-            ->get();
-    //dd($programacionTorneos);
+            ->get();*/
+
+        //dd($programacionTorneos);
         // Convertir hora a formato AM/PM y agrupar por jornada
-        $programacionTorneos = $programacionTorneos->map(function ($item) {
+        /*$programacionTorneos = $programacionTorneos->map(function ($item) {
             $item->HoraPartido = date('h:i A', strtotime($item->HoraPartido));
             return $item;
-        })->groupBy('jornada')->toArray();
+        })->groupBy('jornada')->toArray();*/
     
         return Inertia::render('TablasJuego/Index', [
             'torneo_id' => $torneo_id,
             'torneo' => $torneo,
-            'programacionTorneos' => $programacionTorneos,
+            /*'programacionTorneos' => $programacionTorneos,*/
         ]);
     }
     

@@ -286,31 +286,12 @@ export default function Dashboard({
                                     </a>
 
                                     <a
-                                        class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
-                                        href={`/jornadaPartido?torneo_id=${torneo.id}`}
-                                    >
-                                        <i className="fa-solid fa-sun">
-                                            {" "}
-                                            PRIMERA RONDA
-                                        </i>
-                                    </a>
-
-                                    <a
                                         class="text-white bg-[#cf1df2] hover:bg-[#cf1df2]/90 focus:ring-4 focus:outline-none focus:ring-[#cf1df2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#cf1df2]/55 me-2 mb-2"
                                         href={`/lugarPartido?torneo_id=${torneo.id}`}
                                     >
                                         <i className="fa-solid fa-location-dot">
                                             {" "}
                                             Lugares Partidos
-                                        </i>
-                                    </a>
-                                    <a
-                                        class="text-white bg-[#f23d1d] hover:bg-[#f23d1d]/90 focus:ring-4 focus:outline-none focus:ring-[#f23d1d]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#f23d1d]/55 me-2 mb-2"
-                                        href={`/programacionTorneo?team_id=${torneo.id}`}
-                                    >
-                                        <i className="fa-solid fa-calendar-days">
-                                            {" "}
-                                            Programacion Torneo
                                         </i>
                                     </a>
 

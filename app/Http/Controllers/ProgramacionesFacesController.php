@@ -6,6 +6,7 @@ use App\Models\ProgramacionesFaces;
 use App\Models\Fases;
 use App\Models\Equipos;
 use App\Models\lugarPartido;
+use App\Models\Torneo;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProgramacionesFases\StoreRequest;
 use App\Http\Requests\ProgramacionesFases\UpdateRequest;
@@ -25,36 +26,40 @@ class ProgramacionesFacesController extends Controller
                 ->select('fases.nombreFase', 'fases.id', 'fases.fk_torneo')
                 ->get();
             $programaciones = ProgramacionesFaces::where('fk_fase', $fase_id)
-                ->join('equipos as local', 'programaciones_faces.fk_equipo_local', '=', 'local.id')
-                ->join('equipos as visitante', 'programaciones_faces.fk_equipo_visitante', '=', 'visitante.id')
                 ->join('lugar_partidos', 'programaciones_faces.fk_lugarPartido', '=', 'lugar_partidos.id')
-                ->select('programaciones_faces.*', 'local.nombreEquipo as equipoLocal', 'visitante.nombreEquipo as equipoVisitante', 'FechaPartido', 'HoraPartido', 'lugar_partidos.nomLugar')
+                ->select('programaciones_faces.*', 'FechaPartido', 'HoraPartido', 'lugar_partidos.nomLugar')
                 ->orderBy('FechaPartido')
                 ->get();
+            $cantidadEquipos = Torneo::join('fases', 'torneo.id', '=', 'fases.fk_torneo')
+                ->where('fases.id', $fase_id)
+                ->value('torneo.cantidadEquiposParticipantes');
             $equipos = Equipos::join('inscripciones', 'equipos.id', '=', 'inscripciones.fk_equipo')
+                ->join('resultado_sorteos', 'equipos.id', '=', 'resultado_sorteos.fk_equipo')
                 ->join('torneo', 'inscripciones.fk_torneo', '=', 'torneo.id')
                 ->join('fases', 'torneo.id', '=', 'fases.fk_torneo')
                 ->where('fases.id', $fase_id)
-                ->select('equipos.id', 'equipos.nombreEquipo')
+                ->select('equipos.id', 'equipos.nombreEquipo', 'resultado_sorteos.puesto')
                 ->get();
             $lugares = lugarPartido::join('torneo', 'lugar_partidos.fk_torneo', '=', 'torneo.id')
                 ->join('fases', 'torneo.id', '=', 'fases.fk_torneo')
                 ->where('fases.id', $fase_id)
                 ->select('lugar_partidos.id', 'lugar_partidos.nomLugar')
                 ->get();
-                //dd($programaciones, $equipos, $lugares, $fase);
+                //dd($cantidadEquipos);
         } else {
             $fase = null;
             $programaciones = null;
             $equipos = null;
             $lugares = null;            
+            $cantidadEquipos = null;
         }
         return Inertia::render('ProgramacionesFaces/Index', [
             'programaciones' => $programaciones,
             'fase' => $fase,
             'fk_fase' => $fase_id,
             'equipos' => $equipos,
-            'lugares' => $lugares
+            'lugares' => $lugares,
+            'cantidadEquipos' => $cantidadEquipos
         ]);
     }
 

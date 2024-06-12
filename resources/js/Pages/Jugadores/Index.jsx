@@ -37,7 +37,7 @@ export default function Index({
     const estadoEPSInput = useRef();
     const nombreEPSInput = useRef();
     const lugarAtencionEPSInput = useRef();
-
+ 
     const InitialValues = {
         id: "",
         nombreCompleto: "",
@@ -266,7 +266,7 @@ export default function Index({
 
             {/* Contenido de la vista... */}
             <div className="grid py-6 overflow-x-auto text-left bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-1 mb-1">
+                <div className="flex justify-end mt-1 mb-1 space-x-4">
                     <PrimaryButton onClick={() => openModal(1)}>
                         <i
                             className="fa-solid fa-plus-circle"
@@ -281,12 +281,27 @@ export default function Index({
                             download
                         >
                             <i
-                                className="fa-solid fa-file-pdf"
+                                className=" fa-solid fa-file-pdf"
                                 style={{ marginRight: "10px" }}
                             ></i>
                             Descargar PDF
                         </a>
                     </PrimaryButton>
+
+                    <PrimaryButton>
+                        <a
+                            href={route("formatoFotos.pdf", { equipo_id })}
+                            target="_blank"
+                            download
+                        >
+                            <i
+                                className=" fa-solid fa-file-pdf"
+                                style={{ marginRight: "10px" }}
+                            ></i>
+                            Descargar Formato Fotos
+                        </a>
+                    </PrimaryButton>
+                            
                 </div>
                 <div className="grid py-6 bg-white v-screen place-items-center">
                     <div className="w-full mt-2 ml-6 text-left">

@@ -23,11 +23,31 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fk_equipo_local' => 'required|integer',
-            'fk_equipo_visitante' => 'required|integer',
+            'posicion_visitante' => 'required|integer',
+            'posicion_local' => 'required|integer',
             'FechaPartido' => 'required|date',
             'HoraPartido' => 'required',
             'fk_lugarPartido' => 'required|integer',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'posicion_local.required' => 'Es obligatorio indicar la posición del equipo local.',
+            'posicion_local.integer' => 'La posición del equipo local debe ser un número entero.',
+            'posicion_visitante.required' => 'Es obligatorio indicar la posición del equipo visitante.',
+            'posicion_visitante.integer' => 'La posición del equipo visitante debe ser un número entero.',
+            'FechaPartido.required' => 'Es obligatorio indicar la fecha del partido.',
+            'FechaPartido.date' => 'La fecha del partido debe ser una fecha válida.',
+            'HoraPartido.required' => 'Es obligatorio indicar la hora del partido.',
+            'fk_lugarPartido.required' => 'Es obligatorio indicar el lugar del partido.',
+            'fk_lugarPartido.integer' => 'El lugar del partido debe ser un número entero.',
         ];
     }
 }

@@ -23,8 +23,8 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [            
-            'fk_equipo_local' => 'required|integer',
-            'fk_equipo_visitante' => 'required|integer',
+            'posicion_visitante' => 'required|integer',
+            'posicion_local' => 'required|integer',
             'FechaPartido' => 'required|date',
             'HoraPartido' => 'required',
             'fk_lugarPartido' => 'required|integer',
@@ -39,15 +39,15 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'fk_equipo_local.required' => 'El equipo local es requerido',
-            'fk_equipo_local.integer' => 'El equipo local debe ser un número entero',
-            'fk_equipo_visitante.required' => 'El equipo visitante es requerido',
-            'fk_equipo_visitante.integer' => 'El equipo visitante debe ser un número entero',
-            'FechaPartido.required' => 'La fecha del partido es requerida',
-            'FechaPartido.date' => 'La fecha del partido debe ser una fecha',
-            'HoraPartido.required' => 'La hora del partido es requerida',
-            'fk_lugarPartido.required' => 'El lugar del partido es requerido',
-            'fk_lugarPartido.integer' => 'El lugar del partido debe ser un número entero',
+            'posicion_local.required' => 'Es obligatorio indicar la posición del equipo local.',
+            'posicion_local.integer' => 'La posición del equipo local debe ser un número entero.',
+            'posicion_visitante.required' => 'Es obligatorio indicar la posición del equipo visitante.',
+            'posicion_visitante.integer' => 'La posición del equipo visitante debe ser un número entero.',
+            'FechaPartido.required' => 'Es obligatorio indicar la fecha del partido.',
+            'FechaPartido.date' => 'La fecha del partido debe ser una fecha válida.',
+            'HoraPartido.required' => 'Es obligatorio indicar la hora del partido.',
+            'fk_lugarPartido.required' => 'Es obligatorio indicar el lugar del partido.',
+            'fk_lugarPartido.integer' => 'El lugar del partido debe ser un número entero.',
         ];
     }
 }

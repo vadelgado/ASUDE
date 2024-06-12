@@ -64,18 +64,13 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Actualizar Equipo
     Route::post('equipos/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equipos.updatepost');
 
-    // Resource jornadaPartido
-    Route::resource('jornadaPartido', App\Http\Controllers\JornadaPartidoController::class);
+    
 
     // Resource lugarPartido
     Route::resource('lugarPartido', App\Http\Controllers\LugarPartidoController::class);
     // Actualizar Lugar Partido
     Route::post('lugarPartido/{lugarPartido}', 'App\Http\Controllers\LugarPartidoController@update')->name('lugarPartido.updatepost');
 
-    // Resource programacionTorneo
-    Route::resource('programacionTorneo', App\Http\Controllers\ProgramacionTorneoController::class);
-    // Actualizar Programacion Torneo
-    Route::post('programacionTorneo/{programacionTorneo}', 'App\Http\Controllers\ProgramacionTorneoController@update')->name('programaciontorneo.updatepost');
 
     // Resource sistemaJuego
     Route::resource('sistemaJuego', App\Http\Controllers\SistemaJuegoController::class);
@@ -92,6 +87,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     //pdfJugadores
     Route::get('/jugadores/pdf', [JugadoresController::class, 'generatePDF'])->name('jugadores.pdf');
+    //pdfFormatoFotos
+    Route::get('/formatoFotos/pdf', [JugadoresController::class, 'generatePDFFormatoFotos'])->name('formatoFotos.pdf');
 
     //CuerpoTecnicoAdmin
     Route::resource('cuerpoTecnicoAdmin', App\Http\Controllers\CuerpoTecnicoController::class);

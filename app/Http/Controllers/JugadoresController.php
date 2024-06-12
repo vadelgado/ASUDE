@@ -12,7 +12,7 @@ use App\Http\Requests\Jugadores\UpdateRequest;
 use Illuminate\Support\Facades\Storage;
 
 use Inertia\Inertia;
-
+ 
 use Illuminate\Http\Request;
 
 class JugadoresController extends Controller
@@ -71,13 +71,49 @@ class JugadoresController extends Controller
                 ->when($equipo_id, function ($query) use ($equipo_id) {
                     return $query->where('equipos.id', $equipo_id);
                 })
-                ->select('jugadores.*', 'equipos.nombreEquipo')
+                ->select('jugadores.nombrecompleto','jugadores.foto', 'equipos.nombreEquipo')
                 ->get();
             $pdf = PDF::loadView('pdf.jugadores', compact('jugadores', 'equipo', 'cuerpoTecnico')); // Add 'cuerpoTecnico' to the compact function
             $pdf->setPaper([0, 0, 612.283, 935.433], 'landscape'); // Set the paper size to 216mm x 330mm
             return response()->streamDownload(function () use ($pdf) {
                 echo $pdf->output();
             }, 'jugadores.pdf', [
+                'Content-Type' => 'application/pdf',
+            ]);
+        dd($jugadores, $equipo, $cuerpoTecnico);
+
+        } else {
+            return Inertia::render('Dashboard');
+        }
+    }
+
+    public function generatePDFFormatoFotos(Request $request){
+        $request->validate([
+            'equipo_id' => 'required|integer|exists:equipos,id',
+        ]);
+    
+        $equipo_id = $request->input('equipo_id');
+    
+        if ($equipo_id) {
+            //Nombre del equipo
+            $equipo = Equipos::find($equipo_id)->nombreEquipo;
+            $userRole = Auth::user()->role;
+            $cuerpoTecnico = cuerpoTecnico::where('fk_equipo', $equipo_id)->get();
+    
+            $jugadores = Jugadores::join('equipos', 'jugadores.fk_equipo', '=', 'equipos.id')
+                ->when($userRole !== 'admin', function ($query) {
+                    return $query->where('equipos.fk_user', Auth::user()->id);
+                })
+                ->when($equipo_id, function ($query) use ($equipo_id) {
+                    return $query->where('equipos.id', $equipo_id);
+                })
+                ->select('jugadores.*', 'equipos.nombreEquipo')
+                ->get();
+            $pdf = PDF::loadView('pdf.jugadoresFormatoFotos', compact('jugadores', 'equipo', 'cuerpoTecnico')); // Add 'cuerpoTecnico' to the compact function
+            $pdf->setPaper([0, 0, 612.283, 935.433], 'landscape'); // Set the paper size to 216mm x 330mm
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->output();
+            }, 'jugadoresFormatoFotos.pdf', [
                 'Content-Type' => 'application/pdf',
             ]);
         } else {

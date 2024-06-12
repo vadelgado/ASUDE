@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('programaciones_faces', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fk_fase')->constrained('fases');
-            $table->foreignId('fk_equipo_local')->constrained('equipos');
-            $table->foreignId('fk_equipo_visitante')->constrained('equipos');
+            $table->unsignedTinyInteger('posicion_local');
+            $table->unsignedTinyInteger('posicion_visitante');
             $table->date('FechaPartido');
             $table->time('HoraPartido');
-            $table->foreignId('fk_lugarPartido')->constrained('lugar_partidos');            
+            $table->foreignId('fk_lugarPartido')->constrained('lugar_partidos');
             $table->timestamps(false);
         });
     }

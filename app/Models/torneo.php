@@ -47,7 +47,7 @@ class torneo extends Model
 
     public function categoriaEquipo()
     {
-        return $this->belongsTo(CategoriaEquipo::class, 'fk_categoria_equipo');
+        return $this->belongsTo(Categorias::class, 'fk_categoria_equipo');
     }
 
     public function fases()
@@ -58,16 +58,6 @@ class torneo extends Model
     public function equipos()
     {
         return $this->hasMany(Equipos::class, 'fk_torneo');
-    }
-
-    public function jornadaPartidos()
-    {
-        return $this->hasMany(jornadaPartido::class, 'fk_torneo');
-    }
-
-    public function programaTorneo()
-    {
-        return $this->hasMany(programacionTorneo::class, 'fk_torneo');
     }
 
     use HasFactory;

@@ -10,14 +10,20 @@ import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, fase, programaciones, equipos, lugares }) {
+export default function Index({
+    auth,
+    fase,
+    programaciones,
+    equipos,
+    lugares,
+    cantidadEquipos,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
-    const fk_equipo_localSelect = useRef();
-    const fk_equipo_visitanteSelect = useRef();
+    const posicion_localSelect = useRef();
+    const posicion_visitanteSelect = useRef();
     const FechaPartidoInput = useRef();
     const HoraPartidoInput = useRef();
     const fk_lugarPartidoSelect = useRef();
@@ -25,14 +31,22 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
     // Valores iniciales del formulario.
     const initialValues = {
         fk_fase: fase[0].id,
-        fk_equipo_local: "",
-        fk_equipo_visitante: "",
+        posicion_local: "",
+        posicion_visitante: "",
         FechaPartido: "",
         HoraPartido: "",
         fk_lugarPartido: "",
     };
 
-    const { data, setData, errors, delete: destroy, post, put, processing } = useForm(initialValues);
+    const {
+        data,
+        setData,
+        errors,
+        delete: destroy,
+        post,
+        put,
+        processing,
+    } = useForm(initialValues);
 
     // Función para manejar cambios en los inputs del formulario.
     const handleInputChange = (e) => {
@@ -41,7 +55,16 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
     };
 
     // Función para manejar el modal.
-    const handleModal = (op, id, fk_fase, fk_equipo_local, fk_equipo_visitante, FechaPartido, HoraPartido, fk_lugarPartido) => {
+    const handleModal = (
+        op,
+        id,
+        fk_fase,
+        posicion_local,
+        posicion_visitante,
+        FechaPartido,
+        HoraPartido,
+        fk_lugarPartido
+    ) => {
         setModal(true);
         setOperation(op);
 
@@ -53,8 +76,8 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
             setData({
                 id: id,
                 fk_fase: fk_fase,
-                fk_equipo_local: fk_equipo_local,
-                fk_equipo_visitante: fk_equipo_visitante,
+                posicion_local: posicion_local,
+                posicion_visitante: posicion_visitante,
                 FechaPartido: FechaPartido,
                 HoraPartido: HoraPartido,
                 fk_lugarPartido: fk_lugarPartido,
@@ -119,10 +142,10 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
     };
 
     const equiposSelect = [
-        { value: "", label: "Seleccione un equipo" },
-        ...equipos.map((equipo) => ({
-            value: equipo.id,
-            label: equipo.nombreEquipo,
+        { value: "", label: "Seleccione ...", disabled: true },
+        ...Array.from({ length: cantidadEquipos }, (_, i) => ({
+            value: i + 1,
+            label: `Equipo ${i + 1}`,
         })),
     ];
 
@@ -170,12 +193,30 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
                     <tbody>
                         {programaciones.map((programacion, index) => (
                             <tr key={programacion.id}>
-                                <td className="px-4 py-2 border">{index + 1}</td>
-                                <td className="px-4 py-2 border">{programacion.equipoLocal}</td>
-                                <td className="px-4 py-2 border">{programacion.equipoVisitante}</td>
-                                <td className="px-4 py-2 border">{programacion.FechaPartido}</td>
-                                <td className="px-4 py-2 border">{programacion.HoraPartido}</td>
-                                <td className="px-4 py-2 border">{programacion.nomLugar}</td>
+                                <td className="px-4 py-2 border">
+                                    {index + 1}
+                                </td>
+                                <td className="px-4 py-2 border">
+                                    {programacion.posicion_local}
+                                </td>
+                                <td className="px-4 py-2 border">
+                                    {programacion.posicion_visitante}
+                                </td>
+                                <td className="px-4 py-2 border">
+                                    {programacion.FechaPartido}
+                                </td>
+                                <td className="px-4 py-2 border">
+                                    {new Date(
+                                        `1970-01-01T${programacion.HoraPartido}`
+                                    ).toLocaleString("en-US", {
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                        hour12: true,
+                                    })}
+                                </td>
+                                <td className="px-4 py-2 border">
+                                    {programacion.nomLugar}
+                                </td>
                                 <td className="px-2 py-2 border">
                                     <SecondaryButton
                                         onClick={() =>
@@ -183,13 +224,14 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
                                                 2,
                                                 programacion.id,
                                                 programacion.fk_fase,
-                                                programacion.fk_equipo_local,
-                                                programacion.fk_equipo_visitante,
+                                                programacion.posicion_local,
+                                                programacion.posicion_visitante,
                                                 programacion.FechaPartido,
                                                 programacion.HoraPartido,
                                                 programacion.fk_lugarPartido,
-                                                console.log(programacion.fk_equipo_local),
-                                                
+                                                console.log(
+                                                    programacion.posicion_local
+                                                )
                                             )
                                         }
                                     >
@@ -198,7 +240,11 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
                                 </td>
                                 <td className="px-2 py-2 border">
                                     <DangerButton
-                                        onClick={() => showDeleteConfirmation(programacion.id)}
+                                        onClick={() =>
+                                            showDeleteConfirmation(
+                                                programacion.id
+                                            )
+                                        }
                                     >
                                         <i className="fa-solid fa-trash"></i>
                                     </DangerButton>
@@ -219,37 +265,41 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
                         readOnly
                         className="hidden"
                     />
+
+                    {errors.fk_fase && (
+                        <p className="text-red-500">{errors.fk_fase}</p>
+                    )}
                     <SelectField
-                        htmlFor="fk_equipo_local"
+                        htmlFor="posicion_local"
                         label={
                             <>
                                 <span>Equipo Local</span>
                                 <span className="text-red-500">*</span>
                             </>
                         }
-                        id="fk_equipo_local"
-                        ref={fk_equipo_localSelect}
-                        name="fk_equipo_local"
-                        value={data.fk_equipo_local}
+                        id="posicion_local"
+                        ref={posicion_localSelect}
+                        name="posicion_local"
+                        value={data.posicion_local}
                         onChange={handleInputChange}
                         options={equiposSelect}
-                        errorMessage={errors.fk_equipo_local}
+                        errorMessage={errors.posicion_local}
                     />
                     <SelectField
-                        htmlFor="fk_equipo_visitante"
+                        htmlFor="posicion_visitante"
                         label={
                             <>
                                 <span>Equipo Visitante</span>
                                 <span className="text-red-500">*</span>
                             </>
                         }
-                        id="fk_equipo_visitante"
-                        ref={fk_equipo_visitanteSelect}
-                        name="fk_equipo_visitante"
-                        value={data.fk_equipo_visitante}
+                        id="posicion_visitante"
+                        ref={posicion_visitanteSelect}
+                        name="posicion_visitante"
+                        value={data.posicion_visitante}
                         onChange={handleInputChange}
                         options={equiposSelect}
-                        errorMessage={errors.fk_equipo_visitante}
+                        errorMessage={errors.posicion_visitante}
                     />
                     <FormField
                         htmlFor="FechaPartido"
@@ -300,8 +350,14 @@ export default function Index({ auth, fase, programaciones, equipos, lugares }) 
                         errorMessage={errors.fk_lugarPartido}
                     />
                     <div className="flex items-center justify-end mt-4">
-                        <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
-                        <PrimaryButton className="ml-4" type="submit" disabled={processing}>
+                        <SecondaryButton onClick={closeModal}>
+                            Cancelar
+                        </SecondaryButton>
+                        <PrimaryButton
+                            className="ml-4"
+                            type="submit"
+                            disabled={processing}
+                        >
                             Guardar
                         </PrimaryButton>
                     </div>
