@@ -24,7 +24,7 @@ class TablasJuego extends Controller
         ]);
     
         $torneo_id = $request->input('torneo_id');
-
+    
         $torneo = torneo::where('id', $torneo_id)
             ->select(
                 'torneo.nombreTorneo',
@@ -38,54 +38,47 @@ class TablasJuego extends Controller
                 'torneo.reglamentacion'
             )
             ->first();
-
+    
         $programaciones_faces = DB::table('programaciones_faces as pf')
-            ->join()
-    
-       /* $programacionTorneos = DB::table('programacion_torneos as p')
-            ->join('jornada_partidos as jp', 'p.fk_jornadaPartido', '=', 'jp.id')
-            ->leftJoin('resultado_sorteos as rs', function ($join) {
-                $join->on('p.posicion_local', '=', 'rs.puesto')
-                    ->on('rs.fk_torneo', '=', 'jp.fk_torneo');
+            ->join('fases as f', 'pf.fk_fase', '=', 'f.id')
+            ->join('torneo as t', 'f.fk_torneo', '=', 't.id')
+            ->join('lugar_partidos as lp', 'pf.fk_lugarPartido', '=', 'lp.id')
+            ->leftJoin('resultado_sorteos as rs_local', function ($join) {
+                $join->on('pf.posicion_local', '=', 'rs_local.puesto')
+                    ->on('rs_local.fk_torneo', '=', 'f.fk_torneo');
             })
-            ->leftJoin('resultado_sorteos as rs2', function ($join) {
-                $join->on('p.posicion_visitante', '=', 'rs2.puesto')
-                    ->on('rs2.fk_torneo', '=', 'jp.fk_torneo');
+            ->leftJoin('resultado_sorteos as rs_visitante', function ($join) {
+                $join->on('pf.posicion_visitante', '=', 'rs_visitante.puesto')
+                    ->on('rs_visitante.fk_torneo', '=', 'f.fk_torneo');
             })
-            ->leftJoin('equipos as e1', 'rs.fk_equipo', '=', 'e1.id')
-            ->leftJoin('equipos as e2', 'rs2.fk_equipo', '=', 'e2.id')
-            ->where('jp.fk_torneo', $torneo_id)
+            ->leftJoin('equipos as el', 'rs_local.fk_equipo', '=', 'el.id')
+            ->leftJoin('equipos as ev', 'rs_visitante.fk_equipo', '=', 'ev.id')
             ->select(
-                'p.id',
-                'p.HoraPartido',
-                'jp.jornada',
-                'p.fk_lugarPartido',
-                'e1.nombreEquipo as local',
-                'e2.nombreEquipo as visitante',
-                'e1.escudoEquipo as local_escudo',
-                'e2.escudoEquipo as visitante_escudo',
-                'rs.puesto as local_puesto',
-                'rs2.puesto as visitante_puesto',
-                'p.posicion_local',
-                'p.posicion_visitante',
-
+                'f.nombreFase',
+                'pf.posicion_local',
+                'pf.posicion_visitante',
+                'pf.FechaPartido',
+                'pf.HoraPartido',
+                'lp.nomLugar',
+                'lp.geolocalizacion',
+                'el.nombreEquipo as nombreEquipoLocal',
+                'el.escudoEquipo as escudoEquipoLocal',
+                'rs_local.puesto as puestoLocal',
+                'ev.nombreEquipo as nombreEquipoVisitante',
+                'ev.escudoEquipo as escudoEquipoVisitante',
+                'rs_visitante.puesto as puestoVisitante'
             )
-            ->orderBy('jp.jornada')
-            ->orderBy('p.HoraPartido')
-            ->get();*/
-
-        //dd($programacionTorneos);
-        // Convertir hora a formato AM/PM y agrupar por jornada
-        /*$programacionTorneos = $programacionTorneos->map(function ($item) {
-            $item->HoraPartido = date('h:i A', strtotime($item->HoraPartido));
-            return $item;
-        })->groupBy('jornada')->toArray();*/
-    
+            ->where('t.id', $torneo_id)
+            ->get();
+               // dd($programaciones_faces);
         return Inertia::render('TablasJuego/Index', [
             'torneo_id' => $torneo_id,
             'torneo' => $torneo,
-            /*'programacionTorneos' => $programacionTorneos,*/
+            'programaciones_faces' => $programaciones_faces,
         ]);
     }
+    
+    
+    
     
 }
