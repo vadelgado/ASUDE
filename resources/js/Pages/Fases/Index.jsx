@@ -190,7 +190,7 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
                                     </td>
                                     <td className="px-4 py-2 border border-gray-400">
                                         <a
-                                            class="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                            className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
                                             href={`/programacionesFaces?fase_id=${fase.id}`}
                                         >
                                             <i class="fa-regular fa-futbol">

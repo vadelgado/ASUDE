@@ -107,6 +107,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource ProgramacionesFaces
 
     Route::resource('programacionesFaces', App\Http\Controllers\ProgramacionesFacesController::class);
+
+    // Resource ResultadosPartidos
+
+    Route::resource('resultadosPartidos', App\Http\Controllers\ResultadosPartidosController::class);
 });
 
 Route::middleware('auth', 'role:acudiente')->group(function () {
