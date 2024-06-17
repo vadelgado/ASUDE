@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jugadores;
 use App\Models\ResultadosPartidos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ResultadosPartidosController extends Controller
@@ -21,11 +22,29 @@ class ResultadosPartidosController extends Controller
                 ->join('jugadores', 'resultados_partidos.fk_jugador_id', '=', 'jugadores.id')
                 ->select('resultados_partidos.*', 'jugadores.id','jugadores.nombreCompleto')
                 ->get();
-            $jugadores = Jugadores::all();
+        // Consulta para obtener jugadores del equipo local
+        $jugadoresLocal = DB::table('programaciones_faces as pf')
+            ->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
+            ->join('equipos as e_local', 'rs_local.fk_equipo', '=', 'e_local.id')
+            ->join('jugadores as j', 'e_local.id', '=', 'j.fk_equipo')
+            ->where('pf.id', $programacion_id)
+            ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.numeroIdentificacion')
+            ->get();
+            $jugadoresVisitante = DB::table('programaciones_faces as pf')
+            ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
+            ->join('equipos as e_visitante', 'rs_visitante.fk_equipo', '=', 'e_visitante.id')
+            ->join('jugadores as j', 'e_visitante.id', '=', 'j.fk_equipo')
+            ->where('pf.id', $programacion_id)
+            ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.numeroIdentificacion')
+            ->get();
+
+        // Combinar resultados
+        $jugadores = $jugadoresLocal->merge($jugadoresVisitante);
+            
         } else {
             $resultados = null;
         }
-        dd($resultados,$jugadores);
+        dd($resultados,$jugadoresLocal, $jugadoresVisitante, $jugadores);
         return Inertia::render('ResultadosPartidos/Index', [
             'resultados' => $resultados,
             'programacion_id' => $programacion_id,
