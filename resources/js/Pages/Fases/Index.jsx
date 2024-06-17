@@ -11,7 +11,7 @@ import PrimaryButton from "@/Components/PrimaryButton"; // Importamos un botón 
 import SecondaryButton from "@/Components/SecondaryButton"; // Importamos un botón secundario (gris).
 import WarningButton from "@/Components/WarningButton"; // Importamos un botón de advertencia (amarillo).
 
-export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
+export default function Dashboard({ auth, fases, torneo, fk_torneo }) { 
     // Estado para manejar si el modal está abierto o cerrado.
     const [modal, setModal] = useState(false);
     // Estado para manejar el título del modal.
