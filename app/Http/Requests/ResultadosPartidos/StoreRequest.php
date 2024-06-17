@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fk_programaciones_faces_id' => 'nullable|integer|exists:programaciones_faces,id',
+            'fk_programaciones_faces_id' => 'required|integer|exists:programaciones_faces,id',
             'fk_jugador_id' => 'required|integer|exists:jugadores,id',
             'goles' => 'nullable|integer|min:0',
             'tarjetas_amarillas' => 'nullable|integer|min:0',

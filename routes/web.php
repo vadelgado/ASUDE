@@ -111,6 +111,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource ResultadosPartidos
 
     Route::resource('resultadosPartidos', App\Http\Controllers\ResultadosPartidosController::class);
+
+    // Resource AmonestacionesTC
+    Route::resource('amonestacionesTC', App\Http\Controllers\AmonestacionesTCController::class);
 });
 
 Route::middleware('auth', 'role:acudiente')->group(function () {
