@@ -21,24 +21,30 @@ class FaltasCuerpoTecnicoController extends Controller
                 ->join('cuerpo_tecnico as ct', 'faltas_cuerpo_tecnicos.fk_cuerpo_tecnico_id', '=', 'ct.id')
                 ->join('programaciones_faces as pf', 'faltas_cuerpo_tecnicos.fk_programaciones_faces_id', '=', 'pf.id')
                 ->join('equipos as e', 'ct.fk_equipo', '=', 'e.id')
-                ->select('faltas_cuerpo_tecnicos.*', 'amon.*', 
+                ->select(
+                'faltas_cuerpo_tecnicos.*', 
+                'amon.value',
+                'amon.description', 
                 'ct.nombreCompleto', 
                 'pf.FechaPartido','pf.HoraPartido',
                 'e.nombreEquipo')
                 ->get();
-            $cuerpoTecnico = DB::table('cuerpo_tecnico as ct')
+                $cuerpoTecnico = DB::table('cuerpo_tecnico as ct')
                 ->join('equipos as e', 'ct.fk_equipo', '=', 'e.id')
-                ->unionAll(
-                    DB::table('programaciones_faces as pf')
-->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
-                        ->join('equipos as e_local', 'rs_local.fk_equipo', '=', 'e_local.id')
-                    )
+                ->join('resultado_sorteos as rs', 'e.id', '=', 'rs.fk_equipo')
 
-                //->join('faltas_cuerpo_tecnicos as fct', 'ct.id', '=', 'fct.fk_cuerpo_tecnico_id')
-                //->join('programaciones_faces as pf', 'fct.fk_programaciones_faces_id', '=', 'pf.id')
-                //->where('fct.fk_programaciones_faces_id', $fk_programaciones_faces_id)
+                ->join('programaciones_faces as pf', function($join) use ($fk_programaciones_faces_id) {
+                    $join->on('pf.posicion_local', '=', 'rs.puesto')
+                         ->orOn('pf.posicion_visitante', '=', 'rs.puesto')
+                         ->where('pf.id', $fk_programaciones_faces_id);
+                })
                 ->select('ct.id', 'ct.nombreCompleto', 'e.nombreEquipo')
-
+                ->distinct()
+                ->get();
+                $fk_amonestaciones_t_c_s_id = DB::table('amonestaciones_t_c_s')
+                ->select('amonestaciones_t_c_s.id', 'amonestaciones_t_c_s.description', 'amonestaciones_t_c_s.value as valor')
+                ->where('amonestaciones_t_c_s.description', 'not like', '%jugador%')
+                ->where('amonestaciones_t_c_s.active', 1)
                 ->get();
                 $fk_programaciones_faces_id = DB::table('programaciones_faces as pf')
                 ->where('pf.id', $fk_programaciones_faces_id)
@@ -48,60 +54,56 @@ class FaltasCuerpoTecnicoController extends Controller
         } else {
             $faltasCuerpoTecnico = null;
         }
-        dd($faltasCuerpoTecnico, $fk_programaciones_faces_id, $cuerpoTecnico);
+       //dd( $fk_programaciones_faces_id);
         return Inertia::render('FaltasCuerpoTecnico/Index', [
             'faltas_cuerpo_tecnicos' => $faltasCuerpoTecnico,
             'fk_programaciones_faces_id' => $fk_programaciones_faces_id,
-            'cuerpo_tecnico' => $cuerpoTecnico
+            'cuerpoTecnico' => $cuerpoTecnico,
+            'fk_amonestaciones_t_c_s_id' => $fk_amonestaciones_t_c_s_id
         ]);
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            
+            'fk_cuerpo_tecnico_id' => 'required',
+            'fk_amonestaciones_t_c_s_id' => 'required'
+        ], [
+            'fk_cuerpo_tecnico_id.required' => 'Por favor, seleccione una opción en el campo Cuerpo Técnico.',
+            'fk_amonestaciones_t_c_s_id.required' => 'Por favor, seleccione una opción en el campo Amonestaciones TCS.',
+        ]);
+
+        $data = $request->only('fk_cuerpo_tecnico_id', 'fk_amonestaciones_t_c_s_id', 'observaciones');
+        $data['fk_programaciones_faces_id'] = $request->input('fk_programaciones_faces_id');
+        FaltasCuerpoTecnico::create($data);
+
+
+        
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(FaltasCuerpoTecnico $faltasCuerpoTecnico)
+
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([            
+            'fk_cuerpo_tecnico_id' => 'required',
+            'fk_amonestaciones_t_c_s_id' => 'required'
+        ], [
+            'fk_cuerpo_tecnico_id.required' => 'Por favor, seleccione una opción en el campo Cuerpo Técnico.',
+            'fk_amonestaciones_t_c_s_id.required' => 'Por favor, seleccione una opción en el campo Amonestaciones TCS.',
+        ]);
+        $data = $request->only('fk_programaciones_faces_id','fk_cuerpo_tecnico_id', 'fk_amonestaciones_t_c_s_id', 'observaciones');
+        $faltasCuerpoTecnico = FaltasCuerpoTecnico::find($id);
+
+        $faltasCuerpoTecnico->update($data);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(FaltasCuerpoTecnico $faltasCuerpoTecnico)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, FaltasCuerpoTecnico $faltasCuerpoTecnico)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(FaltasCuerpoTecnico $faltasCuerpoTecnico)
     {
-        //
+        
+        $faltasCuerpoTecnico->delete();
+
     }
 }

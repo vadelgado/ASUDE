@@ -12,6 +12,7 @@ class FaltasCuerpoTecnico extends Model
     protected $table = 'faltas_cuerpo_tecnicos';
 
     protected $fillable = [
+        'id',
         'fk_programaciones_faces_id',
         'fk_cuerpo_tecnico_id',
         'fk_amonestaciones_t_c_s_id',

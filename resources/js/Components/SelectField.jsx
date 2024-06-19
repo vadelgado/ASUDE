@@ -6,14 +6,16 @@ import Select from "react-select";
 const SelectField = forwardRef(
   (
     {
-      htmlFor,label,id,name,value,options,onChange,errorMessage
+      htmlFor, label, id, name, value, options, onChange, errorMessage
     },
     ref
   ) => {
     const handleChange = (selectedOption) => {
       onChange({ target: { name, value: selectedOption ? selectedOption.value : '' } });
     };
+
     const selectedOption = options.find(option => option.value === value);
+
     return (
       <div className="mt-1">
         <InputLabel htmlFor={htmlFor} value={label} />

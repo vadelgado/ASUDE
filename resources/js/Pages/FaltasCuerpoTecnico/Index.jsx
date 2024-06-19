@@ -11,12 +11,15 @@ import PrimaryButton from "@/Components/PrimaryButton"; // Importamos un botón 
 import SecondaryButton from "@/Components/SecondaryButton"; // Importamos un botón secundario (gris).
 import WarningButton from "@/Components/WarningButton"; // Importamos un botón de advertencia (amarillo).
 import SelectField from "@/Components/SelectField";
+import Textarea2 from "@/Components/Textarea2";
 
-export default function Dashboard({ 
-    auth, 
+export default function Dashboard({
+    auth,
     fk_programaciones_faces_id,
     faltas_cuerpo_tecnicos,
-    cuerpoTecnico }) { 
+    cuerpoTecnico,
+    fk_amonestaciones_t_c_s_id,
+}) {
     // Estado para manejar si el modal está abierto o cerrado.
     const [modal, setModal] = useState(false);
     // Estado para manejar el título del modal.
@@ -24,7 +27,7 @@ export default function Dashboard({
     // Estado para manejar si estamos agregando (1) o editando (2) una fase.
     const [operation, setOperation] = useState(1);
     // Referencia para el input del nombre de la fase.
-    const CuerpoTecnicoSelect= useRef();
+    const CuerpoTecnicoSelect = useRef();
     const AmonestacionesSelect = useRef();
     const ObservacionesText = useRef();
 
@@ -55,8 +58,8 @@ export default function Dashboard({
 
     // Función para abrir y configurar el modal.
     const handleModal = (
-        op, 
-        id, 
+        op,
+        id,
         fk_programaciones_faces_id,
         fk_cuerpo_tecnico_id,
         fk_amonestaciones_t_c_s_id,
@@ -71,8 +74,8 @@ export default function Dashboard({
         } else {
             setTitle("Editar Fase"); // Título para editar.
             setData({
-                id: id, 
-                fk_programaciones_faces_id: fk_programaciones_faces_id, 
+                id: id,
+                fk_programaciones_faces_id: fk_programaciones_faces_id,
                 fk_cuerpo_tecnico_id: fk_cuerpo_tecnico_id,
                 fk_amonestaciones_t_c_s_id: fk_amonestaciones_t_c_s_id,
                 observaciones: observaciones,
@@ -83,7 +86,7 @@ export default function Dashboard({
     const closeModal = () => {
         setModal(false);
     };
-  
+
     const save = (e) => {
         e.preventDefault(); // Prevenimos el comportamiento por defecto del formulario.
 
@@ -137,6 +140,25 @@ export default function Dashboard({
         });
     };
 
+    const cuerpoTecnicoSelect = [
+        { value: "", label: "Seleccione un miembro" },
+        ...cuerpoTecnico.map((cuerpoTecnico) => ({
+            value: cuerpoTecnico.id,
+            label:
+                cuerpoTecnico.nombreCompleto +
+                " - " +
+                cuerpoTecnico.nombreEquipo,
+        })),
+    ];
+
+    const amonestacionesSelect = [
+        { value: "", label: "Seleccione un tipo de amonestación" },
+        ...fk_amonestaciones_t_c_s_id.map((amonestacion) => ({
+            value: amonestacion.id,
+            label: " - " + amonestacion.valor + amonestacion.description,
+        })),
+    ];
+
     // Renderizado del componente.
     return (
         <AuthenticatedLayout
@@ -144,7 +166,6 @@ export default function Dashboard({
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Faltas Cuerpo Técnico
-
                 </h2>
             }
         >
@@ -166,7 +187,7 @@ export default function Dashboard({
                             <th className="px-2 py-2">Nombre</th>
                             <th className="px-2 py-2">Tipo Amonestación</th>
                             <th className="px-2 py-2">Observaciones</th>
-                            <th className="px-2 py-2">Acciones</th>                            
+                            <th className="px-2 py-2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -180,7 +201,7 @@ export default function Dashboard({
                                         {falta.nombreCompleto}
                                     </td>
                                     <td className="px-4 py-2 border border-gray-400">
-                                        {falta.fk_amonestaciones_t_c_s_id}
+                                        {falta.description} - {falta.value}
                                     </td>
                                     <td className="px-4 py-2 border border-gray-400">
                                         {falta.observaciones}
@@ -191,9 +212,10 @@ export default function Dashboard({
                                                 handleModal(
                                                     2,
                                                     falta.id,
+                                                    falta.fk_programaciones_faces_id,
                                                     falta.fk_cuerpo_tecnico_id,
                                                     falta.fk_amonestaciones_t_c_s_id,
-                                                    falta.observaciones
+                                                    falta.observaciones,
                                                 )
                                             }
                                         >
@@ -202,11 +224,7 @@ export default function Dashboard({
                                     </td>
                                     <td className="px-4 py-2 border border-gray-400">
                                         <DangerButton
-                                            onClick={() =>
-                                                deleteFase(
-                                                    falta.id                                                    
-                                                )
-                                            }
+                                            onClick={() => deleteFase(falta.id)}
                                         >
                                             <i className="fa-solid fa-trash"></i>
                                         </DangerButton>
@@ -239,30 +257,51 @@ export default function Dashboard({
                         className="hidden" // Lo hacemos oculto ya que no necesita ser visible
                     />
 
-                        <SelectField
-                        htmlFor="fk_cuerpo_tecnico_id"
-                        label={
-                            <>
-                                <span>Miembro</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="fk_cuerpo_tecnico_id"
-                        ref={CuerpoTecnicoSelect}
-                        name="fk_cuerpo_tecnico_id"
-                        value={data.fk_cuerpo_tecnico_id}
+<SelectField
+    htmlFor="fk_cuerpo_tecnico_id"
+    label={
+        <>
+            <span>Miembro</span>
+            <span className="text-red-500">*</span>
+        </>
+    }
+    id="fk_cuerpo_tecnico_id"
+    ref={CuerpoTecnicoSelect}
+    name="fk_cuerpo_tecnico_id"
+    value={data.fk_cuerpo_tecnico_id}
+    onChange={handleInputChange}
+    options={cuerpoTecnicoSelect}
+    errorMessage={errors.fk_cuerpo_tecnico_id}
+/>
+
+<SelectField
+    htmlFor="fk_amonestaciones_t_c_s_id"
+    label={
+        <>
+            <span>Tipo Amonestación</span>
+            <span className="text-red-500">*</span>
+        </>
+    }
+    id="fk_amonestaciones_t_c_s_id"
+    ref={AmonestacionesSelect}
+    name="fk_amonestaciones_t_c_s_id"
+    value={data.fk_amonestaciones_t_c_s_id}
+    onChange={handleInputChange}
+    options={amonestacionesSelect}
+    errorMessage={errors.fk_amonestaciones_t_c_s_id}
+/>
+
+                    <Textarea2
+                        htmlFor="observaciones"
+                        label="Observaciones"
+                        id="observaciones"
+                        ref={ObservacionesText}
+                        name="observaciones"
+                        value={data.observaciones || ''}
                         onChange={handleInputChange}
-                        options={
-                            cuerpoTecnico.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.nombreCompleto}
-                                </option>
-                            ))
-                        }
-                        errorMessage={errors.fk_cuerpo_tecnico_id}
+                        errorMessage={errors.observaciones}
+                        placeholder="Escribe las observaciones"
                     />
-
-
 
                     <div className="mt-6">
                         <PrimaryButton
