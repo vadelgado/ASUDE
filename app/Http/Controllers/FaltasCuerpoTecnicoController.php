@@ -32,13 +32,13 @@ class FaltasCuerpoTecnicoController extends Controller
                 $cuerpoTecnico = DB::table('cuerpo_tecnico as ct')
                 ->join('equipos as e', 'ct.fk_equipo', '=', 'e.id')
                 ->join('resultado_sorteos as rs', 'e.id', '=', 'rs.fk_equipo')
-
                 ->join('programaciones_faces as pf', function($join) use ($fk_programaciones_faces_id) {
                     $join->on('pf.posicion_local', '=', 'rs.puesto')
-                         ->orOn('pf.posicion_visitante', '=', 'rs.puesto')
-                         ->where('pf.id', $fk_programaciones_faces_id);
+                         ->orOn('pf.posicion_visitante', '=', 'rs.puesto');
+                         
                 })
                 ->select('ct.id', 'ct.nombreCompleto', 'e.nombreEquipo')
+                ->where('pf.id', $fk_programaciones_faces_id)
                 ->distinct()
                 ->get();
                 $fk_amonestaciones_t_c_s_id = DB::table('amonestaciones_t_c_s')
