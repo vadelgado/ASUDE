@@ -114,6 +114,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     // Resource AmonestacionesTC
     Route::resource('amonestacionesTC', App\Http\Controllers\AmonestacionesTCController::class);
+
+    // Resource FaltasCuerpoTecnico
+    Route::resource('faltasCuerpoTecnico', App\Http\Controllers\FaltasCuerpoTecnicoController::class);
 });
 
 Route::middleware('auth', 'role:acudiente')->group(function () {

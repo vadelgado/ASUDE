@@ -104,6 +104,15 @@ export default function Authenticated({ user, header, children }) {
                                     >
                                         Comprobantes
                                     </NavLink>
+                                )}{user.role === "admin" && (
+                                    <NavLink
+                                        href={route("amonestacionesTC.index")}
+                                        active={route().current(
+                                            "amonestacionesTC.index"
+                                        )}
+                                    >
+                                        Amonestaciones
+                                    </NavLink>
                                 )}
                                 {user.role === "admin" && (
                                     <NavLink

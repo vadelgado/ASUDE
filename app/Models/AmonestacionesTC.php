@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class AmonestacionesTC extends Model
 {    
-    protected $table = 'amonestaciones_tc';
+    protected $table = 'amonestaciones_t_c_s';
     protected $fillable = [
         'value',
-        'description'
+        'description',
+        'active'
+
     ];
     public $timestamps = false;
 

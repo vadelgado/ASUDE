@@ -20,44 +20,29 @@ class AmonestacionesTCController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'value' => 'required',
+            'description' => 'required',
+            'active' => 'required'
+        ]);
+
+        AmonestacionesTC::create($request->all());
+        return redirect()->route('amonestacionesTC.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AmonestacionesTC $amonestacionesTC)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AmonestacionesTC $amonestacionesTC)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, AmonestacionesTC $amonestacionesTC)
     {
-        //
+        $request->validate([
+            'value' => 'required',
+            'description' => 'required',
+            'active' => 'required'
+        ]);
+
+        $amonestacionesTC->update($request->all());
+        return redirect()->route('amonestacionesTC.index');
     }
 
     /**

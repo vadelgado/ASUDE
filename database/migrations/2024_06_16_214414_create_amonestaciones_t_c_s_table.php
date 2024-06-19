@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('amonestaciones_t_c_s', function (Blueprint $table) {
             $table->id();
             $table->integer('value');
-            $table->string('description');
+            $table->text('description');
+            $table->boolean('active')->default(true);            
             $table->timestamps();
         });
     }
