@@ -6,7 +6,7 @@ use App\Models\ProgramacionesFaces;
 use App\Models\Fases;
 use App\Models\Equipos;
 use App\Models\lugarPartido;
-use App\Models\Torneo;
+use App\Models\torneo;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProgramacionesFases\StoreRequest;
 use App\Http\Requests\ProgramacionesFases\UpdateRequest;
@@ -53,7 +53,7 @@ class ProgramacionesFacesController extends Controller
             $lugares = null;            
             $cantidadEquipos = null;
         }
-        return Inertia::render('ProgramacionesFaces/Index', [
+        return Inertia::render('ProgramacionesFaces/index', [
             'programaciones' => $programaciones,
             'fase' => $fase,
             'fk_fase' => $fase_id,
