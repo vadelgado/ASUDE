@@ -15,6 +15,7 @@ class FaltasCuerpoTecnicoController extends Controller
     public function index(Request $request)
     {
         $fk_programaciones_faces_id = $request->input('partido');
+        $torneo_id = $request->input('torneo');
         if($fk_programaciones_faces_id){
             $faltasCuerpoTecnico = FaltasCuerpoTecnico::where('fk_programaciones_faces_id', $fk_programaciones_faces_id)
                 ->join('amonestaciones_t_c_s as amon', 'faltas_cuerpo_tecnicos.fk_amonestaciones_t_c_s_id', '=', 'amon.id')
@@ -32,6 +33,7 @@ class FaltasCuerpoTecnicoController extends Controller
                 $cuerpoTecnico = DB::table('cuerpo_tecnico as ct')
                 ->join('equipos as e', 'ct.fk_equipo', '=', 'e.id')
                 ->join('resultado_sorteos as rs', 'e.id', '=', 'rs.fk_equipo')
+                ->join('torneo as t', 'rs.fk_torneo', '=', 't.id')
                 ->join('programaciones_faces as pf', function($join) use ($fk_programaciones_faces_id) {
                     $join->on('pf.posicion_local', '=', 'rs.puesto')
                          ->orOn('pf.posicion_visitante', '=', 'rs.puesto');
@@ -39,6 +41,7 @@ class FaltasCuerpoTecnicoController extends Controller
                 })
                 ->select('ct.id', 'ct.nombreCompleto', 'e.nombreEquipo')
                 ->where('pf.id', $fk_programaciones_faces_id)
+                ->where('t.id', $torneo_id)
                 ->distinct()
                 ->get();
                 $fk_amonestaciones_t_c_s_id = DB::table('amonestaciones_t_c_s')

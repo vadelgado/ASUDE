@@ -27,7 +27,13 @@ class ProgramacionesFacesController extends Controller
                 ->get();
             $programaciones = ProgramacionesFaces::where('fk_fase', $fase_id)
                 ->join('lugar_partidos', 'programaciones_faces.fk_lugarPartido', '=', 'lugar_partidos.id')
-                ->select('programaciones_faces.*', 'FechaPartido', 'HoraPartido', 'lugar_partidos.nomLugar')
+                ->join('fases', 'programaciones_faces.fk_fase', '=', 'fases.id')
+                ->join('torneo', 'fases.fk_torneo', '=', 'torneo.id')
+                ->select('programaciones_faces.*', 
+                        'FechaPartido', 
+                        'HoraPartido', 
+                        'lugar_partidos.nomLugar',
+                        'torneo.id as torneo_id',)
                 ->orderBy('FechaPartido')
                 ->get();
             $cantidadEquipos = Torneo::join('fases', 'torneo.id', '=', 'fases.fk_torneo')
@@ -45,7 +51,7 @@ class ProgramacionesFacesController extends Controller
                 ->where('fases.id', $fase_id)
                 ->select('lugar_partidos.id', 'lugar_partidos.nomLugar')
                 ->get();
-                //dd($cantidadEquipos);
+               //dd($programaciones);
         } else {
             $fase = null;
             $programaciones = null;

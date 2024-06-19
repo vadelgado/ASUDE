@@ -229,9 +229,6 @@ export default function Index({
                                                 programacion.FechaPartido,
                                                 programacion.HoraPartido,
                                                 programacion.fk_lugarPartido,
-                                                console.log(
-                                                    programacion.posicion_local
-                                                )
                                             )
                                         }
                                     >
@@ -252,7 +249,7 @@ export default function Index({
                                 <td className="px-4 py-2 border border-gray-400">
                                     <a
                                         className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
-                                        href={`/resultadosPartidos?partido=${programacion.id}`}
+                                        href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                     >
                                         <i class="fa-regular fa-flag">
                                             {" "}
@@ -263,7 +260,7 @@ export default function Index({
                                 <td className="px-4 py-2 border border-gray-400">
                                     <a
                                         className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
-                                        href={`/faltasCuerpoTecnico?partido=${programacion.id}`}
+                                        href={`/faltasCuerpoTecnico?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                     >
                                         <i class="fa-regular fa-flag">
                                             {" "}

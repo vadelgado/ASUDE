@@ -21,6 +21,7 @@ class ResultadosPartidosController extends Controller
     {
         //id de la ProgramacionesFaces
         $fk_programaciones_faces_id = $request->input('partido');
+        $torneo_id = $request->input('torneo');
         if ($fk_programaciones_faces_id) {
             /*$resultados = ResultadosPartidos::where('fk_programaciones_faces_id', $programacion_id)
                 ->join('jugadores', 'resultados_partidos.fk_jugador_id', '=', 'jugadores.id')
@@ -42,14 +43,18 @@ class ResultadosPartidosController extends Controller
                 ->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
                 ->join('equipos as e_local', 'rs_local.fk_equipo', '=', 'e_local.id')
                 ->join('jugadores as j', 'e_local.id', '=', 'j.fk_equipo')
+                ->join('torneo as t', 'rs_local.fk_torneo', '=', 't.id')
                 ->where('pf.id', $fk_programaciones_faces_id)
+                ->where('t.id', $torneo_id)
                 ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.id')
                 ->unionAll(
                     DB::table('programaciones_faces as pf')
                         ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
                         ->join('equipos as e_visitante', 'rs_visitante.fk_equipo', '=', 'e_visitante.id')
                         ->join('jugadores as j', 'e_visitante.id', '=', 'j.fk_equipo')
+                        ->join('torneo as t', 'rs_visitante.fk_torneo', '=', 't.id')                        
                         ->where('pf.id', $fk_programaciones_faces_id)
+                        ->where('t.id', $torneo_id)
                         ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.id')
                 )
                 ->get();
