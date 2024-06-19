@@ -10,8 +10,13 @@ import Modal from "@/Components/Modal"; // Importamos nuestro componente de moda
 import PrimaryButton from "@/Components/PrimaryButton"; // Importamos un botón primario (azul).
 import SecondaryButton from "@/Components/SecondaryButton"; // Importamos un botón secundario (gris).
 import WarningButton from "@/Components/WarningButton"; // Importamos un botón de advertencia (amarillo).
+import SelectField from "@/Components/SelectField";
 
-export default function Dashboard({ auth, fk_programaciones_faces_id,faltas_cuerpo_tecnicos }) { 
+export default function Dashboard({ 
+    auth, 
+    fk_programaciones_faces_id,
+    faltas_cuerpo_tecnicos,
+    cuerpoTecnico }) { 
     // Estado para manejar si el modal está abierto o cerrado.
     const [modal, setModal] = useState(false);
     // Estado para manejar el título del modal.
@@ -139,6 +144,7 @@ export default function Dashboard({ auth, fk_programaciones_faces_id,faltas_cuer
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Faltas Cuerpo Técnico
+
                 </h2>
             }
         >
@@ -171,7 +177,7 @@ export default function Dashboard({ auth, fk_programaciones_faces_id,faltas_cuer
                                         {i + 1}
                                     </td>
                                     <td className="px-4 py-2 border border-gray-400">
-                                        {falta.fk_cuerpo_tecnico_id}
+                                        {falta.nombreCompleto}
                                     </td>
                                     <td className="px-4 py-2 border border-gray-400">
                                         {falta.fk_amonestaciones_t_c_s_id}
@@ -232,6 +238,30 @@ export default function Dashboard({ auth, fk_programaciones_faces_id,faltas_cuer
                         readOnly
                         className="hidden" // Lo hacemos oculto ya que no necesita ser visible
                     />
+
+                        <SelectField
+                        htmlFor="fk_cuerpo_tecnico_id"
+                        label={
+                            <>
+                                <span>Miembro</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="fk_cuerpo_tecnico_id"
+                        ref={CuerpoTecnicoSelect}
+                        name="fk_cuerpo_tecnico_id"
+                        value={data.fk_cuerpo_tecnico_id}
+                        onChange={handleInputChange}
+                        options={
+                            cuerpoTecnico.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.nombreCompleto}
+                                </option>
+                            ))
+                        }
+                        errorMessage={errors.fk_cuerpo_tecnico_id}
+                    />
+
 
 
                     <div className="mt-6">

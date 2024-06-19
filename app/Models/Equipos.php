@@ -12,6 +12,7 @@ class Equipos extends Model
     protected $table = 'equipos';
 
     protected $fillable = [
+        'id',
         'nombreEquipo', 
         'fk_categoria_equipo',
         'escudoEquipo',
