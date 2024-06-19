@@ -4,7 +4,7 @@ import "tailwindcss/tailwind.css";
 
 const TournamentSchedule = () => {
   const carouselRef = useRef(null);
-
+ 
   const handlePrev = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({
