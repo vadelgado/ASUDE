@@ -11,12 +11,12 @@ import TablaTorneos from "@/Components/DashBoard/TablaTorneos";
 
 //import '@fontsource-variable/onest';
 
-export default function Welcome({ auth, torneoEnCurso }) {
+export default function Welcome({ auth, torneoEnCurso, programaciones_faces}) {
     return (
         <>
             <Head title="Alianza Sureña" />
             <Header auth={auth}></Header>  
-            <TournamentSchedule/>
+            <TournamentSchedule programaciones_faces={programaciones_faces}/>
             <Carousel/>
             <TablaTorneos torneoEnCurso={torneoEnCurso} />
             <Intro></Intro>

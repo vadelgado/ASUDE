@@ -28,6 +28,9 @@ class TablasJuego extends Controller
         $torneo = torneo::where('id', $torneo_id)
             ->select(
                 'torneo.nombreTorneo',
+                'torneo.caracteristicas',
+                'torneo.fechaInicio',
+                'torneo.fechaFin',
                 'torneo.cantidadGrupos',
                 'torneo.cantidadEquiposParticipantes',
                 'torneo.imgBannerSuperior',

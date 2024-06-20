@@ -4,6 +4,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TorneoEnCursoController;
 use App\Models\torneo;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +17,46 @@ Route::get('/', function () {
         ->orderByRaw("CASE WHEN estadoTorneo = 'En Juego' THEN 0 WHEN estadoTorneo = 'Finalizado' THEN 2 ELSE 1 END")
         ->orderBy('fechaInicio')
         ->get();
+        $programaciones_faces = DB::table('programaciones_faces as pf')
+        ->join('fases as f', 'pf.fk_fase', '=', 'f.id')
+        ->join('torneo as t', 'f.fk_torneo', '=', 't.id')
+        ->join('lugar_partidos as lp', 'pf.fk_lugarPartido', '=', 'lp.id')
+        ->leftJoin('resultado_sorteos as rs_local', function ($join) {
+            $join->on('pf.posicion_local', '=', 'rs_local.puesto')
+                ->on('rs_local.fk_torneo', '=', 'f.fk_torneo');
+        })
+        ->leftJoin('resultado_sorteos as rs_visitante', function ($join) {
+            $join->on('pf.posicion_visitante', '=', 'rs_visitante.puesto')
+                ->on('rs_visitante.fk_torneo', '=', 'f.fk_torneo');
+        })
+        ->leftJoin('equipos as el', 'rs_local.fk_equipo', '=', 'el.id')
+        ->leftJoin('equipos as ev', 'rs_visitante.fk_equipo', '=', 'ev.id')
+        ->select(
+            'f.nombreFase',
+            'pf.posicion_local',
+            'pf.posicion_visitante',
+            'pf.FechaPartido',
+            'pf.HoraPartido',
+            'lp.nomLugar',
+            'lp.geolocalizacion',
+            'el.nombreEquipo as nombreEquipoLocal',
+            'el.escudoEquipo as escudoEquipoLocal',
+            'rs_local.puesto as puestoLocal',
+            'ev.nombreEquipo as nombreEquipoVisitante',
+            'ev.escudoEquipo as escudoEquipoVisitante',
+            'rs_visitante.puesto as puestoVisitante'
+        )
+        ->whereIn('t.estadoTorneo', ['Por Iniciar', 'En Juego'])
+        ->orderBy('pf.FechaPartido')
+        ->orderBy('pf.HoraPartido')
+        ->get();
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'torneoEnCurso' => $torneoEnCurso,
+        'programaciones_faces' => $programaciones_faces
     ]);
 });
 

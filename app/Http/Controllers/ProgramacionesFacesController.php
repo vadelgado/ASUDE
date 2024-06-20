@@ -35,6 +35,7 @@ class ProgramacionesFacesController extends Controller
                         'lugar_partidos.nomLugar',
                         'torneo.id as torneo_id',)
                 ->orderBy('FechaPartido')
+                ->orderBy('HoraPartido')
                 ->get();
             $cantidadEquipos = Torneo::join('fases', 'torneo.id', '=', 'fases.fk_torneo')
                 ->where('fases.id', $fase_id)
