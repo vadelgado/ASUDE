@@ -18,6 +18,7 @@ Route::get('/', function () {
         ->orderBy('fechaInicio')
         ->get();
         $programaciones_faces = DB::table('programaciones_faces as pf')
+        
         ->join('fases as f', 'pf.fk_fase', '=', 'f.id')
         ->join('torneo as t', 'f.fk_torneo', '=', 't.id')
         ->join('lugar_partidos as lp', 'pf.fk_lugarPartido', '=', 'lp.id')
@@ -70,6 +71,7 @@ Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('tor
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
+Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -152,6 +154,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     // Resource FaltasCuerpoTecnico
     Route::resource('faltasCuerpoTecnico', App\Http\Controllers\FaltasCuerpoTecnicoController::class);
+
+
 });
 
 Route::middleware('auth', 'role:acudiente')->group(function () {

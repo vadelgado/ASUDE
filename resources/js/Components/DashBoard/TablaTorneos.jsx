@@ -43,7 +43,7 @@ const TablaTorneos = (torneoEnCurso) => {
                                 </th>
                                 <th className="w-1/3">
                                     <a
-                                        href={`https://futurasestrellas.netlify.app/resultados/${torneo.id}`}
+                                        href={`/verResultados?torneo_id=${torneo.id}`}
                                         className="text-blue-500 hover:underline text-pretty"
                                     >
                                         <em>Ver Resultados</em>

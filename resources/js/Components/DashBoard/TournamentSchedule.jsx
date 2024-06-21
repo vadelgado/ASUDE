@@ -51,7 +51,7 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                     {Object.entries(groupedMatches).map(
                         ([fase, matches], index) => (
                             <div key={index} className="mb-8">
-                                <h2 className={`mt-2 mb-4 text-xl font-bold`}>
+                                <h2 className="mt-2 mb-4 text-xl font-bold">
                                     {fase}
                                 </h2>
                                 <div className="flex overflow-x-auto flex-nowrap">
@@ -60,7 +60,7 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                             key={idx}
                                             className="flex-none w-64 p-4"
                                         >
-                                            <div className="p-6 bg-gray-800 border-l-4 border-blue-500 rounded-lg shadow-lg">
+                                            <div className="h-full p-6 bg-gray-800 border-l-4 border-blue-500 rounded-lg shadow-lg">
                                                 <p>
                                                     {match.FechaPartido}{" "}
                                                     {new Date(
@@ -93,6 +93,25 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                                         {match.nombreEquipoLocal
                                                             ? match.nombreEquipoLocal
                                                             : `Posición: ${match.posicion_local}`}
+                                                    </p>
+                                                </div>
+                                                <div className="flex items-center justify-center">
+                                                    <p className="mx-2 text-2xl font-bold">
+                                                        {match.marcadorLocal} - {match.marcadorVisitante}
+                                                    </p>
+                                                </div>
+                                                <div className="flex items-center justify-center">
+                                                    <p className="mx-1 text-xs text-yellow-500">
+                                                        {match.tarjetasAmarillasLocal}
+                                                    </p>
+                                                    <p className="mx-1 text-xs text-red-500">
+                                                        {match.tarjetasRojasLocal}
+                                                    </p>
+                                                    <p className="mx-1 text-xs text-yellow-500">
+                                                        {match.tarjetasAmarillasVisitante}
+                                                    </p>
+                                                    <p className="mx-1 text-xs text-red-500">
+                                                        {match.tarjetasRojasVisitante}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center">
