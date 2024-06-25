@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useSwipeable } from "react-swipeable";
-import "tailwindcss/tailwind.css";
+
 
 const TournamentSchedule = ({ programaciones_faces }) => {
     const carouselRef = useRef(null);
@@ -38,6 +38,19 @@ const TournamentSchedule = ({ programaciones_faces }) => {
         return acc;
     }, {});
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const daysOfWeek = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        
+        const dayOfWeek = daysOfWeek[date.getUTCDay()];
+        const day = date.getUTCDate();
+        const month = months[date.getUTCMonth()];
+        const year = date.getUTCFullYear();
+        
+        return `${dayOfWeek} ${day} ${month} de ${year}`;
+    };
+
     return (
         <div className="flex items-center justify-center h-auto text-white bg-gray-900 mt-36">
             <div className="relative w-full overflow-hidden max-w-screen-2xl">
@@ -62,7 +75,7 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                         >
                                             <div className="h-full p-6 bg-gray-800 border-l-4 border-blue-500 rounded-lg shadow-lg">
                                                 <p>
-                                                    {match.FechaPartido}{" "}
+                                                {formatDate(match.FechaPartido)}{" "}
                                                     {new Date(
                                                         `1970-01-01T${match.HoraPartido}`
                                                     ).toLocaleString("en-US", {
@@ -72,7 +85,7 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                                     })}
                                                 </p>
                                                 <p>
-                                                    <strong>Lugar:</strong>{" "}
+                                                    {" "}
                                                     {match.nomLugar}
                                                 </p>
                                                 <div className="flex items-center my-2">
