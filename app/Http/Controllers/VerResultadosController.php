@@ -57,6 +57,19 @@ class VerResultadosController extends Controller
                                JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
                                WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
                                  AND j2.fk_equipo != e.id)) as PE'
+                ),
+                DB::raw('(SELECT COUNT(*) 
+                          FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
+                                FROM resultados_partidos rp 
+                                JOIN jugadores j ON rp.fk_jugador_id = j.id 
+                                GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
+                          WHERE subquery.fk_equipo = e.id 
+                            AND subquery.goles_equipo < 
+                              (SELECT SUM(rp2.goles) 
+                               FROM resultados_partidos rp2 
+                               JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
+                               WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
+                                 AND j2.fk_equipo != e.id)) as PP'
                 )
             )
             ->groupBy('e.id', 'e.nombreEquipo')
@@ -68,6 +81,7 @@ class VerResultadosController extends Controller
             'resultados' => $resultados,
         ]);
     }
+    
     
     
     
