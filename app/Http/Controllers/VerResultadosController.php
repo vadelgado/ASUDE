@@ -97,7 +97,8 @@ class VerResultadosController extends Controller
                                 JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
                                 WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
                                   AND j2.fk_equipo != e.id))) as Pts'
-                )
+                ),
+                DB::raw('(5 * COALESCE(SUM(rs.tarjetas_amarillas), 0) + 10 * COALESCE(SUM(rs.tarjetas_rojas), 0)) as JL')
             )
             ->groupBy('e.id', 'e.nombreEquipo')
             ->get();
@@ -108,6 +109,8 @@ class VerResultadosController extends Controller
             'resultados' => $resultados,
         ]);
     }
+    
+    
     
     
     
