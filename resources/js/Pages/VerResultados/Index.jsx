@@ -3,10 +3,13 @@ import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
 import React, { useEffect, useState } from "react";
 
-
-
-export default function ListarTorneos({ auth, tablasGrupos, torneo, resultados }) {
-console.log(resultados);
+export default function ListarTorneos({
+    auth,
+    tablasGrupos,
+    torneo,
+    resultados,
+}) {
+    console.log(resultados);
     return (
         <>
             <Header auth={auth}></Header>
@@ -39,28 +42,60 @@ console.log(resultados);
                                         <th className="px-4 py-2">DG</th>
                                         <th className="px-4 py-2">TA</th>
                                         <th className="px-4 py-2">TR</th>
+                                        <th className="px-4 py-2">FCT</th>
                                         <th className="px-4 py-2">JL</th>
                                         <th className="px-4 py-2">PTS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                {resultados ? resultados.map((resultado, index) => (
-  <tr key={index} className="bg-gradient-to-b from-white/20 via-transparent to-transparent">
-    <td className="px-4 py-2 border">{resultado.nombreEquipo}</td>
-    <td className="px-4 py-2 border">{resultado.PJ}</td>
-    <td className="px-4 py-2 border">{resultado.PG}</td>
-    <td className="px-4 py-2 border">{resultado.PE}</td>
-    <td className="px-4 py-2 border">{resultado.PP}</td>
-    <td className="px-4 py-2 border">{resultado.GF}</td>
-    <td className="px-4 py-2 border">{resultado.GC}</td>
-    <td className="px-4 py-2 border">{resultado.DG}</td>
-    <td className="px-4 py-2 border">{resultado.TA}</td>
-    <td className="px-4 py-2 border">{resultado.TR}</td>
-    <td className="px-4 py-2 border">{resultado.JL}</td>
-    <td className="px-4 py-2 border">{resultado.PTS}</td>
-  </tr>
-)) : null}
+                                    {resultados
+                                        ? resultados.map((resultado, index) => (
+                                              <tr
+                                                  key={index}
+                                                  className="bg-gradient-to-b from-white/20 via-transparent to-transparent"
+                                              >
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.nombreEquipo}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.PJ}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.PG}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.PE}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.PP}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.GF}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.GC}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.DG}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.TA}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.TR}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.Fct}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.JL}
+                                                  </td>
+                                                  <td className="px-4 py-2 border">
+                                                      {resultado.Pts}
+                                                  </td>
+                                              </tr>
+                                          ))
+                                        : null}
                                 </tbody>
                             </table>
                         </div>

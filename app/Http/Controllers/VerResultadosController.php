@@ -32,8 +32,8 @@ class VerResultadosController extends Controller
             ->where('t.id', $torneo_id)
             ->select('e.nombreEquipo',
                 DB::raw('SUM(rs.goles) as GF'),
-                DB::raw('SUM(rs.tarjetas_amarillas) as TA'),
-                DB::raw('SUM(rs.tarjetas_rojas) as TR'),
+                DB::raw('COALESCE(SUM(rs.tarjetas_amarillas), 0) as TA'),
+                DB::raw('COALESCE(SUM(rs.tarjetas_rojas), 0) as TR'),
                 DB::raw('COUNT(DISTINCT rs.fk_programaciones_faces_id) as PJ'),
                 DB::raw('(SELECT COUNT(*) 
                           FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
@@ -102,17 +102,42 @@ class VerResultadosController extends Controller
                                   AND j2.fk_equipo != e.id))) as Pts'
                 ),
                 DB::raw('(5 * COALESCE(SUM(rs.tarjetas_amarillas), 0) + 10 * COALESCE(SUM(rs.tarjetas_rojas), 0) + COALESCE(SUM(atcs.value), 0)) as JL'),
-                DB::raw('COALESCE(SUM(atcs.value), 0) as Fct')
+                DB::raw('COALESCE(SUM(atcs.value), 0) as Fct'),
+                DB::raw('(SELECT SUM(rp.goles)
+                          FROM resultados_partidos rp
+                          JOIN jugadores j ON rp.fk_jugador_id = j.id
+                          WHERE j.fk_equipo != e.id
+                          AND rp.fk_programaciones_faces_id IN (
+                              SELECT DISTINCT rs.fk_programaciones_faces_id
+                              FROM resultados_partidos rs
+                              JOIN jugadores j2 ON rs.fk_jugador_id = j2.id
+                              WHERE j2.fk_equipo = e.id
+                          )) as GC'),
+                DB::raw('SUM(rs.goles) - (SELECT SUM(rp.goles)
+                                          FROM resultados_partidos rp
+                                          JOIN jugadores j ON rp.fk_jugador_id = j.id
+                                          WHERE j.fk_equipo != e.id
+                                          AND rp.fk_programaciones_faces_id IN (
+                                              SELECT DISTINCT rs.fk_programaciones_faces_id
+                                              FROM resultados_partidos rs
+                                              JOIN jugadores j2 ON rs.fk_jugador_id = j2.id
+                                              WHERE j2.fk_equipo = e.id
+                                          )) as DG')
             )
             ->groupBy('e.id', 'e.nombreEquipo')
+            ->orderBy('Pts', 'desc')
+            ->orderBy('JL', 'asc')
             ->get();
     
-        dd($resultados);
+        //dd($resultados);
         return Inertia::render('VerResultados/Index', [
             'torneo' => $torneo,
             'resultados' => $resultados,
         ]);
     }
+    
+    
+    
     
     
     
