@@ -26,6 +26,9 @@ class VerResultadosController extends Controller
             ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
             ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
             ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
+            ->leftJoin('cuerpo_tecnico as ct', 'e.id', '=', 'ct.fk_equipo')
+            ->leftJoin('faltas_cuerpo_tecnicos as fct', 'ct.id', '=', 'fct.fk_cuerpo_tecnico_id')
+            ->leftJoin('amonestaciones_t_c_s as atcs', 'fct.fk_amonestaciones_t_c_s_id', '=', 'atcs.id')
             ->where('t.id', $torneo_id)
             ->select('e.nombreEquipo',
                 DB::raw('SUM(rs.goles) as GF'),
@@ -98,7 +101,8 @@ class VerResultadosController extends Controller
                                 WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
                                   AND j2.fk_equipo != e.id))) as Pts'
                 ),
-                DB::raw('(5 * COALESCE(SUM(rs.tarjetas_amarillas), 0) + 10 * COALESCE(SUM(rs.tarjetas_rojas), 0)) as JL')
+                DB::raw('(5 * COALESCE(SUM(rs.tarjetas_amarillas), 0) + 10 * COALESCE(SUM(rs.tarjetas_rojas), 0) + COALESCE(SUM(atcs.value), 0)) as JL'),
+                DB::raw('COALESCE(SUM(atcs.value), 0) as Fct')
             )
             ->groupBy('e.id', 'e.nombreEquipo')
             ->get();
@@ -109,6 +113,8 @@ class VerResultadosController extends Controller
             'resultados' => $resultados,
         ]);
     }
+    
+    
     
     
     
