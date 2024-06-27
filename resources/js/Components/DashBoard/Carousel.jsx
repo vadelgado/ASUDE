@@ -9,14 +9,15 @@ const Carousel = () => {
             title: "Torneos en curso",
             description: "Conoce los torneos en curso y sigue los resultados",
             button: "Ver Resultados",
+            link: "/resultados",  // Puedes ajustar esto según sea necesario
         },
         {
             src: "/banner2.webp",
             alt: "Próximos Torneos",
             title: "Próximos Torneos",
-            description:
-                "Conoce los próximos torneos y regístrate para participar",
+            description: "Conoce los próximos torneos y regístrate para participar",
             button: "Ver Torneos",
+            link: "/listarTorneos",
         },
     ];
 
@@ -25,9 +26,7 @@ const Carousel = () => {
     };
 
     const prevSlide = () => {
-        setActiveIndex(
-            (prevIndex) => (prevIndex - 1 + images.length) % images.length
-        );
+        setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
 
     useEffect(() => {
@@ -35,9 +34,12 @@ const Carousel = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const handleButtonClick = (link) => {
+        window.location.href = link;
+    };
+
     return (
         <div className="relative w-full" data-carousel="static">
-            {/* Carousel wrapper */}
             <div className="relative overflow-hidden rounded-lg h-56 sm:h-72 md:h-96 lg:h-[36rem]">
                 {images.map((image, index) => (
                     <div
@@ -73,7 +75,10 @@ const Carousel = () => {
                                     <p className="relative order-3 mb-4 text-sm font-semibold sm:text-base md:text-xl lg:order-2">
                                         {image.description}
                                     </p>
-                                    <button className="relative self-center order-1 px-8 py-2 font-semibold text-white transition duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 hover:scale-105 hover:shadow-xl lg:self-end lg:order-3">
+                                    <button
+                                        className="relative self-center order-1 px-8 py-2 font-semibold text-white transition duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 hover:scale-105 hover:shadow-xl lg:self-end lg:order-3"
+                                        onClick={() => handleButtonClick(image.link)}
+                                    >
                                         {image.button}
                                     </button>
                                 </div>
@@ -82,7 +87,6 @@ const Carousel = () => {
                     </div>
                 ))}
             </div>
-            {/* Slider controls */}
             <button
                 type="button"
                 className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"

@@ -127,7 +127,7 @@ export default function ResultadosPartidos({
         { value: "", label: "Seleccione ..." },
         ...jugadores.map((jugador) => ({
             value: jugador.id,
-            label: `${jugador.nombreCompleto}`,
+            label: `${jugador.nombreCompleto} - ${jugador.nombreEquipo}`,
         })),
     ];
 

@@ -51,15 +51,17 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
         <>
             <Header auth={auth}></Header>
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
-            <h2 className="mt-32 text-3xl font-bold text-center">
-                <span>👉📝Tabla de Grupos👈</span>
-            </h2>
             <main className="px-2">
+            <h2 class="py-6 mt-40 text-center font-bold text-primary text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-xl">
+                <span className="px-6 font-medium text-white uppercase bg-black animate-fade-in animate-delay-300 mb-9">
+                Tabla de Grupos
+                </span>
+            </h2>
                 <div className="flex items-center justify-center py-8">
                     <img
                         src={`/storage/${torneo[0].imgBannerSuperior}`}
                         alt={torneo[0].nombreTorneo}
-                        className="flex items-center w-auto h-auto mr-2 "
+                        className="flex items-center w-1/2 h-auto mr-2 "
                     />
                 </div>
                 <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
@@ -99,6 +101,13 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
                                                             </span>
                                                             <img
                                                                 src={`/storage/${grupo[filaIndex].escudoEquipo}`}
+                                                                onError=
+                                                                {(e) => {
+                                                                    e.target.onerror =
+                                                                        null;
+                                                                    e.target.src =
+                                                                        "/escudo.svg";
+                                                                }}
                                                                 alt={
                                                                     grupo[
                                                                         filaIndex

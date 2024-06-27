@@ -46,7 +46,7 @@ class ResultadosPartidosController extends Controller
                 ->join('torneo as t', 'rs_local.fk_torneo', '=', 't.id')
                 ->where('pf.id', $fk_programaciones_faces_id)
                 ->where('t.id', $torneo_id)
-                ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.id')
+                ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.id', 'e_local.nombreEquipo')
                 ->unionAll(
                     DB::table('programaciones_faces as pf')
                         ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
@@ -54,15 +54,16 @@ class ResultadosPartidosController extends Controller
                         ->join('jugadores as j', 'e_visitante.id', '=', 'j.fk_equipo')
                         ->join('torneo as t', 'rs_visitante.fk_torneo', '=', 't.id')                        
                         ->where('pf.id', $fk_programaciones_faces_id)
-                        ->where('t.id', $torneo_id)
-                        ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.id')
+                        ->where('t.id', $torneo_id)                        
+                        ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.id', 'e_visitante.nombreEquipo')
                 )
+                ->where('j.estado', 1)
                 ->get();
             
         } else {
             $resultados = null;
         }
-       //dd($resultados);
+      //dd($jugadores);
         return Inertia::render('ResultadosPartidos/Index', [
             'jugadores' => $jugadores,
             '$fk_programaciones_faces_id' => $fk_programaciones_faces_id,
