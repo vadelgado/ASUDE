@@ -14,7 +14,7 @@ export default function Register() {
         celular: "",
         password: "",
         password_confirmation: "",
-        role: "equipo",
+        role: "admin",
     });
 
     useEffect(() => {
@@ -26,18 +26,18 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("register"));
+        post(route("registerAdmin"));
     };
 
     return (
         <GuestLayout>
-            <Head title="⚽Registro Encargado Equipo" />
+            <Head title="Registrar Administrador" />
 
             <form onSubmit={submit}>
                 <div>
                     <InputLabel
                         htmlFor="identificacion"
-                        value="Identificación"
+                        value="Identificación"                        
                     />
 
                     <TextInput
@@ -51,6 +51,7 @@ export default function Register() {
                             setData("identificacion", e.target.value)
                         }
                         required
+                        type="number"
                     />
 
                     <InputError
@@ -156,7 +157,7 @@ export default function Register() {
                     <TextInput
                         id="role"
                         name="role"
-                        value="equipo"
+                        value="admin"
                         className="mt-1 block w-full"
                         autoComplete="role"
                         onChange={(e) => setData("role", e.target.value)}

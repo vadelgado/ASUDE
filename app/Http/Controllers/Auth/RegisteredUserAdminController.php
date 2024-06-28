@@ -14,14 +14,14 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class RegisteredUserAdminController extends Controller
 {
     /**
      * Display the registration view.
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('AuthAdmin/Register');
     }
 
     /**
@@ -76,7 +76,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'celular' => $request->celular,
-            'role' => 'equipo',
+            'role' => 'admin',
         ]);
 
         event(new Registered($user));

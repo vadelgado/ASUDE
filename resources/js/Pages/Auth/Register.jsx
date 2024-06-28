@@ -31,7 +31,7 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Registro Acudiente o Entrenador" />
+            <Head title="Registro Equipo(S)" />
 
             <form onSubmit={submit}>
                 <div>
@@ -156,7 +156,7 @@ export default function Register() {
                         id="role"
                         name="role"
                         type="text"
-                        value="acudiente"
+                        value="equipo"
                         className="mt-1 block w-full"
                         autoComplete="off"
                         readOnly

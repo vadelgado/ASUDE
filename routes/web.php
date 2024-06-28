@@ -6,6 +6,7 @@ use App\Http\Controllers\TorneoEnCursoController;
 use App\Models\torneo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\Auth\RegisteredUserAdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\JugadoresController;
@@ -81,8 +82,12 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth', 'role:admin')->group(function () {
 
-    // Listado de Alumnos Administrador
-    Route::get('alumnoAdmin', 'App\Http\Controllers\AlumnoController@indexAdmin')->name('alumno.indexAdmin');
+    Route::get('registerAdmin', [RegisteredUserAdminController::class, 'create'])->name('admin.register');
+    Route::post('registerAdmin', [RegisteredUserAdminController::class, 'store']);
+    Route::get('/profileAdmin', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profileAdmin', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profileAdmin', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 
     // Listado de Pagos Administrador
     Route::get('comprobantesAdmin', 'App\Http\Controllers\ComprobantesController@indexAdmin')->name('comprobantes.indexAdmin');
@@ -156,40 +161,6 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::resource('faltasCuerpoTecnico', App\Http\Controllers\FaltasCuerpoTecnicoController::class);
 
 
-});
-
-Route::middleware('auth', 'role:acudiente')->group(function () {
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');   
-
-    // Listado de Alumnos
-    Route::get('alumno', 'App\Http\Controllers\AlumnoController@index')->name('alumno.index');
-
-    // Formulario para crear un nuevo Alumno
-    Route::get('alumno/create', 'App\Http\Controllers\AlumnoController@create')->name('alumno.create');
-
-    // Guardar un nuevo Alumno
-    Route::post('alumno', 'App\Http\Controllers\AlumnoController@store')->name('alumno.store');
-
-    // Mostrar un Alumno específico
-    Route::get('alumno/{alumno}', 'App\Http\Controllers\AlumnoController@show')->name('alumno.show');
-
-    // Formulario para editar un Alumno existente
-    Route::get('alumno/{alumno}/edit', 'App\Http\Controllers\AlumnoController@edit')->name('alumno.edit');
-
-    // Actualizar un Alumno existente
-    Route::put('alumno/{alumno}', 'App\Http\Controllers\AlumnoController@update')->name('alumno.update');
-
-    // Eliminar un Alumno existente
-    Route::delete('alumno/{alumno}', 'App\Http\Controllers\AlumnoController@destroy')->name('alumno.destroy');
-
-    // Listado de Comprobantes
-    Route::get('comprobantes', 'App\Http\Controllers\ComprobantesController@index')->name('comprobantes.index');
-
-    // Guardar un nuevo Comprobante
-    Route::post('comprobantes', 'App\Http\Controllers\ComprobantesController@store')->name('comprobantes.store');
 });
 
 // Registrar Director Equipo
