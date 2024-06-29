@@ -170,91 +170,75 @@ export default function Index({
 
     return (
         <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <div className="flex items-center justify-center px-2 py-1">
-                    <h2 className="flex items-center text-xl font-semibold leading-tight text-gray-800">
-                        Pre Inscripciones equipo
-                        {auth.user.role === "admin" ? (
-                            <>
-                                <img
-                                    src={`/storage/${equipo.escudoEquipo}`}
-                                    alt={`Escudo equipo ${equipo.escudoEquipo}`}
-                                    className="w-10 h-10 ml-2 rounded-full"
-                                />
-                                {equipo.nombreEquipo}
-                            </>
-                        ) : auth.user.role === "equipo" ? (
-                            <>
-                                <img
-                                    src={`/storage/${equipo.escudoEquipo}`}
-                                    alt={`Escudo equipo ${equipo.escudoEquipo}`}
-                                    className="w-10 h-10 ml-2 rounded-full"
-                                />
-                                {equipo.nombreEquipo}
-                            </>
-                        ) : null}
-                    </h2>
-                </div>
-            }
-        >
-            <Head title="Programación Torneo" />
+    user={auth.user}
+    header={
+        <div className="flex items-center justify-center px-2 py-1">
+            <h2 className="flex items-center text-xl font-semibold leading-tight text-gray-800">
+                Pre Inscripciones equipo
+                {["admin", "equipo"].includes(auth.user.role) && (
+                    <>
+                        <img
+                            src={`/storage/${equipo.escudoEquipo}`}
+                            alt={`Escudo equipo ${equipo.nombreEquipo}`}
+                            className="w-10 h-10 ml-2 rounded-full"
+                        />
+                        {equipo.nombreEquipo}
+                    </>
+                )}
+            </h2>
+        </div>
+    }
+>
+    <Head title="Programación Torneo" />
 
-            <div className="grid bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-2 mb-3">
-                    <PrimaryButton onClick={() => handleModal(1)}>
-                        <i className="fa-solid fa-plus-circle">
-                            {" "}
-                            Realizar Pre Inscripcion
-                        </i>
-                    </PrimaryButton>
-                </div>
-            </div>
-            <div className="grid py-6 bg-white v-screen place-items-center">
-                <table className="border-gray-400 table-auto">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 border">#</th>
-                            <th className="px-4 py-2 border">Torneo</th>
-                            <th className="px-4 py-2 border">Estado</th>
-                            <th className="px-4 py-2 border">Observación</th>
-                            <th className="px-2 py-2"></th>
-                            <th className="px-2 py-2"></th>
-                            <th className="px-2 py-2"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {inscripciones.map((inscripcion, index) => (
-                            <tr key={inscripcion.id}>
-                                <td className="px-4 py-2 border">
-                                    {index + 1}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    {inscripcion.nombreTorneo}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    <span
-                                        className={`flex gap-x-2 rounded-full text-xs text-white py-1 px-2 ${
-                                            inscripcion.estadoInscripcion ===
-                                            "Pendiente"
-                                                ? "bg-yellow-600"
-                                                : inscripcion.estadoInscripcion ===
-                                                  "Aceptada"
-                                                ? "bg-green-600"
-                                                : inscripcion.estadoInscripcion ===
-                                                  "Rechazada"
-                                                ? "bg-red-600"
-                                                : ""
-                                        }`}
-                                    >
-                                        {inscripcion.estadoInscripcion}
-                                    </span>
-                                </td>
-                                <td className="px-4 py-2 border border-gray-400">
-                                    {inscripcion.observacion}
-                                </td>
-                                {auth.user.role === "admin" ? (
-                                    <td className="px-4 py-2 border border-gray-400">
+    <div className="container min-h-screen p-6 mx-auto mt-6 bg-white">
+        <div className="flex justify-end mt-2 mb-3">
+            <PrimaryButton onClick={() => handleModal(1)}>
+                <i className="mr-2 fa-solid fa-plus-circle"></i>
+                Realizar Pre Inscripción
+            </PrimaryButton>
+        </div>
+
+        <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+                <thead>
+                    <tr className="text-sm leading-normal text-gray-700 uppercase bg-gray-200">
+                        <th className="px-6 py-3 text-left">#</th>
+                        <th className="px-6 py-3 text-left">Torneo</th>
+                        <th className="px-6 py-3 text-left">Estado</th>
+                        <th className="px-6 py-3 text-left">Observación</th>
+                        {auth.user.role === "admin" && (
+                            <>
+                                <th className="px-6 py-3 text-left">Editar</th>
+                                <th className="px-6 py-3 text-left">Eliminar</th>
+                            </>
+                        )}
+                    </tr>
+                </thead>
+                <tbody className="text-sm font-light text-gray-600">
+                    {inscripciones.map((inscripcion, index) => (
+                        <tr key={inscripcion.id} className="border-b border-gray-200 hover:bg-gray-100">
+                            <td className="px-6 py-3 text-left">{index + 1}</td>
+                            <td className="px-6 py-3 text-left">{inscripcion.nombreTorneo}</td>
+                            <td className="px-6 py-3 text-center">
+                                <span
+                                    className={`flex gap-x-2 rounded-full text-xs text-white py-1 px-2 ${
+                                        inscripcion.estadoInscripcion === "Pendiente"
+                                            ? "bg-yellow-600"
+                                            : inscripcion.estadoInscripcion === "Aceptada"
+                                            ? "bg-green-600"
+                                            : inscripcion.estadoInscripcion === "Rechazada"
+                                            ? "bg-red-600"
+                                            : ""
+                                    }`}
+                                >
+                                    {inscripcion.estadoInscripcion}
+                                </span>
+                            </td>
+                            <td className="px-6 py-3 text-left">{inscripcion.observacion}</td>
+                            {auth.user.role === "admin" && (
+                                <>
+                                    <td className="px-6 py-3 text-left">
                                         <PrimaryButton
                                             onClick={() =>
                                                 handleModal(
@@ -270,132 +254,100 @@ export default function Index({
                                             Editar
                                         </PrimaryButton>
                                     </td>
-                                ) : null}
-                                {auth.user.role === "admin" ? (
-                                    <td className="px-4 py-2 border border-gray-400">
+                                    <td className="px-6 py-3 text-left">
                                         <DangerButton
-                                            onClick={() =>
-                                                eliminar(
-                                                    inscripcion.id,
-                                                    inscripcion.nombreTorneo
-                                                )
-                                            }
+                                            onClick={() => eliminar(inscripcion.id, inscripcion.nombreTorneo)}
                                         >
                                             <i className="fa-solid fa-trash"></i>
                                         </DangerButton>
                                     </td>
-                                ) : null}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            <Modal show={modal} close={closeModal}>
-                <div className="flex items-center justify-center px-2 py-1 my-3">
-                    <h2 className="flex items-center text-xl font-semibold leading-tight text-gray-800">
-                        {title}
-                        <img
-                            src={`/storage/${equipo.escudoEquipo}`}
-                            alt={`Escudo equipo ${equipo.nombreTorneo}`}
-                            className="w-10 h-10 ml-2 rounded-full"
-                        />
-                        {equipo.nombreEquipo}
-                    </h2>
-                </div>
-                <form onSubmit={handleSubmit} className="p-6">
-                    {auth.user.role === "admin" ? (
-                        <SelectField
-                            htmlFor="fk_torneo"
-                            label={
-                                <>
-                                    <span>Torneo</span>
-                                    <span className="text-red-500">*</span>
-                                </>
-                            }
-                            id="fk_torneo"
-                            ref={fk_torneoInput}
-                            name="fk_torneo"
-                            value={data.fk_torneo}
-                            onChange={handleInputChange}
-                            options={handleSelectTorneos}
-                            errorMessage={errors.fk_torneo}
-                        />
-                    ) : auth.user.role === "equipo" ? (
-                        <>
-                            <SelectField
-                                htmlFor="fk_torneo"
-                                label={
-                                    <>
-                                        <span>Torneo</span>
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                id="fk_torneo"
-                                ref={fk_torneoInput}
-                                name="fk_torneo"
-                                value={data.fk_torneo}
-                                onChange={handleInputChangeFlayer}
-                                options={handleSelectTorneos}
-                                errorMessage={errors.fk_torneo}
-                            />
-
-                            {selectedTorneo && (
-                                <>
-                                    <img
-                                        className="w-1/2 mx-auto mt-4 h-1/2"
-                                        src={`/storage/${selectedTorneo.flayer}`}
-                                        alt={`Torneo ⚽ ${selectedTorneo.nombreTorneo}`}
-                                    />
                                 </>
                             )}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <Modal show={modal} onClose={closeModal}>
+        <div className="flex items-center justify-center px-2 py-1 my-3">
+            <h2 className="flex items-center text-xl font-semibold leading-tight text-gray-800">
+                {title}
+                <img
+                    src={`/storage/${equipo.escudoEquipo}`}
+                    alt={`Escudo equipo ${equipo.nombreEquipo}`}
+                    className="w-10 h-10 ml-2 rounded-full"
+                />
+                {equipo.nombreEquipo}
+            </h2>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6">
+            {["admin", "equipo"].includes(auth.user.role) && (
+                <SelectField
+                    htmlFor="fk_torneo"
+                    label={
+                        <>
+                            <span>Torneo</span>
+                            <span className="text-red-500">*</span>
                         </>
-                    ) : null}
+                    }
+                    id="fk_torneo"
+                    ref={fk_torneoInput}
+                    name="fk_torneo"
+                    value={data.fk_torneo}
+                    onChange={handleInputChange}
+                    options={handleSelectTorneos}
+                    errorMessage={errors.fk_torneo}
+                />
+            )}
+            {auth.user.role === "equipo" && selectedTorneo && (
+                <img
+                    className="w-1/2 mx-auto mt-4 h-1/2"
+                    src={`/storage/${selectedTorneo.flayer}`}
+                    alt={`Torneo ⚽ ${selectedTorneo.nombreTorneo}`}
+                />
+            )}
+            {auth.user.role === "admin" && (
+                <>
+                    <SelectField
+                        htmlFor="estadoInscripcion"
+                        label={
+                            <>
+                                <span>Estado Inscripción</span>
+                                <span className="text-red-500">*</span>
+                            </>
+                        }
+                        id="estadoInscripcion"
+                        ref={estadoInscripcionInput}
+                        name="estadoInscripcion"
+                        value={data.estadoInscripcion || ""}
+                        onChange={handleInputChange}
+                        options={handleSelectestadoInscripcion}
+                        errorMessage={errors.estadoInscripcion}
+                    />
+                    <Textarea2
+                        htmlFor="observacion"
+                        label="Observación"
+                        id="observacion"
+                        ref={observacionInput}
+                        name="observacion"
+                        placeholder="Observación"
+                        value={data.observacion || ""}
+                        onChange={handleInputChange}
+                        errorMessage={errors.observacion}
+                    />
+                </>
+            )}
+            <div className="flex justify-end mt-4">
+                <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
+                <PrimaryButton type="submit" className="ml-2">
+                    Guardar
+                </PrimaryButton>
+            </div>
+        </form>
+    </Modal>
+</AuthenticatedLayout>
 
-                    {auth.user.role === "admin" ? (
-                        <SelectField
-                            htmlFor="estadoInscripcion"
-                            label={
-                                <>
-                                    <span>Estadio Inscripción</span>
-                                    <span className="text-red-500">*</span>
-                                </>
-                            }
-                            id="estadoInscripcion"
-                            ref={estadoInscripcionInput}
-                            name="estadoInscripcion"
-                            value={data.estadoInscripcion || ""}
-                            onChange={handleInputChange}
-                            options={handleSelectestadoInscripcion}
-                            errorMessage={errors.estadoInscripcion}
-                        />
-                    ) : null}
-
-                    {auth.user.role === "admin" ? (
-                        <Textarea2
-                            htmlFor="observacion"
-                            label="Observación"
-                            id="observacion"
-                            type="text"
-                            ref={observacionInput}
-                            name="observacion"
-                            placeholder="Observación"
-                            value={data.observacion || ""}
-                            onChange={handleInputChange}
-                            errorMessage={errors.observacion}
-                        />
-                    ) : null}
-
-                    <div className="flex justify-end mt-4">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
-                        <PrimaryButton type="submit" className="ml-2">
-                            Guardar
-                        </PrimaryButton>
-                    </div>
-                </form>
-            </Modal>
-        </AuthenticatedLayout>
     );
 }

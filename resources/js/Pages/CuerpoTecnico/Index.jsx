@@ -255,27 +255,25 @@ export default function Index({
         >
             <Head title="⚽ Cuerpo Técnico 👦👧" />
 
-            {/* Contenido de la vista... */}
-            <div className="grid py-6 overflow-x-auto text-left bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-1 mb-1">
-                    <PrimaryButton onClick={() => openModal(1)}>
-                        <i
-                            className="fa-solid fa-plus-circle"
-                            style={{ marginRight: "10px" }}
-                        ></i>
-                        Agregar Miembro
-                    </PrimaryButton>
-                </div>
-                <div className="grid py-6 bg-white v-screen place-items-center">
-                    <div className="w-full mt-2 ml-6 text-left">
+            <div className="py-6">
+                <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
+                    <div className="flex justify-end mt-1 mb-4">
+                        <PrimaryButton onClick={() => openModal(1)}>
+                            <i className="mr-2 fa-solid fa-plus-circle"></i>
+                            Agregar Miembro
+                        </PrimaryButton>
+                    </div>
+
+                    <div className="w-full mt-2 text-left">
                         <span className="italic font-bold">
                             NOMBRE EQUIPO:{" "}
                         </span>
-                        <span className="inline-block">{equipo}</span>
+                        <span>{equipo}</span>
                     </div>
-                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
-                        <thead>
-                            <tr className="bg-gray-100">
+
+                    <table className="w-full mt-4 border border-gray-400 table-auto">
+                        <thead className="bg-gray-100">
+                            <tr>
                                 <th className="px-2 py-2">N°</th>
                                 <th className="px-2 py-2">
                                     NOMBRES Y APELLIDOS
@@ -295,34 +293,37 @@ export default function Index({
                             {cuerposTecnicos.length > 0 ? (
                                 cuerposTecnicos.map((cuerpoTecnico, i) => (
                                     <tr key={cuerpoTecnico.id}>
-                                        <td className="px-2 py-2">{i + 1}</td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
+                                            {i + 1}
+                                        </td>
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.nombreCompleto}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="flex items-center justify-center px-2 py-2 border">
                                             <img
                                                 src={`/storage/${cuerpoTecnico.fotoCuerpoTecnico}`}
-                                                alt={cuerpoTecnico.nombreCompleto}
-                                                height={100}
-                                                width={100}
+                                                alt={
+                                                    cuerpoTecnico.nombreCompleto
+                                                }
+                                                className="object-cover w-16 h-16 border rounded-full"
                                             />
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.cargo}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.tipoIdentificacion}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.numeroIdentificacion}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.telefonoCelular}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.correoElectronico}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 space-x-2 border">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -361,7 +362,10 @@ export default function Index({
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="11" className="text-center">
+                                    <td
+                                        colSpan="9"
+                                        className="px-2 py-2 text-center border"
+                                    >
                                         Usted no ha subido ningún Miembro del
                                         Cuerpo Técnico. 👀
                                     </td>
@@ -378,7 +382,7 @@ export default function Index({
                 </h2>
                 <form
                     onSubmit={save}
-                    className="grid grid-cols-2 gap-4 p-6 "
+                    className="grid grid-cols-2 gap-4 p-6"
                     encType="multipart/form-data"
                 >
                     <FormField
@@ -392,7 +396,6 @@ export default function Index({
                         errorMessage={errors.nombreCompleto}
                         ref={nombreCompletoInput}
                     />
-
                     <SelectField
                         htmlFor="cargo"
                         label="Cargo"
@@ -404,7 +407,6 @@ export default function Index({
                         errorMessage={errors.cargo}
                         ref={cargoInput}
                     />
-
                     <SelectField
                         htmlFor="tipoIdentificacion"
                         label="Tipo Documento Identidad"
@@ -416,7 +418,6 @@ export default function Index({
                         errorMessage={errors.tipoIdentificacion}
                         ref={tipoIdentificacionInput}
                     />
-
                     <FormField
                         htmlFor="numeroIdentificacion"
                         label="Número Documento Identidad"
@@ -428,7 +429,6 @@ export default function Index({
                         errorMessage={errors.numeroIdentificacion}
                         ref={numeroIdentificacionInput}
                     />
-
                     <FormField
                         htmlFor="telefonoFijo"
                         label="Teléfono Fijo"
@@ -440,7 +440,6 @@ export default function Index({
                         errorMessage={errors.telefonoFijo}
                         ref={telefonoFijoInput}
                     />
-
                     <FormField
                         htmlFor="telefonoCelular"
                         label="Teléfono Celular"
@@ -452,7 +451,6 @@ export default function Index({
                         errorMessage={errors.telefonoCelular}
                         ref={telefonoCelularInput}
                     />
-
                     <FormField
                         htmlFor="correoElectronico"
                         label="Correo Electrónico"
@@ -464,7 +462,6 @@ export default function Index({
                         errorMessage={errors.correoElectronico}
                         ref={correoElectronicoInput}
                     />
-
                     <ImgField
                         htmlFor="fotoCuerpoTecnico"
                         label="Foto Cuerpo Técnico"
@@ -480,18 +477,15 @@ export default function Index({
                                 : null
                         }
                     />
-
-                    <div className="mt-1">
+                    <div className="flex justify-between col-span-2 mt-1">
                         <PrimaryButton
                             processing={processing.toString()}
                             className="mt-2"
                         >
-                            <i className="fa-solid fa-save"></i>Guardar
+                            <i className="mr-2 fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
-                    </div>
-                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal}>
-                            Cancel
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

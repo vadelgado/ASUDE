@@ -176,266 +176,229 @@ export default function Index({
         })),
     ];
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    ⚽ Equipos 🥅
-                </h2>
-            }
-        >
-            {/* Head y otras importaciones... */}
-            <Head title="⚽ Equipos 🥅" />
-            <div className="grid py-6 overflow-x-auto bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-1 mb-1">
-                    <PrimaryButton onClick={() => openModal(1)}>
-                        <i
-                            className="fa-solid fa-plus-circle"
-                            style={{ marginRight: "10px" }}
-                        ></i>
-                        Agregar
-                    </PrimaryButton>
-                </div>
-                <div className="grid py-6 bg-white v-screen place-items-center">
-                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
-                        <thead>
-                            <tr className="bg-gray-100">
-                                <th className="px-2 py-2">No.</th>
-                                <th className="px-2 py-2">Nombre del Equipo</th>
-                                <th className="px-2 py-2">Categoría</th>
-                                <th className="px-2 py-2">Escudo del Equipo</th>
-                                <th className="px-2 py-2">
-                                    Número de WhatsApp
-                                </th>
-                                <th className="px-2 py-2">
-                                    Correo Electrónico
-                                </th>
-                                <th className="px-2 py-2">Preinscribir</th>
-                                <th className="px-2 py-2">Editar</th>
-                                <th className="px-2 py-2">Eliminar</th>
+<AuthenticatedLayout
+    user={auth.user}
+    header={
+        <h2 className="text-2xl font-semibold leading-tight text-gray-800">
+            ⚽ Equipos 🥅
+        </h2>
+    }
+>
+    <Head title="⚽ Equipos 🥅" />
+    <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
+        <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold">Lista de Equipos</h3>
+            <PrimaryButton onClick={() => openModal(1)}>
+                <i className="mr-2 fa-solid fa-plus-circle"></i>
+                Agregar
+            </PrimaryButton>
+        </div>
+        <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+                <thead>
+                    <tr className="text-sm leading-normal text-gray-700 uppercase bg-gray-200">
+                        <th className="px-6 py-3 text-left">No.</th>
+                        <th className="px-6 py-3 text-left">Nombre del Equipo</th>
+                        <th className="px-6 py-3 text-left">Categoría</th>
+                        <th className="px-6 py-3 text-left">Escudo del Equipo</th>
+                        <th className="px-6 py-3 text-left">Número de WhatsApp</th>
+                        <th className="px-6 py-3 text-left">Correo Electrónico</th>
+                        <th className="px-6 py-3 text-left">Preinscribir</th>
+                        <th className="px-6 py-3 text-left">Editar</th>
+                        <th className="px-6 py-3 text-left">Eliminar</th>
+                        <th className="px-6 py-3 text-left">Jugadores</th>
+                        <th className="px-6 py-3 text-left">Cuerpo Técnico</th>
+                    </tr>
+                </thead>
+                <tbody className="text-sm font-light text-gray-600">
+                    {equipos.length > 0 ? (
+                        equipos.map((equipo, index) => (
+                            <tr key={equipo.id} className="border-b border-gray-200 hover:bg-gray-100">
+                                <td className="px-6 py-3 text-left">{index + 1}</td>
+                                <td className="px-6 py-3 text-left">{equipo.nombreEquipo}</td>
+                                <td className="px-6 py-3 text-left">{equipo.descripcion}</td>
+                                <td className="px-6 py-3 text-left">
+                                    <img
+                                        src={`/storage/${equipo.escudoEquipo}`}
+                                        alt={equipo.nombreEquipo}
+                                        className="w-16 h-16 rounded-full"
+                                    />
+                                </td>
+                                <td className="px-6 py-3 text-left">{equipo.numeroWhatsapp}</td>
+                                <td className="px-6 py-3 text-left">{equipo.correoElectronico}</td>
+                                <td className="px-6 py-3 text-left">
+                                    {userRole === "admin" && (
+                                        <a
+                                            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+                                            href={`/inscripciones?equipo_id=${equipo.id}`}
+                                        >
+                                            <i className="mr-2 fa-solid fa-book"></i>
+                                            Torneos
+                                        </a>
+                                    )}
+                                    {userRole === "equipo" && (
+                                        <a
+                                            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+                                            href={`/inscripcionesEquipo?equipo_id=${equipo.id}`}
+                                        >
+                                            <i className="mr-2 fa-solid fa-book"></i>
+                                            Torneos
+                                        </a>
+                                    )}
+                                </td>
+                                <td className="px-6 py-3 text-left">
+                                    <WarningButton
+                                        onClick={() =>
+                                            openModal(
+                                                2,
+                                                equipo.id,
+                                                equipo.nombreEquipo,
+                                                equipo.fk_categoria_equipo,
+                                                equipo.escudoEquipo,
+                                                equipo.numeroWhatsapp,
+                                                equipo.correoElectronico,
+                                                equipo.fk_user
+                                            )
+                                        }
+                                    >
+                                        <i className="fa-solid fa-edit"></i>
+                                    </WarningButton>
+                                </td>
+                                <td className="px-6 py-3 text-left">
+                                    <DangerButton
+                                        onClick={() =>
+                                            eliminar(
+                                                equipo.id,
+                                                equipo.nombreEquipo
+                                            )
+                                        }
+                                    >
+                                        <i className="fa-solid fa-trash"></i>
+                                    </DangerButton>
+                                </td>
+                                <td className="px-6 py-3 text-left">
+                                    <a
+                                        href={
+                                            userRole === "admin"
+                                                ? `/jugadoresAdmin?equipo_id=${equipo.id}`
+                                                : `/jugadores?equipo_id=${equipo.id}`
+                                        }
+                                        className="text-blue-600 hover:text-blue-900"
+                                    >
+                                        <i className="fa-solid fa-users"></i>
+                                    </a>
+                                </td>
+                                <td className="px-6 py-3 text-left">
+                                    <a
+                                        href={
+                                            userRole === "admin"
+                                                ? `/cuerpoTecnicoAdmin?equipo_id=${equipo.id}`
+                                                : `/cuerpoTecnico?equipo_id=${equipo.id}`
+                                        }
+                                        className="text-blue-600 hover:text-blue-900"
+                                    >
+                                        <i className="fa-solid fa-person-chalkboard"></i>
+                                    </a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {equipos.length > 0 ? (
-                                equipos.map((equipo, index) => (
-                                    <tr key={equipo.id}>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            {index + 1}
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            {equipo.nombreEquipo}
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            {equipo.descripcion}
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            <img
-                                                src={`/storage/${equipo.escudoEquipo}`}
-                                                alt={equipo.nombreEquipo}
-                                                height={100}
-                                                width={100}
-                                            />
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            {equipo.numeroWhatsapp}
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            {equipo.correoElectronico}
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            {userRole === "admin" && (
-                                                <a
-                                                    className="text-white bg-[#5d1df2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
-                                                    href={`/inscripciones?equipo_id=${equipo.id}`}
-                                                >
-                                                    <i
-                                                        className="fa-solid fa-book"
-                                                        style={{
-                                                            marginRight: "5px",
-                                                        }}
-                                                    >
-                                                        {" "}
-                                                        Torneos
-                                                    </i>
-                                                </a>
-                                            )}
-                                            {userRole === "equipo" && (
-                                                <a
-                                                    className="text-white bg-[#5d1df2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
-                                                    href={`/inscripcionesEquipo?equipo_id=${equipo.id}`}
-                                                >
-                                                    <i
-                                                        className="fa-solid fa-book"
-                                                        style={{
-                                                            marginRight: "5px",
-                                                        }}
-                                                    >
-                                                        {" "}
-                                                        Torneos
-                                                    </i>
-                                                </a>
-                                            )}
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            <WarningButton
-                                                onClick={() =>
-                                                    openModal(
-                                                        2,
-                                                        equipo.id,
-                                                        equipo.nombreEquipo,
-                                                        equipo.fk_categoria_equipo,
-                                                        equipo.escudoEquipo,
-                                                        equipo.numeroWhatsapp,
-                                                        equipo.correoElectronico,
-                                                        equipo.fk_user
-                                                    )
-                                                }
-                                            >
-                                                <i className="fa-solid fa-edit"></i>
-                                            </WarningButton>
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            <DangerButton
-                                                onClick={() =>
-                                                    eliminar(
-                                                        equipo.id,
-                                                        equipo.nombreEquipo
-                                                    )
-                                                }
-                                            >
-                                                <i className="fa-solid fa-trash"></i>
-                                            </DangerButton>
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            <a
-                                                href={
-                                                    userRole === "admin"
-                                                        ? `/jugadoresAdmin?equipo_id=${equipo.id}`
-                                                        : `/jugadores?equipo_id=${equipo.id}`
-                                                }
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                <i className="fa-solid fa-users"></i>
-                                            </a>
-                                        </td>
-                                        <td className="px-4 py-2 border border-gray-400">
-                                            <a
-                                                href={
-                                                    userRole === "admin"
-                                                        ? `/cuerpoTecnicoAdmin?equipo_id=${equipo.id}`
-                                                        : `/cuerpoTecnico?equipo_id=${equipo.id}`
-                                                }
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                <i className="fa-solid fa-person-chalkboard"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="11" className="text-center">
-                                        Usted no ha subido ningún Equipo. 👀
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="11" className="py-4 text-center">
+                                Usted no ha subido ningún Equipo. 👀
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-            <Modal show={modal} onClose={closeModal}>
-                <h2 className="p-3 text-lg font-medium text-gray-900">
-                    {title}
-                </h2>
-                <form
-                    onSubmit={save}
-                    className="p-6"
-                    encType="multipart/form-data"
+    <Modal show={modal} onClose={closeModal}>
+        <h2 className="p-3 text-lg font-medium text-gray-900">{title}</h2>
+        <form
+            onSubmit={save}
+            className="p-6"
+            encType="multipart/form-data"
+        >
+            <FormField
+                htmlFor="nombreEquipo"
+                label="Nombre del Equipo"
+                id="nombreEquipo"
+                type="text"
+                ref={nombreEquipoInput}
+                name="nombreEquipo"
+                placeholder="Nombre del Equipo"
+                value={data.nombreEquipo}
+                onChange={handleInputChange}
+                errorMessage={errors.nombreEquipo}
+            />
+            <SelectField
+                htmlFor="fk_categoria_equipo"
+                label="Categoría"
+                id="fk_categoria_equipo"
+                ref={fk_categoria_equipoInput}
+                name="fk_categoria_equipo"
+                value={data.fk_categoria_equipo}
+                onChange={handleInputChange}
+                errorMessage={errors.fk_categoria_equipo}
+                options={handleCategorias}
+            />
+            <ImgField
+                htmlFor="escudoEquipo"
+                label="Escudo del Equipo"
+                id="escudoEquipo"
+                ref={escudoEquipoInput}
+                name="escudoEquipo"
+                value={data.escudoEquipo}
+                onChange={handleFileChange}
+                errorMessage={errors.escudoEquipo}
+                imageUrl={
+                    data.escudoEquipo
+                        ? `http://127.0.0.1:8000/storage/${data.escudoEquipo}`
+                        : null
+                }
+            />
+            <FormField
+                htmlFor="numeroWhatsApp"
+                label="Número de WhatsApp"
+                id="numeroWhatsApp"
+                type="number"
+                ref={numeroWhatsAppInput}
+                name="numeroWhatsapp"
+                placeholder="Número de WhatsApp"
+                value={data.numeroWhatsapp}
+                onChange={handleInputChange}
+                errorMessage={errors.numeroWhatsapp}
+            />
+            <FormField
+                htmlFor="correoElectronico"
+                label="Correo Electrónico"
+                id="correoElectronico"
+                type="email"
+                ref={correoElectronicoInput}
+                name="correoElectronico"
+                placeholder="Correo Electrónico"
+                value={data.correoElectronico}
+                onChange={handleInputChange}
+                errorMessage={errors.correoElectronico}
+            />
+            <div className="mt-4">
+                <PrimaryButton
+                    processing={processing.toString()}
+                    className="mt-2"
                 >
-                    <FormField
-                        htmlFor="nombreEquipo"
-                        label="Nombre del Equipo"
-                        id="nombreEquipo"
-                        type="text"
-                        ref={nombreEquipoInput}
-                        name="nombreEquipo"
-                        placeholder="Nombre del Equipo"
-                        value={data.nombreEquipo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.nombreEquipo}
-                    />
-            
-                    <SelectField
-                        htmlFor="fk_categoria_equipo"
-                        label="Categoría"
-                        id="fk_categoria_equipo"
-                        ref={fk_categoria_equipoInput}
-                        name="fk_categoria_equipo"
-                        value={data.fk_categoria_equipo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fk_categoria_equipo}
-                        options={handleCategorias}
-                    />
-            
-                    <ImgField
-                        htmlFor="escudoEquipo"
-                        label="Escudo del Equipo"
-                        id="escudoEquipo"
-                        ref={escudoEquipoInput}
-                        name="escudoEquipo"
-                        value={data.escudoEquipo}
-                        onChange={handleFileChange}
-                        errorMessage={errors.escudoEquipo}
-                        imageUrl={
-                            data.escudoEquipo
-                                ? `http://127.0.0.1:8000/storage/${data.escudoEquipo}`
-                                : null
-                        }
-                    />
-            
-                    <FormField
-                        htmlFor="numeroWhatsApp"
-                        label="Número de WhatsApp"
-                        id="numeroWhatsApp"
-                        type="number"
-                        ref={numeroWhatsAppInput}
-                        name="numeroWhatsapp"
-                        placeholder="Número de WhatsApp"
-                        value={data.numeroWhatsapp}
-                        onChange={handleInputChange}
-                        errorMessage={errors.numeroWhatsapp}
-                    />
-            
-                    <FormField
-                        htmlFor="correoElectronico"
-                        label="Correo Electrónico"
-                        id="correoElectronico"
-                        type="email"
-                        ref={correoElectronicoInput}
-                        name="correoElectronico"
-                        placeholder="Correo Electrónico"
-                        value={data.correoElectronico}
-                        onChange={handleInputChange}
-                        errorMessage={errors.correoElectronico}
-                    />
-            
-                    <div className="mt-1">
-                        <PrimaryButton
-                            processing={processing.toString()}
-                            className="mt-2"
-                        >
-                            <i className="fa-solid fa-save"></i>Guardar
-                        </PrimaryButton>
-                    </div>
-            
-                    <div className="flex justify-end mt-6">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancel
-                        </SecondaryButton>
-                    </div>
-                </form>
-            </Modal>
-        </AuthenticatedLayout>
+                    <i className="fa-solid fa-save"></i>Guardar
+                </PrimaryButton>
+            </div>
+            <div className="flex justify-end mt-6">
+                <SecondaryButton onClick={closeModal}>
+                    Cancelar
+                </SecondaryButton>
+            </div>
+        </form>
+    </Modal>
+</AuthenticatedLayout>
+
     );
 }

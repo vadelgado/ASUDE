@@ -37,7 +37,7 @@ export default function Index({
     const estadoEPSInput = useRef();
     const nombreEPSInput = useRef();
     const lugarAtencionEPSInput = useRef();
- 
+
     const InitialValues = {
         id: "",
         nombreCompleto: "",
@@ -261,58 +261,47 @@ export default function Index({
                 </h2>
             }
         >
-            {/* Head y otras importaciones... */}
             <Head title="⚽ Jugadores 👦👧" />
 
-            {/* Contenido de la vista... */}
-            <div className="grid py-6 overflow-x-auto text-left bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-1 mb-1 space-x-4">
-                    <PrimaryButton onClick={() => openModal(1)}>
-                        <i
-                            className="fa-solid fa-plus-circle"
-                            style={{ marginRight: "10px" }}
-                        ></i>
-                        Agregar Jugador
-                    </PrimaryButton>
-                    <PrimaryButton>
-                        <a
-                            href={route("jugadores.pdf", { equipo_id })}
-                            target="_blank"
-                            download
-                        >
-                            <i
-                                className=" fa-solid fa-file-pdf"
-                                style={{ marginRight: "10px" }}
-                            ></i>
-                            Descargar PDF
-                        </a>
-                    </PrimaryButton>
+            <div className="py-6">
+                <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
+                    <div className="flex justify-end mt-1 mb-4 space-x-4">
+                        <PrimaryButton onClick={() => openModal(1)}>
+                            <i className="mr-2 fa-solid fa-plus-circle"></i>
+                            Agregar Jugador
+                        </PrimaryButton>
+                        <PrimaryButton>
+                            <a
+                                href={route("jugadores.pdf", { equipo_id })}
+                                target="_blank"
+                                download
+                            >
+                                <i className="mr-2 fa-solid fa-file-pdf"></i>
+                                Descargar PDF
+                            </a>
+                        </PrimaryButton>
+                        <PrimaryButton>
+                            <a
+                                href={route("formatoFotos.pdf", { equipo_id })}
+                                target="_blank"
+                                download
+                            >
+                                <i className="mr-2 fa-solid fa-file-pdf"></i>
+                                Descargar Formato Fotos
+                            </a>
+                        </PrimaryButton>
+                    </div>
 
-                    <PrimaryButton>
-                        <a
-                            href={route("formatoFotos.pdf", { equipo_id })}
-                            target="_blank"
-                            download
-                        >
-                            <i
-                                className=" fa-solid fa-file-pdf"
-                                style={{ marginRight: "10px" }}
-                            ></i>
-                            Descargar Formato Fotos
-                        </a>
-                    </PrimaryButton>
-                            
-                </div>
-                <div className="grid py-6 bg-white v-screen place-items-center">
-                    <div className="w-full mt-2 ml-6 text-left">
+                    <div className="mt-2 text-left">
                         <span className="italic font-bold">
                             NOMBRE EQUIPO:{" "}
                         </span>
-                        <span className="inline-block">{equipo}</span>
+                        <span>{equipo}</span>
                     </div>
-                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
-                        <thead>
-                            <tr className="bg-gray-100">
+
+                    <table className="w-full mt-4 border border-gray-400 table-auto">
+                        <thead className="bg-gray-100">
+                            <tr>
                                 <th className="px-2 py-2">N°</th>
                                 <th className="px-2 py-2">
                                     NOMBRES Y APELLIDOS
@@ -337,40 +326,42 @@ export default function Index({
                             {jugadores.length > 0 ? (
                                 jugadores.map((jugador, i) => (
                                     <tr key={jugador.id}>
-                                        <td className="px-2 py-2">{i + 1}</td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
+                                            {i + 1}
+                                        </td>
+                                        <td className="px-2 py-2 border">
                                             {jugador.nombreCompleto}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.tipoIdentificacion}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.numeroIdentificacion}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.numeroSerie}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.fechaNacimiento}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.lugarNacimiento}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.institucionEducativa}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.grado}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {jugador.ciudadInstitucionEducativa}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {
                                                 jugador.telefonoInstitucionEducativa
                                             }
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="flex px-2 py-2 space-x-2 border">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -414,7 +405,10 @@ export default function Index({
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="11" className="text-center">
+                                    <td
+                                        colSpan="12"
+                                        className="px-2 py-2 text-center border"
+                                    >
                                         Usted no ha subido ningún Jugador. 👀
                                     </td>
                                 </tr>
@@ -430,7 +424,7 @@ export default function Index({
                 </h2>
                 <form
                     onSubmit={save}
-                    className="grid grid-cols-2 gap-4 p-6 "
+                    className="grid grid-cols-2 gap-4 p-6"
                     encType="multipart/form-data"
                 >
                     <FormField
@@ -444,7 +438,6 @@ export default function Index({
                         errorMessage={errors.nombreCompleto}
                         ref={nombreCompletoInput}
                     />
-
                     <ImgField
                         htmlFor="foto"
                         label="Foto Jugador"
@@ -460,7 +453,6 @@ export default function Index({
                                 : null
                         }
                     />
-
                     <SelectField
                         htmlFor="tipoIdentificacion"
                         label="Tipo Documento Identidad"
@@ -472,7 +464,6 @@ export default function Index({
                         errorMessage={errors.tipoIdentificacion}
                         ref={tipoIdentificacionInput}
                     />
-
                     <FormField
                         htmlFor="numeroIdentificacion"
                         label="Número Documento Identidad"
@@ -484,7 +475,6 @@ export default function Index({
                         errorMessage={errors.numeroIdentificacion}
                         ref={numeroIdentificacionInput}
                     />
-
                     <FormField
                         htmlFor="numeroSerie"
                         label="Serial Folio"
@@ -496,7 +486,6 @@ export default function Index({
                         errorMessage={errors.numeroSerie}
                         ref={numeroSerieInput}
                     />
-
                     <FormField
                         htmlFor="fechaNacimiento"
                         label="Fecha Nacimiento"
@@ -508,7 +497,6 @@ export default function Index({
                         errorMessage={errors.fechaNacimiento}
                         ref={fechaNacimientoInput}
                     />
-
                     <FormField
                         htmlFor="lugarNacimiento"
                         label="Lugar Nacimiento"
@@ -520,7 +508,6 @@ export default function Index({
                         errorMessage={errors.lugarNacimiento}
                         ref={lugarNacimientoInput}
                     />
-
                     <FormField
                         htmlFor="institucionEducativa"
                         label="Institución Educativa"
@@ -532,7 +519,6 @@ export default function Index({
                         errorMessage={errors.institucionEducativa}
                         ref={institucionEducativaInput}
                     />
-
                     <SelectField
                         htmlFor="grado"
                         label="Grado"
@@ -562,7 +548,6 @@ export default function Index({
                         errorMessage={errors.grado}
                         ref={gradoInput}
                     />
-
                     <FormField
                         htmlFor="ciudadInstitucionEducativa"
                         label="Ciudad Institución Educativa"
@@ -574,7 +559,6 @@ export default function Index({
                         errorMessage={errors.ciudadInstitucionEducativa}
                         ref={ciudadInstitucionEducativaInput}
                     />
-
                     <FormField
                         htmlFor="telefonoInstitucionEducativa"
                         label="Teléfono Institución Educativa"
@@ -586,7 +570,6 @@ export default function Index({
                         errorMessage={errors.telefonoInstitucionEducativa}
                         ref={telefonoInstitucionEducativaInput}
                     />
-
                     <SelectField
                         htmlFor="estadoEPS"
                         label="Estado EPS"
@@ -606,7 +589,6 @@ export default function Index({
                         errorMessage={errors.estadoEPS}
                         ref={estadoEPSInput}
                     />
-
                     <FormField
                         htmlFor="nombreEPS"
                         label="Nombre EPS"
@@ -618,7 +600,6 @@ export default function Index({
                         errorMessage={errors.nombreEPS}
                         ref={nombreEPSInput}
                     />
-
                     <FormField
                         htmlFor="lugarAtencionEPS"
                         label="Lugar Atención EPS"
@@ -630,18 +611,15 @@ export default function Index({
                         errorMessage={errors.lugarAtencionEPS}
                         ref={lugarAtencionEPSInput}
                     />
-
-                    <div className="mt-1">
+                    <div className="flex justify-between col-span-2 mt-1">
                         <PrimaryButton
                             processing={processing.toString()}
                             className="mt-2"
                         >
-                            <i className="fa-solid fa-save"></i>Guardar
+                            <i className="mr-2 fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
-                    </div>
-                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal}>
-                            Cancel
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

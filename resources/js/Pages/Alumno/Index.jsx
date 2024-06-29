@@ -248,23 +248,23 @@ export default function Dashboard({ auth, alumnos }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Alumnos
                 </h2>
             }
         >
             <Head title="Alumnos" />
 
-            <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="mt-1 mb-1 flex justify-end">
+            <div className="grid py-6 mt-6 overflow-x-auto bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-1 mb-1">
                     <PrimaryButton onClick={() => openModal(1)}>
                         <i className="fa-solid fa-plus-circle" style={{ marginRight: '10px' }}></i>
                         Agregar
                     </PrimaryButton>
                 </div>
 
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
@@ -287,39 +287,39 @@ export default function Dashboard({ auth, alumnos }) {
                             {alumnos.length > 0 ? (
                                 alumnos.map((alumno, i) => (
                                     <tr key={alumno.id}>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {i + 1}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.identificacion}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.nombres}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.apellidos}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.fecha_nacimiento}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.genero === "M"
                                                 ? "Masculino"
                                                 : "Femenino"}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.direccion}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.barrio}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.celular}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {alumno.sedeEntrenamiento}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -340,7 +340,7 @@ export default function Dashboard({ auth, alumnos }) {
                                                 <i className="fa-solid fa-edit"></i>
                                             </WarningButton>
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <SecondaryButton className="bg-green-500"
                                                 onClick={() =>
                                                     openModalPago(
@@ -351,7 +351,7 @@ export default function Dashboard({ auth, alumnos }) {
                                                 }
                                             >
                                                 
-                                                <i  className="fa-solid fa-money-bill text-white"></i>
+                                                <i  className="text-white fa-solid fa-money-bill"></i>
                                             </SecondaryButton>
                                         </td>
                                     </tr>
@@ -386,7 +386,7 @@ export default function Dashboard({ auth, alumnos }) {
                                     identificacion: e.target.value,
                                 })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                             isFocused
                         ></TextInput>
                         <InputError message={errors?.identificacion} className="mt-2"></InputError>
@@ -402,7 +402,7 @@ export default function Dashboard({ auth, alumnos }) {
                             onChange={(e) =>
                                 setData({ ...data, nombres: e.target.value })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         ></TextInput>
                         <InputError message={errors?.nombres} className="mt-2"></InputError>
                     </div>
@@ -417,7 +417,7 @@ export default function Dashboard({ auth, alumnos }) {
                             onChange={(e) =>
                                 setData({ ...data, apellidos: e.target.value })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         ></TextInput>
                         <InputError message={errors?.apellidos} className="mt-2"></InputError>
                     </div>
@@ -436,7 +436,7 @@ export default function Dashboard({ auth, alumnos }) {
                                     fecha_nacimiento: e.target.value,
                                 })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         ></TextInput>
                         <InputError message={errors?.fecha_nacimiento} className="mt-2"></InputError>
                     </div>
@@ -451,7 +451,7 @@ export default function Dashboard({ auth, alumnos }) {
                             onChange={(e) =>
                                 setData({ ...data, genero: e.target.value })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         >
                             <option value="" disabled>
                                 Selecciones...
@@ -472,7 +472,7 @@ export default function Dashboard({ auth, alumnos }) {
                             onChange={(e) =>
                                 setData({ ...data, direccion: e.target.value })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         ></TextInput>
                         <InputError message={errors?.direccion} className="mt-2"></InputError>
                     </div>
@@ -487,7 +487,7 @@ export default function Dashboard({ auth, alumnos }) {
                             onChange={(e) =>
                                 setData({ ...data, barrio: e.target.value })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         ></TextInput>
                         <InputError message={errors?.barrio} className="mt-2"></InputError>
                     </div>
@@ -503,7 +503,7 @@ export default function Dashboard({ auth, alumnos }) {
                             onChange={(e) =>
                                 setData({ ...data, celular: e.target.value })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         ></TextInput>
                         <InputError message={errors?.celular} className="mt-2"></InputError>
                     </div>
@@ -521,7 +521,7 @@ export default function Dashboard({ auth, alumnos }) {
                                     sedeEntrenamiento: e.target.value,
                                 })
                             }
-                            className="mt-1 block w-full"
+                            className="block w-full mt-1"
                         >
                             <option value="" disabled>
                                 Selecciones...
@@ -542,7 +542,7 @@ export default function Dashboard({ auth, alumnos }) {
                             <i className="fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
                     </div>
-                    <div className="mt-6 flex justify-end">
+                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
                     </div>
                 </form>
@@ -555,7 +555,7 @@ export default function Dashboard({ auth, alumnos }) {
                     <DragDrop fk_user={fk_user} alumnoId={selectedAlumnoId} ></DragDrop>
 
 
-                    <div className="mt-6 flex justify-end">
+                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal2}>Cerrar</SecondaryButton>
                     </div>
                 </div>
