@@ -123,12 +123,14 @@ export default function ResultadosPartidos({
         });
     };
 
-    const jugadoresOptions = [
+    const jugadoresOptions = [        
         { value: "", label: "Seleccione ..." },
-        ...jugadores.map((jugador) => ({
-            value: jugador.id,
-            label: `${jugador.nombreCompleto} - ${jugador.nombreEquipo}`,
-        })),
+        ...jugadores
+            .filter((jugador) => jugador.estado === 1)
+            .map((jugador) => ({
+                value: jugador.id,
+                label: `${jugador.nombreCompleto} - ${jugador.nombreEquipo}`,
+            })),
     ];
 
     return (

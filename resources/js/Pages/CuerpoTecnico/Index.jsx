@@ -242,8 +242,17 @@ export default function Index({
         { value: "P.F.", label: "Preparador Físico" },
         { value: "P.S.", label: "Preparador Salud" },
         { value: "U.T.", label: "Utilero" },
+        { value: "T.N.", label: "Tribuna" },
     ];
-
+    const cargos = {
+        "D.L.": "Director Logístico o Delegado",
+        "D.T.": "Director Técnico (Entrenador Principal)",
+        "A.T.": "Asistente Técnico",
+        "P.F.": "Preparador Físico",
+        "P.S.": "Preparador Salud",
+        "U.T.": "Utilero",
+        "T.N.": "Tribuna",
+    };
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -309,7 +318,7 @@ export default function Index({
                                             />
                                         </td>
                                         <td className="px-2 py-2 border">
-                                            {cuerpoTecnico.cargo}
+                                        {cargos[cuerpoTecnico.cargo]}
                                         </td>
                                         <td className="px-2 py-2 border">
                                             {cuerpoTecnico.tipoIdentificacion}

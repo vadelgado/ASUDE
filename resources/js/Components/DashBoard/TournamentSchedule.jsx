@@ -3,6 +3,7 @@ import { useSwipeable } from "react-swipeable";
 
 
 const TournamentSchedule = ({ programaciones_faces }) => {
+    console.log(programaciones_faces);
     const carouselRef = useRef(null);
 
     const handlePrev = () => {
@@ -76,13 +77,13 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                             <div className="h-full p-6 bg-gray-800 border-l-4 border-blue-500 rounded-lg shadow-lg">
                                                 <p>
                                                 {formatDate(match.FechaPartido)}{" "}
-                                                    {new Date(
-                                                        `1970-01-01T${match.HoraPartido}`
-                                                    ).toLocaleString("en-US", {
-                                                        hour: "numeric",
-                                                        minute: "numeric",
-                                                        hour12: true,
-                                                    })}
+{new Date(`1970-01-01T${match.HoraPartido}`)
+    .toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+        timeZone: "America/Bogota"
+    })}
                                                 </p>
                                                 <p>
                                                     {" "}
@@ -110,7 +111,7 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                                 </div>
                                                 <div className="flex items-center justify-center">
                                                     <p className="mx-2 text-2xl font-bold">
-                                                        {match.marcadorLocal} - {match.marcadorVisitante}
+                                                        {match.golesLocal} - {match.golesVisitante}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center justify-center">

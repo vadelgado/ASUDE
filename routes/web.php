@@ -74,6 +74,7 @@ Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::clas
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

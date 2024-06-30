@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
         return [
             'fk_equipo' => 'required|integer',
             'fotoCuerpoTecnico' => 'nullable',
-            'cargo' => 'required|string|in:D.L.,D.T.,A.T.,P.F.,P.S.,U.T.',
+            'cargo' => 'required|string|in:D.L.,D.T.,A.T.,P.F.,P.S.,U.T.,T.N.',
             'nombreCompleto' => 'required|string|max:255',
             'tipoIdentificacion' => 'required|string|in:TI,CC,CE,PA',
             'numeroIdentificacion' => 'required|string|max:11',

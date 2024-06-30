@@ -46,7 +46,8 @@ class ResultadosPartidosController extends Controller
                 ->join('torneo as t', 'rs_local.fk_torneo', '=', 't.id')
                 ->where('pf.id', $fk_programaciones_faces_id)
                 ->where('t.id', $torneo_id)
-                ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.id', 'e_local.nombreEquipo')
+                ->where('j.estado', 1)
+                ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.id', 'e_local.nombreEquipo', 'j.estado')
                 ->unionAll(
                     DB::table('programaciones_faces as pf')
                         ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
@@ -55,9 +56,9 @@ class ResultadosPartidosController extends Controller
                         ->join('torneo as t', 'rs_visitante.fk_torneo', '=', 't.id')                        
                         ->where('pf.id', $fk_programaciones_faces_id)
                         ->where('t.id', $torneo_id)                        
-                        ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.id', 'e_visitante.nombreEquipo')
+                        ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.id', 'e_visitante.nombreEquipo', 'j.estado')
                 )
-                ->where('j.estado', 1)
+                
                 ->get();
             
         } else {

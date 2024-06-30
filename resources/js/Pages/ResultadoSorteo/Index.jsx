@@ -186,6 +186,11 @@ export default function Index({
                                 <td className="flex items-center px-4 py-2 border-gray-400">
                                     <img
                                         src={`/storage/${resultadoSorteo.escudoEquipo}`}
+                                        onError={(e) => {
+                                            e.target.onerror = null; // Previene bucles infinitos en caso de error
+                                            e.target.src = "/escudo.svg"; // Establece la imagen de respaldo
+                                            e.target.style.filter = "brightness(0.5)"; // Aplica un filtro para oscurecer
+                                        }}
                                         alt={`Foto de ${resultadoSorteo.nombreEquipo}`}
                                         className="w-10 h-10 mr-2 rounded-full"
                                     />

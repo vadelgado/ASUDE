@@ -26,117 +26,134 @@ class VerResultadosController extends Controller
             ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
             ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
             ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
-            ->leftJoin('cuerpo_tecnico as ct', 'e.id', '=', 'ct.fk_equipo')
-            ->leftJoin('faltas_cuerpo_tecnicos as fct', 'ct.id', '=', 'fct.fk_cuerpo_tecnico_id')
-            ->leftJoin('amonestaciones_t_c_s as atcs', 'fct.fk_amonestaciones_t_c_s_id', '=', 'atcs.id')
+
+
             ->where('t.id', $torneo_id)
-            ->select('e.nombreEquipo',
-                DB::raw('SUM(rs.goles) as GF'),
-                DB::raw('COALESCE(SUM(rs.tarjetas_amarillas), 0) as TA'),
-                DB::raw('COALESCE(SUM(rs.tarjetas_rojas), 0) as TR'),
-                DB::raw('COUNT(DISTINCT rs.fk_programaciones_faces_id) as PJ'),
-                DB::raw('(SELECT COUNT(*) 
-                          FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
-                                FROM resultados_partidos rp 
-                                JOIN jugadores j ON rp.fk_jugador_id = j.id 
-                                GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
-                          WHERE subquery.fk_equipo = e.id 
-                            AND subquery.goles_equipo > 
-                              (SELECT SUM(rp2.goles) 
-                               FROM resultados_partidos rp2 
-                               JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
-                               WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
-                                 AND j2.fk_equipo != e.id)) as PG'
-                ),
-                DB::raw('(SELECT COUNT(*) 
-                          FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
-                                FROM resultados_partidos rp 
-                                JOIN jugadores j ON rp.fk_jugador_id = j.id 
-                                GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
-                          WHERE subquery.fk_equipo = e.id 
-                            AND subquery.goles_equipo = 
-                              (SELECT SUM(rp2.goles) 
-                               FROM resultados_partidos rp2 
-                               JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
-                               WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
-                                 AND j2.fk_equipo != e.id)) as PE'
-                ),
-                DB::raw('(SELECT COUNT(*) 
-                          FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
-                                FROM resultados_partidos rp 
-                                JOIN jugadores j ON rp.fk_jugador_id = j.id 
-                                GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
-                          WHERE subquery.fk_equipo = e.id 
-                            AND subquery.goles_equipo < 
-                              (SELECT SUM(rp2.goles) 
-                               FROM resultados_partidos rp2 
-                               JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
-                               WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
-                                 AND j2.fk_equipo != e.id)) as PP'
-                ),
-                DB::raw('(3 * 
-                          (SELECT COUNT(*) 
-                           FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
-                                 FROM resultados_partidos rp 
-                                 JOIN jugadores j ON rp.fk_jugador_id = j.id 
-                                 GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
-                           WHERE subquery.fk_equipo = e.id 
-                             AND subquery.goles_equipo > 
-                               (SELECT SUM(rp2.goles) 
-                                FROM resultados_partidos rp2 
-                                JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
-                                WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
-                                  AND j2.fk_equipo != e.id)) + 
-                          1 * 
-                          (SELECT COUNT(*) 
-                           FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
-                                 FROM resultados_partidos rp 
-                                 JOIN jugadores j ON rp.fk_jugador_id = j.id 
-                                 GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
-                           WHERE subquery.fk_equipo = e.id 
-                             AND subquery.goles_equipo = 
-                               (SELECT SUM(rp2.goles) 
-                                FROM resultados_partidos rp2 
-                                JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
-                                WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
-                                  AND j2.fk_equipo != e.id))) as Pts'
-                ),
-                DB::raw('(5 * COALESCE(SUM(rs.tarjetas_amarillas), 0) + 10 * COALESCE(SUM(rs.tarjetas_rojas), 0) + COALESCE(SUM(atcs.value), 0)) as JL'),
-                DB::raw('COALESCE(SUM(atcs.value), 0) as Fct'),
-                DB::raw('(SELECT SUM(rp.goles)
-                          FROM resultados_partidos rp
-                          JOIN jugadores j ON rp.fk_jugador_id = j.id
-                          WHERE j.fk_equipo != e.id
-                          AND rp.fk_programaciones_faces_id IN (
-                              SELECT DISTINCT rs.fk_programaciones_faces_id
-                              FROM resultados_partidos rs
-                              JOIN jugadores j2 ON rs.fk_jugador_id = j2.id
-                              WHERE j2.fk_equipo = e.id
-                          )) as GC'),
-                DB::raw('SUM(rs.goles) - (SELECT SUM(rp.goles)
-                                          FROM resultados_partidos rp
-                                          JOIN jugadores j ON rp.fk_jugador_id = j.id
-                                          WHERE j.fk_equipo != e.id
-                                          AND rp.fk_programaciones_faces_id IN (
-                                              SELECT DISTINCT rs.fk_programaciones_faces_id
-                                              FROM resultados_partidos rs
-                                              JOIN jugadores j2 ON rs.fk_jugador_id = j2.id
-                                              WHERE j2.fk_equipo = e.id
-                                          )) as DG')
+            ->select(
+              DB::raw('COUNT(DISTINCT rs.fk_programaciones_faces_id) as PJ'),
+              'e.nombreEquipo',
+              DB::raw('(SELECT COUNT(*) 
+              FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
+                    FROM resultados_partidos rp 
+                    JOIN jugadores j ON rp.fk_jugador_id = j.id 
+                    GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
+              WHERE subquery.fk_equipo = e.id 
+                AND subquery.goles_equipo > 
+                  (SELECT SUM(rp2.goles) 
+                   FROM resultados_partidos rp2 
+                   JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
+                   WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
+                     AND j2.fk_equipo != e.id)) as PG'
+    ),
+    DB::raw('(SELECT COUNT(*) 
+              FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
+                    FROM resultados_partidos rp 
+                    JOIN jugadores j ON rp.fk_jugador_id = j.id 
+                    GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
+              WHERE subquery.fk_equipo = e.id 
+                AND subquery.goles_equipo = 
+                  (SELECT SUM(rp2.goles) 
+                   FROM resultados_partidos rp2 
+                   JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
+                   WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
+                     AND j2.fk_equipo != e.id)) as PE'
+    ),
+    DB::raw('(SELECT COUNT(*) 
+              FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
+                    FROM resultados_partidos rp 
+                    JOIN jugadores j ON rp.fk_jugador_id = j.id 
+                    GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
+              WHERE subquery.fk_equipo = e.id 
+                AND subquery.goles_equipo < 
+                  (SELECT SUM(rp2.goles) 
+                   FROM resultados_partidos rp2 
+                   JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
+                   WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
+                     AND j2.fk_equipo != e.id)) as PP'
+    ),
+
+              DB::raw('COALESCE(SUM(rs.goles)) as GF'),
+              DB::raw('(SELECT SUM(rp.goles)
+              FROM resultados_partidos rp
+              JOIN jugadores j ON rp.fk_jugador_id = j.id
+              WHERE j.fk_equipo != e.id
+              AND rp.fk_programaciones_faces_id IN (
+                  SELECT DISTINCT rs.fk_programaciones_faces_id
+                  FROM resultados_partidos rs
+                  JOIN jugadores j2 ON rs.fk_jugador_id = j2.id
+                  WHERE j2.fk_equipo = e.id
+              )) as GC'),
+              DB::raw('COALESCE(SUM(rs.goles), 0) - (SELECT SUM(rp.goles)
+              FROM resultados_partidos rp
+              JOIN jugadores j ON rp.fk_jugador_id = j.id
+              WHERE j.fk_equipo != e.id
+              AND rp.fk_programaciones_faces_id IN (
+                  SELECT DISTINCT rs.fk_programaciones_faces_id
+                  FROM resultados_partidos rs
+                  JOIN jugadores j2 ON rs.fk_jugador_id = j2.id
+                  WHERE j2.fk_equipo = e.id
+              )) as DG'),
+              DB::raw('COALESCE(SUM(rs.tarjetas_amarillas), 0) as TA'),
+              DB::raw('COALESCE(SUM(rs.tarjetas_rojas), 0) as TR'),        
+              DB::raw('COALESCE(SUM(rs.tarjetas_amarillas)*5, 0) + COALESCE(SUM(rs.tarjetas_rojas)*10, 0)  as JL'),
+              DB::raw('(3 * 
+              (SELECT COUNT(*) 
+               FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
+                     FROM resultados_partidos rp 
+                     JOIN jugadores j ON rp.fk_jugador_id = j.id 
+                     GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
+               WHERE subquery.fk_equipo = e.id 
+                 AND subquery.goles_equipo > 
+                   (SELECT SUM(rp2.goles) 
+                    FROM resultados_partidos rp2 
+                    JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
+                    WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
+                      AND j2.fk_equipo != e.id)) + 
+              1 * 
+              (SELECT COUNT(*) 
+               FROM (SELECT rp.fk_programaciones_faces_id, j.fk_equipo, SUM(rp.goles) as goles_equipo
+                     FROM resultados_partidos rp 
+                     JOIN jugadores j ON rp.fk_jugador_id = j.id 
+                     GROUP BY rp.fk_programaciones_faces_id, j.fk_equipo) as subquery 
+               WHERE subquery.fk_equipo = e.id 
+                 AND subquery.goles_equipo = 
+                   (SELECT SUM(rp2.goles) 
+                    FROM resultados_partidos rp2 
+                    JOIN jugadores j2 ON rp2.fk_jugador_id = j2.id 
+                    WHERE rp2.fk_programaciones_faces_id = subquery.fk_programaciones_faces_id 
+                      AND j2.fk_equipo != e.id))) as Pts'
+    ),
+
+
             )
-            ->groupBy('e.id', 'e.nombreEquipo')
+            ->groupBy('e.nombreEquipo', 'e.id')
             ->orderBy('Pts', 'desc')
-            ->orderBy('JL', 'asc')
+            ->orderBy('JL')
+            ->orderBy('PG', 'desc')
+            ->orderBy('DG', 'desc')
+            ->orderBy('GF', 'desc')
             ->get();
+
+            $resultadosGoles = DB::table('resultados_partidos as rs')
+            ->join('jugadores as j', 'rs.fk_jugador_id', '=', 'j.id')
+            ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
+            ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
+            ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
+            ->select('j.nombreCompleto', 'e.nombreEquipo', DB::raw('SUM(rs.goles) as goles'))
+            ->groupBy('j.nombreCompleto', 'e.nombreEquipo')
+            ->orderBy('goles', 'desc')
+            ->get();
+            dd($resultadosGoles);
     
         //dd($resultados);
         return Inertia::render('VerResultados/Index', [
             'torneo' => $torneo,
             'resultados' => $resultados,
+            'resultadosGoles' => $resultadosGoles,
         ]);
     }
     
-    
+ 
     
     
     

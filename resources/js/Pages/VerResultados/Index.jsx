@@ -35,6 +35,7 @@ export default function ListarTorneos({
                             <table className="w-full text-black table-auto">
                                 <thead>
                                     <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                        <th className="px-4 py-2">#</th>
                                         <th className="px-4 py-2">Equipo</th>
                                         <th className="px-4 py-2">PJ</th>
                                         <th className="px-4 py-2">PG</th>
@@ -44,8 +45,7 @@ export default function ListarTorneos({
                                         <th className="px-4 py-2">GC</th>
                                         <th className="px-4 py-2">DG</th>
                                         <th className="px-4 py-2">TA</th>
-                                        <th className="px-4 py-2">TR</th>
-                                        <th className="px-4 py-2">FCT</th>
+                                        <th className="px-4 py-2">TR</th>                                                                                
                                         <th className="px-4 py-2">JL</th>
                                         <th className="px-4 py-2">PTS</th>
                                     </tr>
@@ -61,6 +61,9 @@ export default function ListarTorneos({
                                                         : "bg-white"
                                                 } hover:bg-gray-200`}
                                             >
+                                                <td className="px-4 py-2 border">
+                                                    {index+1}
+                                                </td>
                                                 <td className="px-4 py-2 border">
                                                     {resultado.nombreEquipo}
                                                 </td>
@@ -90,9 +93,6 @@ export default function ListarTorneos({
                                                 </td>
                                                 <td className="px-4 py-2 border">
                                                     {resultado.TR}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.Fct}
                                                 </td>
                                                 <td className="px-4 py-2 border">
                                                     {resultado.JL}
