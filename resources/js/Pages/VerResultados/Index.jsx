@@ -8,6 +8,7 @@ export default function ListarTorneos({
     tablasGrupos,
     torneo,
     resultados,
+    resultadosGoles
 }) {
     return (
         <>
@@ -100,6 +101,59 @@ export default function ListarTorneos({
                                                 <td className="px-4 py-2 border">
                                                     {resultado.Pts}
                                                 </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan="13"
+                                                className="px-4 py-2 text-center border"
+                                            >
+                                                No hay resultados disponibles
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
+                            <table className="w-full text-black table-auto">
+                                <thead>
+                                    <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                        <th className="px-4 py-2">#</th>
+                                        <th className="px-4 py-2">Equipo</th>
+                                        <th className="px-4 py-2">Jugador</th>
+                                        <th className="px-4 py-2">Numero Goles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {resultadosGoles ? (
+                                        resultadosGoles.map((resultado, index) => (
+                                            <tr
+                                                key={index}
+                                                className={`${
+                                                    index % 2 === 0
+                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                        : "bg-white"
+                                                } hover:bg-gray-200`}
+                                            >
+                                                <td className="px-4 py-2 border">
+                                                    {index+1}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.nombreEquipo}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.nombreCompleto}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.goles}
+                                                </td>                                                
                                             </tr>
                                         ))
                                     ) : (

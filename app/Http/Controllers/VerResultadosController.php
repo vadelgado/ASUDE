@@ -143,7 +143,7 @@ class VerResultadosController extends Controller
             ->groupBy('j.nombreCompleto', 'e.nombreEquipo')
             ->orderBy('goles', 'desc')
             ->get();
-            dd($resultadosGoles);
+            //dd($resultadosGoles);
     
         //dd($resultados);
         return Inertia::render('VerResultados/Index', [
