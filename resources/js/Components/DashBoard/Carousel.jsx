@@ -4,14 +4,6 @@ const Carousel = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const images = [
         {
-            src: "/banner1.webp",
-            alt: "Torneos en curso",
-            title: "Torneos en curso",
-            description: "Conoce los torneos en curso y sigue los resultados",
-            button: "Ver Resultados",
-            link: "/resultados",  // Puedes ajustar esto según sea necesario
-        },
-        {
             src: "/banner2.webp",
             alt: "Próximos Torneos",
             title: "Próximos Torneos",

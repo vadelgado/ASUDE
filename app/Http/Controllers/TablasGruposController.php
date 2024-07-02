@@ -30,7 +30,14 @@ class TablasGruposController extends Controller
             ->get();        
         $torneo = torneo::where('id', $torneo_id)
             ->select('torneo.nombreTorneo','torneo.cantidadGrupos','torneo.cantidadEquiposParticipantes',
-            'torneo.imgBannerSuperior')
+            'torneo.imgBannerSuperior',
+            'torneo.imgBannerInferiorIz',
+            'torneo.imgBannerInferiorDe',
+            'torneo.fechaInicio',
+            'torneo.fechaFin',
+            'torneo.caracteristicas',
+            'torneo.ApoyoPrincipal',
+            'torneo.Aval',)
             ->get();
         //dd($torneo);  
         return Inertia::render('ResultadoSorteo/ShouwTablaGrupos', 

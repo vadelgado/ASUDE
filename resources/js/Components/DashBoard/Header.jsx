@@ -21,8 +21,8 @@ export default function Header({ auth }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className="fixed top-0 w-full z-50 bg-green-700 h-36 ">
-            <div className="bg-green-500 text-black text-xs sm:text-sm">
+        <header className="fixed top-0 z-50 w-full bg-green-700 h-36 ">
+            <div className="text-xs text-black bg-green-500 sm:text-sm">
                 <div className="container flex flex-col items-center justify-center px-4 py-2 mx-auto md:flex-row">
                     <div className="flex items-center mb-2 md:mb-0">
                         <span className="mr-2">
@@ -70,13 +70,6 @@ export default function Header({ auth }) {
                     >
                         ⚽PRÓXIMOS TORNEOS
                     </HeaderLink>
-                    <HeaderLink
-                        href={route("torneoEnCurso.index")}
-                        active={route().current("torneoEnCurso.index") ? "true" : undefined}
-                        className="text-sm font-semibold leading-6 text-white"
-                    >
-                        ⚽TORNEO EN CURSO
-                    </HeaderLink>
                     <FlyoutMenu auth={auth} />
                 </Popover.Group>
             </nav>
@@ -103,12 +96,12 @@ export default function Header({ auth }) {
                         >
                             <span className="sr-only">Cerrar menú</span>
                             
-                             <i className="fa-solid fa-circle-xmark w-6 h-6" aria-hidden="true"></i>
+                             <i className="w-6 h-6 fa-solid fa-circle-xmark" aria-hidden="true"></i>
                         </button>
                     </div>
                     <div className="flow-root mt-6">
                         <div className="divide-y divide-gray-500/10">
-                            <div className="space-y-2 py-6">
+                            <div className="py-6 space-y-2">
                             <Link
                                     href="/"
                                     className="block px-4 text-base font-medium text-white hover:bg-green-600"
@@ -127,7 +120,7 @@ export default function Header({ auth }) {
                     </div>
                 </Dialog.Panel>
             </Dialog>
-            <nav className="fixed bottom-0 left-0 right-0 bg-green-500 text-white py-3 flex justify-around items-center md:hidden">
+            <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around py-3 text-white bg-green-500 md:hidden">
                 <a href="tel:+573183773718" className="flex flex-col items-center">
                     <PhoneIcon className="w-6 h-6 mb-1" aria-hidden="true" />
                     <span className="text-xs">Llamar</span>

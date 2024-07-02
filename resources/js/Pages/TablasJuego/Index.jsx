@@ -59,41 +59,51 @@ export default function Index({ auth, torneo, programaciones_faces }) {
             <Header auth={auth} />
             <Head title={`Partidos`} />
             <main className="px-2 mt-40">
-                <div className="flex items-center justify-center py-8">
-                    <img
-                        src={`/storage/${torneo.imgBannerSuperior}`}
-                        alt={torneo.nombreTorneo}
-                        className="flex items-center w-auto h-auto mr-2 md:w-1/3 md:h-auto"
-                    />
+                <div className="mt-40 text-center">
+                    <div className="flex items-center justify-center py-8">
+                        <img
+                            src={`/storage/${torneo.imgBannerSuperior}`}
+                            alt={torneo.nombreTorneo}
+                            className="h-auto md:w-1/4"
+                        />
+                    </div>
+                    <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
+                        {torneo.nombreTorneo} <br />
+                        {new Date(torneo.fechaInicio).toLocaleDateString(
+                            "es-CO",
+                            {
+                                month: "long",
+                                day: "numeric",
+                            }
+                        ) +
+                            " al " +
+                            new Date(torneo.fechaFin).toLocaleDateString(
+                                "es-CO",
+                                {
+                                    month: "long",
+                                    day: "numeric",
+                                    year: "numeric",
+                                }
+                            )}{" "}
+                        <br />
+                        {torneo.caracteristicas} <br />
+                        Apoyo:{" "}
+                        <span className="font-semibold">
+                            {torneo.ApoyoPrincipal}
+                        </span>
+                    </h2>
                 </div>
-                <h3 className="text-lg font-medium text-center text-primary sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
-                    {torneo.nombreTorneo}
-                </h3>
-                <h4 className="text-xs font-medium text-center text-primary sm:text-sm md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">
-                    {new Date(torneo.fechaInicio).toLocaleDateString("es-CO", {
-                        month: "long",
-                        day: "numeric",
-                    }) +
-                        " al " +
-                        new Date(torneo.fechaFin).toLocaleDateString("es-CO", {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                        })}
-                </h4>
-                <h4 className="text-xs font-medium text-center text-primary sm:text-sm md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">
-                    {torneo.caracteristicas}
-                </h4>
-                <h4 className="text-xs font-medium text-center text-primary sm:text-sm md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">
-                    Aval:{" "}
-                    <span className="font-bold">{torneo.ApoyoPrincipal}</span>
-                </h4>
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+
+                <div className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                     {orderedFases.map((fase, index) => (
                         <div key={index} className="mb-8">
-                            <h3 className="my-10 mb-4 font-bold text-center">
-                                Fase: <span className="font-bold">{fase}</span>
-                            </h3>
+                            <div className="flex justify-center mt-8">
+                                <span className="items-center px-6 text-xl font-medium text-center text-white uppercase bg-black animate-fade-in animate-delay-300 mb-9">
+                                    Fase:{" "}
+                                    <span className="font-bold">{fase}</span>
+                                </span>
+                            </div>
+
                             {Object.keys(groupedByFaseAndDate[fase]).map(
                                 (fecha, subIndex) => (
                                     <div key={subIndex} className="mb-4">
@@ -101,20 +111,32 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                                             Fecha: {fecha || "Por definir"}
                                         </h4>
                                         <div className="overflow-x-auto">
-                                            <div className="min-w-full overflow-hidden overflow-x-auto">
-                                                <table className="w-full mt-10 text-sm text-center text-black text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-xl">
+                                            <div className="min-w-full overflow-hidden">
+                                                <table className="w-full text-black table-auto">
                                                     <thead>
-                                                        <tr className="p-4 mb-10 bg-table-green-cabecera">
-                                                            <th className="px-4 py-2 font-bold text-center">
+                                                        <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                                            <th
+                                                                className="px-4 py-2 font-bold text-center"
+                                                                scope="col"
+                                                            >
                                                                 Hora
                                                             </th>
-                                                            <th className="px-4 py-2 font-bold text-center">
+                                                            <th
+                                                                className="px-4 py-2 font-bold text-center"
+                                                                scope="col"
+                                                            >
                                                                 Equipo Local
                                                             </th>
-                                                            <th className="px-4 py-2 font-bold text-center">
+                                                            <th
+                                                                className="px-4 py-2 font-bold text-center"
+                                                                scope="col"
+                                                            >
                                                                 Marcador
                                                             </th>
-                                                            <th className="px-4 py-2 font-bold text-center">
+                                                            <th
+                                                                className="px-4 py-2 font-bold text-center"
+                                                                scope="col"
+                                                            >
                                                                 Equipo Visitante
                                                             </th>
                                                         </tr>
@@ -145,14 +167,8 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                                                                             }
                                                                         )}
                                                                     </td>
-                                                                    <td className="flex flex-row items-center px-4 py-2 text-center flex-nowrap">
-                                                                        <span
-                                                                            className="text-xs font-bold text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl"
-                                                                            style={{
-                                                                                transform:
-                                                                                    "scale(0.70)",
-                                                                            }}
-                                                                        >
+                                                                    <td className="flex items-center px-4 py-2 text-center">
+                                                                        <span className="text-xs font-bold sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-primary">
                                                                             {
                                                                                 programacion.puestoLocal
                                                                             }
@@ -172,32 +188,32 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                                                                                     alt={
                                                                                         programacion.nombreEquipoLocal
                                                                                     }
-                                                                                    className="w-10 h-10 mr-2"
+                                                                                    className="w-5 h-5 mr-2"
                                                                                 />
                                                                                 {
                                                                                     programacion.nombreEquipoLocal
                                                                                 }
                                                                             </>
                                                                         ) : (
-                                                                            <>
-                                                                                <span className="ml-2">
-                                                                                    Posición:{" "}
-                                                                                    {
-                                                                                        programacion.posicion_local
-                                                                                    }
-                                                                                </span>
-                                                                            </>
+                                                                            <span className="ml-2">
+                                                                                Posición:{" "}
+                                                                                {
+                                                                                    programacion.posicion_local
+                                                                                }
+                                                                            </span>
                                                                         )}
                                                                     </td>
-                                                                    <td className="px-4 py-2 text-center"></td>
-                                                                    <td className="flex flex-row items-center px-4 py-2 text-center flex-nowrap">
-                                                                        <span
-                                                                            className="text-xs font-bold text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl"
-                                                                            style={{
-                                                                                transform:
-                                                                                    "scale(0.70)",
-                                                                            }}
-                                                                        >
+                                                                    <td className="px-4 py-2 font-bold text-center">
+                                                                        {
+                                                                            programacion.GolesLocal
+                                                                        }
+                                                                        -
+                                                                        {
+                                                                            programacion.GolesVisitante
+                                                                        }
+                                                                    </td>
+                                                                    <td className="flex items-center px-4 py-2 text-center">
+                                                                        <span className="text-xs font-bold sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-primary">
                                                                             {
                                                                                 programacion.puestoVisitante
                                                                             }
@@ -217,21 +233,19 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                                                                                     alt={
                                                                                         programacion.nombreEquipoVisitante
                                                                                     }
-                                                                                    className="w-10 h-10 mr-2"
+                                                                                    className="w-5 h-5 mr-2"
                                                                                 />
                                                                                 {
                                                                                     programacion.nombreEquipoVisitante
                                                                                 }
                                                                             </>
                                                                         ) : (
-                                                                            <>
-                                                                                <span className="ml-2">
-                                                                                    Posición:{" "}
-                                                                                    {
-                                                                                        programacion.posicion_visitante
-                                                                                    }
-                                                                                </span>
-                                                                            </>
+                                                                            <span className="ml-2">
+                                                                                Posición:{" "}
+                                                                                {
+                                                                                    programacion.posicion_visitante
+                                                                                }
+                                                                            </span>
                                                                         )}
                                                                     </td>
                                                                 </tr>
@@ -247,15 +261,31 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                         </div>
                     ))}
                 </div>
+
+                <div className="flex items-center justify-center py-8">
+                    <img
+                        src={`/storage/${torneo.imgBannerInferiorIz}`}
+                        alt={torneo.nombreTorneo}
+                        className="w-1/6 h-auto mr-4 md:w-1/12"
+                    />
+                    <div className="mx-4 text-sm text-center text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
+                        {torneo.Aval}
+                    </div>
+                    <img
+                        src={`/storage/${torneo.imgBannerInferiorDe}`}
+                        alt={torneo.nombreTorneo}
+                        className="w-1/6 h-auto ml-4 md:w-1/12"
+                    />
+                </div>
             </main>
 
             <Footer />
             <style>{`
         html {
-          font-family: 'Onest Variable', system-ui, sans-serif;
-          background: #D5D5D5;
+            font-family: 'Onest Variable', system-ui, sans-serif;
+            background: #D5D5D5;
         }
-      `}</style>
+    `}</style>
         </>
     );
 }

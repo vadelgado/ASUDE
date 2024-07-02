@@ -52,28 +52,55 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
             <Header auth={auth}></Header>
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
             <main className="px-2">
-            <h2 class="py-6 mt-40 text-center font-bold text-primary text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-xl">
-                <span className="px-6 font-medium text-white uppercase bg-black animate-fade-in animate-delay-300 mb-9">
-                Tabla de Grupos
-                </span>
-            </h2>
-                <div className="flex items-center justify-center py-8">
-                    <img
-                        src={`/storage/${torneo[0].imgBannerSuperior}`}
-                        alt={torneo[0].nombreTorneo}
-                        className="flex items-center w-1/2 h-auto mr-2 "
-                    />
+                <div className="mt-40 text-center">
+                    <div className="flex items-center justify-center py-8">
+                        <img
+                            src={`/storage/${torneo[0].imgBannerSuperior}`}
+                            alt={torneo[0].nombreTorneo}
+                            className="h-auto md:w-1/4"
+                        />
+                    </div>
+                    <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
+                        {torneo[0].nombreTorneo} <br />
+                        {new Date(torneo[0].fechaInicio).toLocaleDateString(
+                            "es-CO",
+                            {
+                                month: "long",
+                                day: "numeric",
+                            }
+                        ) +
+                            " al " +
+                            new Date(torneo[0].fechaFin).toLocaleDateString(
+                                "es-CO",
+                                {
+                                    month: "long",
+                                    day: "numeric",
+                                    year: "numeric",
+                                }
+                            )}{" "}
+                        <br />
+                        {torneo[0].caracteristicas} <br />
+                        Apoyo:{" "}
+                        <span className="font-semibold">
+                            {torneo[0].ApoyoPrincipal}
+                        </span>
+                    </h2>
                 </div>
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                    Tabla de Grupos
+                    </span>
+                </h2>
+                <div className="text-xs text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
                     <div className="overflow-x-auto">
-                        <div className="min-w-full overflow-hidden overflow-x-auto">
-                            <table className="w-full text-black">
+                        <div className="min-w-full">
+                            <table className="w-full mt-10 text-sm text-center text-black sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-xl">
                                 <thead>
-                                    <tr className="p-4 bg-gradient-to-b from-white/20 via-transparent to-transparent">
+                                    <tr className="bg-table-green-cabecera">
                                         {secuenciaLetras.map((letra, index) => (
                                             <th
                                                 key={index}
-                                                className="px-4 py-2 font-bold text-center"
+                                                className="px-4 py-2 font-bold"
                                             >
                                                 {letra}
                                             </th>
@@ -84,7 +111,10 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
                                     {Array.from({
                                         length: equiposPorGrupo,
                                     }).map((_, filaIndex) => (
-                                        <tr key={filaIndex}>
+                                        <tr
+                                            key={filaIndex}
+                                            className="bg-table-green"
+                                        >
                                             {grupos.map((grupo, colIndex) => (
                                                 <td
                                                     key={colIndex}
@@ -101,8 +131,9 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
                                                             </span>
                                                             <img
                                                                 src={`/storage/${grupo[filaIndex].escudoEquipo}`}
-                                                                onError=
-                                                                {(e) => {
+                                                                onError={(
+                                                                    e
+                                                                ) => {
                                                                     e.target.onerror =
                                                                         null;
                                                                     e.target.src =
@@ -134,6 +165,22 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
                             </table>
                         </div>
                     </div>
+                </div>
+
+                <div className="flex items-center justify-center py-8">
+                    <img
+                        src={`/storage/${torneo[0].imgBannerInferiorIz}`}
+                        alt={torneo[0].nombreTorneo}
+                        className="w-1/6 h-auto mr-4 md:w-1/12"
+                    />
+                    <div className="mx-4 text-sm text-center text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
+                        {torneo[0].Aval}
+                    </div>
+                    <img
+                        src={`/storage/${torneo[0].imgBannerInferiorDe}`}
+                        alt={torneo[0].nombreTorneo}
+                        className="w-1/6 h-auto ml-4 md:w-1/12"
+                    />
                 </div>
             </main>
 

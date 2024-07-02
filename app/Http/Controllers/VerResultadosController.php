@@ -18,7 +18,15 @@ class VerResultadosController extends Controller
         $torneo_id = $request->input('torneo_id');
     
         $torneo = torneo::where('id', $torneo_id)
-            ->select('torneo.nombreTorneo', 'torneo.cantidadGrupos', 'torneo.cantidadEquiposParticipantes', 'torneo.imgBannerSuperior')
+            ->select('torneo.nombreTorneo','torneo.cantidadGrupos','torneo.cantidadEquiposParticipantes',
+            'torneo.imgBannerSuperior',
+            'torneo.imgBannerInferiorIz',
+            'torneo.imgBannerInferiorDe',
+            'torneo.fechaInicio',
+            'torneo.fechaFin',
+            'torneo.caracteristicas',
+            'torneo.ApoyoPrincipal',
+            'torneo.Aval',)
             ->get();
     
         $resultados = DB::table('resultados_partidos as rs')
@@ -139,17 +147,45 @@ class VerResultadosController extends Controller
             ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
             ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
             ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
-            ->select('j.nombreCompleto', 'e.nombreEquipo', DB::raw('SUM(rs.goles) as goles'))
-            ->groupBy('j.nombreCompleto', 'e.nombreEquipo')
+            ->select(
+        'j.nombreCompleto', 
+              'e.nombreEquipo', 
+              DB::raw('SUM(rs.goles) as goles')
+              )
+            ->groupBy('j.nombreCompleto', 'e.nombreEquipo',
+            )
+            ->havingRaw('SUM(rs.goles) >= 1')
             ->orderBy('goles', 'desc')
             ->get();
+
+            $tablaJuegoLimpio = DB::table('resultados_partidos as rs')
+            ->join('jugadores as j', 'rs.fk_jugador_id', '=', 'j.id')
+            ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
+            ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
+            ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
+            ->select(
+            'j.nombreCompleto', 
+            'e.nombreEquipo', 
+            DB::raw('SUM(rs.tarjetas_amarillas) as tarjetas_amarillas'), 
+            DB::raw('SUM(rs.tarjetas_rojas) as tarjetas_rojas'))
+            ->groupBy(
+            'j.nombreCompleto', 
+            'e.nombreEquipo'
+            )
+            ->havingRaw('SUM(rs.tarjetas_amarillas) >= 1')
+            ->orHavingRaw('SUM(rs.tarjetas_rojas) >= 1')
+            ->orderBy('tarjetas_amarillas', 'desc')
+            ->orderBy('tarjetas_rojas', 'desc')
+            ->get();
+
             //dd($resultadosGoles);
     
-        //dd($resultados);
+        //dd($tablaJuegoLimpio);
         return Inertia::render('VerResultados/Index', [
             'torneo' => $torneo,
             'resultados' => $resultados,
             'resultadosGoles' => $resultadosGoles,
+            'tablaJuegoLimpio' => $tablaJuegoLimpio
         ]);
     }
     

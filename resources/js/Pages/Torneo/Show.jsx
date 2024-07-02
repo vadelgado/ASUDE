@@ -12,9 +12,9 @@ export default function ListarTorneos({ auth, torneo }) {
                         <Header auth={auth}></Header>
                         <Head title={`Torneo ⚽ ${torneo.nombreTorneo}`} />
                         <br />
-                        <main className="m-auto max-w-4xl">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 mt-20">
-                                        <div className="flex flex-col w-full relative">
+                        <main className="max-w-4xl m-auto mt-40">
+                                <div className="grid grid-cols-1 mt-20 md:grid-cols-2 gap-x-12">
+                                        <div className="relative flex flex-col w-full">
                                                 <picture className="mb-8">
                                                         <img
                                                                 className="w-full h-auto rounded-lg shadow-lg"
@@ -25,10 +25,10 @@ export default function ListarTorneos({ auth, torneo }) {
                                         </div>
 
                                         <aside className="mt-10 md:mt-0">
-                                                <h1 className="text-3xl font-black mb-4">
+                                                <h1 className="mb-4 text-3xl font-black">
                                                         {torneo.nombreTorneo}
                                                 </h1>
-                                                <p className="text-lg mb-4 text-green-700 font-semibold ">{torneo.caracteristicas}</p>
+                                                <p className="mb-4 text-lg font-semibold text-green-700 ">{torneo.caracteristicas}</p>
                                                 
                                                 <div className="flex flex-wrap">
                                                         <div className="flex items-center">

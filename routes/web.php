@@ -179,6 +179,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource FaltasCuerpoTecnico
     Route::resource('faltasCuerpoTecnico', App\Http\Controllers\FaltasCuerpoTecnicoController::class);
 
+    // Resource resultadosTorneo
+    Route::resource('resultadosTorneo', App\Http\Controllers\ResultadosController::class);
+
 
 });
 

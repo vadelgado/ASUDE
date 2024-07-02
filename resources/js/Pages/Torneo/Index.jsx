@@ -249,78 +249,83 @@ export default function Dashboard({
                                     key={torneo.id}
                                     className="p-4 bg-white rounded-lg shadow-md"
                                 >
-                                    <div className="grid grid-cols-3 gap-4 mb-4">
-                                        <a
-                                            className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-                                            onClick={() =>
-                                                openModal(
-                                                    2,
-                                                    torneo.id,
-                                                    torneo.nombreTorneo,
-                                                    torneo.flayer,
-                                                    torneo.imgBannerSuperior,
-                                                    torneo.imgBannerInferiorIz,
-                                                    torneo.imgBannerInferiorDe,
-                                                    torneo.Aval,
-                                                    torneo.ApoyoPrincipal,
-                                                    torneo.cantidadGrupos,
-                                                    torneo.cantidadEquiposParticipantes,
-                                                    torneo.caracteristicas,
-                                                    torneo.premiacion,
-                                                    torneo.fk_sistema_juegos,
-                                                    torneo.fk_categoria_equipo,
-                                                    torneo.estadoTorneo,
-                                                    torneo.inscripcion,
-                                                    torneo.procesoInscripcion,
-                                                    torneo.reglamentacion,
-                                                    torneo.fechaInicio,
-                                                    torneo.fechaFin,
-                                                    torneo.fk_user
-                                                )
-                                            }
-                                        >
-                                            <i className="mr-2 fa-solid fa-edit"></i>{" "}
-                                            Editar
-                                        </a>
+<div className="grid grid-cols-3 gap-4 mb-4">
+    <a
+        className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+        onClick={() =>
+            openModal(
+                2,
+                torneo.id,
+                torneo.nombreTorneo,
+                torneo.flayer,
+                torneo.imgBannerSuperior,
+                torneo.imgBannerInferiorIz,
+                torneo.imgBannerInferiorDe,
+                torneo.Aval,
+                torneo.ApoyoPrincipal,
+                torneo.cantidadGrupos,
+                torneo.cantidadEquiposParticipantes,
+                torneo.caracteristicas,
+                torneo.premiacion,
+                torneo.fk_sistema_juegos,
+                torneo.fk_categoria_equipo,
+                torneo.estadoTorneo,
+                torneo.inscripcion,
+                torneo.procesoInscripcion,
+                torneo.reglamentacion,
+                torneo.fechaInicio,
+                torneo.fechaFin,
+                torneo.fk_user
+            )
+        }
+    >
+        <i className="mr-2 fa-solid fa-edit"></i> Editar
+    </a>
 
-                                        <a
-                                            className="text-white bg-pink-500 hover:bg-pink-400 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-                                            href={`/lugarPartido?torneo_id=${torneo.id}`}
-                                        >
-                                            <i className="mr-2 fa-solid fa-location-dot"></i>{" "}
-                                            Lugares
-                                        </a>
+    <a
+        className="text-white bg-pink-500 hover:bg-pink-400 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+        href={`/lugarPartido?torneo_id=${torneo.id}`}
+    >
+        <i className="mr-2 fa-solid fa-location-dot"></i> Lugares
+    </a>
 
-                                        <a
-                                            className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-                                            href={`/resultadoSorteo?torneo_id=${torneo.id}`}
-                                        >
-                                            <i className="mr-2 fa-solid fa-dice"></i>{" "}
-                                            Sorteo
-                                        </a>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <a
-                                            className="text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-                                            href={`/fases?torneo_id=${torneo.id}`}
-                                        >
-                                            <i className="mr-2 fa-solid fa-flag"></i>{" "}
-                                            Fases Torneo
-                                        </a>
+    <a
+        className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+        href={`/resultadoSorteo?torneo_id=${torneo.id}`}
+    >
+        <i className="mr-2 fa-solid fa-dice"></i> Sorteo
+    </a>
+</div>
 
-                                        <a
-                                            className="text-white bg-orange-500 hover:bg-orange-400 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-                                            onClick={() =>
-                                                eliminar(
-                                                    torneo.id,
-                                                    torneo.nombreTorneo
-                                                )
-                                            }
-                                        >
-                                            <i className="mr-2 fa-solid fa-trash"></i>{" "}
-                                            Eliminar
-                                        </a>
-                                    </div>
+<div className="grid grid-cols-3 gap-4 mb-4">
+    <a
+        className="text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+        href={`/fases?torneo_id=${torneo.id}`}
+    >
+        <i className="mr-2 fa-solid fa-flag"></i> Fas Torneo
+    </a>
+
+    <a
+        className="text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+        href={`/resultadosTorneo?torneo_id=${torneo.id}`}
+    >
+        <i className="mr-2 fa-solid fa-trophy"></i> Premios
+    </a>
+
+    <a
+        className="text-white bg-orange-500 hover:bg-orange-400 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+        onClick={() =>
+            eliminar(
+                torneo.id,
+                torneo.nombreTorneo
+            )
+        }
+    >
+        <i className="mr-2 fa-solid fa-trash"></i> Eliminar
+    </a>
+</div>
+
+
 
                                     <div className="mb-2 text-base">
                                         <strong>Nombre del Torneo:</strong>{" "}
