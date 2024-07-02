@@ -18,39 +18,57 @@ Route::get('/', function () {
         ->orderByRaw("CASE WHEN estadoTorneo = 'En Juego' THEN 0 WHEN estadoTorneo = 'Finalizado' THEN 2 ELSE 1 END")
         ->orderBy('fechaInicio')
         ->get();
-        $programaciones_faces = DB::table('programaciones_faces as pf')
-        
-        ->join('fases as f', 'pf.fk_fase', '=', 'f.id')
-        ->join('torneo as t', 'f.fk_torneo', '=', 't.id')
-        ->join('lugar_partidos as lp', 'pf.fk_lugarPartido', '=', 'lp.id')
-        ->leftJoin('resultado_sorteos as rs_local', function ($join) {
-            $join->on('pf.posicion_local', '=', 'rs_local.puesto')
-                ->on('rs_local.fk_torneo', '=', 'f.fk_torneo');
+        $programaciones_faces = DB::table('programaciones_faces')
+        ->join('fases', 'programaciones_faces.fk_fase', '=', 'fases.id')
+        ->join('torneo', 'fases.fk_torneo', '=', 'torneo.id')
+        ->join('lugar_partidos', 'programaciones_faces.fk_lugarPartido', '=', 'lugar_partidos.id')
+        ->join('resultado_sorteos as local', function ($join) {
+            $join->on('programaciones_faces.posicion_local', '=', 'local.puesto')
+                ->on('local.fk_torneo', '=', 'fases.fk_torneo');
         })
-        ->leftJoin('resultado_sorteos as rs_visitante', function ($join) {
-            $join->on('pf.posicion_visitante', '=', 'rs_visitante.puesto')
-                ->on('rs_visitante.fk_torneo', '=', 'f.fk_torneo');
+        ->join('resultado_sorteos as visitante', function ($join) {
+            $join->on('programaciones_faces.posicion_visitante', '=', 'visitante.puesto')
+                ->on('visitante.fk_torneo', '=', 'fases.fk_torneo');
         })
-        ->leftJoin('equipos as el', 'rs_local.fk_equipo', '=', 'el.id')
-        ->leftJoin('equipos as ev', 'rs_visitante.fk_equipo', '=', 'ev.id')
+        ->join('equipos as el', 'local.fk_equipo', '=', 'el.id')
+        ->join('equipos as ev', 'visitante.fk_equipo', '=', 'ev.id')
+        ->leftJoin('resultados_partidos', 'programaciones_faces.id', '=', 'resultados_partidos.fk_programaciones_faces_id')
+        ->leftJoin('jugadores', 'resultados_partidos.fk_jugador_id', '=', 'jugadores.id')
+        ->whereIn('torneo.estadoTorneo', ['Por Iniciar', 'En Juego'])
         ->select(
-            'f.nombreFase',
-            'pf.posicion_local',
-            'pf.posicion_visitante',
-            'pf.FechaPartido',
-            'pf.HoraPartido',
-            'lp.nomLugar',
-            'lp.geolocalizacion',
+            'fases.nombreFase',
+            'programaciones_faces.posicion_local',
+            'programaciones_faces.posicion_visitante',
+            'programaciones_faces.FechaPartido',
+            'programaciones_faces.HoraPartido',
+            'lugar_partidos.nomLugar',
+            'lugar_partidos.geolocalizacion',
             'el.nombreEquipo as nombreEquipoLocal',
             'el.escudoEquipo as escudoEquipoLocal',
-            'rs_local.puesto as puestoLocal',
             'ev.nombreEquipo as nombreEquipoVisitante',
             'ev.escudoEquipo as escudoEquipoVisitante',
-            'rs_visitante.puesto as puestoVisitante'
+            DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.goles ELSE 0 END), 0) AS GolesLocal'),
+            DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = ev.id THEN resultados_partidos.goles ELSE 0 END), 0) AS GolesVisitante'),
+            DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.tarjetas_amarillas ELSE 0 END), 0) AS TarjetasAmarillasLocal'),
+            DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = ev.id THEN resultados_partidos.tarjetas_amarillas ELSE 0 END), 0) AS TarjetasAmarillasVisitante'),
+            DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.tarjetas_rojas ELSE 0 END), 0) AS TarjetasRojasLocal'),
+            DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = ev.id THEN resultados_partidos.tarjetas_rojas ELSE 0 END), 0) AS TarjetasRojasVisitante')
         )
-        ->whereIn('t.estadoTorneo', ['Por Iniciar', 'En Juego'])
-        ->orderBy('pf.FechaPartido')
-        ->orderBy('pf.HoraPartido')
+        ->groupBy(
+            'fases.nombreFase',
+            'programaciones_faces.posicion_local',
+            'programaciones_faces.posicion_visitante',
+            'programaciones_faces.FechaPartido',
+            'programaciones_faces.HoraPartido',
+            'lugar_partidos.nomLugar',
+            'lugar_partidos.geolocalizacion',
+            'el.nombreEquipo',
+            'el.escudoEquipo',
+            'ev.nombreEquipo',
+            'ev.escudoEquipo'
+        )
+        ->orderBy('programaciones_faces.FechaPartido')
+        ->orderBy('programaciones_faces.HoraPartido')
         ->get();
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
