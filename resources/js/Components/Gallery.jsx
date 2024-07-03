@@ -12,9 +12,9 @@ export default function Gallery() {
           images={[
             {
               largeURL:
-                './1.webp',
+                './logo-home.webp',
               thumbnailURL:
-                './1tmb.webp',
+                './logo-home.webp',
               width: 1098,
               height: 1980,
             },
