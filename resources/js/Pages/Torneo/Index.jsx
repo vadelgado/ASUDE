@@ -302,7 +302,7 @@ export default function Dashboard({
         className="text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
         href={`/fases?torneo_id=${torneo.id}`}
     >
-        <i className="mr-2 fa-solid fa-flag"></i> Fas Torneo
+        <i className="mr-2 fa-solid fa-flag"></i>FTorneo
     </a>
 
     <a

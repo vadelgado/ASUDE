@@ -28,6 +28,14 @@ class VerResultadosController extends Controller
             'torneo.ApoyoPrincipal',
             'torneo.Aval',)
             ->get();
+          
+        $premiacion = DB::table('resultados as r')
+            ->join('torneo as t', 'r.fk_torneo', '=', 't.id')
+            ->where('t.id', $torneo_id)
+            ->select('r.categoria', 'r.resultado')
+            ->orderby('r.id')
+            ->get();
+        //dd($premiacion);
     
         $resultados = DB::table('resultados_partidos as rs')
             ->join('jugadores as j', 'rs.fk_jugador_id', '=', 'j.id')
@@ -185,7 +193,8 @@ class VerResultadosController extends Controller
             'torneo' => $torneo,
             'resultados' => $resultados,
             'resultadosGoles' => $resultadosGoles,
-            'tablaJuegoLimpio' => $tablaJuegoLimpio
+            'tablaJuegoLimpio' => $tablaJuegoLimpio,
+            'premiacion' => $premiacion,
         ]);
     }
     

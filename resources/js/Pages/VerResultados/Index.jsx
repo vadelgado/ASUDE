@@ -9,9 +9,11 @@ export default function ListarTorneos({
     torneo,
     resultados,
     resultadosGoles,
-    tablaJuegoLimpio
+    tablaJuegoLimpio,
+    premiacion
 }) {
     return (
+        
         <>
             <Header auth={auth}></Header>
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
@@ -51,6 +53,50 @@ export default function ListarTorneos({
                             {torneo[0].ApoyoPrincipal}
                         </span>
                     </h2>
+                </div>
+
+                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                        Resultados 🏆
+                    </span>
+                </h2>
+                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
+                            <table className="w-full text-black table-auto">
+                                <tbody>
+                                    {premiacion ? (
+                                        premiacion.map((premio, index) => (
+                                            <tr
+                                                key={index}
+                                                className={`${
+                                                    index % 2 === 0
+                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                        : "bg-white"
+                                                } hover:bg-gray-200`}
+                                            >
+                                                <td className="px-4 py-2 border">
+                                                    {premio.categoria}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {premio.resultado}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan="13"
+                                                className="px-4 py-2 text-center border"
+                                            >
+                                                No hay Premiación disponibles
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
