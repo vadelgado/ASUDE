@@ -1,9 +1,11 @@
 import { Link, Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
+import Gallery from "@/Components/Gallery";
 import React from "react";
 
-export default function Index({ auth, torneo, programaciones_faces }) {
+export default function Index({ auth, torneo, programaciones_faces, gallery }) {
+    
     // Agrupar partidos por nombreFase
     const groupedByFase = programaciones_faces.reduce((acc, programacion) => {
         const { nombreFase } = programacion;
@@ -95,6 +97,7 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                 </div>
 
                 <div className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                <Gallery gallery={gallery} />
                     {orderedFases.map((fase, index) => (
                         <div key={index} className="mb-8">
                             <div className="flex justify-center mt-8">
@@ -103,6 +106,8 @@ export default function Index({ auth, torneo, programaciones_faces }) {
                                     <span className="font-bold">{fase}</span>
                                 </span>
                             </div>
+
+                            
 
                             {Object.keys(groupedByFaseAndDate[fase]).map(
                                 (fecha, subIndex) => (

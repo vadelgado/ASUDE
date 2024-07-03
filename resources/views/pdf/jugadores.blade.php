@@ -49,8 +49,7 @@
 
 <body>
     <h1 style="font-size: 10pt;">PLANILLA DE INSCRIPCIÓN</h1>
-    <p style="font-style: italic; text-align: center;"><strong style="font-style: normal">Corporación Deportiva Los
-            Paisitas "DEPORTE CON SENTIDO
+    <p style="font-style: italic; text-align: center;"><strong style="font-style: normal">"DEPORTE CON SENTIDO
             SOCIAL"</strong>
         <br />
         Los abajo firmantes aceptamos y reconocemos el reglamento que
@@ -99,7 +98,7 @@
             @foreach ($jugadores as $jugador)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ ucfirst(strtolower($jugador->nombreCompleto)) }}</td>
+                <td>{{ ucfirst(strtolower($jugador->nombrecompleto)) }}</td>
                 <td></td>
                 <td>{{ $jugador->numeroIdentificacion }}</td>
                 <td>{{ $jugador->numeroSerie }}</td>

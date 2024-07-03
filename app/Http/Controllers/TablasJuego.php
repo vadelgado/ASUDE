@@ -41,7 +41,13 @@ class TablasJuego extends Controller
                 'torneo.reglamentacion'
             )
             ->first();
-    
+
+            $gallery = DB::table('galleries as g')
+            ->join('fases as f', 'g.fk_fase', '=', 'f.id')            
+            ->select('g.largeUrl', 'g.width', 'g.height', 'f.nombreFase','f.fk_torneo')            
+            ->where('f.fk_torneo', $torneo_id)
+            ->get();
+            //dd($gallery);
             $programaciones_faces = DB::table('programaciones_faces as pf')
             ->join('fases as f', 'pf.fk_fase', '=', 'f.id')
             ->join('torneo as t', 'f.fk_torneo', '=', 't.id')
@@ -100,6 +106,7 @@ class TablasJuego extends Controller
             'torneo_id' => $torneo_id,
             'torneo' => $torneo,
             'programaciones_faces' => $programaciones_faces,
+            'gallery' => $gallery
         ]);
     }
     

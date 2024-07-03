@@ -114,4 +114,6 @@ class GalleryController extends Controller
 
         $gallery->delete();
     }
+
+    
 }

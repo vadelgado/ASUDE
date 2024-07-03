@@ -148,8 +148,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
 
     //pdfJugadores
     Route::get('/jugadores/pdf', [JugadoresController::class, 'generatePDF'])->name('jugadores.pdf');
-    //pdfFormatoFotos
-    Route::get('/formatoFotos/pdf', [JugadoresController::class, 'generatePDFFormatoFotos'])->name('formatoFotos.pdf');
+
 
     //CuerpoTecnicoAdmin
     Route::resource('cuerpoTecnicoAdmin', App\Http\Controllers\CuerpoTecnicoController::class);

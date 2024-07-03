@@ -280,16 +280,6 @@ export default function Index({
                                 Descargar PDF
                             </a>
                         </PrimaryButton>
-                        <PrimaryButton>
-                            <a
-                                href={route("formatoFotos.pdf", { equipo_id })}
-                                target="_blank"
-                                download
-                            >
-                                <i className="mr-2 fa-solid fa-file-pdf"></i>
-                                Descargar Formato Fotos
-                            </a>
-                        </PrimaryButton>
                     </div>
 
                     <div className="mt-2 text-left">

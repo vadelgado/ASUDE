@@ -6,7 +6,6 @@ import Intro from "@/Components/DashBoard/Intro";
 import PreFooter from "@/Components/DashBoard/PreFooter";
 import Carousel from "@/Components/DashBoard/Carousel";
 import TournamentSchedule from "@/Components/DashBoard/TournamentSchedule";
-import Gallery from '@/Components/Gallery';
 
 import TablaTorneos from "@/Components/DashBoard/TablaTorneos";
 
@@ -21,7 +20,7 @@ export default function Welcome({ auth, torneoEnCurso, programaciones_faces}) {
             <Carousel/>
             <TablaTorneos torneoEnCurso={torneoEnCurso} />
             <Intro></Intro>
-            <Gallery></Gallery>
+            
             <PreFooter></PreFooter>
             <Footer></Footer>
             <style>{`
