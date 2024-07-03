@@ -182,6 +182,11 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Resource resultadosTorneo
     Route::resource('resultadosTorneo', App\Http\Controllers\ResultadosController::class);
 
+    // Resource gallery
+    Route::resource('gallery', App\Http\Controllers\GalleryController::class);
+    // Actualizar Gallery
+    Route::post('gallery/{gallery}', 'App\Http\Controllers\GalleryController@update')->name('gallery.updatepost');
+
 
 });
 

@@ -37,6 +37,7 @@ class LugarPartidoController extends Controller
 
     public function store(StoreRequest $request)
     {
+        
         $data = $request->only('nomLugar', 'geolocalizacion', 'direccion', 'fk_torneo');
 
         if($request->hasFile('fotoLugar')) {

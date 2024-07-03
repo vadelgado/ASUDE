@@ -176,6 +176,14 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
                                         <i className="mr-2 fa-regular fa-futbol"> Partidos</i> 
                                     </a>
                                 </td>
+                                <td className="px-4 py-2 border">
+                                    <a
+                                        className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-800 rounded-lg hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300"
+                                        href={`/gallery?fase_id=${fase.id}`}
+                                    >
+                                        <i className="mr-2 fa-regular fa-image"> Fotos</i> 
+                                    </a>
+                                </td>
                             </tr>
                         ))
                     ) : (

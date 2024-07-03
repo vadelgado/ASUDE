@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. 
      */
     public function up(): void
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
-            $table->string('largeUrl');
+            $table->string('largeUrl')->nullable(true);
             $table->integer('width');
             $table->integer('height');
             $table->foreignId('fk_fase')->constrained('fases');
