@@ -155,6 +155,7 @@ class VerResultadosController extends Controller
             ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
             ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
             ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
+            ->where('t.id', $torneo_id)
             ->select(
         'j.nombreCompleto', 
               'e.nombreEquipo', 
@@ -171,6 +172,7 @@ class VerResultadosController extends Controller
             ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
             ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
             ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
+            ->where('t.id', $torneo_id)
             ->select(
             'j.nombreCompleto', 
             'e.nombreEquipo', 
@@ -186,7 +188,29 @@ class VerResultadosController extends Controller
             ->orderBy('tarjetas_rojas', 'desc')
             ->get();
 
-            //dd($resultadosGoles);
+            $observaciones = DB::table('resultados_partidos as rs')
+            ->join('programaciones_faces as pf', 'rs.fk_programaciones_faces_id', '=', 'pf.id')
+            ->join('jugadores as j', 'rs.fk_jugador_id', '=', 'j.id')
+            ->join('equipos as e', 'j.fk_equipo', '=', 'e.id')
+            ->join('resultado_sorteos as rso', 'e.id', '=', 'rso.fk_equipo')
+            ->join('torneo as t', 'rso.fk_torneo', '=', 't.id')
+            ->where('t.id', $torneo_id)
+            ->select(
+           
+            'e.nombreEquipo',
+            'pf.fechaPartido',
+            'rs.observaciones' 
+            )
+            ->groupBy(
+            'e.nombreEquipo',
+            'pf.fechaPartido',
+            'rs.observaciones'
+            )
+            ->havingRaw('rs.observaciones IS NOT NULL')
+            ->orderBy('pf.fechaPartido', 'desc')
+            ->get();
+
+
     
         //dd($tablaJuegoLimpio);
         return Inertia::render('VerResultados/Index', [
@@ -195,6 +219,7 @@ class VerResultadosController extends Controller
             'resultadosGoles' => $resultadosGoles,
             'tablaJuegoLimpio' => $tablaJuegoLimpio,
             'premiacion' => $premiacion,
+            'observaciones' => $observaciones
         ]);
     }
     

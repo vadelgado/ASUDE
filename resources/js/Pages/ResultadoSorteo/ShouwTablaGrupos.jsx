@@ -16,7 +16,12 @@ function generarSecuenciaLetras(numero) {
     return resultado;
 }
 
-export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
+export default function ListarTorneos({
+    auth,
+    tablasGrupos,
+    torneo,
+    resultadosGoles,
+}) {
     //console.log('tablasGrupos',tablasGrupos);
     //console.log('torneo',torneo);
     const [secuenciaLetras, setSecuenciaLetras] = useState([]);
@@ -88,7 +93,7 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
                 </div>
                 <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
                     <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                    Tabla de Grupos
+                        Tabla de Grupos
                     </span>
                 </h2>
                 <div className="text-xs text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
@@ -165,6 +170,66 @@ export default function ListarTorneos({ auth, tablasGrupos, torneo }) {
                             </table>
                         </div>
                     </div>
+                </div>
+                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                        Goleadores ⚽ del Torneo
+                    </span>
+                </h2>
+                <div className="flex flex-wrap justify-center p-4 bg-gray-900">
+                    {resultadosGoles.length > 0 ? (
+                        resultadosGoles.map((resultado, index) => (
+                            <div
+                                key={index}
+                                className="flex flex-col justify-between max-w-xs p-6 m-4 text-center text-white transition duration-500 transform bg-gray-800 rounded-lg shadow-lg hover:scale-105 hover:bg-gray-700"
+                                style={{
+                                    minWidth: "280px",
+                                    minHeight: "400px",
+                                }}
+                            >
+                                <div className="flex flex-col items-center">
+                                    <img
+                                        src={`/storage/${resultado.foto}`}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = "/soccer-player.svg";
+                                        }}
+                                        alt={resultado.nombreCompleto}
+                                        className="w-24 h-32 mb-4 border-2 border-yellow-500 rounded-lg"
+                                    />
+                                    <h3 className="mb-2 text-2xl font-bold text-yellow-500 truncate">
+                                        {resultado.nombreCompleto}
+                                    </h3>
+                                    <p className="text-lg truncate">
+                                        {resultado.name}
+                                    </p>
+                                </div>
+                                <div className="flex flex-col items-center mt-4">
+                                    <div className="flex items-center justify-center mt-2">
+                                        <img
+                                            src={`/storage/${resultado.escudoEquipo}`}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "/escudo.svg";
+                                            }}
+                                            alt={resultado.nombreEquipo}
+                                            className="w-8 h-8 mr-2"
+                                        />
+                                        <span className="truncate">
+                                            {resultado.nombreEquipo}
+                                        </span>
+                                    </div>
+                                    {resultado.goles !== undefined && (
+                                        <p className="mt-2 text-lg text-yellow-500">
+                                            Goles: {resultado.goles}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-white">No hay resultados</p>
+                    )}
                 </div>
 
                 <div className="flex items-center justify-center py-8">

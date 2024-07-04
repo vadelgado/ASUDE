@@ -10,8 +10,42 @@ export default function ListarTorneos({
     resultados,
     resultadosGoles,
     tablaJuegoLimpio,
-    premiacion
+    premiacion,
+    observaciones,
 }) {
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const daysOfWeek = [
+            "Domingo",
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves",
+            "Viernes",
+            "Sábado",
+        ];
+        const months = [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+        ];
+
+        const dayOfWeek = daysOfWeek[date.getUTCDay()];
+        const day = date.getUTCDate();
+        const month = months[date.getUTCMonth()];
+        const year = date.getUTCFullYear();
+
+        return `${dayOfWeek} ${day} ${month} de ${year}`;
+    };
     return (
         
         <>
@@ -256,6 +290,68 @@ export default function ListarTorneos({
                         </div>
                     </div>
                 </div>
+                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                        Observaciones 📋
+                    </span>
+                </h2>
+                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    <div className="overflow-x-auto">
+                        <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
+                            <table className="w-full text-black table-auto">
+                                <thead>
+                                    <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                        <th className="px-4 py-2">#</th>
+                                        <th className="px-4 py-2">Equipo⚽</th>
+                                        <th className="px-4 py-2">Fecha📅</th>
+                                        <th className="px-4 py-2">observaciones👀</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {observaciones ? (
+                                        observaciones.map((observacion, index) => (
+                                            <tr
+                                                key={index}
+                                                className={`${
+                                                    index % 2 === 0
+                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                        : "bg-white"
+                                                } hover:bg-gray-200`}
+                                            >
+                                                <td className="px-4 py-2 border">
+                                                    {index+1}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {observacion.nombreEquipo}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    
+                                                    {formatDate(observacion.fechaPartido)}{" "}
+
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {observacion.observaciones}
+                                                </td>                                                  
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan="13"
+                                                className="px-4 py-2 text-center border"
+                                            >
+                                                No hay resultados Observaciones
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
                     <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
