@@ -25,23 +25,24 @@ class InscripcionesController extends Controller
         $equipo_id = $request->input('equipo_id');
         if ($equipo_id) {
 
-            if(Auth::user()->role == 'admin'){
+            if (Auth::user()->role == 'admin') {
                 $torneo = torneo::all();
                 $equipo = Equipos::find($equipo_id);
-                   
+
                 $inscripciones = Inscripciones::join('torneo', 'inscripciones.fk_torneo', '=', 'torneo.id')
-                ->join('equipos', 'inscripciones.fk_equipo', '=', 'equipos.id')
-                ->select('inscripciones.*', 'torneo.nombreTorneo', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
-                ->where('fk_equipo', $equipo_id)->get();
+                    ->join('equipos', 'inscripciones.fk_equipo', '=', 'equipos.id')
+                    ->select('inscripciones.*', 'torneo.nombreTorneo', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
+                    ->where('fk_equipo', $equipo_id)->get();
                 //DD($inscripciones, $equipo, $torneo);
-            } else if(Auth::user()->role == 'equipo'){
+            } else if (Auth::user()->role == 'equipo') {
                 $torneo = torneo::all();
-                $equipo = Equipos::where('fk_user', Auth::user()->id)->get();
+
+                $equipo = Equipos::where('id', $equipo_id)->where('fk_user', Auth::user()->id)->first();
                 $inscripciones = Inscripciones::join('torneo', 'inscripciones.fk_torneo', '=', 'torneo.id')
-                ->join('equipos', 'inscripciones.fk_equipo', '=', 'equipos.id')
-                ->select('inscripciones.*', 'torneo.nombreTorneo', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
-                ->where('fk_equipo', $equipo_id)->get();
-                
+                    ->join('equipos', 'inscripciones.fk_equipo', '=', 'equipos.id')
+                    ->select('inscripciones.*', 'torneo.nombreTorneo', 'equipos.nombreEquipo', 'equipos.escudoEquipo')
+                    ->where('fk_equipo', $equipo_id)->get();
+
                 //DD($inscripciones, $equipo, $torneo);
             } else {
                 return redirect()->route('dashboard');
@@ -57,57 +58,55 @@ class InscripcionesController extends Controller
             'fk_equipo' => $equipo_id,
             'userRole' => Auth::user()->role,
             //dd($torneo, $equipo, $inscripciones, $equipo_id)
-        ]);   
+        ]);
     }
-     
-     public function store(StoreRequest $request)
-     {
-         $userRole = Auth::user()->role;  
-     
-         if ($userRole !== 'equipo' && $userRole !== 'admin') {
-             return redirect()->route('dashboard');
-         }     
-         if($userRole === 'admin'){
-             $data = $request->all();
-             $data['fk_user'] = Auth::user()->id;
-             $data['fk_equipo'] = $request->input('fk_equipo'); 
-     
-         } else if($userRole === 'equipo'){   
+
+    public function store(StoreRequest $request)
+    {
+        $userRole = Auth::user()->role;
+
+        if ($userRole !== 'equipo' && $userRole !== 'admin') {
+            return redirect()->route('dashboard');
+        }
+        if ($userRole === 'admin') {
+            $data = $request->all();
+            $data['fk_user'] = Auth::user()->id;
+            $data['fk_equipo'] = $request->input('fk_equipo');
+        } else if ($userRole === 'equipo') {
 
 
-            
-            $data['fk_torneo'] = $request->input('fk_torneo');            
+
+            $data['fk_torneo'] = $request->input('fk_torneo');
             $data['estadoInscripcion'] = 'Pendiente';
             $data['fk_user'] = Auth::user()->id;
-            $data['fk_equipo'] = $request->input('fk_equipo');             
-         }
-            //dd($data);   
-         Inscripciones::create($data);       
-     }
+            $data['fk_equipo'] = $request->input('fk_equipo');
+        }
+        //dd($data);   
+        Inscripciones::create($data);
+    }
 
     public function update(UpdateRequest $request, $id)
     {
         $userRole = Auth::user()->role;
         $equipo_id = $request->input('fk_equipo');
-        
+
         if ($userRole !== 'equipo' && $userRole !== 'admin') {
             return redirect()->route('dashboard');
         }
 
-        if($userRole === 'admin'){
-            $data = $request->all();            
+        if ($userRole === 'admin') {
+            $data = $request->all();
             $data['fk_equipo'] = $request->input('fk_equipo');
             $data['estadoInscripcion'] = $request->input('estadoInscripcion');
 
             //dd($data);
 
-        } else if($userRole === 'equipo'){
+        } else if ($userRole === 'equipo') {
             $data = $request->only(
-                'fk_torneo',                
+                'fk_torneo',
             );
             $data['fk_equipo'] = $request->input('fk_equipo');
             $data['fk_user'] = Auth::user()->id;
-            
         }
 
         $inscripciones = Inscripciones::find($id);
@@ -122,5 +121,4 @@ class InscripcionesController extends Controller
         $inscripciones = Inscripciones::find($id);
         $inscripciones->delete();
     }
-    
 }

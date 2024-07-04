@@ -12,6 +12,7 @@ class Equipos extends Model
     protected $table = 'equipos';
 
     protected $fillable = [
+        'id',
         'nombreEquipo', 
         'fk_categoria_equipo',
         'escudoEquipo',
@@ -33,16 +34,6 @@ class Equipos extends Model
     public function jugadores()
     {
         return $this->hasMany(Jugadores::class, 'fk_equipo');
-    }
-
-    public function programacionTorneoLocal()
-    {
-        return $this->hasMany(ProgramacionTorneo::class, 'fk_equipoLocal');
-    }
-
-    public function programacionTorneoVisitante()
-    {
-        return $this->hasMany(ProgramacionTorneo::class, 'fk_equipoVisitante');
     }
 
 }

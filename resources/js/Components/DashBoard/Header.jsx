@@ -1,11 +1,12 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Dialog, Popover } from "@headlessui/react";
 import { Link } from "@inertiajs/react";
 import FlyoutMenu from "@/Components/FlyoutMenu";
-import { Bars3Icon, XMarkIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { PhoneIcon, PlayCircleIcon } from "@heroicons/react/20/solid";
 import HeaderLink from "@/Components/DashBoard/HeaderLink";
 import Logo from "@/Components/Logo";
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Asegúrate de importar FontAwesome CSS
 
 const callsToAction = [
     { name: "Watch demo", href: "#", icon: PlayCircleIcon },
@@ -16,21 +17,13 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
-/**
- * Componente de encabezado de la página.
- * 
- * @param {Object} props - Propiedades del componente.
- * @param {boolean} props.auth - Indica si el usuario está autenticado.
- * @returns {JSX.Element} Elemento JSX que representa el encabezado.
- */
-
 export default function Header({ auth }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className="fixed top-0 w-full z-50 bg-green-300 bg-opacity-25 h-30">
-            <div className="bg-[#46C655] text-[#000000] text-xs sm:text-sm">
-                <div className="container mx-auto flex flex-col md:flex-row justify-center items-center py-2 px-4">
+        <header className="fixed top-0 z-50 w-full bg-green-700 h-36 ">
+            <div className="text-xs text-black bg-green-500 sm:text-sm">
+                <div className="container flex flex-col items-center justify-center px-4 py-2 mx-auto md:flex-row">
                     <div className="flex items-center mb-2 md:mb-0">
                         <span className="mr-2">
                             <i className="fa-brands fa-whatsapp"></i>{" "}
@@ -47,44 +40,35 @@ export default function Header({ auth }) {
                     </div>
                 </div>
             </div>
-            <nav
-                className="mx-auto flex max-w-7xl items-center justify-between p-6 px-7 lg:px-8"
-                aria-label="Global"
-            >
+            <nav className="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8" aria-label="Global">
                 <HeaderLink
                     checkActive={false}
                     href="/"
                     className="relative z-10 flex lg:flex-1"
                 >
                     <span className="sr-only">Alianza Sureña</span>
-                    <Logo className="absolute h-16 w-auto m-auto blur-sm opacity-0 transition-opacity duration-300 hover:opacity-50" />
-                    <Logo className="h-16 w-auto" />
+                    <Logo className="w-auto h-12 sm:h-16" />
                 </HeaderLink>
 
                 <div className="flex lg:hidden">
-                    <button
-                        type="button"
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                        onClick={() => setMobileMenuOpen(true)}
-                    >
-                        <span className="sr-only">Abri Menu</span>
-                        <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    {!mobileMenuOpen && (
+                        <button
+                            type="button"
+                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+                            onClick={() => setMobileMenuOpen(true)}
+                        >
+                            <span className="sr-only">Abrir menú</span>
+                            <Bars3Icon className="w-8 h-8" aria-hidden="true" />
+                        </button>
+                    )}
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <HeaderLink
                         href={route("torneo.listarTorneos")}
                         active={route().current("torneo.listarTorneos") ? "true" : undefined}
-                        className="text-sm font-semibold leading-6 text-black"
+                        className="text-sm font-semibold leading-6 text-white"
                     >
                         ⚽PRÓXIMOS TORNEOS
-                    </HeaderLink>
-                    <HeaderLink
-                        href={route("torneoEnCurso.index")}
-                        active={route().current("torneoEnCurso.index") ? "true" : undefined}
-                        className="text-sm font-semibold leading-6 text-black"
-                    >
-                        ⚽TORNEO EN CURSO
                     </HeaderLink>
                     <FlyoutMenu auth={auth} />
                 </Popover.Group>
@@ -95,39 +79,40 @@ export default function Header({ auth }) {
                 open={mobileMenuOpen}
                 onClose={setMobileMenuOpen}
             >
-                <div className="fixed inset-0 z-10" />
-                <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto backdrop-blur-sm bg-green-950 bg-opacity-40 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                <div className="fixed inset-0 z-10 bg-black bg-opacity-25" />
+                <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full px-6 py-6 overflow-y-auto bg-green-700 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
                         <HeaderLink
                             checkActive={false}
                             href="/"
-                            className="relative z-10 flex lg:flex-1 h-16"
+                            className="relative z-10 flex h-16 lg:flex-1"
                         >
-                            
+                            <Logo className="w-auto h-12 sm:h-16" />
                         </HeaderLink>
                         <button
                             type="button"
-                            className="-m-2.5 rounded-md p-2.5 text-black"
+                            className="mt-36 rounded-full p-2.5 text-white bg-red-500 hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                             onClick={() => setMobileMenuOpen(false)}
                         >
-                            <span className="sr-only">Close menu</span>
-                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            <span className="sr-only">Cerrar menú</span>
+                            
+                             <i className="w-6 h-6 fa-solid fa-circle-xmark" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <div className="mt-20 flow-root">
-                        <div className=" divide-y divide-gray-500/10">
-                            <div className="space-y-2">
-                                <Link
-                                    href={route("torneo.listarTorneos")}
-                                    className="block px-4 text-base font-medium text-black hover:bg-gray-50"
+                    <div className="flow-root mt-6">
+                        <div className="divide-y divide-gray-500/10">
+                            <div className="py-6 space-y-2">
+                            <Link
+                                    href="/"
+                                    className="block px-4 text-base font-medium text-white hover:bg-green-600"
                                 >
-                                    ⚽PRÓXIMOS TORNEOS
+                                    🏠INICIO
                                 </Link>
                                 <Link
-                                    href={route("torneoEnCurso.index")}
-                                    className="block  px-4 text-base font-medium text-black hover:bg-gray-50"
+                                    href={route("torneo.listarTorneos")}
+                                    className="block px-4 text-base font-medium text-white hover:bg-green-600"
                                 >
-                                    ⚽TORNEO EN CURSO2
+                                    ⚽PRÓXIMOS TORNEOS
                                 </Link>
                                 <FlyoutMenu auth={auth} />
                             </div>
@@ -135,14 +120,13 @@ export default function Header({ auth }) {
                     </div>
                 </Dialog.Panel>
             </Dialog>
-            <nav className="fixed bottom-0 left-0 right-0 bg-[#46C655] text-white py-3 flex justify-around items-center md:hidden">
- 
+            <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around py-3 text-white bg-green-500 md:hidden">
                 <a href="tel:+573183773718" className="flex flex-col items-center">
-                    <PhoneIcon className="h-6 w-6 mb-1" aria-hidden="true" />
+                    <PhoneIcon className="w-6 h-6 mb-1" aria-hidden="true" />
                     <span className="text-xs">Llamar</span>
                 </a>
                 <a href="https://wa.me/573183773718" className="flex flex-col items-center">
-                    <ArrowPathIcon className="h-6 w-6 mb-1" aria-hidden="true" />
+                    <ArrowPathIcon className="w-6 h-6 mb-1" aria-hidden="true" />
                     <span className="text-xs">WhatsApp</span>
                 </a>
             </nav>

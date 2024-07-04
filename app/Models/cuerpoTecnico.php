@@ -15,6 +15,7 @@ class cuerpoTecnico extends Model
     protected $fillable = [
         'fk_equipo',
         'fotoCuerpoTecnico',
+        'cargo',
         'nombreCompleto',
         'tipoIdentificacion',
         'numeroIdentificacion',
@@ -25,7 +26,7 @@ class cuerpoTecnico extends Model
 
     public function equipo()
     {
-        return $this->belongsTo(Equipo::class, 'fk_equipo', 'id');
+        return $this->belongsTo(Equipos::class, 'fk_equipo', 'id');
     }
 
 }

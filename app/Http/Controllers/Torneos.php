@@ -35,7 +35,7 @@ class Torneos extends Controller
 
     public function registrarEquipo()
     {
-        return Inertia::render('AuthEquipo/Register');
+        return Inertia::render('Auth/Register');
     }
 
     public function show($id) 

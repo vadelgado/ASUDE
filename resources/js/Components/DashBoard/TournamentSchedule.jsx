@@ -1,143 +1,181 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
+import { useSwipeable } from "react-swipeable";
 
-const teamLogos = {
-  GDC: "/images/GDC.png",
-  CRV: "/images/CRV.png",
-  PRS: "/images/PRS.png",
-  RTN: "/images/RTN.png",
-  CHA: "/images/CHA.png",
-  MCH: "/images/MCH.png",
-  WSN: "/images/WSN.png",
-  RAN: "/images/RAN.png",
-  PRC: "/images/PRC.png",
-  LA: "/images/LA.png",
-  PLC: "/images/PLC.png",
-  OUN: "/images/OUN.png",
-  // Añade más equipos según sea necesario
-};
+const TournamentSchedule = ({ programaciones_faces }) => {
+    const carouselRef = useRef(null);
 
-const TournamentSchedule = () => {
-  const [currentDayIndex, setCurrentDayIndex] = useState(0);
+    const handlePrev = () => {
+        if (carouselRef.current) {
+            const cardWidth = carouselRef.current.querySelector('.card').offsetWidth;
+            carouselRef.current.scrollBy({
+                left: -cardWidth,
+                behavior: "smooth",
+            });
+        }
+    };
 
-  const days = [
-    {
-      date: "Domingo, 25 de febrero",
-      matches: [
-        { team1: "GDC", team2: "CRV", score: "1 - 3", time: "15:00h CDMX" },
-        { team1: "PRS", team2: "RTN", score: "1 - 2", time: "16:00h CDMX" },
-        { team1: "CHA", team2: "MCH", score: "2 - 5", time: "17:00h CDMX" },
-        { team1: "WSN", team2: "RAN", score: "2 - 1", time: "18:00h CDMX" },
-        { team1: "PRC", team2: "LA", score: "4 - 2", time: "18:00h CDMX" },
-        { team1: "PLC", team2: "OUN", score: "8 - 3", time: "20:00h CDMX" },
-      ],
-    },
-    {
-      date: "Domingo, 3 de marzo",
-      matches: [
-        { team1: "MCH", team2: "GDC", score: "3 - 2", time: "15:00h CDMX" },
-        { team1: "RTN", team2: "WSN", score: "6 - 3", time: "16:00h CDMX" },
-        { team1: "OUN", team2: "PRS", score: "", time: "17:00h CDMX" },
-        // Agrega más partidos según sea necesario
-      ],
-    },
-    // Agrega más días y partidos según sea necesario
-  ];
+    const handleNext = () => {
+        if (carouselRef.current) {
+            const cardWidth = carouselRef.current.querySelector('.card').offsetWidth;
+            carouselRef.current.scrollBy({
+                left: cardWidth,
+                behavior: "smooth",
+            });
+        }
+    };
 
-  const handlePrevDay = () => {
-    if (currentDayIndex > 0) {
-      setCurrentDayIndex(currentDayIndex - 1);
-    }
-  };
+    const handlers = useSwipeable({
+        onSwipedLeft: handleNext,
+        onSwipedRight: handlePrev,
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true,
+    });
 
-  const handleNextDay = () => {
-    if (currentDayIndex < days.length - 1) {
-      setCurrentDayIndex(currentDayIndex + 1);
-    }
-  };
+    const groupedMatches = programaciones_faces.reduce((acc, match) => {
+        if (!acc[match.nombreFase]) {
+            acc[match.nombreFase] = [];
+        }
+        acc[match.nombreFase].push(match);
+        return acc;
+    }, {});
 
-  return (
-    <div className="container mx-auto py-6 pt-40">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold text-black">
-          {days[currentDayIndex].date}
-        </h1>
-        <div className="flex space-x-2">
-          <button
-            onClick={handlePrevDay}
-            className="p-2 bg-gray-800 rounded-full hover:bg-gray-700"
-            disabled={currentDayIndex === 0}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6 text-white"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={handleNextDay}
-            className="p-2 bg-gray-800 rounded-full hover:bg-gray-700"
-            disabled={currentDayIndex === days.length - 1}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6 text-white"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const daysOfWeek = [
+            "Domingo",
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves",
+            "Viernes",
+            "Sábado",
+        ];
+        const months = [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+        ];
+
+        const dayOfWeek = daysOfWeek[date.getUTCDay()];
+        const day = date.getUTCDate();
+        const month = months[date.getUTCMonth()];
+        const year = date.getUTCFullYear();
+
+        return `${dayOfWeek} ${day} ${month} de ${year}`;
+    };
+
+    return (
+        <div className="flex items-center justify-center h-auto text-white bg-gray-900 mt-36">
+            <div className="relative w-full p-4 overflow-hidden max-w-screen-2xl">
+                <div
+                    {...handlers}
+                    ref={carouselRef}
+                    className="flex overflow-x-auto transition-transform duration-300 ease-in-out md:overflow-hidden"
+                    style={{ scrollbarWidth: "none" }}
+                >
+                    {/* Cards */}
+                    {Object.entries(groupedMatches).map(
+                        ([fase, matches], index) => (
+                            <div key={index} className="mb-8">
+                                <h2 className="mt-2 mb-4 text-2xl font-bold text-blue-400">
+                                    {fase}
+                                </h2>
+                                <div className="flex space-x-4 overflow-x-auto flex-nowrap">
+                                    {matches.map((match, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="flex-none w-64 p-4 card"
+                                        >
+                                            <div className="flex flex-col justify-between h-full p-6 bg-gray-800 border-l-4 border-blue-500 rounded-lg shadow-lg">
+                                                <div>
+                                                    <p className="mb-2 text-sm font-semibold text-gray-400">
+                                                        {formatDate(match.FechaPartido)}{" "}
+                                                        {new Date(`1970-01-01T${match.HoraPartido}`).toLocaleString("en-US", {
+                                                            hour: "numeric",
+                                                            minute: "numeric",
+                                                            hour12: true,
+                                                            timeZone: "America/Bogota",
+                                                        })}
+                                                    </p>
+                                                    <p className="mb-4 text-gray-400">{match.nomLugar}</p>
+                                                    <div className="flex items-center mb-2">
+                                                        <img
+                                                            src={`/storage/${match.escudoEquipoLocal}`}
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.src = "/escudo.svg";
+                                                            }}
+                                                            alt={match.nombreEquipoLocal}
+                                                            className="w-10 h-10 mr-2"
+                                                        />
+                                                        <p className="text-gray-300 truncate">
+                                                            {match.nombreEquipoLocal
+                                                                ? match.nombreEquipoLocal
+                                                                : `Posición: ${match.posicion_local}`}
+                                                        </p>
+                                                    </div>
+                                                    <div className="flex items-center justify-center mb-2">
+                                                        <p className="mx-2 text-2xl font-bold text-yellow-300">
+                                                            {match.GolesLocal} - {match.GolesVisitante}
+                                                        </p>
+                                                    </div>
+                                                    <div className="flex items-center justify-center mb-2 space-x-2">
+                                                        <p className="text-xs text-yellow-500">{match.TarjetasAmarillasLocal}</p>
+                                                        <p className="text-xs text-red-500">{match.TarjetasRojasLocal}</p>
+                                                        <p className="text-xs text-white">-</p>
+                                                        <p className="text-xs text-yellow-500">{match.TarjetasAmarillasVisitante}</p>
+                                                        <p className="text-xs text-red-500">{match.TarjetasRojasVisitante}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <img
+                                                        src={`/storage/${match.escudoEquipoVisitante}`}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = "/escudo.svg";
+                                                        }}
+                                                        alt={match.nombreEquipoVisitante}
+                                                        className="w-10 h-10 mr-2"
+                                                    />
+                                                    <p className="text-gray-300 truncate">
+                                                        {match.nombreEquipoVisitante
+                                                            ? match.nombreEquipoVisitante
+                                                            : `Posición: ${match.posicion_visitante}`}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )
+                    )}
+                </div>
+                {/* Flechas de navegación */}
+                <button
+                    onClick={handlePrev}
+                    className="absolute left-0 hidden px-4 py-2 text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 rounded-full top-1/2 hover:bg-gray-600 hover:bg-opacity-75 md:block"
+                >
+                    &#9664;
+                </button>
+                <button
+                    onClick={handleNext}
+                    className="absolute right-0 hidden px-4 py-2 text-white transform -translate-y-1/2 bg-gray-700 bg-opacity-50 rounded-full top-1/2 hover:bg-gray-600 hover:bg-opacity-75 md:block"
+                >
+                    &#9654;
+                </button>
+            </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 px-2.5 md:grid-cols-2 lg:grid-cols-4 gap-y-2 gap-x-2">
-        {days[currentDayIndex].matches.map((match, index) => (
-          <div
-            key={index}
-            className="bg-[#141414] text-white rounded-md p-3.5 flex flex-col justify-between"
-          >
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <img
-                  src={teamLogos[match.team1]}
-                  alt={match.team1}
-                  className="w-8 h-8"
-                />
-                <span className="font-bold">{match.team1}</span>
-              </div>
-              <span className="text-lg">{match.score}</span>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold">{match.team2}</span>
-                <img
-                  src={teamLogos[match.team2]}
-                  alt={match.team2}
-                  className="w-8 h-8"
-                />
-              </div>
-            </div>
-            <div className="text-center text-gray-400 mt-2">
-              {match.time}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    );
 };
 
 export default TournamentSchedule;

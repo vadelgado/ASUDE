@@ -28,6 +28,7 @@ class ResultadoSorteoController extends Controller
             ->where('inscripciones.fk_torneo', $torneo_id)
             ->where('inscripciones.estadoInscripcion', 'Aceptada')
                 ->select('equipos.id','equipos.nombreEquipo',)
+                ->orderBy('equipos.nombreEquipo', 'asc')
             ->get();
             $cantidadEquiposParticipantes = torneo::find($torneo_id)->cantidadEquiposParticipantes;
             //dd($cantidadEquiposParticipantes);
@@ -39,8 +40,8 @@ class ResultadoSorteoController extends Controller
                 ->get();           
         } else {
 
-            $equipos = Equipos::all();
-            $resultadoSorteos = ResultadoSorteo::all();
+            $equipos = null;
+            $resultadoSorteos = null;
         }   
         //dd($equipos);
         return Inertia::render('ResultadoSorteo/Index', [

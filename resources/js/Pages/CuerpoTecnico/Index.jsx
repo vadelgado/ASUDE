@@ -12,12 +12,19 @@ import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRole }) {
+export default function Index({
+    auth,
+    cuerposTecnicos,
+    equipo_id,
+    equipo,
+    userRole,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
     const fk_equipoInput = useRef();
     const fotoCuerpoTecnicoInput = useRef();
+    const cargoInput = useRef();
     const nombreCompletoInput = useRef();
     const tipoIdentificacionInput = useRef();
     const numeroIdentificacionInput = useRef();
@@ -29,6 +36,7 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
         id: "",
         fk_equipo: equipo_id,
         fotoCuerpoTecnico: "",
+        cargo: "",
         nombreCompleto: "",
         tipoIdentificacion: "",
         numeroIdentificacion: "",
@@ -79,6 +87,7 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
         id,
         fk_equipo,
         fotoCuerpoTecnico,
+        cargo,
         nombreCompleto,
         tipoIdentificacion,
         numeroIdentificacion,
@@ -98,6 +107,7 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                 id: id,
                 fk_equipo: fk_equipo,
                 fotoCuerpoTecnico: fotoCuerpoTecnico,
+                cargo: cargo,
                 nombreCompleto: nombreCompleto,
                 tipoIdentificacion: tipoIdentificacion,
                 numeroIdentificacion: numeroIdentificacion,
@@ -128,20 +138,28 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
         e.preventDefault();
         if (operation === 1) {
             post(
-                userRole === 'admin' ? route("cuerpoTecnicoAdmin.store"): route("cuerpoTecnico.store"), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    ok("Cuerpo Técnico creado correctamente");
-                },
-            });
+                userRole === "admin"
+                    ? route("cuerpoTecnicoAdmin.store")
+                    : route("cuerpoTecnico.store"),
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        ok("Cuerpo Técnico creado correctamente");
+                    },
+                }
+            );
         } else {
             post(
-                userRole === 'admin' ? route("cuerpoTecnicoAdmin.updatepost", data.id) : route("cuerpoTecnico.updatepost", data.id), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    ok("Cuerpo Técnico actualizado correctamente");
-                },
-            });
+                userRole === "admin"
+                    ? route("cuerpoTecnicoAdmin.updatepost", data.id)
+                    : route("cuerpoTecnico.updatepost", data.id),
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        ok("Cuerpo Técnico actualizado correctamente");
+                    },
+                }
+            );
         }
     };
 
@@ -156,21 +174,25 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
         }).then((result) => {
             if (result.isConfirmed) {
                 post(
-                    userRole === 'admin' ? route("cuerpoTecnicoAdmin.toggle", id) : route("cuerpoTecnico.toggle", id), {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        ok(
-                            "El miembro del Cuerpo Técnico ha cambiado de estado correctamente"
-                        );
-                    },
-                    onError: () => {
-                        Swal.fire({
-                            title: "Error",
-                            text: "El miembro del Cuerpo Técnico no ha sido actualizado",
-                            icon: "error",
-                        });
-                    },
-                });
+                    userRole === "admin"
+                        ? route("cuerpoTecnicoAdmin.toggle", id)
+                        : route("cuerpoTecnico.toggle", id),
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            ok(
+                                "El miembro del Cuerpo Técnico ha cambiado de estado correctamente"
+                            );
+                        },
+                        onError: () => {
+                            Swal.fire({
+                                title: "Error",
+                                text: "El miembro del Cuerpo Técnico no ha sido actualizado",
+                                icon: "error",
+                            });
+                        },
+                    }
+                );
             }
         });
     };
@@ -209,50 +231,70 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
         { value: "CC", label: "Cédula de Ciudadanía" },
         { value: "CE", label: "Cédula de Extranjería" },
         { value: "TI", label: "Tarjeta de Identidad" },
-        { value: "RC", label: "Registro Civil" },
         { value: "PA", label: "Pasaporte" },
     ];
 
+    const handlecargo = [
+        { value: "", label: "Seleccione ...", disabled: true },
+        { value: "D.L.", label: "Director Logístico o Delegado" },
+        { value: "D.T.", label: "Director Técnico (Entrenador Principal)" },
+        { value: "A.T.", label: "Asistente Técnico" },
+        { value: "P.F.", label: "Preparador Físico" },
+        { value: "P.S.", label: "Preparador Salud" },
+        { value: "U.T.", label: "Utilero" },
+        { value: "T.N.", label: "Tribuna" },
+    ];
+    const cargos = {
+        "D.L.": "Director Logístico o Delegado",
+        "D.T.": "Director Técnico (Entrenador Principal)",
+        "A.T.": "Asistente Técnico",
+        "P.F.": "Preparador Físico",
+        "P.S.": "Preparador Salud",
+        "U.T.": "Utilero",
+        "T.N.": "Tribuna",
+    };
     return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     ⚽ Cuerpo Técnico 👦👧
                 </h2>
             }
         >
             <Head title="⚽ Cuerpo Técnico 👦👧" />
 
-            {/* Contenido de la vista... */}
-            <div className="text-left bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="mt-1 mb-1 flex justify-end">
-                    <PrimaryButton onClick={() => openModal(1)}>
-                        <i
-                            className="fa-solid fa-plus-circle"
-                            style={{ marginRight: "10px" }}
-                        ></i>
-                        Agregar Miembro
-                    </PrimaryButton>
-                </div>
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <div className="w-full text-left mt-2 ml-6">
-                        <span className="font-bold italic">
+            <div className="py-6">
+                <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
+                    <div className="flex justify-end mt-1 mb-4">
+                        <PrimaryButton onClick={() => openModal(1)}>
+                            <i className="mr-2 fa-solid fa-plus-circle"></i>
+                            Agregar Miembro
+                        </PrimaryButton>
+                    </div>
+
+                    <div className="w-full mt-2 text-left">
+                        <span className="italic font-bold">
                             NOMBRE EQUIPO:{" "}
                         </span>
-                        <span className="inline-block">{equipo}</span>
+                        <span>{equipo}</span>
                     </div>
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
-                        <thead>
-                            <tr className="bg-gray-100">
+
+                    <table className="w-full mt-4 border border-gray-400 table-auto">
+                        <thead className="bg-gray-100">
+                            <tr>
                                 <th className="px-2 py-2">N°</th>
                                 <th className="px-2 py-2">
                                     NOMBRES Y APELLIDOS
                                 </th>
+                                <th className="px-2 py-2">FOTO</th>
+                                <th className="px-2 py-2">CARGO</th>
                                 <th className="px-2 py-2">TIPO DOC</th>
                                 <th className="px-2 py-2"># DOC</th>
                                 <th className="px-2 py-2">TELÉFONO CELULAR</th>
-                                <th className="px-2 py-2">CORREO ELECTRÓNICO</th>
+                                <th className="px-2 py-2">
+                                    CORREO ELECTRÓNICO
+                                </th>
                                 <th className="px-2 py-2">ACCIONES</th>
                             </tr>
                         </thead>
@@ -260,23 +302,37 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                             {cuerposTecnicos.length > 0 ? (
                                 cuerposTecnicos.map((cuerpoTecnico, i) => (
                                     <tr key={cuerpoTecnico.id}>
-                                        <td className="px-2 py-2">{i + 1}</td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
+                                            {i + 1}
+                                        </td>
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.nombreCompleto}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="flex items-center justify-center px-2 py-2 border">
+                                            <img
+                                                src={`/storage/${cuerpoTecnico.fotoCuerpoTecnico}`}
+                                                alt={
+                                                    cuerpoTecnico.nombreCompleto
+                                                }
+                                                className="object-cover w-16 h-16 border rounded-full"
+                                            />
+                                        </td>
+                                        <td className="px-2 py-2 border">
+                                        {cargos[cuerpoTecnico.cargo]}
+                                        </td>
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.tipoIdentificacion}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.numeroIdentificacion}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.telefonoCelular}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 border">
                                             {cuerpoTecnico.correoElectronico}
                                         </td>
-                                        <td className="px-2 py-2">
+                                        <td className="px-2 py-2 space-x-2 border">
                                             <WarningButton
                                                 onClick={() =>
                                                     openModal(
@@ -284,12 +340,13 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                                                         cuerpoTecnico.id,
                                                         cuerpoTecnico.fk_equipo,
                                                         cuerpoTecnico.fotoCuerpoTecnico,
+                                                        cuerpoTecnico.cargo,
                                                         cuerpoTecnico.nombreCompleto,
                                                         cuerpoTecnico.tipoIdentificacion,
                                                         cuerpoTecnico.numeroIdentificacion,
                                                         cuerpoTecnico.telefonoFijo,
                                                         cuerpoTecnico.telefonoCelular,
-                                                        cuerpoTecnico.correoElectronico                                                        
+                                                        cuerpoTecnico.correoElectronico
                                                     )
                                                 }
                                             >
@@ -304,7 +361,8 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                                                 }
                                             >
                                                 <i className="fa-solid fa-eye"></i>
-                                                {cuerpoTecnico.estadoCuerpoTecnico === 1
+                                                {cuerpoTecnico.estadoCuerpoTecnico ===
+                                                1
                                                     ? "Desactivar"
                                                     : "Activar"}
                                             </SecondaryButton>
@@ -313,8 +371,12 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="11" className="text-center">
-                                        Usted no ha subido ningún Miembro del Cuerpo Técnico. 👀
+                                    <td
+                                        colSpan="9"
+                                        className="px-2 py-2 text-center border"
+                                    >
+                                        Usted no ha subido ningún Miembro del
+                                        Cuerpo Técnico. 👀
                                     </td>
                                 </tr>
                             )}
@@ -329,7 +391,7 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                 </h2>
                 <form
                     onSubmit={save}
-                    className="p-6 grid grid-cols-2 gap-4 "
+                    className="grid grid-cols-2 gap-4 p-6"
                     encType="multipart/form-data"
                 >
                     <FormField
@@ -343,7 +405,17 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                         errorMessage={errors.nombreCompleto}
                         ref={nombreCompletoInput}
                     />
-
+                    <SelectField
+                        htmlFor="cargo"
+                        label="Cargo"
+                        id="cargo"
+                        name="cargo"
+                        value={data.cargo}
+                        options={handlecargo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.cargo}
+                        ref={cargoInput}
+                    />
                     <SelectField
                         htmlFor="tipoIdentificacion"
                         label="Tipo Documento Identidad"
@@ -355,7 +427,6 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                         errorMessage={errors.tipoIdentificacion}
                         ref={tipoIdentificacionInput}
                     />
-
                     <FormField
                         htmlFor="numeroIdentificacion"
                         label="Número Documento Identidad"
@@ -367,7 +438,6 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                         errorMessage={errors.numeroIdentificacion}
                         ref={numeroIdentificacionInput}
                     />
-
                     <FormField
                         htmlFor="telefonoFijo"
                         label="Teléfono Fijo"
@@ -379,7 +449,6 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                         errorMessage={errors.telefonoFijo}
                         ref={telefonoFijoInput}
                     />
-
                     <FormField
                         htmlFor="telefonoCelular"
                         label="Teléfono Celular"
@@ -391,7 +460,6 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                         errorMessage={errors.telefonoCelular}
                         ref={telefonoCelularInput}
                     />
-
                     <FormField
                         htmlFor="correoElectronico"
                         label="Correo Electrónico"
@@ -403,7 +471,6 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                         errorMessage={errors.correoElectronico}
                         ref={correoElectronicoInput}
                     />
-
                     <ImgField
                         htmlFor="fotoCuerpoTecnico"
                         label="Foto Cuerpo Técnico"
@@ -419,22 +486,15 @@ export default function Index({ auth, cuerposTecnicos, equipo_id, equipo,userRol
                                 : null
                         }
                     />
-
-
-
-
-
-                    <div className="mt-1">
+                    <div className="flex justify-between col-span-2 mt-1">
                         <PrimaryButton
                             processing={processing.toString()}
                             className="mt-2"
                         >
-                            <i className="fa-solid fa-save"></i>Guardar
+                            <i className="mr-2 fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
-                    </div>
-                    <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
-                            Cancel
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

@@ -15,6 +15,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+				'table-green': '#daf3d3',
+				'table-green-cabecera': '#4EA72F',
+			  },
         },
     },
 
