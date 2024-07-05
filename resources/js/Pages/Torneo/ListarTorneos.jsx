@@ -6,17 +6,18 @@ import Title from "./Title.jsx";
 import ListOfTournaments from "./ListOfTournaments.jsx";
 
 export default function ListarTorneos({ auth, torneos }) {
+        
         return (
                 <>
                         <Header auth={auth} />
                         <meta name="view-transition" content="same-origin" />
 
                         <Head title="Torneos ⚽" />
-                        <main className="m-auto max-w-4xl">
+                        <main className="max-w-4xl m-auto">
                                 <Title className="mt-4" />
 
                                 {torneos.length > 0 ? (
-                                        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                                                 {torneos.map((torneo) => (
                                                         <ListOfTournaments
                                                                 torneo={torneo}
