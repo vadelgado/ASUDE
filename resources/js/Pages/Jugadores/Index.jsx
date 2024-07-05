@@ -13,12 +13,19 @@ import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) {
+export default function Index({
+    auth,
+    equipo_id,
+    jugadores,
+    equipo,
+    userRole,
+}) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
     const [filterText, setFilterText] = useState("");
-    
+    const [disclaimerChecked, setDisclaimerChecked] = useState(false);
+
     const nombreCompletoInput = useRef();
     const fotoInput = useRef();
     const tipoIdentificacionInput = useRef();
@@ -53,13 +60,20 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
         lugarAtencionEPS: "",
     };
     const paginationComponentOptions = {
-        rowsPerPageText: 'Registros por página',
-        rangeSeparatorText: 'de',
+        rowsPerPageText: "Registros por página",
+        rangeSeparatorText: "de",
         selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos',
+        selectAllRowsItemText: "Todos",
     };
 
-    const { data, setData, errors, delete: destroy, post, processing } = useForm(InitialValues);
+    const {
+        data,
+        setData,
+        errors,
+        delete: destroy,
+        post,
+        processing,
+    } = useForm(InitialValues);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -144,31 +158,41 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
 
     const save = (e) => {
         e.preventDefault();
-        if (operation === 1) {
-            post(
-                userRole === "admin"
-                    ? route("jugadoresAdmin.store")
-                    : route("jugadores.store"),
-                {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        ok("El jugador ha sido creado");
-                    },
-                }
-            );
+        if (disclaimerChecked) {
+            if (operation === 1) {
+                post(
+                    userRole === "admin"
+                        ? route("jugadoresAdmin.store")
+                        : route("jugadores.store"),
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            ok("El jugador ha sido creado");
+                        },
+                    }
+                );
+            } else {
+                post(
+                    userRole === "admin"
+                        ? route("jugadoresAdmin.updatepost", data.id)
+                        : route("jugadores.updatepost", data.id),
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            ok("El jugador ha sido actualizado");
+                        },
+                    }
+                );
+            }
         } else {
-            post(
-                userRole === "admin"
-                    ? route("jugadoresAdmin.updatepost", data.id)
-                    : route("jugadores.updatepost", data.id),
-                {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        ok("El jugador ha sido actualizado");
-                    },
-                }
+            alert(
+                "Debe aceptar la exoneración de responsabilidades para guardar."
             );
         }
+    };
+
+    const handleDisclaimerChange = (e) => {
+        setDisclaimerChecked(e.target.checked);
     };
 
     const ok = (mensaje) => {
@@ -248,67 +272,113 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
         { value: "PA", label: "Pasaporte" },
     ];
 
-    const filteredJugadores = jugadores.filter(jugador =>
-        jugador.nombreCompleto && jugador.nombreCompleto.toLowerCase().includes(filterText.toLowerCase())
+    const filteredJugadores = jugadores.filter(
+        (jugador) =>
+            jugador.nombreCompleto &&
+            jugador.nombreCompleto
+                .toLowerCase()
+                .includes(filterText.toLowerCase())
     );
 
     const columns = [
         { name: "N°", selector: (row, index) => index + 1, sortable: true },
-        { name: "NOMBRES Y APELLIDOS", selector: row => row.nombreCompleto, sortable: true },
-        { name: "TIPO DOC", selector: row => row.tipoIdentificacion, sortable: true },
-        { name: "# DOC", selector: row => row.numeroIdentificacion, sortable: true },
-        { name: "SERIAL FOLIO", selector: row => row.numeroSerie, sortable: true },
-        { name: "FECHA NACIMIENTO", selector: row => row.fechaNacimiento, sortable: true },
-        { name: "LUGAR NACIMIENTO", selector: row => row.lugarNacimiento, sortable: true },
-        { name: "INSTITUCIÓN EDUCATIVA", selector: row => row.institucionEducativa, sortable: true },
-        { name: "GRADO", selector: row => row.grado, sortable: true },
-        { name: "CIUDAD", selector: row => row.ciudadInstitucionEducativa, sortable: true },
-        { name: "TELÉFONO INSTITUCIONAL", selector: row => row.telefonoInstitucionEducativa, sortable: true },
+        {
+            name: "NOMBRES Y APELLIDOS",
+            selector: (row) => row.nombreCompleto,
+            sortable: true,
+        },
+        {
+            name: "TIPO DOC",
+            selector: (row) => row.tipoIdentificacion,
+            sortable: true,
+        },
+        {
+            name: "# DOC",
+            selector: (row) => row.numeroIdentificacion,
+            sortable: true,
+        },
+        {
+            name: "SERIAL FOLIO",
+            selector: (row) => row.numeroSerie,
+            sortable: true,
+        },
+        {
+            name: "FECHA NACIMIENTO",
+            selector: (row) => row.fechaNacimiento,
+            sortable: true,
+        },
+        {
+            name: "LUGAR NACIMIENTO",
+            selector: (row) => row.lugarNacimiento,
+            sortable: true,
+        },
+        {
+            name: "INSTITUCIÓN EDUCATIVA",
+            selector: (row) => row.institucionEducativa,
+            sortable: true,
+        },
+        { name: "GRADO", selector: (row) => row.grado, sortable: true },
+        {
+            name: "CIUDAD",
+            selector: (row) => row.ciudadInstitucionEducativa,
+            sortable: true,
+        },
+        {
+            name: "TELÉFONO INSTITUCIONAL",
+            selector: (row) => row.telefonoInstitucionEducativa,
+            sortable: true,
+        },
         {
             name: "EDITAR",
-            cell: row => (
+            cell: (row) => (
                 <WarningButton
-                    onClick={() => openModal(
-                        2,
-                        row.id,
-                        row.nombreCompleto,
-                        row.foto,
-                        row.tipoIdentificacion,
-                        row.numeroIdentificacion,
-                        row.numeroSerie,
-                        row.fechaNacimiento,
-                        row.lugarNacimiento,
-                        row.institucionEducativa,
-                        row.grado,
-                        row.ciudadInstitucionEducativa,
-                        row.telefonoInstitucionEducativa,
-                        row.fk_equipo,
-                        row.estadoEPS,
-                        row.nombreEPS,
-                        row.lugarAtencionEPS
-                    )}
+                    onClick={() =>
+                        openModal(
+                            2,
+                            row.id,
+                            row.nombreCompleto,
+                            row.foto,
+                            row.tipoIdentificacion,
+                            row.numeroIdentificacion,
+                            row.numeroSerie,
+                            row.fechaNacimiento,
+                            row.lugarNacimiento,
+                            row.institucionEducativa,
+                            row.grado,
+                            row.ciudadInstitucionEducativa,
+                            row.telefonoInstitucionEducativa,
+                            row.fk_equipo,
+                            row.estadoEPS,
+                            row.nombreEPS,
+                            row.lugarAtencionEPS
+                        )
+                    }
                 >
                     <i className="fa-solid fa-pencil"></i>
                 </WarningButton>
-            )
+            ),
         },
         {
             name: "ESTADO",
-            cell: row => (
+            cell: (row) => (
                 <SecondaryButton
                     onClick={() => toggleJugador(row.id, row.nombreCompleto)}
                 >
                     <i className="fa-solid fa-eye"></i>
                     {row.estado === 1 ? "Off" : "On"}
                 </SecondaryButton>
-            )
+            ),
         },
     ];
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">⚽ Jugadores 👦👧</h2>}
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    ⚽ Jugadores 👦👧
+                </h2>
+            }
         >
             <Head title="⚽ Jugadores 👦👧" />
 
@@ -320,7 +390,11 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
                             Agregar Jugador
                         </PrimaryButton>
                         <PrimaryButton>
-                            <a href={route("jugadores.pdf", { equipo_id })} target="_blank" download>
+                            <a
+                                href={route("jugadores.pdf", { equipo_id })}
+                                target="_blank"
+                                download
+                            >
                                 <i className="mr-2 fa-solid fa-file-pdf"></i>
                                 Descargar PDF
                             </a>
@@ -338,7 +412,9 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
                     </div>
 
                     <div className="mt-2 text-left">
-                        <span className="italic font-bold">NOMBRE EQUIPO: </span>
+                        <span className="italic font-bold">
+                            NOMBRE EQUIPO:{" "}
+                        </span>
                         <span>{equipo}</span>
                     </div>
 
@@ -350,9 +426,11 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
                         paginationComponentOptions={paginationComponentOptions}
                         highlightOnHover
                         responsive
-                        striped                        
+                        striped
                         fixedHeader
-                        noDataComponent={<div>No hay Jugadores Registrados</div>}
+                        noDataComponent={
+                            <div>No hay Jugadores Registrados</div>
+                        }
                     />
                 </div>
             </div>
@@ -550,10 +628,30 @@ export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) 
                         errorMessage={errors.lugarAtencionEPS}
                         ref={lugarAtencionEPSInput}
                     />
+
+                    <div className="flex items-center col-span-2">
+                        <input
+                            type="checkbox"
+                            id="disclaimer"
+                            name="disclaimer"
+                            onChange={handleDisclaimerChange}
+                            checked={disclaimerChecked}
+                        />
+ <label htmlFor="disclaimer" className="ml-2">
+        Acepto la exoneración de responsabilidades
+        <a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            Ley 1581 de 2012 de Protección de Datos Personales
+        </a>. Al aceptar, reconozco que autorizo a Alianza Sureña Grupo Empresarial para utilizar los datos personales de los jugadores exclusivamente para la gestión y organización de torneos de fútbol.
+        La información recopilada incluye datos detallados como nombre completo, foto, tipo y número de identificación, fecha y lugar de nacimiento, entre otros. Estos datos serán tratados de manera confidencial y solo se usarán para verificar la elegibilidad de los jugadores, organizar eventos y mantener comunicación con los representantes legales sobre actividades relacionadas con el torneo.
+        Los titulares de los datos pueden ejercer sus derechos de acceso, rectificación y actualización contactando a través de CIMA_FUTURASESTRELLAS@hotmail.com o llamando al +57 318 3773718.
+    </label>
+                    </div>
+
                     <div className="flex justify-between col-span-2 mt-1">
                         <PrimaryButton
                             processing={processing.toString()}
                             className="mt-2"
+                            disabled={!disclaimerChecked}
                         >
                             <i className="mr-2 fa-solid fa-save"></i>Guardar
                         </PrimaryButton>
