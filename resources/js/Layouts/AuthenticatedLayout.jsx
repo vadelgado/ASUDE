@@ -42,9 +42,7 @@ export default function Authenticated({ user, header, children }) {
                                         <NavLink href={route("equipos.index")} active={route().current("equipos.index")}>
                                             Mis Equipos ⚽
                                         </NavLink>
-                                        <NavLink href={route("amonestacionesTC.index")} active={route().current("amonestacionesTC.index")}>
-                                            Amonestaciones ☢
-                                        </NavLink>
+
                                         <NavLink href={route("torneo.index")} active={route().current("torneo.index")}>
                                             Torneos 🏟
                                         </NavLink>
@@ -127,9 +125,6 @@ export default function Authenticated({ user, header, children }) {
                             <>
                                 <ResponsiveNavLink href={route("equipos.index")} active={route().current("equipos.index")}>
                                     Mis Equipos ⚽
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("amonestacionesTC.index")} active={route().current("amonestacionesTC.index")}>
-                                    Amonestaciones ☢
                                 </ResponsiveNavLink>
                                 <ResponsiveNavLink href={route("torneo.index")} active={route().current("torneo.index")}>
                                     Torneos 🏟

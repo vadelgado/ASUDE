@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
+import DataTable from "react-data-table-component";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import DangerButton from "@/Components/DangerButton";
@@ -22,7 +23,8 @@ export default function Index({
 }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
-    const [operation, setOperation] = useState("");
+    const [operation, setOperation] = useState(1);
+    const [filterText, setFilterText] = useState("");
     const nombreEquipoInput = useRef();
     const fk_categoria_equipoInput = useRef();
     const escudoEquipoInput = useRef();
@@ -175,230 +177,249 @@ export default function Index({
             label: categoria.descripcion,
         })),
     ];
-    return (
-<AuthenticatedLayout
-    user={auth.user}
-    header={
-        <h2 className="text-2xl font-semibold leading-tight text-gray-800">
-            ⚽ Equipos 🥅
-        </h2>
-    }
->
-    <Head title="⚽ Equipos 🥅" />
-    <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
-        <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold">Lista de Equipos</h3>
-            <PrimaryButton onClick={() => openModal(1)}>
-                <i className="mr-2 fa-solid fa-plus-circle"></i>
-                Agregar
-            </PrimaryButton>
-        </div>
-        <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-                <thead>
-                    <tr className="text-sm leading-normal text-gray-700 uppercase bg-gray-200">
-                        <th className="px-6 py-3 text-left">No.</th>
-                        <th className="px-6 py-3 text-left">Nombre del Equipo</th>
-                        <th className="px-6 py-3 text-left">Categoría</th>
-                        <th className="px-6 py-3 text-left">Escudo del Equipo</th>
-                        <th className="px-6 py-3 text-left">Número de WhatsApp</th>
-                        <th className="px-6 py-3 text-left">Correo Electrónico</th>
-                        <th className="px-6 py-3 text-left">Preinscribir</th>
-                        <th className="px-6 py-3 text-left">Editar</th>
-                        <th className="px-6 py-3 text-left">Eliminar</th>
-                        <th className="px-6 py-3 text-left">Jugadores</th>
-                        <th className="px-6 py-3 text-left">Cuerpo Técnico</th>
-                    </tr>
-                </thead>
-                <tbody className="text-sm font-light text-gray-600">
-                    {equipos.length > 0 ? (
-                        equipos.map((equipo, index) => (
-                            <tr key={equipo.id} className="border-b border-gray-200 hover:bg-gray-100">
-                                <td className="px-6 py-3 text-left">{index + 1}</td>
-                                <td className="px-6 py-3 text-left">{equipo.nombreEquipo}</td>
-                                <td className="px-6 py-3 text-left">{equipo.descripcion}</td>
-                                <td className="px-6 py-3 text-left">
-                                    <img
-                                        src={`/storage/${equipo.escudoEquipo}`}
-                                        alt={equipo.nombreEquipo}
-                                        className="w-16 h-16 rounded-full"
-                                    />
-                                </td>
-                                <td className="px-6 py-3 text-left">{equipo.numeroWhatsapp}</td>
-                                <td className="px-6 py-3 text-left">{equipo.correoElectronico}</td>
-                                <td className="px-6 py-3 text-left">
-                                    {userRole === "admin" && (
-                                        <a
-                                            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                                            href={`/inscripciones?equipo_id=${equipo.id}`}
-                                        >
-                                            <i className="mr-2 fa-solid fa-book"></i>
-                                            Torneos
-                                        </a>
-                                    )}
-                                    {userRole === "equipo" && (
-                                        <a
-                                            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                                            href={`/inscripcionesEquipo?equipo_id=${equipo.id}`}
-                                        >
-                                            <i className="mr-2 fa-solid fa-book"></i>
-                                            Torneos
-                                        </a>
-                                    )}
-                                </td>
-                                <td className="px-6 py-3 text-left">
-                                    <WarningButton
-                                        onClick={() =>
-                                            openModal(
-                                                2,
-                                                equipo.id,
-                                                equipo.nombreEquipo,
-                                                equipo.fk_categoria_equipo,
-                                                equipo.escudoEquipo,
-                                                equipo.numeroWhatsapp,
-                                                equipo.correoElectronico,
-                                                equipo.fk_user
-                                            )
-                                        }
-                                    >
-                                        <i className="fa-solid fa-edit"></i>
-                                    </WarningButton>
-                                </td>
-                                <td className="px-6 py-3 text-left">
-                                    <DangerButton
-                                        onClick={() =>
-                                            eliminar(
-                                                equipo.id,
-                                                equipo.nombreEquipo
-                                            )
-                                        }
-                                    >
-                                        <i className="fa-solid fa-trash"></i>
-                                    </DangerButton>
-                                </td>
-                                <td className="px-6 py-3 text-left">
-                                    <a
-                                        href={
-                                            userRole === "admin"
-                                                ? `/jugadoresAdmin?equipo_id=${equipo.id}`
-                                                : `/jugadores?equipo_id=${equipo.id}`
-                                        }
-                                        className="text-blue-600 hover:text-blue-900"
-                                    >
-                                        <i className="fa-solid fa-users"></i>
-                                    </a>
-                                </td>
-                                <td className="px-6 py-3 text-left">
-                                    <a
-                                        href={
-                                            userRole === "admin"
-                                                ? `/cuerpoTecnicoAdmin?equipo_id=${equipo.id}`
-                                                : `/cuerpoTecnico?equipo_id=${equipo.id}`
-                                        }
-                                        className="text-blue-600 hover:text-blue-900"
-                                    >
-                                        <i className="fa-solid fa-person-chalkboard"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="11" className="py-4 text-center">
-                                Usted no ha subido ningún Equipo. 👀
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <Modal show={modal} onClose={closeModal}>
-        <h2 className="p-3 text-lg font-medium text-gray-900">{title}</h2>
-        <form
-            onSubmit={save}
-            className="p-6"
-            encType="multipart/form-data"
-        >
-            <FormField
-                htmlFor="nombreEquipo"
-                label="Nombre del Equipo"
-                id="nombreEquipo"
-                type="text"
-                ref={nombreEquipoInput}
-                name="nombreEquipo"
-                placeholder="Nombre del Equipo"
-                value={data.nombreEquipo}
-                onChange={handleInputChange}
-                errorMessage={errors.nombreEquipo}
-            />
-            <SelectField
-                htmlFor="fk_categoria_equipo"
-                label="Categoría"
-                id="fk_categoria_equipo"
-                ref={fk_categoria_equipoInput}
-                name="fk_categoria_equipo"
-                value={data.fk_categoria_equipo}
-                onChange={handleInputChange}
-                errorMessage={errors.fk_categoria_equipo}
-                options={handleCategorias}
-            />
-            <ImgField
-                htmlFor="escudoEquipo"
-                label="Escudo del Equipo"
-                id="escudoEquipo"
-                ref={escudoEquipoInput}
-                name="escudoEquipo"
-                value={data.escudoEquipo}
-                onChange={handleFileChange}
-                errorMessage={errors.escudoEquipo}
-                imageUrl={
-                    data.escudoEquipo
-                        ? `http://127.0.0.1:8000/storage/${data.escudoEquipo}`
-                        : null
-                }
-            />
-            <FormField
-                htmlFor="numeroWhatsApp"
-                label="Número de WhatsApp"
-                id="numeroWhatsApp"
-                type="number"
-                ref={numeroWhatsAppInput}
-                name="numeroWhatsapp"
-                placeholder="Número de WhatsApp"
-                value={data.numeroWhatsapp}
-                onChange={handleInputChange}
-                errorMessage={errors.numeroWhatsapp}
-            />
-            <FormField
-                htmlFor="correoElectronico"
-                label="Correo Electrónico"
-                id="correoElectronico"
-                type="email"
-                ref={correoElectronicoInput}
-                name="correoElectronico"
-                placeholder="Correo Electrónico"
-                value={data.correoElectronico}
-                onChange={handleInputChange}
-                errorMessage={errors.correoElectronico}
-            />
-            <div className="mt-4">
-                <PrimaryButton
-                    processing={processing.toString()}
-                    className="mt-2"
+    const columns = [
+        { name: "No.", selector: (row, index) => index + 1, sortable: true },
+        {
+            name: "Nombre del Equipo",
+            selector: (row) => row.nombreEquipo,
+            sortable: true,
+        },
+        {
+            name: "Categoría",
+            selector: (row) => row.descripcion,
+            sortable: true,
+        },
+        {
+            name: "Escudo del Equipo",
+            selector: (row) => (
+                <img
+                    src={`/storage/${row.escudoEquipo}`}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/escudo.svg";
+                        e.target.style.filter = "brightness(0.5)";
+                    }}
+                    alt={row.nombreEquipo}
+                    className="w-16 h-16 rounded-full"
+                />
+            ),
+        },
+        {
+            name: "Número de WhatsApp",
+            selector: (row) => row.numeroWhatsapp,
+            sortable: true,
+        },
+        {
+            name: "Correo Electrónico",
+            selector: (row) => row.correoElectronico,
+            sortable: true,
+        },
+        {
+            name: "Preinscribir",
+            cell: (row) =>
+                userRole === "admin" ? (
+                    <a
+                        className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+                        href={`/inscripciones?equipo_id=${row.id}`}
+                    >
+                        <i className="mr-2 fa-solid fa-book"></i>Torneos
+                    </a>
+                ) : (
+                    <a
+                        className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+                        href={`/inscripcionesEquipo?equipo_id=${row.id}`}
+                    >
+                        <i className="mr-2 fa-solid fa-book"></i>Torneos
+                    </a>
+                ),
+        },
+        {
+            name: "Editar",
+            cell: (row) => (
+                <WarningButton
+                    onClick={() =>
+                        openModal(
+                            2,
+                            row.id,
+                            row.nombreEquipo,
+                            row.fk_categoria_equipo,
+                            row.escudoEquipo,
+                            row.numeroWhatsapp,
+                            row.correoElectronico,
+                            row.fk_user
+                        )
+                    }
                 >
-                    <i className="fa-solid fa-save"></i>Guardar
-                </PrimaryButton>
-            </div>
-            <div className="flex justify-end mt-6">
-                <SecondaryButton onClick={closeModal}>
-                    Cancelar
-                </SecondaryButton>
-            </div>
-        </form>
-    </Modal>
-</AuthenticatedLayout>
+                    <i className="fa-solid fa-edit"></i>
+                </WarningButton>
+            ),
+        },
+        {
+            name: "Eliminar",
+            cell: (row) => (
+                <DangerButton
+                    onClick={() => eliminar(row.id, row.nombreEquipo)}
+                >
+                    <i className="fa-solid fa-trash"></i>
+                </DangerButton>
+            ),
+        },
+        {
+            name: "Miembros del Equipo",
+            cell: (row) => (
+                <a
+                    href={
+                        userRole === "admin"
+                            ? `/jugadoresAdmin?equipo_id=${row.id}`
+                            : `/jugadores?equipo_id=${row.id}`
+                    }
+                    className="text-blue-600 hover:text-blue-900"
+                >
+                    <i className="fa-solid fa-users"></i>
+                </a>
+            ),
+        },
+    ];
 
+    const filteredNombreEquipo = equipos.filter((equipo) =>
+        equipo.nombreEquipo.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    const paginationComponentOptions = {
+        rowsPerPageText: "Registros por página",
+        rangeSeparatorText: "de",
+        selectAllRowsItem: true,
+        selectAllRowsItemText: "Todos",
+    };
+
+    return (
+        <AuthenticatedLayout
+            user={auth.user}
+            header={
+                <h2 className="text-2xl font-semibold leading-tight text-gray-800">
+                    ⚽ Equipos 🥅
+                </h2>
+            }
+        >
+            <Head title="⚽ Equipos 🥅" />
+            <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
+                <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold">Lista de Equipos</h3>
+                    <PrimaryButton onClick={() => openModal(1)}>
+                        <i className="mr-2 fa-solid fa-plus-circle"></i>Agregar
+                    </PrimaryButton>
+                </div>
+
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        className="w-full p-2 border rounded"
+                        placeholder="Buscar por nombre Equipo..."
+                        value={filterText}
+                        onChange={(e) => setFilterText(e.target.value)}
+                    />
+                </div>
+
+                <div className="overflow-x-auto">
+                    <DataTable
+                        title="Equipos"
+                        columns={columns}
+                        data={filteredNombreEquipo}
+                        pagination
+                        paginationComponentOptions={paginationComponentOptions}
+                        highlightOnHover
+                        responsive
+                        noDataComponent="Usted no ha subido ningún Equipo. 👀"
+                    />
+                </div>
+            </div>
+            <Modal show={modal} onClose={closeModal}>
+                <h2 className="p-3 text-lg font-medium text-gray-900">
+                    {title}
+                </h2>
+                <form
+                    onSubmit={save}
+                    className="p-6"
+                    encType="multipart/form-data"
+                >
+                    <FormField
+                        htmlFor="nombreEquipo"
+                        label="Nombre del Equipo"
+                        id="nombreEquipo"
+                        type="text"
+                        ref={nombreEquipoInput}
+                        name="nombreEquipo"
+                        placeholder="Nombre del Equipo"
+                        value={data.nombreEquipo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.nombreEquipo}
+                    />
+                    <SelectField
+                        htmlFor="fk_categoria_equipo"
+                        label="Categoría"
+                        id="fk_categoria_equipo"
+                        ref={fk_categoria_equipoInput}
+                        name="fk_categoria_equipo"
+                        value={data.fk_categoria_equipo}
+                        onChange={handleInputChange}
+                        errorMessage={errors.fk_categoria_equipo}
+                        options={handleCategorias}
+                    />
+                    <ImgField
+                        htmlFor="escudoEquipo"
+                        label="Escudo del Equipo"
+                        id="escudoEquipo"
+                        ref={escudoEquipoInput}
+                        name="escudoEquipo"
+                        value={data.escudoEquipo}
+                        onChange={handleFileChange}
+                        errorMessage={errors.escudoEquipo}
+                        imageUrl={
+                            data.escudoEquipo
+                                ? `http://127.0.0.1:8000/storage/${data.escudoEquipo}`
+                                : null
+                        }
+                    />
+                    <FormField
+                        htmlFor="numeroWhatsApp"
+                        label="Número de WhatsApp"
+                        id="numeroWhatsApp"
+                        type="number"
+                        ref={numeroWhatsAppInput}
+                        name="numeroWhatsapp"
+                        placeholder="Número de WhatsApp"
+                        value={data.numeroWhatsapp}
+                        onChange={handleInputChange}
+                        errorMessage={errors.numeroWhatsapp}
+                    />
+                    <FormField
+                        htmlFor="correoElectronico"
+                        label="Correo Electrónico"
+                        id="correoElectronico"
+                        type="email"
+                        ref={correoElectronicoInput}
+                        name="correoElectronico"
+                        placeholder="Correo Electrónico"
+                        value={data.correoElectronico}
+                        onChange={handleInputChange}
+                        errorMessage={errors.correoElectronico}
+                    />
+                    <div className="mt-4">
+                        <PrimaryButton
+                            processing={processing.toString()}
+                            className="mt-2"
+                        >
+                            <i className="fa-solid fa-save"></i>Guardar
+                        </PrimaryButton>
+                    </div>
+                    <div className="flex justify-end mt-6">
+                        <SecondaryButton onClick={closeModal}>
+                            Cancelar
+                        </SecondaryButton>
+                    </div>
+                </form>
+            </Modal>
+        </AuthenticatedLayout>
     );
 }

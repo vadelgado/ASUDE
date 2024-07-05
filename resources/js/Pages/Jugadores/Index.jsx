@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from "react";
-
+import { useRef, useState } from "react";
 import { useForm, Link } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
+import DataTable from "react-data-table-component";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import FormField from "@/Components/FormField";
@@ -13,16 +13,12 @@ import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 
-export default function Index({
-    auth,
-    equipo_id,
-    jugadores,
-    equipo,
-    userRole,
-}) {
+export default function Index({ auth, equipo_id, jugadores, equipo, userRole }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
+    const [filterText, setFilterText] = useState("");
+    
     const nombreCompletoInput = useRef();
     const fotoInput = useRef();
     const tipoIdentificacionInput = useRef();
@@ -56,14 +52,14 @@ export default function Index({
         nombreEPS: "",
         lugarAtencionEPS: "",
     };
-    const {
-        data,
-        setData,
-        errors,
-        delete: destroy,
-        post,
-        processing,
-    } = useForm(InitialValues);
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Registros por página',
+        rangeSeparatorText: 'de',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Todos',
+    };
+
+    const { data, setData, errors, delete: destroy, post, processing } = useForm(InitialValues);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -252,14 +248,67 @@ export default function Index({
         { value: "PA", label: "Pasaporte" },
     ];
 
+    const filteredJugadores = jugadores.filter(jugador =>
+        jugador.nombreCompleto && jugador.nombreCompleto.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    const columns = [
+        { name: "N°", selector: (row, index) => index + 1, sortable: true },
+        { name: "NOMBRES Y APELLIDOS", selector: row => row.nombreCompleto, sortable: true },
+        { name: "TIPO DOC", selector: row => row.tipoIdentificacion, sortable: true },
+        { name: "# DOC", selector: row => row.numeroIdentificacion, sortable: true },
+        { name: "SERIAL FOLIO", selector: row => row.numeroSerie, sortable: true },
+        { name: "FECHA NACIMIENTO", selector: row => row.fechaNacimiento, sortable: true },
+        { name: "LUGAR NACIMIENTO", selector: row => row.lugarNacimiento, sortable: true },
+        { name: "INSTITUCIÓN EDUCATIVA", selector: row => row.institucionEducativa, sortable: true },
+        { name: "GRADO", selector: row => row.grado, sortable: true },
+        { name: "CIUDAD", selector: row => row.ciudadInstitucionEducativa, sortable: true },
+        { name: "TELÉFONO INSTITUCIONAL", selector: row => row.telefonoInstitucionEducativa, sortable: true },
+        {
+            name: "EDITAR",
+            cell: row => (
+                <WarningButton
+                    onClick={() => openModal(
+                        2,
+                        row.id,
+                        row.nombreCompleto,
+                        row.foto,
+                        row.tipoIdentificacion,
+                        row.numeroIdentificacion,
+                        row.numeroSerie,
+                        row.fechaNacimiento,
+                        row.lugarNacimiento,
+                        row.institucionEducativa,
+                        row.grado,
+                        row.ciudadInstitucionEducativa,
+                        row.telefonoInstitucionEducativa,
+                        row.fk_equipo,
+                        row.estadoEPS,
+                        row.nombreEPS,
+                        row.lugarAtencionEPS
+                    )}
+                >
+                    <i className="fa-solid fa-pencil"></i>
+                </WarningButton>
+            )
+        },
+        {
+            name: "ESTADO",
+            cell: row => (
+                <SecondaryButton
+                    onClick={() => toggleJugador(row.id, row.nombreCompleto)}
+                >
+                    <i className="fa-solid fa-eye"></i>
+                    {row.estado === 1 ? "Off" : "On"}
+                </SecondaryButton>
+            )
+        },
+    ];
+
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    ⚽ Jugadores 👦👧
-                </h2>
-            }
+            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">⚽ Jugadores 👦👧</h2>}
         >
             <Head title="⚽ Jugadores 👦👧" />
 
@@ -271,140 +320,40 @@ export default function Index({
                             Agregar Jugador
                         </PrimaryButton>
                         <PrimaryButton>
-                            <a
-                                href={route("jugadores.pdf", { equipo_id })}
-                                target="_blank"
-                                download
-                            >
+                            <a href={route("jugadores.pdf", { equipo_id })} target="_blank" download>
                                 <i className="mr-2 fa-solid fa-file-pdf"></i>
                                 Descargar PDF
                             </a>
                         </PrimaryButton>
                     </div>
 
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            placeholder="Buscar por nombre del jugador"
+                            className="w-full px-4 py-2 border rounded-lg"
+                            value={filterText}
+                            onChange={(e) => setFilterText(e.target.value)}
+                        />
+                    </div>
+
                     <div className="mt-2 text-left">
-                        <span className="italic font-bold">
-                            NOMBRE EQUIPO:{" "}
-                        </span>
+                        <span className="italic font-bold">NOMBRE EQUIPO: </span>
                         <span>{equipo}</span>
                     </div>
 
-                    <table className="w-full mt-4 border border-gray-400 table-auto">
-                        <thead className="bg-gray-100">
-                            <tr>
-                                <th className="px-2 py-2">N°</th>
-                                <th className="px-2 py-2">
-                                    NOMBRES Y APELLIDOS
-                                </th>
-                                <th className="px-2 py-2">TIPO DOC</th>
-                                <th className="px-2 py-2"># DOC</th>
-                                <th className="px-2 py-2">SERIAL FOLIO</th>
-                                <th className="px-2 py-2">FECHA NACIMIENTO</th>
-                                <th className="px-2 py-2">LUGAR NACIMIENTO</th>
-                                <th className="px-2 py-2">
-                                    INSTITUCIÓN EDUCATIVA
-                                </th>
-                                <th className="px-2 py-2">GRADO</th>
-                                <th className="px-2 py-2">CIUDAD</th>
-                                <th className="px-2 py-2">
-                                    TELÉFONO INSTITUCIONAL
-                                </th>
-                                <th className="px-2 py-2">ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {jugadores.length > 0 ? (
-                                jugadores.map((jugador, i) => (
-                                    <tr key={jugador.id}>
-                                        <td className="px-2 py-2 border">
-                                            {i + 1}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.nombreCompleto}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.tipoIdentificacion}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.numeroIdentificacion}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.numeroSerie}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.fechaNacimiento}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.lugarNacimiento}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.institucionEducativa}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.grado}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {jugador.ciudadInstitucionEducativa}
-                                        </td>
-                                        <td className="px-2 py-2 border">
-                                            {
-                                                jugador.telefonoInstitucionEducativa
-                                            }
-                                        </td>
-                                        <td className="flex px-2 py-2 space-x-2 border">
-                                            <WarningButton
-                                                onClick={() =>
-                                                    openModal(
-                                                        2,
-                                                        jugador.id,
-                                                        jugador.nombreCompleto,
-                                                        jugador.foto,
-                                                        jugador.tipoIdentificacion,
-                                                        jugador.numeroIdentificacion,
-                                                        jugador.numeroSerie,
-                                                        jugador.fechaNacimiento,
-                                                        jugador.lugarNacimiento,
-                                                        jugador.institucionEducativa,
-                                                        jugador.grado,
-                                                        jugador.ciudadInstitucionEducativa,
-                                                        jugador.telefonoInstitucionEducativa,
-                                                        jugador.fk_equipo,
-                                                        jugador.estadoEPS,
-                                                        jugador.nombreEPS,
-                                                        jugador.lugarAtencionEPS
-                                                    )
-                                                }
-                                            >
-                                                <i className="fa-solid fa-pencil"></i>
-                                            </WarningButton>
-                                            <SecondaryButton
-                                                onClick={() =>
-                                                    toggleJugador(
-                                                        jugador.id,
-                                                        jugador.nombreCompleto
-                                                    )
-                                                }
-                                            >
-                                                <i className="fa-solid fa-eye"></i>
-                                                {jugador.estado === 1
-                                                    ? "Desactivar"
-                                                    : "Activar"}
-                                            </SecondaryButton>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td
-                                        colSpan="12"
-                                        className="px-2 py-2 text-center border"
-                                    >
-                                        Usted no ha subido ningún Jugador. 👀
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <DataTable
+                        title="Listado de Jugadores"
+                        columns={columns}
+                        data={filteredJugadores}
+                        pagination
+                        paginationComponentOptions={paginationComponentOptions}
+                        highlightOnHover
+                        responsive
+                        striped                        
+                        fixedHeader
+                        noDataComponent={<div>No hay Jugadores Registrados</div>}
+                    />
                 </div>
             </div>
 

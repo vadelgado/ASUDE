@@ -30,6 +30,7 @@
         "flowbite-react": "^0.9.0",
         "framer-motion": "^11.2.10",
         "photoswipe": "^5.4.3",
+        "react-data-table-component": "^7.6.2",
         "react-datepicker": "^6.9.0",
         "react-dropzone": "^14.2.3",
         "react-router-dom": "^6.24.0",
