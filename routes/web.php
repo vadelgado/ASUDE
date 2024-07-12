@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredUserAdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\JugadoresController;
+use App\Http\Controllers\HomeController;
 use Inertia\Inertia;
 
 
@@ -91,6 +92,11 @@ Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('to
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);
+
+Route::get('/PoliticasPrivacidad',[HomeController::class, 'PrivacyPolicy'])->name('politicasPrivacidad.index');
+Route::get('/TerminosCondiciones',[HomeController::class, 'TerminosCondiciones'])->name('terminosCondiciones.index');
+Route::get('/politica-de-cookies',[HomeController::class, 'PoliticaCokies'])->name('PoliticaCokies.index');
+Route::get('/LICENSE',[HomeController::class, 'License'])->name('License.index');
 
 
 Route::middleware('auth')->group(function () {
