@@ -7,8 +7,8 @@ export default function Footer() {
             <div className="w-full max-w-screen-xl p-4 px-6 py-6 mx-auto lg:py-8">
                 <div className="md:flex md:justify-between">
                     <div className="flex flex-col mb-6 md:mb-0">
-                        <Link href="/" className="flex items-center justify-center -mt-14">
-                            <Logo className="w-auto h-12 sm:h-16" />
+                        <Link href="/" className="flex items-center justify-center -mt-24">
+                            <img className="w-auto h-40" src="logo-footer.webp" alt="LogoFooter" />
                         </Link>
                         <div className="flex justify-center mt-4 gap-x-2">
                             <a href="https://www.facebook.com/oscarbolanoscastro" target="_blank" className="text-gray-500 hover:text-white">

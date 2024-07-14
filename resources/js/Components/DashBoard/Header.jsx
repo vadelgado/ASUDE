@@ -6,7 +6,7 @@ import { Bars3Icon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { PhoneIcon, PlayCircleIcon } from "@heroicons/react/20/solid";
 import HeaderLink from "@/Components/DashBoard/HeaderLink";
 import Logo from "@/Components/Logo";
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Asegúrate de importar FontAwesome CSS
+import "@fortawesome/fontawesome-free/css/all.min.css"; // Asegúrate de importar FontAwesome CSS
 
 const callsToAction = [
     { name: "Watch demo", href: "#", icon: PlayCircleIcon },
@@ -27,7 +27,9 @@ export default function Header({ auth }) {
                     <div className="flex items-center mb-2 md:mb-0">
                         <span className="mr-2">
                             <i className="fa-brands fa-whatsapp"></i>{" "}
-                            <span className="font-bold">Contáctenos por Whatsapp</span>
+                            <span className="font-bold">
+                                Contáctenos por Whatsapp
+                            </span>
                         </span>
                         <a
                             href="https://wa.me/573183773718"
@@ -40,7 +42,10 @@ export default function Header({ auth }) {
                     </div>
                 </div>
             </div>
-            <nav className="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8" aria-label="Global">
+            <nav
+                className="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8"
+                aria-label="Global"
+            >
                 <HeaderLink
                     checkActive={false}
                     href="/"
@@ -64,15 +69,21 @@ export default function Header({ auth }) {
                 </div>
                 <Popover.Group className="hidden lg:flex lg:gap-x-12">
                     <HeaderLink
-                        href={route("torneo.listarTorneos")}
-                        active={route().current("torneo.listarTorneos") ? "true" : undefined}
-                        className="text-sm font-semibold leading-6 text-white"
+                        href="/"
+                        className="block px-4 text-base font-medium text-white hover:bg-green-600"
+                    >
+                        🏠INICIO
+                    </HeaderLink>
+                    <HeaderLink
+                        href="/listarTorneos"
+                        className="block px-4 text-base font-medium text-white hover:bg-green-600"
                     >
                         ⚽PRÓXIMOS TORNEOS
                     </HeaderLink>
                     <FlyoutMenu auth={auth} />
                 </Popover.Group>
             </nav>
+            
             <Dialog
                 as="div"
                 className="lg:hidden"
@@ -95,14 +106,17 @@ export default function Header({ auth }) {
                             onClick={() => setMobileMenuOpen(false)}
                         >
                             <span className="sr-only">Cerrar menú</span>
-                            
-                             <i className="w-6 h-6 fa-solid fa-circle-xmark" aria-hidden="true"></i>
+
+                            <i
+                                className="w-6 h-6 fa-solid fa-circle-xmark"
+                                aria-hidden="true"
+                            ></i>
                         </button>
                     </div>
                     <div className="flow-root mt-6">
                         <div className="divide-y divide-gray-500/10">
                             <div className="py-6 space-y-2">
-                            <Link
+                                <Link
                                     href="/"
                                     className="block px-4 text-base font-medium text-white hover:bg-green-600"
                                 >
@@ -121,12 +135,21 @@ export default function Header({ auth }) {
                 </Dialog.Panel>
             </Dialog>
             <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around py-3 text-white bg-green-500 md:hidden">
-                <a href="tel:+573183773718" className="flex flex-col items-center">
+                <a
+                    href="tel:+573183773718"
+                    className="flex flex-col items-center"
+                >
                     <PhoneIcon className="w-6 h-6 mb-1" aria-hidden="true" />
                     <span className="text-xs">Llamar</span>
                 </a>
-                <a href="https://wa.me/573183773718" className="flex flex-col items-center">
-                    <ArrowPathIcon className="w-6 h-6 mb-1" aria-hidden="true" />
+                <a
+                    href="https://wa.me/573183773718"
+                    className="flex flex-col items-center"
+                >
+                    <ArrowPathIcon
+                        className="w-6 h-6 mb-1"
+                        aria-hidden="true"
+                    />
                     <span className="text-xs">WhatsApp</span>
                 </a>
             </nav>
