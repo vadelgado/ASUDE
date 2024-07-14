@@ -12,6 +12,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function Index({
     auth,
@@ -127,10 +128,10 @@ export default function Index({
         setOperation(op);
 
         if (op === 1) {
-            setTitle("Nuevo Jugador");
+            setTitle("Nuevo Miembro del Equipo");
             setData(InitialValues);
         } else {
-            setTitle("Editar Jugador");
+            setTitle("Editar Miembro del Equipo");
             setData({
                 id: id,
                 nombreCompleto: nombreCompleto,
@@ -167,7 +168,7 @@ export default function Index({
                     {
                         preserveScroll: true,
                         onSuccess: () => {
-                            ok("El jugador ha sido creado");
+                            ok("El Miembro del Equipo ha sido creado");
                         },
                     }
                 );
@@ -179,7 +180,7 @@ export default function Index({
                     {
                         preserveScroll: true,
                         onSuccess: () => {
-                            ok("El jugador ha sido actualizado");
+                            ok("El Miembro del Equipo ha sido actualizado");
                         },
                     }
                 );
@@ -202,8 +203,8 @@ export default function Index({
 
     const toggleJugador = (id, nombreJugador) => {
         Swal.fire({
-            title: "Activar/Desactivar Jugador",
-            text: `¿Está seguro cambiar el estado del jugador ${nombreJugador}?`,
+            title: "Activar/Desactivar",
+            text: `¿Está seguro cambiar el estado del Miembro del Equipo ${nombreJugador}?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -219,12 +220,12 @@ export default function Index({
                     {
                         preserveScroll: true,
                         onSuccess: () => {
-                            ok("El jugador ha sido actualizado");
+                            ok("El Miembro del Equipo ha sido actualizado");
                         },
                         onError: () => {
                             Swal.fire({
                                 title: "Error",
-                                text: "El jugador no ha sido actualizado",
+                                text: "El Miembro del Equipo no ha sido actualizado",
                                 icon: "error",
                             });
                         },
@@ -236,8 +237,8 @@ export default function Index({
 
     const eliminar = (id, nombreJugador) => {
         Swal.fire({
-            title: "Eliminar Jugador",
-            text: `¿Está seguro de eliminar al jugador ${nombreJugador}?`,
+            title: "Eliminar Miembro del Equipo",
+            text: `¿Está seguro de eliminar al Miembro del Equipo ${nombreJugador}?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -249,12 +250,12 @@ export default function Index({
                 destroy(route("jugadores.destroy", id), {
                     preserveScroll: true,
                     onSuccess: () => {
-                        ok("El jugador ha sido eliminado");
+                        ok("El Miembro del Equipo ha sido eliminado");
                     },
                     onError: () => {
                         Swal.fire({
                             title: "Error",
-                            text: "El jugador no ha sido eliminado",
+                            text: "El Miembro del Equipo no ha sido eliminado",
                             icon: "error",
                         });
                     },
@@ -376,291 +377,382 @@ export default function Index({
             user={auth.user}
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    ⚽ Jugadores 👦👧
+                    ⚽ Miembros del Equipo 👦👧
                 </h2>
             }
         >
-            <Head title="⚽ Jugadores 👦👧" />
+            <Head title="⚽ Miembros del Equipo 👦👧" />
+            <div className="flex flex-col min-h-screen">
+                <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+                    <div className="py-6">
+                        <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
+                            <div className="flex justify-end mt-1 mb-4 space-x-4">
+                                <PrimaryButton onClick={() => openModal(1)}>
+                                    <i className="mr-2 fa-solid fa-plus-circle"></i>
+                                    Agregar Miembro del Equipo
+                                </PrimaryButton>
+                                <PrimaryButton>
+                                    <a
+                                        href={route("jugadores.pdf", {
+                                            equipo_id,
+                                        })}
+                                        target="_blank"
+                                        download
+                                    >
+                                        <i className="mr-2 fa-solid fa-file-pdf"></i>
+                                        Descargar PDF
+                                    </a>
+                                </PrimaryButton>
+                            </div>
 
-            <div className="py-6">
-                <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
-                    <div className="flex justify-end mt-1 mb-4 space-x-4">
-                        <PrimaryButton onClick={() => openModal(1)}>
-                            <i className="mr-2 fa-solid fa-plus-circle"></i>
-                            Agregar Jugador
-                        </PrimaryButton>
-                        <PrimaryButton>
-                            <a
-                                href={route("jugadores.pdf", { equipo_id })}
-                                target="_blank"
-                                download
-                            >
-                                <i className="mr-2 fa-solid fa-file-pdf"></i>
-                                Descargar PDF
-                            </a>
-                        </PrimaryButton>
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    placeholder="Buscar por nombre del Miembro del Equipo"
+                                    className="w-full px-4 py-2 border rounded-lg"
+                                    value={filterText}
+                                    onChange={(e) =>
+                                        setFilterText(e.target.value)
+                                    }
+                                />
+                            </div>
+
+                            <div className="mt-2 text-left">
+                                <span className="italic font-bold">
+                                    NOMBRE EQUIPO:{" "}
+                                </span>
+                                <span>{equipo}</span>
+                            </div>
+
+                            <DataTable
+                                title="Listado de Miembro del Equipo"
+                                columns={columns}
+                                data={filteredJugadores}
+                                pagination
+                                paginationComponentOptions={
+                                    paginationComponentOptions
+                                }
+                                highlightOnHover
+                                responsive
+                                striped
+                                fixedHeader
+                                noDataComponent={
+                                    <div>
+                                        No hay Miembro del Equipo Registrados
+                                    </div>
+                                }
+                            />
+                        </div>
                     </div>
 
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            placeholder="Buscar por nombre del jugador"
-                            className="w-full px-4 py-2 border rounded-lg"
-                            value={filterText}
-                            onChange={(e) => setFilterText(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="mt-2 text-left">
-                        <span className="italic font-bold">
-                            NOMBRE EQUIPO:{" "}
-                        </span>
-                        <span>{equipo}</span>
-                    </div>
-
-                    <DataTable
-                        title="Listado de Jugadores"
-                        columns={columns}
-                        data={filteredJugadores}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        highlightOnHover
-                        responsive
-                        striped
-                        fixedHeader
-                        noDataComponent={
-                            <div>No hay Jugadores Registrados</div>
-                        }
-                    />
-                </div>
-            </div>
-
-            <Modal show={modal} close={closeModal}>
-                <h2 className="p-3 text-lg font-medium text-gray-900">
-                    {title}
-                </h2>
-                <form
-                    onSubmit={save}
-                    className="grid grid-cols-2 gap-4 p-6"
-                    encType="multipart/form-data"
-                >
-                    <FormField
-                        htmlFor="nombreCompleto"
-                        label="Nombres y Apellidos"
-                        id="nombreCompleto"
-                        type="text"
-                        name="nombreCompleto"
-                        value={data.nombreCompleto}
-                        onChange={handleInputChangeMayus}
-                        errorMessage={errors.nombreCompleto}
-                        ref={nombreCompletoInput}
-                    />
-                    <ImgField
-                        htmlFor="foto"
-                        label="Foto Jugador"
-                        id="foto"
-                        name="foto"
-                        ref={fotoInput}
-                        onChange={handleFileChange}
-                        value={data.foto}
-                        errorMessage={errors.foto}
-                        imageUrl={
-                            data.foto
-                                ? `http://127.0.0.1:8000/storage/${data.foto}`
-                                : null
-                        }
-                    />
-                    <SelectField
-                        htmlFor="tipoIdentificacion"
-                        label="Tipo Documento Identidad"
-                        id="tipoIdentificacion"
-                        name="tipoIdentificacion"
-                        value={data.tipoIdentificacion}
-                        options={handletipoDocIdentidad}
-                        onChange={handleInputChange}
-                        errorMessage={errors.tipoIdentificacion}
-                        ref={tipoIdentificacionInput}
-                    />
-                    <FormField
-                        htmlFor="numeroIdentificacion"
-                        label="Número Documento Identidad"
-                        id="numeroIdentificacion"
-                        type="number"
-                        name="numeroIdentificacion"
-                        value={data.numeroIdentificacion}
-                        onChange={handleInputChange}
-                        errorMessage={errors.numeroIdentificacion}
-                        ref={numeroIdentificacionInput}
-                    />
-                    <FormField
-                        htmlFor="numeroSerie"
-                        label="Serial Folio"
-                        id="numeroSerie"
-                        type="number"
-                        name="numeroSerie"
-                        value={data.numeroSerie}
-                        onChange={handleInputChange}
-                        errorMessage={errors.numeroSerie}
-                        ref={numeroSerieInput}
-                    />
-                    <FormField
-                        htmlFor="fechaNacimiento"
-                        label="Fecha Nacimiento"
-                        id="fechaNacimiento"
-                        type="date"
-                        name="fechaNacimiento"
-                        value={data.fechaNacimiento}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fechaNacimiento}
-                        ref={fechaNacimientoInput}
-                    />
-                    <FormField
-                        htmlFor="lugarNacimiento"
-                        label="Lugar Nacimiento"
-                        id="lugarNacimiento"
-                        type="text"
-                        name="lugarNacimiento"
-                        value={data.lugarNacimiento}
-                        onChange={handleInputChangeFirst}
-                        errorMessage={errors.lugarNacimiento}
-                        ref={lugarNacimientoInput}
-                    />
-                    <FormField
-                        htmlFor="institucionEducativa"
-                        label="Institución Educativa"
-                        id="institucionEducativa"
-                        type="text"
-                        name="institucionEducativa"
-                        value={data.institucionEducativa}
-                        onChange={handleInputChangeFirst}
-                        errorMessage={errors.institucionEducativa}
-                        ref={institucionEducativaInput}
-                    />
-                    <SelectField
-                        htmlFor="grado"
-                        label="Grado"
-                        id="grado"
-                        name="grado"
-                        value={data.grado}
-                        options={[
-                            {
-                                value: "",
-                                label: "Seleccione ...",
-                                disabled: true,
-                            },
-                            { value: "0", label: "Preescolar" },
-                            { value: "1", label: "Primero" },
-                            { value: "2", label: "Segundo" },
-                            { value: "3", label: "Tercero" },
-                            { value: "4", label: "Cuarto" },
-                            { value: "5", label: "Quinto" },
-                            { value: "6", label: "Sexto" },
-                            { value: "7", label: "Séptimo" },
-                            { value: "8", label: "Octavo" },
-                            { value: "9", label: "Noveno" },
-                            { value: "10", label: "Décimo" },
-                            { value: "11", label: "Once" },
-                        ]}
-                        onChange={handleInputChange}
-                        errorMessage={errors.grado}
-                        ref={gradoInput}
-                    />
-                    <FormField
-                        htmlFor="ciudadInstitucionEducativa"
-                        label="Ciudad Institución Educativa"
-                        id="ciudadInstitucionEducativa"
-                        type="text"
-                        name="ciudadInstitucionEducativa"
-                        value={data.ciudadInstitucionEducativa}
-                        onChange={handleInputChangeFirst}
-                        errorMessage={errors.ciudadInstitucionEducativa}
-                        ref={ciudadInstitucionEducativaInput}
-                    />
-                    <FormField
-                        htmlFor="telefonoInstitucionEducativa"
-                        label="Teléfono Institución Educativa"
-                        id="telefonoInstitucionEducativa"
-                        type="number"
-                        name="telefonoInstitucionEducativa"
-                        value={data.telefonoInstitucionEducativa}
-                        onChange={handleInputChange}
-                        errorMessage={errors.telefonoInstitucionEducativa}
-                        ref={telefonoInstitucionEducativaInput}
-                    />
-                    <SelectField
-                        htmlFor="estadoEPS"
-                        label="Estado EPS"
-                        id="estadoEPS"
-                        name="estadoEPS"
-                        value={data.estadoEPS}
-                        options={[
-                            {
-                                value: "",
-                                label: "Seleccione ...",
-                                disabled: true,
-                            },
-                            { value: "1", label: "Activo" },
-                            { value: "0", label: "Inactivo" },
-                        ]}
-                        onChange={handleInputChange}
-                        errorMessage={errors.estadoEPS}
-                        ref={estadoEPSInput}
-                    />
-                    <FormField
-                        htmlFor="nombreEPS"
-                        label="Nombre EPS"
-                        id="nombreEPS"
-                        type="text"
-                        name="nombreEPS"
-                        value={data.nombreEPS}
-                        onChange={handleInputChangeFirst}
-                        errorMessage={errors.nombreEPS}
-                        ref={nombreEPSInput}
-                    />
-                    <FormField
-                        htmlFor="lugarAtencionEPS"
-                        label="Lugar Atención EPS"
-                        id="lugarAtencionEPS"
-                        type="text"
-                        name="lugarAtencionEPS"
-                        value={data.lugarAtencionEPS}
-                        onChange={handleInputChangeFirst}
-                        errorMessage={errors.lugarAtencionEPS}
-                        ref={lugarAtencionEPSInput}
-                    />
-
-                    <div className="flex items-center col-span-2">
-                        <input
-                            type="checkbox"
-                            id="disclaimer"
-                            name="disclaimer"
-                            onChange={handleDisclaimerChange}
-                            checked={disclaimerChecked}
-                        />
- <label htmlFor="disclaimer" className="ml-2">
-        Acepto la exoneración de responsabilidades
-        <a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-            Ley 1581 de 2012 de Protección de Datos Personales
-        </a>. Al aceptar, reconozco que autorizo a Alianza Sureña Grupo Empresarial para utilizar los datos personales de los jugadores exclusivamente para la gestión y organización de torneos de fútbol.
-        La información recopilada incluye datos detallados como nombre completo, foto, tipo y número de identificación, fecha y lugar de nacimiento, entre otros. Estos datos serán tratados de manera confidencial y solo se usarán para verificar la elegibilidad de los jugadores, organizar eventos y mantener comunicación con los representantes legales sobre actividades relacionadas con el torneo.
-        Los titulares de los datos pueden ejercer sus derechos de acceso, rectificación y actualización contactando a través de CIMA_FUTURASESTRELLAS@hotmail.com o llamando al +57 318 3773718.
-    </label>
-                    </div>
-
-                    <div className="flex justify-between col-span-2 mt-1">
-                        <PrimaryButton
-                            processing={processing.toString()}
-                            className="mt-2"
-                            disabled={!disclaimerChecked}
+                    <Modal show={modal} close={closeModal}>
+                    <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
+                        <form
+                            onSubmit={save}
+                            className="grid grid-cols-2 gap-4 p-6"
+                            encType="multipart/form-data"
                         >
-                            <i className="mr-2 fa-solid fa-save"></i>Guardar
-                        </PrimaryButton>
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
-                    </div>
-                </form>
-            </Modal>
+                            <FormField
+                                htmlFor="nombreCompleto"
+                                label={
+                                    <>
+                                        <span>Nombres y Apellidos</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }                               
+                                id="nombreCompleto"
+                                type="text"
+                                name="nombreCompleto"
+                                value={data.nombreCompleto}
+                                onChange={handleInputChangeMayus}
+                                errorMessage={errors.nombreCompleto}
+                                ref={nombreCompletoInput}
+                            />
+                            <ImgField
+                                htmlFor="foto"
+                                label={
+                                    <>
+                                        <span>Foto</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="foto"
+                                name="foto"
+                                ref={fotoInput}
+                                onChange={handleFileChange}
+                                value={data.foto}
+                                errorMessage={errors.foto}
+                                imageUrl={
+                                    data.foto
+                                        ? `http://127.0.0.1:8000/storage/${data.foto}`
+                                        : null
+                                }
+                            />
+                            <SelectField
+                                htmlFor="tipoIdentificacion"
+                                label={
+                                    <>
+                                        <span>Tipo Documento Identidad</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="tipoIdentificacion"
+                                name="tipoIdentificacion"
+                                value={data.tipoIdentificacion}
+                                options={handletipoDocIdentidad}
+                                onChange={handleInputChange}
+                                errorMessage={errors.tipoIdentificacion}
+                                ref={tipoIdentificacionInput}
+                            />
+                            <FormField
+                                htmlFor="numeroIdentificacion"
+                                label={
+                                    <>
+                                        <span>Número Documento Identidad</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="numeroIdentificacion"
+                                type="number"
+                                name="numeroIdentificacion"
+                                value={data.numeroIdentificacion}
+                                onChange={handleInputChange}
+                                errorMessage={errors.numeroIdentificacion}
+                                ref={numeroIdentificacionInput}
+                            />
+                            <FormField
+                                htmlFor="numeroSerie"
+                                label={
+                                    <>
+                                        <span>Registro Civil #SERIAL FOLIO si es Jugado</span>                                        
+                                    </>
+                                }
+                                id="numeroSerie"
+                                type="number"
+                                name="numeroSerie"
+                                value={data.numeroSerie}
+                                onChange={handleInputChange}
+                                errorMessage={errors.numeroSerie}
+                                ref={numeroSerieInput}
+                            />
+                            <FormField
+                                htmlFor="fechaNacimiento"
+                                label={
+                                    <>
+                                        <span>Fecha Nacimiento</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="fechaNacimiento"
+                                type="date"
+                                name="fechaNacimiento"
+                                value={data.fechaNacimiento}
+                                onChange={handleInputChange}
+                                errorMessage={errors.fechaNacimiento}
+                                ref={fechaNacimientoInput}
+                            />
+                            <FormField
+                                htmlFor="lugarNacimiento"
+                                label={
+                                    <>
+                                        <span>Lugar Nacimiento</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="lugarNacimiento"
+                                type="text"
+                                name="lugarNacimiento"
+                                value={data.lugarNacimiento}
+                                onChange={handleInputChangeFirst}
+                                errorMessage={errors.lugarNacimiento}
+                                ref={lugarNacimientoInput}
+                            />
+                            <FormField
+                                htmlFor="institucionEducativa"
+                                label={
+                                    <>
+                                        <span>Institución Educativa</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="institucionEducativa"
+                                type="text"
+                                name="institucionEducativa"
+                                value={data.institucionEducativa}
+                                onChange={handleInputChangeFirst}
+                                errorMessage={errors.institucionEducativa}
+                                ref={institucionEducativaInput}
+                            />
+                            <FormField
+                                htmlFor="grado"
+                                label={
+                                    <>
+                                        <span>Grado de Estudio Actual o Máximo</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }                                
+                                id="grado"
+                                type="text"
+                                name="grado"
+                                value={data.grado}
+                                onChange={handleInputChange}
+                                errorMessage={errors.grado}
+                                ref={gradoInput}
+                            />
+                            
+                            <FormField
+                                htmlFor="ciudadInstitucionEducativa"
+                                label={
+                                    <>
+                                        <span>Ciudad Institución Educativa</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="ciudadInstitucionEducativa"
+                                type="text"
+                                name="ciudadInstitucionEducativa"
+                                value={data.ciudadInstitucionEducativa}
+                                onChange={handleInputChangeFirst}
+                                errorMessage={errors.ciudadInstitucionEducativa}
+                                ref={ciudadInstitucionEducativaInput}
+                            />
+                            <FormField
+                                htmlFor="telefonoInstitucionEducativa"
+                                label={
+                                    <>
+                                        <span>Teléfono Institución Educativa</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="telefonoInstitucionEducativa"
+                                type="number"
+                                name="telefonoInstitucionEducativa"
+                                value={data.telefonoInstitucionEducativa}
+                                onChange={handleInputChange}
+                                errorMessage={
+                                    errors.telefonoInstitucionEducativa
+                                }
+                                ref={telefonoInstitucionEducativaInput}
+                            />
+                            <SelectField
+                                htmlFor="estadoEPS"
+                                label={
+                                    <>
+                                        <span>Estado EPS</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="estadoEPS"
+                                name="estadoEPS"
+                                value={data.estadoEPS}
+                                options={[
+                                    {
+                                        value: "",
+                                        label: "Seleccione ...",
+                                        disabled: true,
+                                    },
+                                    { value: "1", label: "Activo" },
+                                    { value: "0", label: "Inactivo" },
+                                ]}
+                                onChange={handleInputChange}
+                                errorMessage={errors.estadoEPS}
+                                ref={estadoEPSInput}
+                            />
+                            <FormField
+                                htmlFor="nombreEPS"
+                                label={
+                                    <>
+                                        <span>Nombre EPS</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="nombreEPS"
+                                type="text"
+                                name="nombreEPS"
+                                value={data.nombreEPS}
+                                onChange={handleInputChangeFirst}
+                                errorMessage={errors.nombreEPS}
+                                ref={nombreEPSInput}
+                            />
+                            <FormField
+                                htmlFor="lugarAtencionEPS"
+                                label={
+                                    <>
+                                        <span>lugar Atención EPS</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="lugarAtencionEPS"
+                                type="text"
+                                name="lugarAtencionEPS"
+                                value={data.lugarAtencionEPS}
+                                onChange={handleInputChangeFirst}
+                                errorMessage={errors.lugarAtencionEPS}
+                                ref={lugarAtencionEPSInput}
+                            />
+
+                            <div className="flex items-center col-span-2">
+                                <input
+                                    type="checkbox"
+                                    id="disclaimer"
+                                    name="disclaimer"
+                                    onChange={handleDisclaimerChange}
+                                    checked={disclaimerChecked}
+                                />
+                                <label htmlFor="disclaimer" className="ml-2">
+                                <span className="text-red-500">*</span>
+                                    Acepto la exoneración de responsabilidades
+                                    <a
+                                        href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-500 hover:underline"
+                                    >
+                                        Ley 1581 de 2012 de Protección de Datos
+                                        Personales
+                                    </a>
+                                    . Al aceptar, reconozco que autorizo a
+                                    Alianza Sureña Grupo Empresarial para
+                                    utilizar los datos personales de los Miembro
+                                    del Equipo exclusivamente para la gestión y
+                                    organización de torneos de fútbol. La
+                                    información recopilada incluye datos
+                                    detallados como nombre completo, foto, tipo
+                                    y número de identificación, fecha y lugar de
+                                    nacimiento, entre otros. Estos datos serán
+                                    tratados de manera confidencial y solo se
+                                    usarán para verificar la elegibilidad de los
+                                    jugadores, organizar eventos y mantener
+                                    comunicación con los representantes legales
+                                    sobre actividades relacionadas con el
+                                    torneo. Los titulares de los datos pueden
+                                    ejercer sus derechos de acceso,
+                                    rectificación y actualización contactando a
+                                    través de CIMA_FUTURASESTRELLAS@hotmail.com
+                                    o llamando al +57 318 3773718.
+                                </label>
+                            </div>
+
+                            <div className="flex justify-between col-span-2 mt-1">
+                                <PrimaryButton
+                                    processing={processing.toString()}
+                                    className="mt-2"
+                                    disabled={!disclaimerChecked}
+                                >
+                                    <i className="mr-2 fa-solid fa-save"></i>
+                                    Guardar
+                                </PrimaryButton>
+                                <SecondaryButton onClick={closeModal}>
+                                    Cancelar
+                                </SecondaryButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </main>
+            </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

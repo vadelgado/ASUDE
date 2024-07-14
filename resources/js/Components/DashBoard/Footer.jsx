@@ -34,7 +34,7 @@ export default function Footer() {
                 <div className="sm:flex sm:items-center sm:justify-between">
                 <div className="mb-4 text-center md:mb-0 md:text-left">
                         <p className="mb-2">
-                            © 2024 Futuras Estrellas, administrada por Alianza Sureña. Todos los derechos reservados.
+                            © 2024 Alianza Sureña. Todos los derechos reservados.
                         </p>
                         <p className="mb-2">
                             Este proyecto está licenciado bajo la <a href="/LICENSE" className="underline hover:text-gray-300">Licencia Apache 2.0</a>.
@@ -63,6 +63,8 @@ export default function Footer() {
                             Aviso de cookies
                         </Link>
                     </div>
+                    <br />
+                    <br  />
                 </div>
             </div>
         </footer>

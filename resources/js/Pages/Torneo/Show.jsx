@@ -11,7 +11,8 @@ export default function ListarTorneos({ auth, torneo }) {
         <>
             <Header auth={auth} />
             <Head title={`Torneo ⚽ ${torneo.nombreTorneo}`} />
-            <main className="max-w-6xl p-4 mx-auto mt-40">
+            <div className="flex flex-col min-h-screen">
+            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                     <div className="relative flex flex-col">
                         <picture className="mb-8">
@@ -63,7 +64,8 @@ export default function ListarTorneos({ auth, torneo }) {
                     </aside>
                 </div>
                 <Acordion torneo={torneo} />
-            </main>
+                </main>
+            </div>
             <Footer />
             <style>{`
                 @media (prefers-color-scheme: dark) {

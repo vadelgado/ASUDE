@@ -46,6 +46,9 @@ export default function Authenticated({ user, header, children }) {
                                         <NavLink href={route("torneo.index")} active={route().current("torneo.index")}>
                                             Torneos 🏟
                                         </NavLink>
+                                        <NavLink href={route("sistemaJuego.index")} active={route().current("sistemaJuego.index")}>
+                                            Sistema de Juego 🎲
+                                        </NavLink>
                                     </>
                                 )}
                             </div>

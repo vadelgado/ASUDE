@@ -10,6 +10,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Textarea2 from "@/Components/Textarea2";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function ResultadosPartidos({ auth, resultados, torneo }) {
     const [modal, setModal] = useState(false);
@@ -101,6 +102,8 @@ export default function ResultadosPartidos({ auth, resultados, torneo }) {
     };
     return (
         <AuthenticatedLayout user={auth.user}>
+                                <div className="flex flex-col min-h-screen">
+                                <main className="flex-grow container mx-auto px-4 py-8 mt-32">
             <div className="grid bg-white v-screen place-items-center">
                 <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => handleModal(1)}>
@@ -168,7 +171,9 @@ export default function ResultadosPartidos({ auth, resultados, torneo }) {
             </div>
 
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="text-lg font-medium text-gray-900">{title}</h2>
+            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
                 <form onSubmit={save} className="p-6">
                     <FormField
                         htmlFor="categoria"
@@ -212,6 +217,9 @@ export default function ResultadosPartidos({ auth, resultados, torneo }) {
                     </div>
                 </form>
             </Modal>
+            </main>
+            </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

@@ -16,13 +16,15 @@ export default function Welcome({ auth, torneoEnCurso, programaciones_faces}) {
         <>
             <Head title="Alianza Sureña" />
             <Header auth={auth}></Header>  
+
             <TournamentSchedule programaciones_faces={programaciones_faces}/>
             <Carousel/>
             <TablaTorneos torneoEnCurso={torneoEnCurso} />
             <Intro></Intro>
             
             <PreFooter></PreFooter>
-            <Footer></Footer>
+
+            <Footer/>
             <style>{`
                 @media (prefers-color-scheme: dark) {
                     .dark\\:bg-dots-lighter {

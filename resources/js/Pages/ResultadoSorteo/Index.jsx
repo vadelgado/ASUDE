@@ -10,6 +10,7 @@ import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import SelectField from "@/Components/SelectField";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function Index({
     auth,
@@ -227,7 +228,8 @@ export default function Index({
             }
         >
             <Head title="✋Sorteo" />
-
+            <div className="flex flex-col min-h-screen">
+            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
             <div className="container p-6 mx-auto mt-6 bg-white">
                 <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => openModal(1)}>
@@ -258,9 +260,9 @@ export default function Index({
             </div>
 
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="p-3 text-lg font-medium text-gray-900">
-                    {title}
-                </h2>
+            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
                 <form onSubmit={handleSubmit} className="p-6">
                     <input
                         type="text"
@@ -319,6 +321,9 @@ export default function Index({
                     </div>
                 </form>
             </Modal>
+            </main>
+            </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

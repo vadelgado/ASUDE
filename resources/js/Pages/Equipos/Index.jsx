@@ -13,6 +13,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function Index({
     auth,
@@ -303,6 +304,8 @@ export default function Index({
             }
         >
             <Head title="⚽ Equipos 🥅" />
+            <div className="flex flex-col min-h-screen">
+            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
             <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold">Lista de Equipos</h3>
@@ -335,9 +338,9 @@ export default function Index({
                 </div>
             </div>
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="p-3 text-lg font-medium text-gray-900">
-                    {title}
-                </h2>
+            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
                 <form
                     onSubmit={save}
                     className="p-6"
@@ -420,6 +423,9 @@ export default function Index({
                     </div>
                 </form>
             </Modal>
+            </main>
+            </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

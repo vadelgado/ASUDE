@@ -369,7 +369,9 @@ export default function Dashboard({ auth, alumnos }) {
                 </div>
             </div>
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="p-3 text-lg font-medium text-gray-900">{title}</h2>
+            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
                 <form onSubmit={save} className="p-6">
                     <div className="mt-1">
                         
