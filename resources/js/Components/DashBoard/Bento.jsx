@@ -36,28 +36,28 @@ const Bento = () => {
 
       <img
         style={{ ...imageStyle, ...(hoveredIndex === 0 && imgHoverStyle) }}
-        src="2.png"
+        src="/2.png"
         alt="BabyFutbolFemenino"
         onMouseEnter={() => handleMouseEnter(0)}
         onMouseLeave={handleMouseLeave}
       />
       <img
         style={{ ...imageStyle, ...(hoveredIndex === 1 && imgHoverStyle) }}
-        src="BabyFutbolSala.webp"
+        src="/BabyFutbolSala.webp"
         alt="BabyFutbolSala"
         onMouseEnter={() => handleMouseEnter(1)}
         onMouseLeave={handleMouseLeave}
       />
       <img
         style={{ ...imageStyle, ...(hoveredIndex === 2 && imgHoverStyle) }}
-        src="1.png"
+        src="/1.png"
         alt="BabyFutbolMasculino"
         onMouseEnter={() => handleMouseEnter(2)}
         onMouseLeave={handleMouseLeave}
       />
       <img
         style={{ ...imageStyle, ...(hoveredIndex === 3 && imgHoverStyle) }}
-        src="BabyMicro.webp"
+        src="/BabyMicro.webp"
         alt="BabyMicro"
         onMouseEnter={() => handleMouseEnter(3)}
         onMouseLeave={handleMouseLeave}

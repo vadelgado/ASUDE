@@ -45,8 +45,10 @@ Route::get('/', function () {
             'programaciones_faces.HoraPartido',
             'lugar_partidos.nomLugar',
             'lugar_partidos.geolocalizacion',
+            'el.id as idEquipoLocal',
             'el.nombreEquipo as nombreEquipoLocal',
             'el.escudoEquipo as escudoEquipoLocal',
+            'ev.id as idEquipoVisitante',
             'ev.nombreEquipo as nombreEquipoVisitante',
             'ev.escudoEquipo as escudoEquipoVisitante',
             DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.goles ELSE 0 END), 0) AS GolesLocal'),
@@ -64,8 +66,10 @@ Route::get('/', function () {
             'programaciones_faces.HoraPartido',
             'lugar_partidos.nomLugar',
             'lugar_partidos.geolocalizacion',
+            'el.id',
             'el.nombreEquipo',
             'el.escudoEquipo',
+            'ev.id',
             'ev.nombreEquipo',
             'ev.escudoEquipo'
         )
@@ -90,7 +94,7 @@ Route::get('/dashboard', function () {
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.showUno');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
-Route::get('Equipo/{id}', [TablasGruposController::class, 'equipo'])->name('equipo.index');
+Route::get('Equipo/{id}', [TablasGruposController::class, 'Equipo'])->name('equipo.showUno');
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);

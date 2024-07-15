@@ -162,6 +162,7 @@ export default function ListarTorneos({
                                                                     <span className="text-center whitespace-nowrap">
                                                                         <Link
                                                                             href={`/Equipo/${grupo[filaIndex].id}`}
+                                                                            className="text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
                                                                         >
                                                                             {
                                                                                 grupo[

@@ -70,21 +70,34 @@ class TablasGruposController extends Controller
         'torneo' => $torneo,
         'resultadosGoles' => $resultadosGoles]); 
     }
-
-    public function Equipo (Request $request)
+    public function Equipo($id)
     {
-        $request->validate([
-            'equipo_id' => 'required|integer|exists:equipos,id',
-        ]);
-
-        $equipo_id = $request->input('equipo_id');
-
-
-        return Inertia::render('Team', 
-        [
-        ]);
-
+        $equipo = Equipos::where('equipos.id', $id)
+            ->leftJoin('jugadores as j', 'equipos.id', '=', 'j.fk_equipo')
+            ->leftJoin('resultados_partidos as rs', 'j.id', '=', 'rs.fk_jugador_id')
+            ->select(
+                'equipos.nombreEquipo',
+                'equipos.escudoEquipo',
+                'j.nombreCompleto',
+                'j.foto',
+                DB::raw('COALESCE(SUM(rs.goles), 0) as golesTotales'),
+                DB::raw('COALESCE(SUM(rs.tarjetas_amarillas), 0) as tarjetasAmarillasTotales'),
+                DB::raw('COALESCE(SUM(rs.tarjetas_rojas), 0) as tarjetasRojasTotales')
+            )
+            ->groupBy(
+                'equipos.nombreEquipo', 
+                'equipos.escudoEquipo', 
+                'j.nombreCompleto', 
+                'j.foto'
+            )
+            ->orderBy('golesTotales', 'desc')
+            ->get();
+    
+        return Inertia::render('Team', ['equipo' => $equipo]);
     }
+    
+    
+    
 
 
 }

@@ -1,12 +1,15 @@
 import React, { useRef } from "react";
 import { useSwipeable } from "react-swipeable";
+import { Link, Head } from "@inertiajs/react";
 
 const TournamentSchedule = ({ programaciones_faces }) => {
+    console.log(programaciones_faces);
     const carouselRef = useRef(null);
 
     const handlePrev = () => {
         if (carouselRef.current) {
-            const cardWidth = carouselRef.current.querySelector('.card').offsetWidth;
+            const cardWidth =
+                carouselRef.current.querySelector(".card").offsetWidth;
             carouselRef.current.scrollBy({
                 left: -cardWidth,
                 behavior: "smooth",
@@ -16,7 +19,8 @@ const TournamentSchedule = ({ programaciones_faces }) => {
 
     const handleNext = () => {
         if (carouselRef.current) {
-            const cardWidth = carouselRef.current.querySelector('.card').offsetWidth;
+            const cardWidth =
+                carouselRef.current.querySelector(".card").offsetWidth;
             carouselRef.current.scrollBy({
                 left: cardWidth,
                 behavior: "smooth",
@@ -98,58 +102,107 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                             <div className="flex flex-col justify-between h-full p-6 bg-gray-800 border-l-4 border-blue-500 rounded-lg shadow-lg">
                                                 <div>
                                                     <p className="mb-2 text-sm font-semibold text-gray-400">
-                                                        {formatDate(match.FechaPartido)}{" "}
-                                                        {new Date(`1970-01-01T${match.HoraPartido}`).toLocaleString("en-US", {
-                                                            hour: "numeric",
-                                                            minute: "numeric",
-                                                            hour12: true,
-                                                            timeZone: "America/Bogota",
-                                                        })}
+                                                        {formatDate(
+                                                            match.FechaPartido
+                                                        )}{" "}
+                                                        {new Date(
+                                                            `1970-01-01T${match.HoraPartido}`
+                                                        ).toLocaleString(
+                                                            "en-US",
+                                                            {
+                                                                hour: "numeric",
+                                                                minute: "numeric",
+                                                                hour12: true,
+                                                                timeZone:
+                                                                    "America/Bogota",
+                                                            }
+                                                        )}
                                                     </p>
-                                                    <p className="mb-4 text-gray-400">{match.nomLugar}</p>
+                                                    <p className="mb-4 text-gray-400">
+                                                        {match.nomLugar}
+                                                    </p>
                                                     <div className="flex items-center mb-2">
                                                         <img
                                                             src={`/storage/${match.escudoEquipoLocal}`}
                                                             onError={(e) => {
-                                                                e.target.onerror = null;
-                                                                e.target.src = "/escudo.svg";
+                                                                e.target.onerror =
+                                                                    null;
+                                                                e.target.src =
+                                                                    "/escudo.svg";
                                                             }}
-                                                            alt={match.nombreEquipoLocal}
+                                                            alt={
+                                                                match.nombreEquipoLocal
+                                                            }
                                                             className="w-10 h-10 mr-2"
                                                         />
                                                         <p className="text-gray-300 truncate">
-                                                            {match.nombreEquipoLocal
-                                                                ? match.nombreEquipoLocal
-                                                                : `Posición: ${match.posicion_local}`}
+                                                            <Link
+                                                                href={`/Equipo/${match.idEquipoLocal}`}
+                                                                className="text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
+                                                            >
+                                                                {match.nombreEquipoLocal
+                                                                    ? match.nombreEquipoLocal
+                                                                    : `Posición: ${match.posicion_local}`}
+                                                            </Link>
                                                         </p>
                                                     </div>
                                                     <div className="flex items-center justify-center mb-2">
                                                         <p className="mx-2 text-2xl font-bold text-yellow-300">
-                                                            {match.GolesLocal} - {match.GolesVisitante}
+                                                            {match.GolesLocal} -{" "}
+                                                            {
+                                                                match.GolesVisitante
+                                                            }
                                                         </p>
                                                     </div>
                                                     <div className="flex items-center justify-center mb-2 space-x-2">
-                                                        <p className="text-xs text-yellow-500">{match.TarjetasAmarillasLocal}</p>
-                                                        <p className="text-xs text-red-500">{match.TarjetasRojasLocal}</p>
-                                                        <p className="text-xs text-white">-</p>
-                                                        <p className="text-xs text-yellow-500">{match.TarjetasAmarillasVisitante}</p>
-                                                        <p className="text-xs text-red-500">{match.TarjetasRojasVisitante}</p>
+                                                        <p className="text-xs text-yellow-500">
+                                                            {
+                                                                match.TarjetasAmarillasLocal
+                                                            }
+                                                        </p>
+                                                        <p className="text-xs text-red-500">
+                                                            {
+                                                                match.TarjetasRojasLocal
+                                                            }
+                                                        </p>
+                                                        <p className="text-xs text-white">
+                                                            -
+                                                        </p>
+                                                        <p className="text-xs text-yellow-500">
+                                                            {
+                                                                match.TarjetasAmarillasVisitante
+                                                            }
+                                                        </p>
+                                                        <p className="text-xs text-red-500">
+                                                            {
+                                                                match.TarjetasRojasVisitante
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center">
                                                     <img
                                                         src={`/storage/${match.escudoEquipoVisitante}`}
                                                         onError={(e) => {
-                                                            e.target.onerror = null;
-                                                            e.target.src = "/escudo.svg";
+                                                            e.target.onerror =
+                                                                null;
+                                                            e.target.src =
+                                                                "/escudo.svg";
                                                         }}
-                                                        alt={match.nombreEquipoVisitante}
+                                                        alt={
+                                                            match.nombreEquipoVisitante
+                                                        }
                                                         className="w-10 h-10 mr-2"
                                                     />
                                                     <p className="text-gray-300 truncate">
-                                                        {match.nombreEquipoVisitante
-                                                            ? match.nombreEquipoVisitante
-                                                            : `Posición: ${match.posicion_visitante}`}
+                                                        <Link
+                                                            href={`/Equipo/${match.idEquipoVisitante}`}
+                                                            className="text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
+                                                        >
+                                                            {match.nombreEquipoVisitante
+                                                                ? match.nombreEquipoVisitante
+                                                                : `Posición: ${match.posicion_visitante}`}
+                                                        </Link>
                                                     </p>
                                                 </div>
                                             </div>

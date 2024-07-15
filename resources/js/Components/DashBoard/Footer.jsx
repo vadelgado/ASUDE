@@ -8,15 +8,15 @@ export default function Footer() {
                 <div className="md:flex md:justify-between">
                     <div className="flex flex-col mb-6 md:mb-0">
                         <Link href="/" className="flex items-center justify-center -mt-24">
-                            <img className="w-auto h-40" src="logo-footer.webp" alt="LogoFooter" />
+                            <img className="w-auto h-40" src="/logo-footer.webp" alt="LogoFooter" />
                         </Link>
                         <div className="flex justify-center mt-4 gap-x-2">
                             <a href="https://www.facebook.com/oscarbolanoscastro" target="_blank" className="text-gray-500 hover:text-white">
-                            <img src="facebook.png" alt="Logo facebook" className="w-6 h-6"/>
+                            <img src="/facebook.png" alt="Logo facebook" className="w-6 h-6"/>
                                 <span className="sr-only">Facebook page</span>
                             </a>
                             <a href="https://wa.me/+573183773718" target="_blank" className="text-gray-500 hover:text-white ms-5">
-                                <img src="whatsapp.png" alt="Logo whatsapp" className="w-6 h-6"/>
+                                <img src="/whatsapp.png" alt="Logo whatsapp" className="w-6 h-6"/>
                                 <span className="sr-only">WhatsApp page</span>
                             </a>
                         </div>

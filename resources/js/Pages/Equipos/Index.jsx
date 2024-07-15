@@ -305,7 +305,7 @@ export default function Index({
         >
             <Head title="⚽ Equipos 🥅" />
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+            <main className="container flex-grow px-4 py-8 mx-auto mt-32">
             <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold">Lista de Equipos</h3>
