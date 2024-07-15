@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\JugadoresController;
 use App\Http\Controllers\HomeController;
 use Inertia\Inertia;
+use App\Http\Controllers\TablasGruposController;
 
 
 Route::get('/', function () {
@@ -89,6 +90,7 @@ Route::get('/dashboard', function () {
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.showUno');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
+Route::get('Equipo/{id}', [TablasGruposController::class, 'equipo'])->name('equipo.index');
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);

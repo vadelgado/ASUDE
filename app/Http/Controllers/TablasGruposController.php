@@ -26,7 +26,11 @@ class TablasGruposController extends Controller
         $tablasGrupos = ResultadoSorteo::join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
             ->join('torneo', 'resultado_sorteos.fk_torneo', '=', 'torneo.id')
             ->where('torneo.id', $torneo_id)
-            ->select('equipos.nombreEquipo','equipos.escudoEquipo' , 'resultado_sorteos.puesto')
+            ->select(
+            'equipos.id',
+            'equipos.nombreEquipo',
+            'equipos.escudoEquipo' , 
+            'resultado_sorteos.puesto')
             ->orderBy('resultado_sorteos.puesto', 'asc')
             ->get();        
         $torneo = torneo::where('id', $torneo_id)
@@ -65,6 +69,21 @@ class TablasGruposController extends Controller
         /*'programacionTorneo' => $programacionTorneo*/
         'torneo' => $torneo,
         'resultadosGoles' => $resultadosGoles]); 
+    }
+
+    public function Equipo (Request $request)
+    {
+        $request->validate([
+            'equipo_id' => 'required|integer|exists:equipos,id',
+        ]);
+
+        $equipo_id = $request->input('equipo_id');
+
+
+        return Inertia::render('Team', 
+        [
+        ]);
+
     }
 
 
