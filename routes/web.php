@@ -92,6 +92,8 @@ Route::get('/dashboard', function () {
 
 // Listar Torneos Layout Principal
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
+Route::get('finalizadosTorneos', 'App\Http\Controllers\Torneos@finalizadosTorneos')->name('torneo.finalizadosTorneos');
+Route::get('torneosIniciados', 'App\Http\Controllers\Torneos@torneosIniciados')->name('torneo.torneosIniciados');
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.showUno');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
 Route::get('Equipo/{id}', [TablasGruposController::class, 'Equipo'])->name('equipo.showUno');

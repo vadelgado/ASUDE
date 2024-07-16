@@ -116,7 +116,6 @@ export default function Dashboard({ auth, alumnos }) {
 
     const save = (e) => {
         e.preventDefault();
-        console.log("Valor de data.id:", data.id);
         if (operation === 1) {
             post(route("alumno.store"), {
                 onSuccess: () => {

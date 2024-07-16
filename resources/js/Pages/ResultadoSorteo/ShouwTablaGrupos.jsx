@@ -22,8 +22,6 @@ export default function ListarTorneos({
     torneo,
     resultadosGoles,
 }) {
-    //console.log('tablasGrupos',tablasGrupos);
-    //console.log('torneo',torneo);
     const [secuenciaLetras, setSecuenciaLetras] = useState([]);
 
     useEffect(() => {

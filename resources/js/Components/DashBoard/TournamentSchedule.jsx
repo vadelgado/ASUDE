@@ -3,7 +3,6 @@ import { useSwipeable } from "react-swipeable";
 import { Link, Head } from "@inertiajs/react";
 
 const TournamentSchedule = ({ programaciones_faces }) => {
-    console.log(programaciones_faces);
     const carouselRef = useRef(null);
 
     const handlePrev = () => {

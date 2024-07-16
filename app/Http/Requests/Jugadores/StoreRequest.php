@@ -38,6 +38,7 @@ class StoreRequest extends FormRequest
             'estadoEPS' => 'required|boolean|in:0,1',
             'nombreEPS' => 'required|string|max:255',
             'lugarAtencionEPS' => 'required|string|max:255',
+            'cuerpoTecnico' => 'nullable|string|max:255',
 
 
         ];
@@ -81,6 +82,9 @@ class StoreRequest extends FormRequest
             'estadoEPS.required' => 'El campo estado EPS es requerido',
             'nombreEPS.required' => 'El campo nombre EPS es requerido',
             'lugarAtencionEPS.required' => 'El campo lugar de atención EPS es requerido',
+            'cuerpoTecnico.string' => 'El campo cuerpo técnico debe ser de tipo texto',
+            'cuerpoTecnico.max' => 'El campo cuerpo técnico debe tener máximo 255 caracteres',
+            
 
         ];
     }	

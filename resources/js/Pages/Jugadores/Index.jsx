@@ -40,6 +40,7 @@ export default function Index({
     const telefonoInstitucionEducativaInput = useRef();
     const estadoEPSInput = useRef();
     const nombreEPSInput = useRef();
+    const cuerpoTecnicoInput = useRef();
     const lugarAtencionEPSInput = useRef();
 
     const InitialValues = {
@@ -59,6 +60,7 @@ export default function Index({
         estadoEPS: "",
         nombreEPS: "",
         lugarAtencionEPS: "",
+        cuerpoTecnico: "",
     };
     const paginationComponentOptions = {
         rowsPerPageText: "Registros por página",
@@ -122,7 +124,8 @@ export default function Index({
         fk_equipo,
         estadoEPS,
         nombreEPS,
-        lugarAtencionEPS
+        lugarAtencionEPS,
+        cuerpoTecnico
     ) => {
         setModal(true);
         setOperation(op);
@@ -149,6 +152,7 @@ export default function Index({
                 estadoEPS: estadoEPS,
                 nombreEPS: nombreEPS,
                 lugarAtencionEPS: lugarAtencionEPS,
+                cuerpoTecnico: cuerpoTecnico,
             });
         }
     };
@@ -273,6 +277,17 @@ export default function Index({
         { value: "PA", label: "Pasaporte" },
     ];
 
+    const handlecuerpoTecnico = [
+        { value: "", label: "Seleccione ...", disabled: true },
+        { value: "D.L.", label: "Delegado o Director Logístico" },
+        { value: "D.T.", label: "Director Técnico (Entrenador Principal)" },
+        { value: "A.T.", label: "Asistente Técnico" },
+        { value: "P.F.", label: "Preparador Físico" },
+        { value: "P.S.", label: "Preparador Salud" },
+        { value: "U.T.", label: "Utilero" },
+        { value: "T.N.", label: "Tribuna" },
+    ];
+
     const filteredJugadores = jugadores.filter(
         (jugador) =>
             jugador.nombreCompleto &&
@@ -330,6 +345,12 @@ export default function Index({
             sortable: true,
         },
         {
+            name: "Cuerpo Técnico",
+            selector: (row) => row.cuerpoTecnico,
+            sortable: true,
+        },
+
+        {
             name: "EDITAR",
             cell: (row) => (
                 <WarningButton
@@ -351,7 +372,8 @@ export default function Index({
                             row.fk_equipo,
                             row.estadoEPS,
                             row.nombreEPS,
-                            row.lugarAtencionEPS
+                            row.lugarAtencionEPS,
+                            row.cuerpoTecnico
                         )
                     }
                 >
@@ -383,7 +405,7 @@ export default function Index({
         >
             <Head title="⚽ Miembros del Equipo 👦👧" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
                     <div className="py-6">
                         <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
                             <div className="flex justify-end mt-1 mb-4 space-x-4">
@@ -446,7 +468,7 @@ export default function Index({
                     </div>
 
                     <Modal show={modal} close={closeModal}>
-                    <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
                         <form
@@ -461,7 +483,7 @@ export default function Index({
                                         <span>Nombres y Apellidos</span>
                                         <span className="text-red-500">*</span>
                                     </>
-                                }                               
+                                }
                                 id="nombreCompleto"
                                 type="text"
                                 name="nombreCompleto"
@@ -489,6 +511,21 @@ export default function Index({
                                         ? `http://127.0.0.1:8000/storage/${data.foto}`
                                         : null
                                 }
+                            />
+                            <SelectField
+                                htmlFor="cuerpoTecnico"
+                                label={
+                                    <>
+                                        <span>Forma Parte del Cuerpo técnico</span>
+                                    </>
+                                }
+                                id="cuerpoTecnico"
+                                name="cuerpoTecnico"
+                                value={data.cuerpoTecnico}
+                                options={handlecuerpoTecnico}
+                                onChange={handleInputChange}
+                                errorMessage={errors.cuerpoTecnico}
+                                ref={cuerpoTecnicoInput}
                             />
                             <SelectField
                                 htmlFor="tipoIdentificacion"
@@ -526,7 +563,10 @@ export default function Index({
                                 htmlFor="numeroSerie"
                                 label={
                                     <>
-                                        <span>Registro Civil #SERIAL FOLIO si es Jugado</span>                                        
+                                        <span>
+                                            Registro Civil #SERIAL FOLIO si es
+                                            Jugado
+                                        </span>
                                     </>
                                 }
                                 id="numeroSerie"
@@ -589,10 +629,12 @@ export default function Index({
                                 htmlFor="grado"
                                 label={
                                     <>
-                                        <span>Grado de Estudio Actual o Máximo</span>
+                                        <span>
+                                            Grado de Estudio Actual o Máximo
+                                        </span>
                                         <span className="text-red-500">*</span>
                                     </>
-                                }                                
+                                }
                                 id="grado"
                                 type="text"
                                 name="grado"
@@ -601,12 +643,14 @@ export default function Index({
                                 errorMessage={errors.grado}
                                 ref={gradoInput}
                             />
-                            
+
                             <FormField
                                 htmlFor="ciudadInstitucionEducativa"
                                 label={
                                     <>
-                                        <span>Ciudad Institución Educativa</span>
+                                        <span>
+                                            Ciudad Institución Educativa
+                                        </span>
                                         <span className="text-red-500">*</span>
                                     </>
                                 }
@@ -622,7 +666,9 @@ export default function Index({
                                 htmlFor="telefonoInstitucionEducativa"
                                 label={
                                     <>
-                                        <span>Teléfono Institución Educativa</span>
+                                        <span>
+                                            Teléfono Institución Educativa
+                                        </span>
                                         <span className="text-red-500">*</span>
                                     </>
                                 }
@@ -653,8 +699,8 @@ export default function Index({
                                         label: "Seleccione ...",
                                         disabled: true,
                                     },
-                                    { value: "1", label: "Activo" },
-                                    { value: "0", label: "Inactivo" },
+                                    { value: 1, label: "Activo" },
+                                    { value: 0, label: "Inactivo" },
                                 ]}
                                 onChange={handleInputChange}
                                 errorMessage={errors.estadoEPS}
@@ -702,7 +748,7 @@ export default function Index({
                                     checked={disclaimerChecked}
                                 />
                                 <label htmlFor="disclaimer" className="ml-2">
-                                <span className="text-red-500">*</span>
+                                    <span className="text-red-500">*</span>
                                     Acepto la exoneración de responsabilidades
                                     <a
                                         href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"

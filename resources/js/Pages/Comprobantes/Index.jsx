@@ -16,23 +16,22 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function Dashboard({ auth, comprobantes }) { 
     
-    console.log(comprobantes);
     
     return (
         <AuthenticatedLayout
             
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Pagos
                 </h2>
             }
         >
             <Head title="Pagos" />
             
-            <div className="bg-white grid v-screen place-items-center py-6 overflow-x-auto">
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table table-auto border border-gray-400 rounded-t-lg rounded-br-lg rounded-bl-lg">
+            <div className="grid py-6 overflow-x-auto bg-white v-screen place-items-center">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    <table className="table border border-gray-400 rounded-t-lg rounded-bl-lg rounded-br-lg table-auto">
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-2 py-2">#</th>
@@ -49,26 +48,26 @@ export default function Dashboard({ auth, comprobantes }) {
                                 comprobantes.map((comprobante, i) => (
                                     
                                     <tr key={comprobante.id}>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {i + 1}
                                         </td>
-                                        <td className="border border-gray-400 px-4 py-2">
+                                        <td className="px-4 py-2 border border-gray-400">
                                             {comprobante.alumno.identificacion}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {comprobante.alumno.nombres}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {comprobante.alumno.apellidos}
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {comprobante.fecha}
                                         </td>
 
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             <img src={comprobante.secureUrl} alt="Imagen del comprobante" />
                                         </td>
-                                        <td className="border border-gray-400 px-2 py-2">
+                                        <td className="px-2 py-2 border border-gray-400">
                                             {comprobante.valor.toLocaleString("es-CO", {
                                                 style: "currency",
                                                 currency: "COP",
@@ -80,7 +79,7 @@ export default function Dashboard({ auth, comprobantes }) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="border border-gray-400 px-4 py-2">
+                                    <td colSpan="4" className="px-4 py-2 border border-gray-400">
                                     Usted no ha subido ningún comprobante. 👀
                                     </td>
                                 </tr>

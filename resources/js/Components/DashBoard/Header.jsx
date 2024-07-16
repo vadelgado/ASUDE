@@ -21,7 +21,7 @@ export default function Header({ auth }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className="fixed top-0 z-50 w-full bg-green-700 h-36 ">
+        <header className="fixed top-0 z-50 w-full bg-green-700 h-36">
             <div className="text-xs text-black bg-green-500 sm:text-sm">
                 <div className="container flex flex-col items-center justify-center px-4 py-2 mx-auto md:flex-row">
                     <div className="flex items-center mb-2 md:mb-0">
@@ -43,7 +43,7 @@ export default function Header({ auth }) {
                 </div>
             </div>
             <nav
-                className="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8"
+                className="flex items-center justify-between p-4 mx-auto max-w-7xl lg:px-8"
                 aria-label="Global"
             >
                 <HeaderLink
@@ -67,23 +67,35 @@ export default function Header({ auth }) {
                         </button>
                     )}
                 </div>
-                <Popover.Group className="hidden lg:flex lg:gap-x-12">
+                <Popover.Group className="hidden lg:flex lg:gap-x-8">
                     <HeaderLink
                         href="/"
-                        className="block px-4 text-base font-medium text-white hover:bg-green-600"
+                        className="block px-3 text-base font-medium text-white hover:bg-green-600"
                     >
-                        🏠INICIO
+                        🏠 Inicio
                     </HeaderLink>
                     <HeaderLink
                         href="/listarTorneos"
-                        className="block px-4 text-base font-medium text-white hover:bg-green-600"
+                        className="block px-3 text-base font-medium text-white hover:bg-green-600"
                     >
-                        ⚽PRÓXIMOS TORNEOS
+                        📅 Próximos Torneos
+                    </HeaderLink>
+                    <HeaderLink
+                        href="/torneosIniciados"
+                        className="block px-3 text-base font-medium text-white hover:bg-green-600"
+                    >
+                        ⚡ Torneos en Curso
+                    </HeaderLink>
+                    <HeaderLink
+                        href="/finalizadosTorneos"
+                        className="block px-3 text-base font-medium text-white hover:bg-green-600"
+                    >
+                        🏁 Torneos Finalizados
                     </HeaderLink>
                     <FlyoutMenu auth={auth} />
                 </Popover.Group>
             </nav>
-            
+
             <Dialog
                 as="div"
                 className="lg:hidden"
@@ -120,13 +132,25 @@ export default function Header({ auth }) {
                                     href="/"
                                     className="block px-4 text-base font-medium text-white hover:bg-green-600"
                                 >
-                                    🏠INICIO
+                                    🏠 Inicio
                                 </Link>
                                 <Link
                                     href={route("torneo.listarTorneos")}
                                     className="block px-4 text-base font-medium text-white hover:bg-green-600"
                                 >
-                                    ⚽PRÓXIMOS TORNEOS
+                                    📅 Próximos Torneos
+                                </Link>
+                                <Link
+                                    href={route("torneo.torneosIniciados")}
+                                    className="block px-4 text-base font-medium text-white hover:bg-green-600"
+                                >
+                                    ⚡ Torneos en Curso
+                                </Link>
+                                <Link
+                                    href={route("torneo.finalizadosTorneos")}
+                                    className="block px-4 text-base font-medium text-white hover:bg-green-600"
+                                >
+                                    🏁 Torneos Finalizados
                                 </Link>
                                 <FlyoutMenu auth={auth} />
                             </div>

@@ -29,7 +29,25 @@ class Torneos extends Controller
 
         $sistemaJuegos = SistemaJuego::all();
         $categoriaEquipos = Categorias::all();
-        $torneos = torneo::all();
+        $torneos = Torneo::where('estadoTorneo', 'Por Iniciar')->get();
+        return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
+    }
+
+    public function torneosIniciados()
+    {
+
+        $sistemaJuegos = SistemaJuego::all();
+        $categoriaEquipos = Categorias::all();
+        $torneos = Torneo::where('estadoTorneo', 'En Juego')->get();
+        return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
+    }
+
+    public function finalizadosTorneos()
+    {
+
+        $sistemaJuegos = SistemaJuego::all();
+        $categoriaEquipos = Categorias::all();
+        $torneos = Torneo::where('estadoTorneo', 'Finalizado')->get();
         return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
     }
 

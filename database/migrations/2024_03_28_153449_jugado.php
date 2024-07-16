@@ -25,6 +25,7 @@ return new class extends Migration
             $table->boolean('estadoEPS')->default(true)->comment('1 para activo, 0 para inactivo');
             $table->string('nombreEPS');
             $table->string('lugarAtencionEPS');
+            $table->string('cuerpoTecnico')->nullable();
             $table->boolean('estado')->default(true)->comment('1 para activo, 0 para inactivo');
             $table->timestamps(false); 
    

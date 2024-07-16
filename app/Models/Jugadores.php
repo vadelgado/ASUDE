@@ -33,6 +33,7 @@ class Jugadores extends Model
         'estadoEPS',
         'nombreEPS',
         'lugarAtencionEPS',
+        'cuerpoTecnico',
         'estado',
     ]; 
 

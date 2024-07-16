@@ -23,11 +23,17 @@ export default function Footer() {
                     </div>
                     <div className="flex flex-col items-center md:flex-row md:space-x-8">
                         <Link href="/" className="mb-2 md:mb-0 hover:text-gray-300">
-                            Inicio
+                        🏠 Inicio
                         </Link>
                         <Link  href={route("torneo.listarTorneos")}  className="mb-2 md:mb-0 hover:text-gray-300">
-                            Próximos Torneos
-                        </Link>                        
+                        📅 Próximos Torneos
+                        </Link>
+                        <Link  href={route("torneo.torneosIniciados")}  className="mb-2 md:mb-0 hover:text-gray-300">
+                        ⚡ Torneos en Curso
+                        </Link>  
+                        <Link  href={route("torneo.finalizadosTorneos")}  className="mb-2 md:mb-0 hover:text-gray-300">
+                        🏁 Torneos Finalizados
+                        </Link>                          
                     </div>
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />

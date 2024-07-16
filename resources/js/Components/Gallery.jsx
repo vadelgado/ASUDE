@@ -2,7 +2,7 @@ import React from 'react';
 import SimpleGallery from './SimpleGallery';
 
 export default function Gallery({ gallery }) {
-  console.log('Gallery prop:', gallery);
+  
 
   // Verificar si la galería tiene imágenes y formatearlas correctamente
   const images = gallery.length > 0 ? gallery.map((image) => ({
@@ -12,7 +12,7 @@ export default function Gallery({ gallery }) {
     height: image.height,
   })) : [];
 
-  console.log('Formatted images for SimpleGallery:', images);
+  og('Formatted images for SimpleGallery:', images);
 
   return (
     <div>
