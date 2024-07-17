@@ -6,63 +6,74 @@ import Whatsapp from "@/Components/Whatsapp";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function ListarTorneos({ auth, torneo }) {
+    const currentDate = new Date();
+    const torneoStartDate = new Date(torneo.fechaInicio);
+
+    const isPreRegistroOpen = currentDate < torneoStartDate;
+
     return (
         <>
             <Header auth={auth} />
             <Head title={`Torneo ⚽ ${torneo.nombreTorneo}`} />
             <div className="flex flex-col min-h-screen">
-            <main className="container flex-grow px-4 py-8 mx-auto mt-32">
-                <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-                    <div className="relative flex flex-col">
-                        <picture className="mb-8">
-                            <img
-                                className="w-full h-auto transition-transform transform rounded-lg shadow-lg hover:scale-105"
-                                src={`/storage/${torneo.flayer}`}
-                                alt={`Torneo ⚽ ${torneo.nombreTorneo}`}
-                            />
-                        </picture>
-                    </div>
-                    <aside className="md:mt-0">
-                        <h1 className="mb-4 text-4xl font-extrabold text-green-900">
-                            {torneo.nombreTorneo}
-                        </h1>
-                        <p className="mb-4 text-lg font-semibold text-gray-800">
-                            {torneo.caracteristicas}
-                        </p>
-                        <p className="mb-4 text-lg font-semibold text-gray-800">
-                            <strong>Fecha Inicio:</strong> {torneo.fechaInicio}
-                        </p>
-                        <p className="mb-4 text-lg font-semibold text-gray-800">
-                            <strong>Fecha Fin:</strong> {torneo.fechaFin}
-                        </p>
-                        <p className="mb-4 text-lg font-semibold text-gray-800">
-                            <strong>Inscripción:</strong> {torneo.inscripcion}
-                        </p>
-                        <p className="mb-4 text-lg font-semibold text-gray-800">
-                            <strong>Proceso Inscripción:</strong> {torneo.procesoInscripcion}
-                        </p>
-                        <p className="mb-4 text-lg font-semibold text-gray-800">
-                            <strong>Reglamentación:</strong>{" "}
-                            <a
-                                href={torneo.reglamentacion}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline hover:text-blue-800"
-                            >
-                                Ver Documento
-                            </a>
-                        </p>
-                        <div className="flex flex-wrap items-center space-x-4">
-                            <Whatsapp torneo={torneo} />
-                            <Link href={route("preregistro.create")}>
-                                <PrimaryButton className="mt-4 md:mt-0">
-                                    Pre-registro
-                                </PrimaryButton>
-                            </Link>
+                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                    <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+                        <div className="relative flex flex-col">
+                            <picture className="mb-8">
+                                <img
+                                    className="w-full h-auto transition-transform transform rounded-lg shadow-lg hover:scale-105"
+                                    src={`/storage/${torneo.flayer}`}
+                                    alt={`Torneo ⚽ ${torneo.nombreTorneo}`}
+                                />
+                            </picture>
                         </div>
-                    </aside>
-                </div>
-                <Acordion torneo={torneo} />
+                        <aside className="md:mt-0">
+                            <h1 className="mb-4 text-4xl font-extrabold text-green-900">
+                                {torneo.nombreTorneo}
+                            </h1>
+                            <p className="mb-4 text-lg font-semibold text-gray-800">
+                                {torneo.caracteristicas}
+                            </p>
+                            <p className="mb-4 text-lg font-semibold text-gray-800">
+                                <strong>Fecha Inicio:</strong> {torneo.fechaInicio}
+                            </p>
+                            <p className="mb-4 text-lg font-semibold text-gray-800">
+                                <strong>Fecha Fin:</strong> {torneo.fechaFin}
+                            </p>
+                            <p className="mb-4 text-lg font-semibold text-gray-800">
+                                <strong>Inscripción:</strong> {torneo.inscripcion}
+                            </p>
+                            <p className="mb-4 text-lg font-semibold text-gray-800">
+                                <strong>Proceso Inscripción:</strong> {torneo.procesoInscripcion}
+                            </p>
+                            <p className="mb-4 text-lg font-semibold text-gray-800">
+                                <strong>Reglamentación:</strong>{" "}
+                                <a
+                                    href={torneo.reglamentacion}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 underline hover:text-blue-800"
+                                >
+                                    Ver Documento
+                                </a>
+                            </p>
+                            <div className="flex flex-wrap items-center space-x-4">
+                                <Whatsapp torneo={torneo} />
+                                {isPreRegistroOpen ? (
+                                    <Link href={route("preregistro.create")}>
+                                        <PrimaryButton className="mt-4 md:mt-0">
+                                            Pre-registro
+                                        </PrimaryButton>
+                                    </Link>
+                                ) : (
+                                    <p className="mt-4 font-semibold text-red-600">
+                                        Pre-registros cerrados
+                                    </p>
+                                )}
+                            </div>
+                        </aside>
+                    </div>
+                    <Acordion torneo={torneo} />
                 </main>
             </div>
             <Footer />
