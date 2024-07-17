@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Accordion({ torneo }) {
     const [openSection, setOpenSection] = useState(null);
@@ -17,9 +17,7 @@ export default function Accordion({ torneo }) {
                             ? "bg-blue-600"
                             : "bg-blue-500"
                     } hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:ring-blue-500 dark:focus:ring-blue-800`}
-                    onClick={() =>
-                        handleAccordionClick("accordion-collapse-body-1")
-                    }
+                    onClick={() => handleAccordionClick("accordion-collapse-body-1")}
                     aria-expanded={openSection === "accordion-collapse-body-1"}
                     aria-controls="accordion-collapse-body-1"
                     data-accordion-target="#accordion-collapse-body-1"
@@ -50,9 +48,7 @@ export default function Accordion({ torneo }) {
             <div
                 id="accordion-collapse-body-1"
                 className={`p-5 border border-b-0 bg-white dark:bg-gray-800 ${
-                    openSection === "accordion-collapse-body-1"
-                        ? "block"
-                        : "hidden"
+                    openSection === "accordion-collapse-body-1" ? "block" : "hidden"
                 }`}
                 aria-labelledby="accordion-collapse-heading-1"
             >
@@ -73,6 +69,16 @@ export default function Accordion({ torneo }) {
                 <p className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
                     Cantidad de Grupos: {torneo.cantidadGrupos}
                 </p>
+                {torneo.sistema_juego && (
+                    <>
+                        <p className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                            Sistema de Juego: {torneo.sistema_juego.nombreSistema}
+                        </p>
+                        <p className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                            Descripción: {torneo.sistema_juego.descripcionSistema}
+                        </p>
+                    </>
+                )}
             </div>
 
             <h2 id="accordion-collapse-heading-2">
@@ -83,9 +89,7 @@ export default function Accordion({ torneo }) {
                             ? "bg-blue-600"
                             : "bg-blue-500"
                     } hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:ring-blue-500 dark:focus:ring-blue-800`}
-                    onClick={() =>
-                        handleAccordionClick("accordion-collapse-body-2")
-                    }
+                    onClick={() => handleAccordionClick("accordion-collapse-body-2")}
                     aria-expanded={openSection === "accordion-collapse-body-2"}
                     aria-controls="accordion-collapse-body-2"
                     data-accordion-target="#accordion-collapse-body-2"
@@ -116,9 +120,7 @@ export default function Accordion({ torneo }) {
             <div
                 id="accordion-collapse-body-2"
                 className={`p-5 border border-b-0 bg-white dark:bg-gray-800 ${
-                    openSection === "accordion-collapse-body-2"
-                        ? "block"
-                        : "hidden"
+                    openSection === "accordion-collapse-body-2" ? "block" : "hidden"
                 }`}
                 aria-labelledby="accordion-collapse-heading-2"
             >

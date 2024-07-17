@@ -60,13 +60,16 @@ class Torneos extends Controller
     {
         try
         {
-            $torneo = torneo::find($id);
-
+            $torneo = Torneo::with('sistemaJuego')
+                ->where('id', $id)
+                ->first();
+    
             if (!$torneo)
             {
                 return redirect()->route('torneo.index')
                     ->with('error', 'Torneo no encontrado');
             }
+    
             return Inertia::render('Torneo/Show', ['torneo' => $torneo]);
         }
         catch(\Exception $e)
@@ -75,6 +78,7 @@ class Torneos extends Controller
                 ->with('error', 'Error al mostrar el torneo');
         }
     }
+    
 
     public function store(StoreRequest $request)
     {

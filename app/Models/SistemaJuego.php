@@ -21,6 +21,8 @@ class SistemaJuego extends Model
         return $this->hasMany(Torneo::class, 'fk_sistema_juegos');
     }
 
+    
+
 
 
 
