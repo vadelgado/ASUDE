@@ -98,7 +98,8 @@ class JugadoresController extends Controller
                 ->when($equipo_id, function ($query) use ($equipo_id) {
                     return $query->where('equipos.id', $equipo_id);
                 })
-                ->select('jugadores.nombrecompleto', 'jugadores.*', 'equipos.nombreEquipo')
+                ->select('jugadores.nombreCompleto', 'jugadores.*', 'equipos.nombreEquipo')
+                ->whereColumn('jugadores.nombreCompleto', '<>', 'equipos.nombreEquipo')
                 ->orderByRaw("
                     CASE 
                         WHEN jugadores.cuerpoTecnico IN (?, ?, ?, ?, ?, ?, ?) THEN 1
@@ -118,6 +119,7 @@ class JugadoresController extends Controller
             return Inertia::render('Dashboard');
         }
     }
+    
     
 
 

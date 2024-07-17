@@ -72,6 +72,16 @@ class TablasGruposController extends Controller
     }
     public function Equipo($id)
     {
+        $rolesOrdenFinal = [
+            "D.L.",
+            "D.T.",
+            "A.T.",
+            "P.F.",
+            "P.S.",
+            "U.T.",
+            "T.N."
+        ];
+    
         $equipo = Equipos::where('equipos.id', $id)
             ->leftJoin('jugadores as j', 'equipos.id', '=', 'j.fk_equipo')
             ->leftJoin('resultados_partidos as rs', 'j.id', '=', 'rs.fk_jugador_id')
@@ -80,21 +90,31 @@ class TablasGruposController extends Controller
                 'equipos.escudoEquipo',
                 'j.nombreCompleto',
                 'j.foto',
+                'j.cuerpoTecnico',
                 DB::raw('COALESCE(SUM(rs.goles), 0) as golesTotales'),
                 DB::raw('COALESCE(SUM(rs.tarjetas_amarillas), 0) as tarjetasAmarillasTotales'),
                 DB::raw('COALESCE(SUM(rs.tarjetas_rojas), 0) as tarjetasRojasTotales')
             )
+            ->whereColumn('j.nombreCompleto', '<>', 'equipos.nombreEquipo')
             ->groupBy(
                 'equipos.nombreEquipo', 
                 'equipos.escudoEquipo', 
                 'j.nombreCompleto', 
-                'j.foto'
+                'j.foto',
+                'j.cuerpoTecnico'
             )
-            ->orderBy('golesTotales', 'desc')
+            ->orderByRaw("
+                CASE 
+                    WHEN j.cuerpoTecnico IN (?, ?, ?, ?, ?, ?, ?) THEN 1
+                    ELSE 0
+                END ASC, golesTotales DESC
+            ", $rolesOrdenFinal)
             ->get();
     
         return Inertia::render('Team', ['equipo' => $equipo]);
     }
+    
+    
     
     
     

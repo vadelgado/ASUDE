@@ -47,7 +47,14 @@ export default function Team({ auth, equipo }) {
                                             alt={player.nombreCompleto} 
                                             className="w-24 h-24 mb-3 rounded-full shadow-md" 
                                         />
-                                        <h3 className="mb-2 text-lg font-bold text-[#FF8228]">{player.nombreCompleto}</h3>
+                                        <h3 className="mb-2 text-lg font-bold text-[#FF8228]">
+                                            {player.nombreCompleto}
+                                            {player.cuerpoTecnico && (
+                                                <span className="ml-2 text-sm text-gray-400">
+                                                    ({player.cuerpoTecnico})
+                                                </span>
+                                            )}
+                                        </h3>
                                         <div className="text-center text-gray-300">
                                             {player.golesTotales > 0 && (
                                                 <p>Goles: {player.golesTotales}</p>

@@ -12,7 +12,7 @@ export default function Gallery({ gallery }) {
     height: image.height,
   })) : [];
 
-  og('Formatted images for SimpleGallery:', images);
+  
 
   return (
     <div>
