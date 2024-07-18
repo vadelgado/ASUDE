@@ -26,7 +26,11 @@ class TablasGruposController extends Controller
         $tablasGrupos = ResultadoSorteo::join('equipos', 'resultado_sorteos.fk_equipo', '=', 'equipos.id')
             ->join('torneo', 'resultado_sorteos.fk_torneo', '=', 'torneo.id')
             ->where('torneo.id', $torneo_id)
-            ->select('equipos.nombreEquipo','equipos.escudoEquipo' , 'resultado_sorteos.puesto')
+            ->select(
+            'equipos.id',
+            'equipos.nombreEquipo',
+            'equipos.escudoEquipo' , 
+            'resultado_sorteos.puesto')
             ->orderBy('resultado_sorteos.puesto', 'asc')
             ->get();        
         $torneo = torneo::where('id', $torneo_id)
@@ -66,6 +70,54 @@ class TablasGruposController extends Controller
         'torneo' => $torneo,
         'resultadosGoles' => $resultadosGoles]); 
     }
+    public function Equipo($id)
+    {
+        $rolesOrdenFinal = [
+            "D.L.",
+            "D.T.",
+            "A.T.",
+            "P.F.",
+            "P.S.",
+            "U.T.",
+            "T.N."
+        ];
+    
+        $equipo = Equipos::where('equipos.id', $id)
+            ->leftJoin('jugadores as j', 'equipos.id', '=', 'j.fk_equipo')
+            ->leftJoin('resultados_partidos as rs', 'j.id', '=', 'rs.fk_jugador_id')
+            ->select(
+                'equipos.nombreEquipo',
+                'equipos.escudoEquipo',
+                'j.nombreCompleto',
+                'j.foto',
+                'j.cuerpoTecnico',
+                DB::raw('COALESCE(SUM(rs.goles), 0) as golesTotales'),
+                DB::raw('COALESCE(SUM(rs.tarjetas_amarillas), 0) as tarjetasAmarillasTotales'),
+                DB::raw('COALESCE(SUM(rs.tarjetas_rojas), 0) as tarjetasRojasTotales')
+            )
+            ->whereColumn('j.nombreCompleto', '<>', 'equipos.nombreEquipo')
+            ->groupBy(
+                'equipos.nombreEquipo', 
+                'equipos.escudoEquipo', 
+                'j.nombreCompleto', 
+                'j.foto',
+                'j.cuerpoTecnico'
+            )
+            ->orderByRaw("
+                CASE 
+                    WHEN j.cuerpoTecnico IN (?, ?, ?, ?, ?, ?, ?) THEN 1
+                    ELSE 0
+                END ASC, golesTotales DESC
+            ", $rolesOrdenFinal)
+            ->get();
+    
+        return Inertia::render('Team', ['equipo' => $equipo]);
+    }
+    
+    
+    
+    
+    
 
 
 }

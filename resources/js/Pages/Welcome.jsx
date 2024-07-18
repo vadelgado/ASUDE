@@ -6,6 +6,7 @@ import Intro from "@/Components/DashBoard/Intro";
 import PreFooter from "@/Components/DashBoard/PreFooter";
 import Carousel from "@/Components/DashBoard/Carousel";
 import TournamentSchedule from "@/Components/DashBoard/TournamentSchedule";
+import Bento from "@/Components/DashBoard/Bento";
 
 import TablaTorneos from "@/Components/DashBoard/TablaTorneos";
 
@@ -16,13 +17,16 @@ export default function Welcome({ auth, torneoEnCurso, programaciones_faces}) {
         <>
             <Head title="Alianza Sureña" />
             <Header auth={auth}></Header>  
+
             <TournamentSchedule programaciones_faces={programaciones_faces}/>
             <Carousel/>
             <TablaTorneos torneoEnCurso={torneoEnCurso} />
             <Intro></Intro>
+            <Bento></Bento>
             
             <PreFooter></PreFooter>
-            <Footer></Footer>
+
+            <Footer/>
             <style>{`
                 @media (prefers-color-scheme: dark) {
                     .dark\\:bg-dots-lighter {

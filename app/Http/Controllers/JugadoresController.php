@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jugadores;
 use App\Models\Equipos;
-use App\Models\cuerpoTecnico;
+
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use App\Http\Requests\Jugadores\StoreRequest;
@@ -22,14 +22,24 @@ class JugadoresController extends Controller
         $request->validate([
             'equipo_id' => 'required|integer|exists:equipos,id',
         ]);
-
+    
         $equipo_id = $request->input('equipo_id');
-
+    
         if ($equipo_id) {
-            //Nombre del equipo
+            // Nombre del equipo
             $equipo = Equipos::find($equipo_id)->nombreEquipo;
             $userRole = Auth::user()->role;
-
+    
+            $rolesOrdenFinal = [
+                "D.L.",
+                "D.T.",
+                "A.T.",
+                "P.F.",
+                "P.S.",
+                "U.T.",
+                "T.N."
+            ];
+    
             $jugadores = Jugadores::join('equipos', 'jugadores.fk_equipo', '=', 'equipos.id')
                 ->when($userRole !== 'admin', function ($query) {
                     return $query->where('equipos.fk_user', Auth::user()->id);
@@ -38,7 +48,14 @@ class JugadoresController extends Controller
                     return $query->where('equipos.id', $equipo_id);
                 })
                 ->select('jugadores.*', 'equipos.nombreEquipo')
+                ->orderByRaw("
+                    CASE 
+                        WHEN jugadores.cuerpoTecnico IN (?, ?, ?, ?, ?, ?, ?) THEN 1
+                        ELSE 0
+                    END ASC
+                ", $rolesOrdenFinal)
                 ->get();
+    
             return Inertia::render('Jugadores/Index', [
                 'jugadores' => $jugadores,
                 'equipo_id' => $equipo_id,
@@ -49,6 +66,7 @@ class JugadoresController extends Controller
             return Inertia::render('Dashboard');
         }
     }
+    
 
     public function generatePDF(Request $request)
     {
@@ -59,10 +77,19 @@ class JugadoresController extends Controller
         $equipo_id = $request->input('equipo_id');
     
         if ($equipo_id) {
-            //Nombre del equipo
-            $equipo = Equipos::find($equipo_id)->nombreEquipo;
+            // Nombre del equipo
+            $equipo = Equipos::find($equipo_id);
             $userRole = Auth::user()->role;
-            $cuerpoTecnico = cuerpoTecnico::where('fk_equipo', $equipo_id)->get();
+    
+            $rolesOrdenFinal = [
+                "D.L.",
+                "D.T.",
+                "A.T.",
+                "P.F.",
+                "P.S.",
+                "U.T.",
+                "T.N."
+            ];
     
             $jugadores = Jugadores::join('equipos', 'jugadores.fk_equipo', '=', 'equipos.id')
                 ->when($userRole !== 'admin', function ($query) {
@@ -71,21 +98,29 @@ class JugadoresController extends Controller
                 ->when($equipo_id, function ($query) use ($equipo_id) {
                     return $query->where('equipos.id', $equipo_id);
                 })
-                ->select('jugadores.nombrecompleto','jugadores.*', 'equipos.nombreEquipo')
+                ->select('jugadores.nombreCompleto', 'jugadores.*', 'equipos.nombreEquipo')
+                ->whereColumn('jugadores.nombreCompleto', '<>', 'equipos.nombreEquipo')
+                ->orderByRaw("
+                    CASE 
+                        WHEN jugadores.cuerpoTecnico IN (?, ?, ?, ?, ?, ?, ?) THEN 1
+                        ELSE 0
+                    END ASC
+                ", $rolesOrdenFinal)
                 ->get();
-            $pdf = PDF::loadView('pdf.jugadores', compact('jugadores', 'equipo', 'cuerpoTecnico')); // Add 'cuerpoTecnico' to the compact function
-            $pdf->setPaper([0, 0, 612.283, 935.433], 'landscape'); // Set the paper size to 216mm x 330mm
+    
+            $pdf = PDF::loadView('pdf.jugadores', compact('jugadores', 'equipo'));
+            $pdf->setPaper([0, 0, 612.283, 935.433], 'landscape'); // Establece el tamaño del papel a 216mm x 330mm
             return response()->streamDownload(function () use ($pdf) {
                 echo $pdf->output();
             }, 'jugadores.pdf', [
                 'Content-Type' => 'application/pdf',
             ]);
-        //dd($jugadores, $equipo, $cuerpoTecnico);
-
         } else {
             return Inertia::render('Dashboard');
         }
     }
+    
+    
 
 
 
@@ -105,6 +140,7 @@ class JugadoresController extends Controller
             'fk_equipo',
             'estadoEPS',
             'nombreEPS',
+            'cuerpoTecnico',
             'lugarAtencionEPS',
         );
 
@@ -138,6 +174,7 @@ class JugadoresController extends Controller
             'fk_equipo',
             'estadoEPS',
             'nombreEPS',
+            'cuerpoTecnico',
             'lugarAtencionEPS',
         );
 

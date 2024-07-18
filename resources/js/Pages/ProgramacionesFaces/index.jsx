@@ -10,6 +10,7 @@ import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function Index({
     auth,
@@ -167,6 +168,8 @@ export default function Index({
             }
         >
             <Head title="Programación Torneo" />
+            <div className="flex flex-col min-h-screen">
+            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
 
             <div className="grid bg-white v-screen place-items-center">
                 <div className="flex justify-end mt-2 mb-3">
@@ -251,7 +254,7 @@ export default function Index({
                                         className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
                                         href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                     >
-                                        <i class="fa-regular fa-flag">
+                                        <i className="fa-regular fa-flag">
                                             {" "}
                                             Resultados
                                         </i>
@@ -262,7 +265,7 @@ export default function Index({
                                         className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
                                         href={`/faltasCuerpoTecnico?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                     >
-                                        <i class="fa-regular fa-flag">
+                                        <i className="fa-regular fa-flag">
                                             {" "}
                                             Faltas CT
                                         </i>
@@ -275,7 +278,9 @@ export default function Index({
             </div>
 
             <Modal show={modal} onClose={closeModal}>
-                <h2 className="text-lg font-medium text-gray-900">{title}</h2>
+            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
                 <form onSubmit={save} className="p-6">
                     <input
                         type="text"
@@ -382,6 +387,9 @@ export default function Index({
                     </div>
                 </form>
             </Modal>
+            </main>
+            </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

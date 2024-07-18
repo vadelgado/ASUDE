@@ -11,7 +11,7 @@ const PreFooter = () => {
             <lite-youtube
                 className="relative z-10 overflow-hidden shadow-2xl shadow-white/10 rounded-xl"
                 videoid={videoId}
-                videotitle="Futuras Estrellas"
+                videotitle="Alianza Sureña"
                 style={{ width: '100%', height: '100%' }}
             ></lite-youtube>
         </section>

@@ -25,9 +25,9 @@ const ImgField = forwardRef(
 
         return (
             <div>
-                <InputLabel class="block my-2 mb-2 text-sm font-medium text-gray-900" htmlFor={htmlFor} value={label} />
+                <InputLabel className="block my-2 mb-2 text-sm font-medium text-gray-900" htmlFor={htmlFor} value={label} />
                 <input
-                    class="block w-full text-sm text-blue-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50  focus:outline-none"
+                    className="block w-full text-sm text-blue-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50 focus:outline-none"
                     id={id}
                     type="file"
                     name={name}
@@ -39,7 +39,7 @@ const ImgField = forwardRef(
                     <img
                         src={previewImage}
                         alt="Preview"
-                        className="mt-2 w-20 h-auto"
+                        className="w-20 h-auto mt-2"
                     />
                 )}
                 <InputError message={errorMessage} className="mt-2" />

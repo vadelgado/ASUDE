@@ -10,7 +10,9 @@ use App\Http\Controllers\Auth\RegisteredUserAdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\JugadoresController;
+use App\Http\Controllers\HomeController;
 use Inertia\Inertia;
+use App\Http\Controllers\TablasGruposController;
 
 
 Route::get('/', function () {
@@ -43,8 +45,10 @@ Route::get('/', function () {
             'programaciones_faces.HoraPartido',
             'lugar_partidos.nomLugar',
             'lugar_partidos.geolocalizacion',
+            'el.id as idEquipoLocal',
             'el.nombreEquipo as nombreEquipoLocal',
             'el.escudoEquipo as escudoEquipoLocal',
+            'ev.id as idEquipoVisitante',
             'ev.nombreEquipo as nombreEquipoVisitante',
             'ev.escudoEquipo as escudoEquipoVisitante',
             DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.goles ELSE 0 END), 0) AS GolesLocal'),
@@ -62,8 +66,10 @@ Route::get('/', function () {
             'programaciones_faces.HoraPartido',
             'lugar_partidos.nomLugar',
             'lugar_partidos.geolocalizacion',
+            'el.id',
             'el.nombreEquipo',
             'el.escudoEquipo',
+            'ev.id',
             'ev.nombreEquipo',
             'ev.escudoEquipo'
         )
@@ -86,11 +92,19 @@ Route::get('/dashboard', function () {
 
 // Listar Torneos Layout Principal
 Route::get('listarTorneos', 'App\Http\Controllers\Torneos@listarTorneos')->name('torneo.listarTorneos');
+Route::get('finalizadosTorneos', 'App\Http\Controllers\Torneos@finalizadosTorneos')->name('torneo.finalizadosTorneos');
+Route::get('torneosIniciados', 'App\Http\Controllers\Torneos@torneosIniciados')->name('torneo.torneosIniciados');
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.showUno');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
+Route::get('Equipo/{id}', [TablasGruposController::class, 'Equipo'])->name('equipo.showUno');
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);
+
+Route::get('/PoliticasPrivacidad',[HomeController::class, 'PrivacyPolicy'])->name('politicasPrivacidad.index');
+Route::get('/TerminosCondiciones',[HomeController::class, 'TerminosCondiciones'])->name('terminosCondiciones.index');
+Route::get('/politica-de-cookies',[HomeController::class, 'PoliticaCokies'])->name('PoliticaCokies.index');
+Route::get('/LICENSE',[HomeController::class, 'License'])->name('License.index');
 
 
 Route::middleware('auth')->group(function () {

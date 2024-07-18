@@ -24,18 +24,27 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'fk_user' => 'required|integer',
-            'fk_torneo' => ['required', 'integer', 
-            Rule::unique('inscripciones')->where(function ($query) {
-                return $query->where('fk_torneo', $this->input('fk_torneo'))
-                             ->where('fk_equipo', $this->input('fk_equipo'));
-            }),
+            'fk_torneo' => [
+                'required',
+                'integer',
+                Rule::unique('inscripciones')->where(function ($query) {
+                    return $query->where('fk_torneo', $this->input('fk_torneo'))
+                                 ->where('fk_equipo', $this->input('fk_equipo'));
+                }),
             ],
             'fk_equipo' => 'required|integer',
-            'estadoInscripcion' => 'nullable|string',
-            'observacion' => 'nullable|string|max:65534',   
+            'observacion' => 'nullable|string|max:65534',
         ];
+
+        if (Auth::user()->role === 'admin') {
+            $rules['estadoInscripcion'] = 'required|string';
+        } else {
+            $rules['estadoInscripcion'] = 'nullable|string';
+        }
+
+        return $rules;
     }
 
     /**
@@ -52,7 +61,11 @@ class StoreRequest extends FormRequest
             'fk_torneo.integer' => 'El campo torneo debe ser un número entero.',
             'fk_equipo.required' => 'El campo equipo es obligatorio.',
             'fk_equipo.integer' => 'El campo equipo debe ser un número entero.',
+            'fk_torneo.unique' => 'El equipo ya está inscrito en el torneo.',
+            'fk_torneo.unique_torneo_equipo' => 'El equipo ya está inscrito en el torneo.',
+            
             'estadoInscripcion.required' => 'El campo estado es obligatorio.',
+
             'estadoInscripcion.string' => 'El campo estado debe ser una cadena de texto.',
             'estadoInscripcion.in' => 'El campo estado solo puede ser: Pendiente, Aceptada, Rechazada.',
             'observacion.string' => 'El campo observación debe ser una cadena de texto.',

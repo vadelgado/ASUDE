@@ -29,7 +29,25 @@ class Torneos extends Controller
 
         $sistemaJuegos = SistemaJuego::all();
         $categoriaEquipos = Categorias::all();
-        $torneos = torneo::all();
+        $torneos = Torneo::where('estadoTorneo', 'Por Iniciar')->get();
+        return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
+    }
+
+    public function torneosIniciados()
+    {
+
+        $sistemaJuegos = SistemaJuego::all();
+        $categoriaEquipos = Categorias::all();
+        $torneos = Torneo::where('estadoTorneo', 'En Juego')->get();
+        return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
+    }
+
+    public function finalizadosTorneos()
+    {
+
+        $sistemaJuegos = SistemaJuego::all();
+        $categoriaEquipos = Categorias::all();
+        $torneos = Torneo::where('estadoTorneo', 'Finalizado')->get();
         return Inertia::render('Torneo/ListarTorneos', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
     }
 
@@ -42,13 +60,16 @@ class Torneos extends Controller
     {
         try
         {
-            $torneo = torneo::find($id);
-
+            $torneo = Torneo::with('sistemaJuego')
+                ->where('id', $id)
+                ->first();
+    
             if (!$torneo)
             {
                 return redirect()->route('torneo.index')
                     ->with('error', 'Torneo no encontrado');
             }
+    
             return Inertia::render('Torneo/Show', ['torneo' => $torneo]);
         }
         catch(\Exception $e)
@@ -57,6 +78,7 @@ class Torneos extends Controller
                 ->with('error', 'Error al mostrar el torneo');
         }
     }
+    
 
     public function store(StoreRequest $request)
     {

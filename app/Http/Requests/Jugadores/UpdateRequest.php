@@ -26,18 +26,19 @@ class UpdateRequest extends FormRequest
             'nombreCompleto' => 'required|string|max:255',
             'foto'=> 'nullable',
             'tipoIdentificacion' => 'required|in:TI,CC,CE,PA,RC',
-            'numeroIdentificacion' => 'required|digits_between:8,11',
-            'numeroSerie' => 'required|digits_between:4,11',
+            'numeroIdentificacion' => 'required|digits_between:5,11',
+            'numeroSerie' => 'nullable|digits_between:4,11',
             'fechaNacimiento' => 'required|date',
             'lugarNacimiento' => 'required|string|max:255',
             'institucionEducativa' => 'required|string|max:255',
             'grado' => 'required',
             'ciudadInstitucionEducativa' => 'required|string|max:255',
-            'telefonoInstitucionEducativa' => 'required|string|max:255',
+            'telefonoInstitucionEducativa' => 'required|string|regex:/^\d{10}$/',
             'fk_equipo' => 'required|exists:equipos,id|integer',
             'estadoEPS' => 'required|boolean|in:0,1',
             'nombreEPS' => 'required|string|max:255',
             'lugarAtencionEPS' => 'required|string|max:255',
+            'cuerpoTecnico' => 'nullable|string|max:255',
         ];
     }
 
@@ -55,7 +56,7 @@ class UpdateRequest extends FormRequest
             'tipoIdentificacion.required' => 'El campo tipo de identificación es requerido',
             'tipoIdentificacion.in' => 'El campo tipo de identificación debe ser TI, CC, CE, PA o RC',
             'numeroIdentificacion.required' => 'El campo número de identificación es requerido',
-            'numeroIdentificacion.digits' => 'El campo número de identificación debe tener entre 8 y 11 dígitos',
+            'numeroIdentificacion.digits' => 'El campo número de identificación debe tener entre 5 y 11 dígitos',
             'numeroSerie.required' => 'El campo número de serie es requerido',
             'numeroSerie.digits' => 'El campo número de serie debe tener entre 4 y 11 dígitos',
             'fechaNacimiento.required' => 'El campo fecha de nacimiento es requerido',
@@ -70,9 +71,9 @@ class UpdateRequest extends FormRequest
             'ciudadInstitucionEducativa.required' => 'El campo ciudad de la institución educativa es requerido',
             'ciudadInstitucionEducativa.string' => 'El campo ciudad de la institución educativa debe ser de tipo texto',
             'ciudadInstitucionEducativa.max' => 'El campo ciudad de la institución educativa debe tener máximo 255 caracteres',
-            'telefonoInstitucionEducativa.required' => 'El campo teléfono de la institución educativa es requerido',
-            'telefonoInstitucionEducativa.string' => 'El campo teléfono de la institución educativa debe ser de tipo texto',
-            'telefonoInstitucionEducativa.max' => 'El campo teléfono de la institución educativa debe tener máximo 255 caracteres',
+            'telefonoInstitucionEducativa.required' => 'El número de teléfono es obligatorio.',
+            'telefonoInstitucionEducativa.string' => 'El número de teléfono debe ser una cadena de texto.',
+            'telefonoInstitucionEducativa.regex' => 'El número de teléfono debe tener exactamente 10 dígitos.',
             'fk_equipo.required' => 'El campo equipo es requerido',
             'fk_equipo.exists' => 'El equipo seleccionado no existe',
             'fk_equipo.integer' => 'El campo equipo debe ser un número entero',
@@ -85,6 +86,8 @@ class UpdateRequest extends FormRequest
             'lugarAtencionEPS.required' => 'El campo lugar de atención EPS es requerido',
             'lugarAtencionEPS.string' => 'El campo lugar de atención EPS debe ser de tipo texto',
             'lugarAtencionEPS.max' => 'El campo lugar de atención EPS debe tener máximo 255 caracteres',
+            'cuerpoTecnico.string' => 'El campo cuerpo técnico debe ser de tipo texto',
+            'cuerpoTecnico.max' => 'El campo cuerpo técnico debe tener máximo 255 caracteres',
 
         ];
     }

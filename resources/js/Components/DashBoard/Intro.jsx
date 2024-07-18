@@ -4,7 +4,7 @@ const Intro = () => {
     return (
         <section className=' relative z-10 mx-auto my-24 max-w-[70ch] text-pretty px-6 text-left text-xl sm:px-20'>
 
-<img className="m-auto mb-1 h-auto w-50 sm:w-60 md:w-70 lg:w-80 xl:w-98" src="/logo2.webp" alt="Logo Futuras Estrellas" />
+<img className="m-auto mb-1 h-auto w-50 sm:w-60 md:w-70 lg:w-80 xl:w-98" src="/logo2.webp" alt="Logo Alianza Sureña" />
 <h1 className="mx-auto mb-1 text-wrap text-center text-2xl text-green-800 font-semibold tracking-wide sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
     Gestión Promoción y Servicio
 </h1>

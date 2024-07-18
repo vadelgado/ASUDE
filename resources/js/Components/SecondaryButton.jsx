@@ -4,8 +4,8 @@ export default function SecondaryButton({ type = 'button', className = '', disab
             {...props}
             type={type}
             className={
-                `inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150 ${
-                    disabled && 'opacity-25'
+                `inline-flex items-center px-4 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 transition ease-in-out duration-150 ${
+                    disabled && 'opacity-50 cursor-not-allowed'
                 } ` + className
             }
             disabled={disabled}

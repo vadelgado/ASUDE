@@ -2,11 +2,18 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 
+const menuItems = [
+    { title: "Inicio", iconClass: "fa-solid fa-house", route: "dashboard", color: "bg-blue-500" },
+    { title: "Mis Equipos", iconClass: "fa-solid fa-users", route: "equipos.index", color: "bg-green-500", roles: ["admin", "equipo"] },
+    { title: "Torneos", iconClass: "fa-solid fa-trophy", route: "torneo.index", color: "bg-red-500", roles: ["admin"] },
+    { title: "Sistema de Juego", iconClass: "fa-solid fa-puzzle-piece", route: "sistemaJuego.index", color: "bg-yellow-500", roles: ["admin"] }
+];
+
 function UserInfo({ user }) {
     return (
         <div className="p-6 text-gray-900">
             <h3 className="text-2xl font-semibold mb-4">
-                Bienvenido {user.name}
+                Bienvenido, {user.name}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
@@ -30,6 +37,27 @@ function UserInfo({ user }) {
     );
 }
 
+function WindowsMenu({ user }) {
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6">
+            {menuItems
+                .filter(item => !item.roles || item.roles.includes(user.role))
+                .map((item, index) => (
+                    <a
+                        key={index}
+                        href={route(item.route)}
+                        className={`flex items-center justify-center h-32 rounded-lg shadow-lg text-white ${item.color} hover:bg-opacity-75 transition duration-300`}
+                    >
+                        <div className="text-center">
+                            <i className={`${item.iconClass} text-4xl mb-2`}></i>
+                            <p className="text-lg font-semibold">{item.title}</p>
+                        </div>
+                    </a>
+                ))}
+        </div>
+    );
+}
+
 export default function Dashboard({ auth }) {
     if (!auth || !auth.user) {
         return <div>Error: Usuario no autenticado.</div>;
@@ -47,10 +75,12 @@ export default function Dashboard({ auth }) {
             <Head title="Dashboard" />
 
             <div className="py-12">
-                <div className="max-w-full mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-full mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        {/* Usando el componente UserInfo para mostrar la información del usuario */}
                         <UserInfo user={auth.user} />
+                    </div>
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <WindowsMenu user={auth.user} />
                     </div>
                 </div>
             </div>

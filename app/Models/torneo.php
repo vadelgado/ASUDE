@@ -60,5 +60,6 @@ class torneo extends Model
         return $this->hasMany(Equipos::class, 'fk_torneo');
     }
 
+
     use HasFactory;
 }

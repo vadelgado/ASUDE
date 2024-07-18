@@ -10,6 +10,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function Index({ auth, sistemaJuegos }) {
     const [modal, setModal] = useState(false);
@@ -103,7 +104,8 @@ export default function Index({ auth, sistemaJuegos }) {
             }
         >
             <Head title="Sistemas de Juego" />
-
+            <div className="flex flex-col min-h-screen">
+            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
             <div className="bg-white grid v-screen place-items-center">
                 <div className="mt-2 mb-3 flex justify-end">
                     <PrimaryButton onClick={() => handleModal(1)}>
@@ -174,7 +176,9 @@ export default function Index({ auth, sistemaJuegos }) {
                 </div>
             </div>
             <Modal show={modal} Close={closeModal}>
-                <h2 className="text-lg font-medium text-gray-900">{title}</h2>
+            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                            {title}
+                        </h2>
                 <form onSubmit={handleSubmit} className="p-6">
                     <FormField
                         htmlFor="nombreSistema"
@@ -214,6 +218,9 @@ export default function Index({ auth, sistemaJuegos }) {
                     </div>
                 </form>
             </Modal>
+            </main>
+            </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

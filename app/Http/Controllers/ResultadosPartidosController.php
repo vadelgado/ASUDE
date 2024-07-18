@@ -63,6 +63,9 @@ class ResultadosPartidosController extends Controller
             
         } else {
             $resultados = null;
+            $jugadores = null;
+            $idPartido = null;
+            
         }
       //dd($jugadores);
         return Inertia::render('ResultadosPartidos/Index', [

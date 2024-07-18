@@ -67,13 +67,12 @@ class GalleryController extends Controller
     {
         $request->validate(
             [
-                'largeUrl' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',                
+                'largeUrl' => 'nullable',                
                 'width' => 'required|integer',
                 'height' => 'required|integer',
                 'fk_fase' => 'required|exists:fases,id'
             ],
             [
-                'largeUrl.max' => 'La URL grande no puede exceder los 255 caracteres.', // Mensaje de error si la URL grande excede los 255 caracteres.
                 'width.required' => 'El ancho es obligatorio.', // Mensaje de error si el ancho no se proporciona.
                 'width.integer' => 'El ancho debe ser un número entero.', // Mensaje de error si el ancho no es un número entero.
                 'height.required' => 'La altura es obligatoria.', // Mensaje de error si la altura no se proporciona.
