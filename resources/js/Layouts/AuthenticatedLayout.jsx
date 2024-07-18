@@ -39,10 +39,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 {user.role === "equipo" && (
                                     <NavLink
-                                        href={route("equiposInvitados.index")}
-                                        active={route().current(
-                                            "equiposInvitados.index"
-                                        )}
+                                        href="/equiposInvitados"
                                     >
                                         Mis Equipos ⚽
                                     </NavLink>
@@ -176,10 +173,8 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         {user.role === "equipo" && (
                             <ResponsiveNavLink
-                                href={route("equiposInvitados.index")}
-                                active={route().current(
-                                    "equiposInvitados.index"
-                                )}
+                                href="/equiposInvitados"                                
+                                
                             >
                                 Mis Equipos ⚽
                             </ResponsiveNavLink>
