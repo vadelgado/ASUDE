@@ -203,7 +203,28 @@ Route::middleware('auth', 'role:admin')->group(function () {
 // Registrar Director Equipo
 Route::get('preregistro', 'App\Http\Controllers\Torneos@registrarEquipo')->name('preregistro.create');
 
+Route::middleware('auth', 'role:equipo')->group(function () {
 
+    // Resource equipos
+    Route::resource('equiposInvitados', App\Http\Controllers\EquiposController::class);
+    // Actualizar Equipo
+    Route::post('equiposInvitados/{equipos}', 'App\Http\Controllers\EquiposController@update')->name('equiposInvitados.updatepost');
+    //Jugadores
+    Route::resource('jugadores', App\Http\Controllers\JugadoresController::class);
+    // Actualizar Jugador
+    Route::post('jugadores/{jugadores}', 'App\Http\Controllers\JugadoresController@update')->name('jugadores.updatepost');
+    //toggle estado jugador    Route::post('jugadores/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadores.toggle');
+    //CuerpoTecnico
+    Route::resource('cuerpoTecnico', App\Http\Controllers\CuerpoTecnicoController::class);
+    // Actualizar CuerpoTecnico
+    Route::post('cuerpoTecnico/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnico.updatepost');
+    //toggle estado cuerpoTecnico
+    Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
+    //Preplanilla
+    Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
+    //Resource Inscripciones
+    Route::resource('inscripcionesEquipo', App\Http\Controllers\InscripcionesController::class);
+});
 
 
 Route::get('/version', function () {
