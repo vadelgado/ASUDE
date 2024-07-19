@@ -21,7 +21,7 @@ export default function ListarTorneos({ auth, torneos }) {
             <Header auth={auth} />
             <meta name="view-transition" content="same-origin" />
 
-            <Head title="Torneos ⚽" />
+            <Head title={"Torneos ⚽"} />
             <main className="max-w-4xl m-auto">
                 <Title className="mt-4" />
 
