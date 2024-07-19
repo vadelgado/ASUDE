@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\SistemaJuego;
 use App\Http\Requests\SistemaJuego\UpdateRequest;
 use App\Http\Requests\SistemaJuego\StoreRequest;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SistemaJuegoController extends Controller
