@@ -4,7 +4,16 @@ import Footer from "@/Components/DashBoard/Footer";
 
 const menuItems = [
     { title: "Inicio", iconClass: "fa-solid fa-house", route: "dashboard", color: "bg-blue-500" },
-    { title: "Mis Equipos", iconClass: "fa-solid fa-users", route: "equipos.index", color: "bg-green-500", roles: ["admin", "equipo"] },
+    { 
+        title: "Mis Equipos", 
+        iconClass: "fa-solid fa-users", 
+        route: "equipos.index", 
+        color: "bg-green-500", 
+        roles: ["admin", "equipo"],
+        alternativeRoutes: {
+            equipo: "equiposInvitados.index"
+        }
+    },
     { title: "Torneos", iconClass: "fa-solid fa-trophy", route: "torneo.index", color: "bg-red-500", roles: ["admin"] },
     { title: "Sistema de Juego", iconClass: "fa-solid fa-puzzle-piece", route: "sistemaJuego.index", color: "bg-yellow-500", roles: ["admin"] }
 ];
@@ -42,18 +51,24 @@ function WindowsMenu({ user }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6">
             {menuItems
                 .filter(item => !item.roles || item.roles.includes(user.role))
-                .map((item, index) => (
-                    <a
-                        key={index}
-                        href={route(item.route)}
-                        className={`flex items-center justify-center h-32 rounded-lg shadow-lg text-white ${item.color} hover:bg-opacity-75 transition duration-300`}
-                    >
-                        <div className="text-center">
-                            <i className={`${item.iconClass} text-4xl mb-2`}></i>
-                            <p className="text-lg font-semibold">{item.title}</p>
-                        </div>
-                    </a>
-                ))}
+                .map((item, index) => {
+                    const routeName = item.alternativeRoutes && item.alternativeRoutes[user.role] 
+                        ? item.alternativeRoutes[user.role]
+                        : item.route;
+                    
+                    return (
+                        <a
+                            key={index}
+                            href={route(routeName)}
+                            className={`flex items-center justify-center h-32 rounded-lg shadow-lg text-white ${item.color} hover:bg-opacity-75 transition duration-300`}
+                        >
+                            <div className="text-center">
+                                <i className={`${item.iconClass} text-4xl mb-2`}></i>
+                                <p className="text-lg font-semibold">{item.title}</p>
+                            </div>
+                        </a>
+                    );
+                })}
         </div>
     );
 }
