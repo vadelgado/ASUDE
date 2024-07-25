@@ -109,16 +109,13 @@ Route::get('/LICENSE',[HomeController::class, 'License'])->name('License.index')
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');    
 });
 
 Route::middleware('auth', 'role:admin')->group(function () {
 
     Route::get('registerAdmin', [RegisteredUserAdminController::class, 'create'])->name('admin.register');
     Route::post('registerAdmin', [RegisteredUserAdminController::class, 'store']);
-    Route::get('/profileAdmin', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profileAdmin', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profileAdmin', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
@@ -208,8 +205,6 @@ Route::get('preregistro', 'App\Http\Controllers\Torneos@registrarEquipo')->name(
 
 
 Route::middleware('auth', 'role:equipo')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Resource equipos
     Route::resource('equiposInvitados', App\Http\Controllers\EquiposController::class);
     // Actualizar Equipo
