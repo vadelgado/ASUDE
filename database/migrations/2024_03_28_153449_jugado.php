@@ -21,7 +21,10 @@ return new class extends Migration
             $table->string('grado');
             $table->string('ciudadInstitucionEducativa');
             $table->string('telefonoInstitucionEducativa');
-            $table->foreignId('fk_equipo')->constrained('equipos')->onDelete('cascade');
+            $table->foreign('fk_equipo')
+            ->references('id')
+            ->on('equipos')
+            ->onDelete('cascade');
             $table->boolean('estadoEPS')->default(true)->comment('1 para activo, 0 para inactivo');
             $table->string('nombreEPS');
             $table->string('lugarAtencionEPS');
