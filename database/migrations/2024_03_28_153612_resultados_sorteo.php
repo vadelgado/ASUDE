@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('resultado_sorteos', function (Blueprint $table) {
             $table->id();     
-            $table->foreignId('fk_equipo')->constrained('equipos');      
-            $table->foreignId('fk_torneo')->constrained('torneo');
+            $table->foreignId('fk_equipo')->constrained('equipos')->onDelete('cascade');      
+            $table->foreignId('fk_torneo')->constrained('torneo')->onDelete('cascade');
             $table->unsignedTinyInteger('puesto');
             $table->timestamps();
         });

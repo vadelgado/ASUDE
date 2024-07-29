@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('geolocalizacion')->nullable(false);
             $table->text('direccion')->nullable(false);
             $table->text('fotoLugar')->nullable(true);
-            $table->foreignId('fk_torneo')->constrained('torneo');  
+            $table->foreignId('fk_torneo')->constrained('torneo')->onDelete('cascade');  
         }); 
 
 

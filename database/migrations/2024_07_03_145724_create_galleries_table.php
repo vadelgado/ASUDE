@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('largeUrl')->nullable(true);
             $table->integer('width');
             $table->integer('height');
-            $table->foreignId('fk_fase')->constrained('fases');
+            $table->foreignId('fk_fase')->constrained('fases')->onDelete('cascade');
             $table->timestamps();
         });
     }
