@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('inscripciones', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('fk_user');
             $table->foreign('fk_user')
             ->references('id')
             ->on('users')
             ->onDelete('cascade');
+            $table->unsignedBigInteger('fk_torneo');
             $table->foreign('fk_torneo')
             ->references('id')
             ->on('torneo')
             ->onDelete('cascade');
+            $table->unsignedBigInteger('fk_equipo');
             $table->foreign('fk_equipo')
             ->references('id')
             ->on('equipos')

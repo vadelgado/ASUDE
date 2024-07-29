@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('programaciones_faces', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('fk_fase');
             $table->foreign('fk_fase')
             ->references('id')
             ->on('fases')
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('posicion_visitante');
             $table->date('FechaPartido');
             $table->time('HoraPartido');
+            $table->unsignedBigInteger('fk_lugarPartido');
             $table->foreign('fk_lugarPartido')
             ->references('id')
             ->on('lugar_partidos')

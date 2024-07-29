@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('largeUrl')->nullable(true);
             $table->integer('width');
             $table->integer('height');
+            $table->unsignedBigInteger('fk_fase');
             $table->foreign('fk_fase')
             ->references('id')
             ->on('fases')

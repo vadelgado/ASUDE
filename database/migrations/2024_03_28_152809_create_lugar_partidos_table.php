@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('geolocalizacion')->nullable(false);
             $table->text('direccion')->nullable(false);
             $table->text('fotoLugar')->nullable(true);
+            $table->unsignedBigInteger('fk_torneo');
             $table->foreign('fk_torneo')
             ->references('id')
             ->on('torneo')

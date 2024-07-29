@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('resultado_sorteos', function (Blueprint $table) {
             $table->id();     
+            $table->unsignedBigInteger('fk_equipo');
             $table->foreign('fk_equipo')
             ->references('id')
             ->on('equipos')
-            ->onDelete('cascade');      
+            ->onDelete('cascade');     
+            $table->unsignedBigInteger('fk_torneo'); 
             $table->foreign('fk_torneo')
             ->references('id')
             ->on('torneo')

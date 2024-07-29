@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
             $table->string('nombreEquipo')->nullable(false);            
+            $table->unsignedBigInteger('fk_categoria_equipo');
             $table->foreign('fk_categoria_equipo')
             ->references('id')
             ->on('categoria_equipo')
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('escudoEquipo')->nullable(true);
             $table->string('numeroWhatsapp', 13);
             $table->string('correoElectronico')->email();
+            $table->unsignedBigInteger('fk_user');
             $table->foreign('fk_user')
             ->references('id')
             ->on('users')

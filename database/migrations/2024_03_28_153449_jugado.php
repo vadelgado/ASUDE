@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('grado');
             $table->string('ciudadInstitucionEducativa');
             $table->string('telefonoInstitucionEducativa');
+            $table->unsignedBigInteger('fk_equipo');
             $table->foreign('fk_equipo')
             ->references('id')
             ->on('equipos')

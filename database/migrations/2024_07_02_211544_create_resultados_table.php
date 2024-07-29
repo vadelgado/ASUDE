@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('categoria');
             $table->text('resultado');
+            $table->unsignedBigInteger('fk_torneo');
             $table->foreign('fk_torneo')
             ->references('id')
             ->on('torneo')
