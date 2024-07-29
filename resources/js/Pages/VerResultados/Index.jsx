@@ -53,14 +53,14 @@ export default function ListarTorneos({
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
 
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+            <main className="container flex-grow px-4 py-8 mx-auto mt-32">
 
             <div className="mt-40 text-center">
                     <div className="flex items-center justify-center py-8">
                         <img
                             src={`/storage/${torneo[0].imgBannerSuperior}`}
                             alt={torneo[0].nombreTorneo}
-                            className="h-auto md:w-1/4"
+                            className="h-auto"
                         />
                     </div>
                     <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">

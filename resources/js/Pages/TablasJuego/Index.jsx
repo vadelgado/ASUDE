@@ -66,7 +66,7 @@ export default function Index({ auth, torneo, programaciones_faces, gallery }) {
                             <img
                                 src={`/storage/${torneo.imgBannerSuperior}`}
                                 alt={torneo.nombreTorneo}
-                                className="w-full h-auto md:w-1/4"
+                                className=" h-auto"
                             />
                         </div>
                         <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl">
