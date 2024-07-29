@@ -36,7 +36,7 @@ function UserInfo({ user }) {
                     <p className="text-lg font-medium">{user.identificacion}</p>
                 </div>
                 <div>
-                    <p className="mb-2">Roasdfasdfadsfl:</p>
+                    <p className="mb-2">Rol:</p>
                     <p className="text-lg font-medium">{user.role}</p>
                 </div>
             </div>
@@ -95,7 +95,7 @@ export default function Dashboard({ auth }) {
                         <UserInfo user={auth.user} />
                     </div>
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <WindowsMenu user={auth.user} />dfghdfg
+                        <WindowsMenu user={auth.user} />
                     </div>
                 </div>
             </div>
