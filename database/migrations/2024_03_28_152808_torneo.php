@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('torneo', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fk_user')->nullable(false);
-            $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('fk_user')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
             $table->text('nombreTorneo')->nullable(false);
             $table->text('flayer')->nullable(true);
             $table->text('imgBannerSuperior')->nullable(true);
@@ -27,9 +30,15 @@ return new class extends Migration
             $table->text('caracteristicas')->nullable(false);
             $table->text('premiacion')->nullable(false);            
             $table->unsignedBigInteger('fk_sistema_juegos')->nullable(false);
-            $table->foreign('fk_sistema_juegos')->references('id')->on('sistema_juegos')->onDelete('cascade');            
+            $table->foreign('fk_sistema_juegos')
+            ->references('id')
+            ->on('sistema_juegos')
+            ->onDelete('cascade');            
             $table->unsignedBigInteger('fk_categoria_equipo')->nullable(false);
-            $table->foreign('fk_categoria_equipo')->references('id')->on('categoria_equipo')->onDelete('cascade');
+            $table->foreign('fk_categoria_equipo')
+            ->references('id')
+            ->on('categoria_equipo')
+            ->onDelete('cascade');
             $table->enum('estadoTorneo', ['Por Iniciar', 'En Juego', 'Finalizado'])->nullable(false);
             $table->enum('inscripcion', ['Abierta', 'Cerrada'])->nullable(false);
             $table->text('procesoInscripcion')->nullable(false);

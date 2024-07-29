@@ -13,9 +13,18 @@ return new class extends Migration
     {
         Schema::create('inscripciones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fk_user')->constrained('users')->onDelete('cascade');
-            $table->foreignId('fk_torneo')->constrained('torneo')->onDelete('cascade');
-            $table->foreignId('fk_equipo')->constrained('equipos')->onDelete('cascade');
+            $table->foreign('fk_user')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
+            $table->foreign('fk_torneo')
+            ->references('id')
+            ->on('torneo')
+            ->onDelete('cascade');
+            $table->foreign('fk_equipo')
+            ->references('id')
+            ->on('equipos')
+            ->onDelete('cascade');
             $table->enum('estadoInscripcion', ['Aceptada', 'Rechazada', 'Pendiente']);
             $table->text('observacion')->nullable();
             $table->timestamps();

@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('categoria');
             $table->text('resultado');
-            $table->foreignId('fk_torneo')->constrained('torneo')->onDelete('cascade');  
+            $table->foreign('fk_torneo')
+            ->references('id')
+            ->on('torneo')
+            ->onDelete('cascade');  
             $table->timestamps();
         });
     }

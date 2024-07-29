@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('resultados_partidos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fk_programaciones_faces_id')->constrained('programaciones_faces')->onDelete('cascade');
-            $table->foreignId('fk_jugador_id')->constrained('jugadores')->onDelete('cascade');
+            $table->foreign('fk_programaciones_faces_id')
+            ->references('id')
+            ->on('programaciones_faces')
+            ->onDelete('cascade');
+            $table->foreign('fk_jugador_id')
+            ->references('id')
+            ->on('jugadores')
+            ->onDelete('cascade');
             $table->integer('goles')->nullable();
             $table->integer('tarjetas_amarillas')->nullable();
             $table->integer('tarjetas_rojas')->nullable();

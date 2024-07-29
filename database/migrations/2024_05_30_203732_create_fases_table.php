@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('fases', function (Blueprint $table) {
             $table->id();
             $table->string('nombreFase');
-            $table->foreignId('fk_torneo')->constrained('torneo')->onDelete('cascade');
+            $table->foreign('fk_torneo')
+            ->references('id')
+            ->on('torneo')
+            ->onDelete('cascade');
             $table->timestamps(false);
         });
     }
