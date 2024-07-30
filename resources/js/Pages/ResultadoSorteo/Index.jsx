@@ -11,6 +11,7 @@ import { useForm } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import SelectField from "@/Components/SelectField";
 import Footer from "@/Components/DashBoard/Footer";
+import JSConfetti from "js-confetti";
 
 export default function Index({
     auth,
@@ -45,6 +46,37 @@ export default function Index({
         const { name, value } = e.target;
         setData((prevData) => ({ ...prevData, [name]: value }));
     };
+
+    const jsConfetti = new JSConfetti();
+
+    const handleJsConfetti = () => {
+        jsConfetti.addConfetti({
+            emojis: [
+                "⚽", // Fútbol
+                "🎊", // Confeti
+                "🏆", // Trofeo
+                "🥇", // Medalla de oro
+                "🎇", // Fuegos artificiales
+                "🎉", // Party popper
+                "🎈", // Globo
+                "🎂", // Pastel de cumpleaños
+                "🍾", // Botella de champán
+                "🍻", // Choque de cervezas
+                "🥳", // Cara de fiesta
+                "🙌", // Manos levantadas
+                "👏", // Aplausos
+                "🎵", // Nota musical
+                "🔥", // Fuego
+                "💥", // Explosión
+                "🎤", // Micrófono
+                "🕺", // Hombre bailando
+                "💃", // Mujer bailando
+                "🎶", // Notas musicales
+            ],
+          
+        });
+    };
+    
 
     const openModal = (op, id, puesto, fk_equipo, fk_torneo) => {
         setModal(true);
@@ -155,10 +187,14 @@ export default function Index({
     ];
 
     const columns = [
-        { name: 'Grupo y Posición', selector: row => row.puesto, sortable: true },
         {
-            name: 'Equipo',
-            selector: row => (
+            name: "Grupo y Posición",
+            selector: (row) => row.puesto,
+            sortable: true,
+        },
+        {
+            name: "Equipo",
+            selector: (row) => (
                 <div className="flex items-center">
                     <img
                         src={`/storage/${row.escudoEquipo}`}
@@ -176,8 +212,8 @@ export default function Index({
             sortable: true,
         },
         {
-            name: 'Editar',
-            cell: row => (
+            name: "Editar",
+            cell: (row) => (
                 <WarningButton
                     onClick={() =>
                         openModal(
@@ -194,11 +230,9 @@ export default function Index({
             ),
         },
         {
-            name: 'Eliminar',
-            cell: row => (
-                <DangerButton
-                    onClick={() => eliminar(row.id)}
-                >
+            name: "Eliminar",
+            cell: (row) => (
+                <DangerButton onClick={() => eliminar(row.id)}>
                     <i className="fa-solid fa-trash"></i>
                 </DangerButton>
             ),
@@ -212,10 +246,10 @@ export default function Index({
     );
 
     const paginationComponentOptions = {
-        rowsPerPageText: 'Registros por página',
-        rangeSeparatorText: 'de',
+        rowsPerPageText: "Registros por página",
+        rangeSeparatorText: "de",
         selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos',
+        selectAllRowsItemText: "Todos",
     };
 
     return (
@@ -229,99 +263,104 @@ export default function Index({
         >
             <Head title="✋Sorteo" />
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
-            <div className="container p-6 mx-auto mt-6 bg-white">
-                <div className="flex justify-end mt-2 mb-3">
-                    <PrimaryButton onClick={() => openModal(1)}>
-                        <i className="mr-2 fa-solid fa-plus-circle"></i> Añadir
-                    </PrimaryButton>
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        className="w-full p-2 border rounded"
-                        placeholder="Buscar por nombre de equipo..."
-                        value={filterText}
-                        onChange={(e) => setFilterText(e.target.value)}
-                    />
-                </div>
+                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                    <div className="container p-6 mx-auto mt-6 bg-white">
+                        <div className="flex justify-end mt-2 mb-3">
+                            <PrimaryButton onClick={() => openModal(1)}>
+                                <i className="mr-2 fa-solid fa-plus-circle"></i>{" "}
+                                Añadir
+                            </PrimaryButton>
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                placeholder="Buscar por nombre de equipo..."
+                                value={filterText}
+                                onChange={(e) => setFilterText(e.target.value)}
+                            />
+                        </div>
 
-                <div className="overflow-x-auto">
-                    <DataTable
-                        columns={columns}
-                        data={filteredResultados}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        highlightOnHover
-                        responsive
-                        noDataComponent="No hay resultados. 👀"
-                    />
-                </div>
-            </div>
+                        <div className="overflow-x-auto">
+                            <DataTable
+                                columns={columns}
+                                data={filteredResultados}
+                                pagination
+                                paginationComponentOptions={
+                                    paginationComponentOptions
+                                }
+                                highlightOnHover
+                                responsive
+                                noDataComponent="No hay resultados. 👀"
+                            />
+                        </div>
+                    </div>
 
-            <Modal show={modal} onClose={closeModal}>
-            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                    <Modal show={modal} onClose={closeModal}>
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
-                <form onSubmit={handleSubmit} className="p-6">
-                    <input
-                        type="text"
-                        value={data.fk_torneo}
-                        name="fk_torneo"
-                        hidden
-                        readOnly
-                    />
+                        <form onSubmit={handleSubmit} className="p-6">
+                            <input
+                                type="text"
+                                value={data.fk_torneo}
+                                name="fk_torneo"
+                                hidden
+                                readOnly
+                            />
 
-                    <SelectField
-                        htmlFor="puesto"
-                        label={
-                            <>
-                                <span>Puesto</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="puesto"
-                        ref={puestoInput}
-                        name="puesto"
-                        value={data.puesto}
-                        onChange={handleInputChange}
-                        options={handleSelectPuestos}
-                        errorMessage={errors.puesto}
-                    />
+                            <SelectField
+                                htmlFor="puesto"
+                                label={
+                                    <>
+                                        <span>Puesto</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="puesto"
+                                ref={puestoInput}
+                                name="puesto"
+                                value={data.puesto}
+                                onChange={handleInputChange}
+                                options={handleSelectPuestos}
+                                errorMessage={errors.puesto}
+                            />
 
-                    <SelectField
-                        htmlFor="fk_equipo"
-                        label={
-                            <>
-                                <span>Equipo</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="fk_equipo"
-                        ref={fk_equipoInput}
-                        name="fk_equipo"
-                        value={data.fk_equipo}
-                        onChange={handleInputChange}
-                        options={handleSelectEquipos}
-                        errorMessage={errors.fk_equipo}
-                    />
+                            <SelectField
+                                htmlFor="fk_equipo"
+                                label={
+                                    <>
+                                        <span>Equipo</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="fk_equipo"
+                                ref={fk_equipoInput}
+                                name="fk_equipo"
+                                value={data.fk_equipo}
+                                onChange={handleInputChange}
+                                options={handleSelectEquipos}
+                                errorMessage={errors.fk_equipo}
+                            />
 
-                    <div className="mt-6">
-                        <PrimaryButton
-                            processing={processing ? "true" : "false"}
-                        >
-                            <i className="mr-2 fa-solid fa-save"></i>Guardar
-                        </PrimaryButton>
-                    </div>
+                            <div className="mt-6">
+                                <PrimaryButton
+                                    onClick={handleJsConfetti}
+                                    processing={processing ? "true" : "false"}
+                                >
+                                    <i className="mr-2 fa-solid fa-save"></i>
+                                    Guardar
+                                </PrimaryButton>
+                            </div>
 
-                    <div className="flex justify-end mt-6">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
-                    </div>
-                </form>
-            </Modal>
-            </main>
+                            <div className="flex justify-end mt-6">
+                                <SecondaryButton onClick={closeModal}>
+                                    Cancelar
+                                </SecondaryButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </main>
             </div>
             <Footer />
         </AuthenticatedLayout>

@@ -2,6 +2,7 @@ import { Link, Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
 import React, { useEffect, useState } from "react";
+import JSConfetti from 'js-confetti';
 
 export default function ListarTorneos({
     auth,
@@ -46,6 +47,35 @@ export default function ListarTorneos({
 
         return `${dayOfWeek} ${day} ${month} de ${year}`;
     };
+
+    useEffect(() => {
+        const jsConfetti = new JSConfetti();
+        jsConfetti.addConfetti({
+            emojis: [
+                "⚽", // Fútbol
+                "🎊", // Confeti
+                "🏆", // Trofeo
+                "🥇", // Medalla de oro
+                "🎇", // Fuegos artificiales
+                "🎉", // Party popper
+                "🎈", // Globo
+                "🎂", // Pastel de cumpleaños
+                "🍾", // Botella de champán
+                "🍻", // Choque de cervezas
+                "🥳", // Cara de fiesta
+                "🙌", // Manos levantadas
+                "👏", // Aplausos
+                "🎵", // Nota musical
+                "🔥", // Fuego
+                "💥", // Explosión
+                "🎤", // Micrófono
+                "🕺", // Hombre bailando
+                "💃", // Mujer bailando
+                "🎶", // Notas musicales
+            ],
+            confettiNumber: 80, // Ajusta este valor según la duración deseada
+        });
+    }, []);
     return (
         
         <>
