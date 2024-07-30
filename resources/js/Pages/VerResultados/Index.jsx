@@ -72,8 +72,7 @@ export default function ListarTorneos({
                 "🕺", // Hombre bailando
                 "💃", // Mujer bailando
                 "🎶", // Notas musicales
-            ],
-            confettiNumber: 80, // Ajusta este valor según la duración deseada
+            ]// Ajusta este valor según la duración deseada
         });
     }, []);
     return (
