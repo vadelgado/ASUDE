@@ -11,6 +11,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Footer from "@/Components/DashBoard/Footer";
+import WarningButton from "@/Components/WarningButton";
 
 export default function Index({
     auth,
@@ -169,7 +170,7 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+            <main className="container flex-grow px-4 py-8 mx-auto mt-32">
 
             <div className="grid bg-white v-screen place-items-center">
                 <div className="flex justify-end mt-2 mb-3">
@@ -189,8 +190,9 @@ export default function Index({
                             <th className="px-4 py-2 border">Fecha</th>
                             <th className="px-4 py-2 border">Hora</th>
                             <th className="px-4 py-2 border">Lugar</th>
-                            <th className="px-2 py-2 border"></th>
-                            <th className="px-2 py-2 border"></th>
+                            <th className="px-2 py-2 border">Editar</th>
+                            <th className="px-2 py-2 border">Eliminar</th>
+                            <th className="px-2 py-2 border">Resultados</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -221,7 +223,7 @@ export default function Index({
                                     {programacion.nomLugar}
                                 </td>
                                 <td className="px-2 py-2 border">
-                                    <SecondaryButton
+                                    <WarningButton
                                         onClick={() =>
                                             handleModal(
                                                 2,
@@ -235,8 +237,8 @@ export default function Index({
                                             )
                                         }
                                     >
-                                        <i className="fa-solid fa-pencil"></i>
-                                    </SecondaryButton>
+                                        <i className="fa-solid fa-pencil"></i> 
+                                    </WarningButton>
                                 </td>
                                 <td className="px-2 py-2 border">
                                     <DangerButton
@@ -249,25 +251,13 @@ export default function Index({
                                         <i className="fa-solid fa-trash"></i>
                                     </DangerButton>
                                 </td>
-                                <td className="px-4 py-2 border border-gray-400">
+                                <td className="px-4 py-2 border">
                                     <a
                                         className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
                                         href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                     >
                                         <i className="fa-regular fa-flag">
-                                            {" "}
-                                            Resultados
-                                        </i>
-                                    </a>
-                                </td>
-                                <td className="px-4 py-2 border border-gray-400">
-                                    <a
-                                        className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
-                                        href={`/faltasCuerpoTecnico?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
-                                    >
-                                        <i className="fa-regular fa-flag">
-                                            {" "}
-                                            Faltas CT
+                                            {" "}                                            
                                         </i>
                                     </a>
                                 </td>
