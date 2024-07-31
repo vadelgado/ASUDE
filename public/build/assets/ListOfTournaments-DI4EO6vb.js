@@ -1,1 +1,0 @@
-import{j as t}from"./app-CxZcZGFP.js";import e from"./TournamentsItem-C80-e9xJ.js";function o({torneo:r}){return t.jsxs("li",{children:[t.jsx("h3",{className:"mb-2 text-lg font-bold text-gray-800",children:r.nombreTorneo}),t.jsx(e,{torneo:r})]})}export{o as default};

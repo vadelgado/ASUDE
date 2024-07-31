@@ -98,9 +98,9 @@ export default function ListarTorneos({
                     <div className="text-xs text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
                         <div className="overflow-x-auto">
                             <div className="min-w-full">
-                                <table className="w-full mt-10 text-sm text-center text-black sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-xl">
+                                <table className="w-full mt-10 text-sm text-black sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-xl">
                                     <thead>
-                                        <tr className="bg-table-green-cabecera">
+                                        <tr className="text-center bg-table-green-cabecera">
                                             {secuenciaLetras.map(
                                                 (letra, index) => (
                                                     <th
@@ -125,12 +125,12 @@ export default function ListarTorneos({
                                                     (grupo, colIndex) => (
                                                         <td
                                                             key={colIndex}
-                                                            className="px-4 py-2"
+                                                            className="px-4 py-2 text-left"
                                                         >
                                                             {grupo[
                                                                 filaIndex
                                                             ] && (
-                                                                <div className="flex items-center justify-center">
+                                                                <div className="flex items-center">
                                                                     <span className="mr-2">
                                                                         {
                                                                             grupo[
@@ -157,7 +157,7 @@ export default function ListarTorneos({
                                                                         }
                                                                         className="w-6 h-6 mr-2 rounded-full sm:w-8 sm:h-8"
                                                                     />
-                                                                    <span className="text-center whitespace-nowrap">
+                                                                    <span className="whitespace-nowrap">
                                                                         <Link
                                                                             href={`/Equipo/${grupo[filaIndex].id}`}
                                                                             className="text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
