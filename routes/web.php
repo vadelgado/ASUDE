@@ -18,7 +18,7 @@ use App\Http\Controllers\TablasGruposController;
 Route::get('/', function () {
     $torneoEnCurso = torneo::select('id', 'nombreTorneo')
         ->orderByRaw("CASE WHEN estadoTorneo = 'En Juego' THEN 0 WHEN estadoTorneo = 'Finalizado' THEN 2 ELSE 1 END")
-        ->orderBy('fechaInicio', 'desc')
+        ->orderBy('fechaInicio', 'asc')
         ->get();
         $programaciones_faces = DB::table('programaciones_faces')
         ->join('fases', 'programaciones_faces.fk_fase', '=', 'fases.id')
