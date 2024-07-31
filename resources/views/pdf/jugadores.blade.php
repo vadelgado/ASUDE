@@ -64,7 +64,7 @@
     <table>
         <thead>
             <tr>
-                <th colspan="11" style="font-size: 12pt;">NOMBRE EQUIPO: {{ $equipo->nombreEquipo }}</th>
+                <th colspan="10" style="font-size: 12pt;">NOMBRE EQUIPO: {{ $equipo->nombreEquipo }}</th>
             </tr>
             <tr>
                 <th>N°</th>
@@ -77,10 +77,13 @@
                 <th>Institución Educativa</th>
                 <th>EPS</th>
                 <th>Cuerpo Técnico</th>
-                <th>Observaciones</th>
+                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
+            @php
+                $jugadores = $equipo->jugadores;
+            @endphp
             @foreach ($jugadores as $jugador)
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -93,7 +96,7 @@
                 <td>{{ $jugador->institucionEducativa }}</td>
                 <td>{{ $jugador->nombreEPS }}</td>
                 <td>{{ $jugador->cuerpoTecnico ?? '' }}</td>
-                <td>{{ $jugador->observaciones }}</td>
+                <td>{{ $jugador->estado == 1 ? 'Habilitado' : 'Deshabilitado' }}</td>
             </tr>
             @endforeach
         </tbody>

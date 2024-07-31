@@ -109,7 +109,8 @@ Route::get('/LICENSE',[HomeController::class, 'License'])->name('License.index')
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');    
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update'); 
+    Route::get('/jugadores/pdf', [JugadoresController::class, 'generatePDF'])->name('jugadores.pdf');   
 });
 
 Route::middleware('auth', 'role:admin')->group(function () {
@@ -158,8 +159,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::post('jugadoresAdmin/{jugadores}/toggle', 'App\Http\Controllers\JugadoresController@toggleJugador')->name('jugadoresAdmin.toggle');
 
     //pdfJugadores
-    Route::get('/jugadores/pdf', [JugadoresController::class, 'generatePDF'])->name('jugadores.pdf');
-
+    
+    
 
     //CuerpoTecnicoAdmin
     Route::resource('cuerpoTecnicoAdmin', App\Http\Controllers\CuerpoTecnicoController::class);

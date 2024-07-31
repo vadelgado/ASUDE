@@ -384,14 +384,23 @@ export default function Index({
         {
             name: "ESTADO",
             cell: (row) => (
-                <SecondaryButton
+                <button
                     onClick={() => toggleJugador(row.id, row.nombreCompleto)}
+                    disabled={userRole === 'equipo'} 
+                    className={`flex items-center justify-center w-20 h-10 space-x-1 px-2 py-1 rounded-lg text-white text-sm font-medium transition duration-300 ease-in-out ${
+                        row.estado === 1 ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                     <i className="fa-solid fa-eye"></i>
-                    {row.estado === 1 ? "Off" : "On"}
-                </SecondaryButton>
+                    <span className="ml-1">
+                        {row.estado === 1 ? "Hab." : "Des."}
+                    </span>
+                </button>
             ),
-        },
+        }
+        
+        
+        
     ];
 
     return (
