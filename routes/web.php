@@ -123,6 +123,9 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Listado de Pagos Administrador
     Route::get('comprobantesAdmin', 'App\Http\Controllers\ComprobantesController@indexAdmin')->name('comprobantes.indexAdmin');
 
+    //Resource PreTorneo
+    Route::resource('preTorneos', App\Http\Controllers\PreTorneoController::class);
+
     // Resource Torneos
     Route::resource('torneo', App\Http\Controllers\Torneos::class);
     // Actualizar Torneo
@@ -224,9 +227,6 @@ Route::middleware('auth', 'role:equipo')->group(function () {
     Route::post('cuerpoTecnico/{cuerpoTecnico}', 'App\Http\Controllers\CuerpoTecnicoController@update')->name('cuerpoTecnico.updatepost');
     //toggle estado cuerpoTecnico
     Route::post('cuerpoTecnico/{cuerpoTecnico}/toggle', 'App\Http\Controllers\CuerpoTecnicoController@toggleCuerpoTecnico')->name('cuerpoTecnico.toggle');
-
-    //Preplanilla
-    Route::resource('preplanilla', App\Http\Controllers\PreplanillaController::class);
 
     //Resource Inscripciones
     Route::resource('inscripcionesEquipo', App\Http\Controllers\InscripcionesController::class);

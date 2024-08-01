@@ -100,7 +100,7 @@ class Torneos extends Controller
 
         torneo::create($data); 
 
-        return redirect()->route('torneo.index');
+
     }
 
     public function update(UpdateRequest $request, $id)
@@ -130,8 +130,6 @@ class Torneos extends Controller
 
         $torneo->update($data);
 
-        return redirect()->route('torneo.index', $torneo);
-
     }
 
     public function destroy(torneo $torneo)
@@ -145,9 +143,6 @@ class Torneos extends Controller
             }
         }
         $torneo->delete();
-
-        return redirect()
-            ->route('torneo.index');
     }
 }
 

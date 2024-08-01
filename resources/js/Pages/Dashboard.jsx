@@ -12,6 +12,7 @@ const menuItems = [
         roles: ["admin", "equipo"],
         alternativeRoute: "equiposInvitados.index"
     },
+    { title: "Pre-Torneos", iconClass: "fa-solid fa-trophy", route: "preTorneos.index", color: "bg-red-500", roles: ["admin"] },
     { title: "Torneos", iconClass: "fa-solid fa-trophy", route: "torneo.index", color: "bg-red-500", roles: ["admin"] },
     { title: "Sistema de Juego", iconClass: "fa-solid fa-puzzle-piece", route: "sistemaJuego.index", color: "bg-yellow-500", roles: ["admin"] }
 ];
