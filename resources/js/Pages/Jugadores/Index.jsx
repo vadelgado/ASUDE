@@ -299,9 +299,78 @@ export default function Index({
     const columns = [
         { name: "N°", selector: (row, index) => index + 1, sortable: true },
         {
+            name: "EDITAR",
+            cell: (row) => (
+                <WarningButton
+                    onClick={() =>
+                        openModal(
+                            2,
+                            row.id,
+                            row.nombreCompleto,
+                            row.foto,
+                            row.tipoIdentificacion,
+                            row.numeroIdentificacion,
+                            row.numeroSerie,
+                            row.fechaNacimiento,
+                            row.lugarNacimiento,
+                            row.institucionEducativa,
+                            row.grado,
+                            row.ciudadInstitucionEducativa,
+                            row.telefonoInstitucionEducativa,
+                            row.fk_equipo,
+                            row.estadoEPS,
+                            row.nombreEPS,
+                            row.lugarAtencionEPS,
+                            row.cuerpoTecnico
+                        )
+                    }
+                >
+                    <i className="fa-solid fa-pencil"></i>
+                </WarningButton>
+            ),
+        },
+        {
+            name: "ESTADO",
+            cell: (row) => (
+                <button
+                    onClick={() => toggleJugador(row.id, row.nombreCompleto)}
+                    disabled={userRole === "equipo"}
+                    className={`flex items-center justify-center w-20 h-10 space-x-1 px-2 py-1 rounded-lg text-white text-sm font-medium transition duration-300 ease-in-out ${
+                        row.estado === 1
+                            ? "bg-green-500 hover:bg-green-600"
+                            : "bg-red-500 hover:bg-red-600"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                    <i className="fa-solid fa-eye"></i>
+                    <span className="ml-1">
+                        {row.estado === 1 ? "Hab." : "Des."}
+                    </span>
+                </button>
+            ),
+        },
+        {
             name: "NOMBRES Y APELLIDOS",
             selector: (row) => row.nombreCompleto,
             sortable: true,
+            wrap: true,
+        },
+        {
+            name: "FOTO",
+            cell: (row) => (
+                <img
+                    src={`/storage/${row.foto}`}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/soccer-player.svg";
+                        if (e.target.src.endsWith(".svg")) {
+                            e.target.style.filter = "brightness(0.5)";
+                        }
+                    }}
+                    alt="Foto"
+                    width="40"
+                    height="40"
+                />
+            ),
         },
         {
             name: "TIPO DOC",
@@ -349,58 +418,6 @@ export default function Index({
             selector: (row) => row.cuerpoTecnico,
             sortable: true,
         },
-
-        {
-            name: "EDITAR",
-            cell: (row) => (
-                <WarningButton
-                    onClick={() =>
-                        openModal(
-                            2,
-                            row.id,
-                            row.nombreCompleto,
-                            row.foto,
-                            row.tipoIdentificacion,
-                            row.numeroIdentificacion,
-                            row.numeroSerie,
-                            row.fechaNacimiento,
-                            row.lugarNacimiento,
-                            row.institucionEducativa,
-                            row.grado,
-                            row.ciudadInstitucionEducativa,
-                            row.telefonoInstitucionEducativa,
-                            row.fk_equipo,
-                            row.estadoEPS,
-                            row.nombreEPS,
-                            row.lugarAtencionEPS,
-                            row.cuerpoTecnico
-                        )
-                    }
-                >
-                    <i className="fa-solid fa-pencil"></i>
-                </WarningButton>
-            ),
-        },
-        {
-            name: "ESTADO",
-            cell: (row) => (
-                <button
-                    onClick={() => toggleJugador(row.id, row.nombreCompleto)}
-                    disabled={userRole === 'equipo'} 
-                    className={`flex items-center justify-center w-20 h-10 space-x-1 px-2 py-1 rounded-lg text-white text-sm font-medium transition duration-300 ease-in-out ${
-                        row.estado === 1 ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
-                >
-                    <i className="fa-solid fa-eye"></i>
-                    <span className="ml-1">
-                        {row.estado === 1 ? "Hab." : "Des."}
-                    </span>
-                </button>
-            ),
-        }
-        
-        
-        
     ];
 
     return (
@@ -525,7 +542,9 @@ export default function Index({
                                 htmlFor="cuerpoTecnico"
                                 label={
                                     <>
-                                        <span>Forma Parte del Cuerpo técnico</span>
+                                        <span>
+                                            Forma Parte del Cuerpo técnico
+                                        </span>
                                     </>
                                 }
                                 id="cuerpoTecnico"

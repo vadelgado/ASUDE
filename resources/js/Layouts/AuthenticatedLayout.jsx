@@ -1,107 +1,243 @@
 import { useState } from "react";
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import HeaderLink from "@/Components/DashBoard/HeaderLink";
+import Logo from "@/Components/Logo";
 import { Link } from "@inertiajs/react";
-import {
-    HomeIcon,
-    UserGroupIcon,
-    TrophyIcon,
-    GameControllerIcon,
-    UserCircleIcon,
-    LogoutIcon,
-} from "@heroicons/react/outline"; // Utilizando Heroicons
 
 export default function Authenticated({ user, header, children }) {
-    const [showSidebar, setShowSidebar] = useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
-            {/* Sidebar */}
-            <div className={`fixed inset-y-0 left-0 w-64 bg-orange-500 transition-transform transform ${showSidebar ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}>
-                <div className="flex items-center justify-between h-16 px-4 bg-orange-600">
-                    <HeaderLink checkActive={false} href="/" className="flex items-center">
-                        <Logo className="w-auto h-12" />
-                        <span className="ml-2 text-2xl font-bold text-white">Alianza Sureña</span>
-                    </HeaderLink>
-                    <button className="sm:hidden" onClick={() => setShowSidebar(!showSidebar)}>
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-                <nav className="px-4 pt-4">
-                    <NavLink href={route("dashboard")} active={route().current("dashboard")} className="flex items-center px-4 py-2 text-white rounded-lg hover:bg-gray-600">
-                        <HomeIcon className="w-6 h-6 mr-3" />
-                        Inicio 🏠
-                    </NavLink>
-                    {user.role === "equipo" && (
-                        <NavLink href={route("equiposInvitados.index")} active={route().current("equiposInvitados.index")} className="flex items-center px-4 py-2 text-white rounded-lg hover:bg-gray-600">
-                            <UserGroupIcon className="w-6 h-6 mr-3" />
-                            Mis Equipos ⚽
-                        </NavLink>
-                    )}
-                    {user.role === "admin" && (
-                        <>
-                            <NavLink href={route("equipos.index")} active={route().current("equipos.index")} className="flex items-center px-4 py-2 text-white rounded-lg hover:bg-gray-600">
-                                <UserGroupIcon className="w-6 h-6 mr-3" />
-                                Mis Equipos ⚽
-                            </NavLink>
-                            <NavLink href={route("torneo.index")} active={route().current("torneo.index")} className="flex items-center px-4 py-2 text-white rounded-lg hover:bg-gray-600">
-                                <TrophyIcon className="w-6 h-6 mr-3" />
-                                Torneos 🏟
-                            </NavLink>
-                            <NavLink href={route("sistemaJuego.index")} active={route().current("sistemaJuego.index")} className="flex items-center px-4 py-2 text-white rounded-lg hover:bg-gray-600">
-                                <GameControllerIcon className="w-6 h-6 mr-3" />
-                                Sistema de Juego 🎲
-                            </NavLink>
-                        </>
-                    )}
-                </nav>
-                <div className="px-4 pt-4 mt-4 border-t border-gray-200">
-                    <Dropdown>
-                        <Dropdown.Trigger>
-                            <button className="flex items-center w-full px-4 py-2 text-lg font-medium text-left text-white bg-white bg-opacity-25 rounded-md hover:bg-opacity-50 focus:outline-none">
-                                <UserCircleIcon className="w-6 h-6 mr-3" />
-                                {user.name}
-                            </button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content>
-                            <Dropdown.Link href={route("profile.edit")}>
-                                Perfil 🧑
-                            </Dropdown.Link>
-                            <Dropdown.Link href={route("logout")} method="post" as="button">
-                                <LogoutIcon className="w-6 h-6 mr-3" />
-                                Cerrar Sesión 🚪
-                            </Dropdown.Link>
-                        </Dropdown.Content>
-                    </Dropdown>
-                </div>
-            </div>
+        <div className="min-h-screen bg-gray-100">
+            <nav className="bg-orange-400 border-b border-gray-100">
+                <div className="container px-4 mx-auto sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-16">
+                        <div className="flex">
+                            <div className="flex items-center">
+                                <HeaderLink
+                                    checkActive={false}
+                                    href="/"
+                                    className="relative z-10 flex lg:flex-1"
+                                >
+                                    <span className="sr-only">
+                                        Alianza Sureña
+                                    </span>
+                                    <Logo className="absolute w-auto h-16 m-auto transition-opacity duration-300 opacity-0 blur-sm hover:opacity-50" />
+                                    <Logo className="w-auto h-16" />
+                                </HeaderLink>
+                            </div>
+                            <div className="hidden sm:flex sm:space-x-8 sm:-my-px sm:ml-10">
+                                <NavLink
+                                    href={route("dashboard")}
+                                    active={route().current("dashboard")}
+                                >
+                                    Inicio 🏠
+                                </NavLink>
+                                {user.role === "equipo" && (
+                                    <NavLink
+                                        href="/equiposInvitados"
+                                    >
+                                        Mis Equipos ⚽
+                                    </NavLink>
+                                )}
+                                {user.role === "admin" && (
+                                    <>
+                                        <NavLink
+                                            href={route("equipos.index")}
+                                            active={route().current(
+                                                "equipos.index"
+                                            )}
+                                        >
+                                            Mis Equipos ⚽
+                                        </NavLink>
 
-            {/* Main content */}
-            <div className="flex flex-col flex-1">
-                <header className="flex items-center justify-between h-16 bg-white shadow sm:hidden">
-                    <button className="p-4" onClick={() => setShowSidebar(!showSidebar)}>
-                        <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                    <div className="flex items-center">
-                        <HeaderLink checkActive={false} href="/" className="relative z-10 flex lg:flex-1">
-                            <Logo className="w-auto h-12" />
-                            <span className="ml-2 text-2xl font-bold text-gray-800">Alianza Sureña</span>
-                        </HeaderLink>
+                                        <NavLink
+                                            href={route("torneo.index")}
+                                            active={route().current(
+                                                "torneo.index"
+                                            )}
+                                        >
+                                            Torneos 🏟
+                                        </NavLink>
+                                        <NavLink
+                                            href={route("sistemaJuego.index")}
+                                            active={route().current(
+                                                "sistemaJuego.index"
+                                            )}
+                                        >
+                                            Sistema de Juego 🎲
+                                        </NavLink>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="hidden sm:flex sm:items-center sm:ml-6">
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <span className="inline-flex rounded-md">
+                                        <button
+                                            type="button"
+                                            className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none"
+                                        >
+                                            {user.name}
+                                            <svg
+                                                className="ml-2 -mr-0.5 h-4 w-4"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Dropdown.Link href={route("profile.edit")}>
+                                        Perfil 🧑{" "}
+                                    </Dropdown.Link>
+                                    <Dropdown.Link
+                                        href={route("logout")}
+                                        method="post"
+                                        as="button"
+                                    >
+                                        Cerrar Sesión 🚪
+                                    </Dropdown.Link>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
+
+                        <div className="flex items-center -mr-2 sm:hidden">
+                            <button
+                                onClick={() =>
+                                    setShowingNavigationDropdown(
+                                        !showingNavigationDropdown
+                                    )
+                                }
+                                className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
+                            >
+                                <svg
+                                    className="w-6 h-6"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        className={
+                                            !showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                    <path
+                                        className={
+                                            showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    className={`sm:hidden ${
+                        showingNavigationDropdown ? "block" : "hidden"
+                    }`}
+                >
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
+                        >
+                            Inicio 🏠
+                        </ResponsiveNavLink>
+                        {user.role === "equipo" && (
+                            <ResponsiveNavLink
+                                href="/equiposInvitados"                                
+                                
+                            >
+                                Mis Equipos ⚽
+                            </ResponsiveNavLink>
+                        )}
+                        {user.role === "admin" && (
+                            <>
+                                <ResponsiveNavLink
+                                    href={route("equipos.index")}
+                                    active={route().current("equipos.index")}
+                                >
+                                    Mis Equipos ⚽
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("torneo.index")}
+                                    active={route().current("torneo.index")}
+                                >
+                                    Torneos 🏟
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("sistemaJuego.index")}
+                                    active={route().current("sistemaJuego.index")}
+                                >
+                                    Sistema de Juego 🎲
+                                </ResponsiveNavLink>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="pt-4 pb-1 border-t border-gray-200">
+                        <div className="px-4">
+                            <div className="text-base font-medium text-gray-800">
+                                {user.name}
+                            </div>
+                            <div className="text-sm font-medium text-gray-500">
+                                {user.email}
+                            </div>
+                        </div>
+
+                        <div className="mt-3 space-y-1">
+                            <ResponsiveNavLink href={route("profile.edit")}>
+                                Perfil 🧑
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                method="post"
+                                href={route("logout")}
+                                as="button"
+                            >
+                                Cerrar Sesión 🚪
+                            </ResponsiveNavLink>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            {header && (
+                <header className="bg-white shadow">
+                    <div className="container px-4 py-6 mx-auto sm:px-6 lg:px-8">
+                        {header}
                     </div>
                 </header>
-                {header && (
-                    <header className="bg-white shadow">
-                        <div className="container px-4 py-6 mx-auto sm:px-6 lg:px-8">
-                            {header}
-                        </div>
-                    </header>
-                )}
-                <main className="flex-1 p-4">
-                    {children}
-                </main>
-            </div>
+            )}
+
+            <main>{children}</main>
         </div>
     );
 }

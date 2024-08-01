@@ -64,11 +64,21 @@ class TablasGruposController extends Controller
         ->orderBy('goles', 'desc')
         ->limit(10)
         ->get();
+
+        $equiposParticipantes = DB::table('equipos as e')
+        ->join('inscripciones as i', 'e.id', '=', 'i.fk_equipo')
+        ->join('torneo as t', 'i.fk_torneo', '=', 't.id')
+        ->where('t.id', $torneo_id)
+        ->select('e.id', 'e.nombreEquipo', 'e.escudoEquipo')
+        ->get();
+
         return Inertia::render('ResultadoSorteo/ShouwTablaGrupos', 
         ['tablasGrupos' => $tablasGrupos, 
         /*'programacionTorneo' => $programacionTorneo*/
         'torneo' => $torneo,
-        'resultadosGoles' => $resultadosGoles]); 
+        'resultadosGoles' => $resultadosGoles,
+        'equiposParticipantes' => $equiposParticipantes
+        ]); 
     }
     public function Equipo($id)
     {

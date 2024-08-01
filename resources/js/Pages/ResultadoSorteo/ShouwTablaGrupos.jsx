@@ -1,6 +1,7 @@
 import { Link, Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
+import EquiposParticipantes from "@/Components/EquposParticipantes";
 import React, { useEffect, useState } from "react";
 
 function generarSecuenciaLetras(numero) {
@@ -18,9 +19,10 @@ function generarSecuenciaLetras(numero) {
 
 export default function ListarTorneos({
     auth,
-    tablasGrupos,
+    tablasGrupos, 
     torneo,
     resultadosGoles,
+    equiposParticipantes
 }) {
     const [secuenciaLetras, setSecuenciaLetras] = useState([]);
 
@@ -182,6 +184,9 @@ export default function ListarTorneos({
                             </div>
                         </div>
                     </div>
+
+                    <EquiposParticipantes equiposParticipantes={equiposParticipantes} />
+                    
                     <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
                         <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
                             Goleadores ⚽ del Torneo
