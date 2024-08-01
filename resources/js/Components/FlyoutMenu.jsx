@@ -10,9 +10,9 @@ import HeaderLink from "@/Components/DashBoard/HeaderLink";
 export default function FlyoutMenu({ auth }) {
     return (
         <Popover className="relative">
-            <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                <span className="hover:underline">Alianza Sureña</span>
-                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+            <Popover.Button className="inline-flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
+                <span className="hover:underline">INICIAR SESIÓN</span>
+                <ChevronDownIcon className="w-5 h-5" aria-hidden="true" />
             </Popover.Button>
 
             <Transition
@@ -24,8 +24,8 @@ export default function FlyoutMenu({ auth }) {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
             >
-                <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
-                    <div className="max-w-max flex-auto overflow-hidden rounded-3xl bg-green-300 bg-opacity-25 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+                <Popover.Panel className="absolute z-10 flex w-screen px-4 mt-5 -translate-x-1/2 left-1/2 max-w-max">
+                    <div className="flex-auto overflow-hidden text-sm leading-6 bg-green-300 bg-opacity-25 shadow-lg max-w-max rounded-3xl ring-1 ring-gray-900/5">
                         <div className="p-4">
                             {auth.user ? (
                                 <HeaderLink
