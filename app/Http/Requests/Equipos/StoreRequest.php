@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
             'nombreEquipo' => 'required|string|max:255',
             'fk_categoria_equipo' => 'required',
             'escudoEquipo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'numeroWhatsapp' => 'required',
+            'numeroWhatsapp' => 'required|digits:10',
             'correoElectronico' => 'required',
             
         ];
@@ -48,6 +48,7 @@ class StoreRequest extends FormRequest
             'escudoEquipo.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg, gif, webp.',
             'escudoEquipo.max' => 'El archivo no puede exceder los 2048 KB.',
             'numeroWhatsapp.required' => 'El campo número de WhatsApp es obligatorio.',
+            'numeroWhatsapp.digits' => 'El campo número de WhatsApp debe tener 10 dígitos.',
             'correoElectronico.required' => 'El campo correo electrónico es obligatorio.',
             
         ];

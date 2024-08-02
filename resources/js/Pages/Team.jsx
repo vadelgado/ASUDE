@@ -8,7 +8,7 @@ export default function Team({ auth, equipo }) {
         <>
             <Head title="Equipo" />
             <Header auth={auth} />
-            <div className="flex flex-col min-h-screen mt-32 bg-gray-900">
+            <div className="flex flex-col min-h-screen bg-gray-900">
                 <main className="flex-grow">
                     {/* Encabezado del Equipo */}
                     <div className="bg-[#FFD8B1] py-8">

@@ -136,7 +136,7 @@ export default function ResultadosPartidos({
     return (
         <AuthenticatedLayout user={auth.user}>
                     <div className="flex flex-col min-h-screen">
-                    <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                    <main className="container flex-grow px-4 py-8 mx-auto">
             <div className="grid bg-white v-screen place-items-center">
                 <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => handleModal(1)}>

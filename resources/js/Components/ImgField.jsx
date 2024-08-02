@@ -37,7 +37,7 @@ const ImgField = forwardRef(
                />
                 {previewImage && (
                     <img
-                        src={previewImage}
+                        src={typeof previewImage === 'string' && previewImage.startsWith('data:') ? previewImage : `/storage/${previewImage}`}
                         alt="Preview"
                         className="w-20 h-auto mt-2"
                     />

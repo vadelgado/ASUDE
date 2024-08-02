@@ -2,19 +2,21 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 
+// Menú con colores e iconos diversificados
 const menuItems = [
-    { title: "Inicio", iconClass: "fa-solid fa-house", route: "dashboard", color: "bg-blue-500" },
+    { title: "Inicio", iconClass: "fa-solid fa-house", route: "welcome", gradient: "from-blue-500 to-indigo-500" },
     { 
         title: "Mis Equipos", 
         iconClass: "fa-solid fa-users", 
         route: "equipos.index", 
-        color: "bg-green-500", 
+        gradient: "from-green-400 to-teal-400", 
         roles: ["admin", "equipo"],
         alternativeRoute: "equiposInvitados.index"
     },
-    { title: "Pre-Torneos", iconClass: "fa-solid fa-trophy", route: "preTorneos.index", color: "bg-red-500", roles: ["admin"] },
-    { title: "Torneos", iconClass: "fa-solid fa-trophy", route: "torneo.index", color: "bg-red-500", roles: ["admin"] },
-    { title: "Sistema de Juego", iconClass: "fa-solid fa-puzzle-piece", route: "sistemaJuego.index", color: "bg-yellow-500", roles: ["admin"] }
+    { title: "Pre-Torneos", iconClass: "fa-solid fa-flag", route: "preTorneos.index", gradient: "from-purple-500 to-pink-500", roles: ["admin"] },
+    { title: "Torneos", iconClass: "fa-solid fa-medal", route: "torneo.index", gradient: "from-red-400 to-orange-400", roles: ["admin"] },
+    { title: "Sistema de Juego", iconClass: "fa-solid fa-gamepad", route: "sistemaJuego.index", gradient: "from-yellow-400 to-amber-400", roles: ["admin"] },
+    { title: "Perfil", iconClass: "fa-solid fa-user-circle", route: "profile.edit", gradient: "from-teal-500 to-cyan-500", roles: ["admin"] }
 ];
 
 function UserInfo({ user }) {
@@ -47,7 +49,7 @@ function UserInfo({ user }) {
 
 function WindowsMenu({ user }) {
     return (
-        <div className="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3">
             {menuItems
                 .filter(item => !item.roles || item.roles.includes(user.role))
                 .map((item, index) => {
@@ -60,10 +62,10 @@ function WindowsMenu({ user }) {
                         <a
                             key={index}
                             href={route(routeName)}
-                            className={`flex items-center justify-center h-32 rounded-lg shadow-lg text-white ${item.color} hover:bg-opacity-75 transition duration-300`}
+                            className={`flex flex-col items-center justify-center h-40 p-4 text-white rounded-lg shadow-lg bg-gradient-to-br ${item.gradient} hover:bg-opacity-90 transition-transform transform hover:scale-105 hover:shadow-2xl`}
                         >
-                            <div className="text-center">
-                                <i className={`${item.iconClass} text-4xl mb-2`}></i>
+                            <div className="flex flex-col items-center justify-center">
+                                <i className={`${item.iconClass} text-5xl mb-3`}></i>
                                 <p className="text-lg font-semibold">{item.title}</p>
                             </div>
                         </a>
@@ -77,7 +79,6 @@ export default function Dashboard({ auth }) {
     if (!auth || !auth.user) {
         return <div>Error: Usuario no autenticado.</div>;
     }
-
 
     return (
         <AuthenticatedLayout

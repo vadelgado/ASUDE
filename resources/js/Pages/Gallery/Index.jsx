@@ -208,7 +208,7 @@ export default function Dashboard({ auth, galleries, fase }) {
         >
             <Head title="Fotos Fase" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+                <main className="flex-grow container mx-auto px-4 py-8">
                     <div className="container p-6 mx-auto mt-6 bg-white">
                         <div className="flex justify-end mt-2 mb-3">
                             <PrimaryButton onClick={() => handleModal(1)}>

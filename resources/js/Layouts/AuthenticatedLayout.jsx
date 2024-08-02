@@ -8,85 +8,86 @@ import Logo from "@/Components/Logo";
 import { Link } from "@inertiajs/react";
 
 export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-orange-400 border-b border-gray-100">
+            <nav className="fixed top-0 z-50 w-full shadow-md bg-gradient-to-r from-green-400 via-green-500 to-green-700">
                 <div className="container px-4 mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
-                        <div className="flex">
-                            <div className="flex items-center">
-                                <HeaderLink
-                                    checkActive={false}
-                                    href="/"
-                                    className="relative z-10 flex lg:flex-1"
-                                >
-                                    <span className="sr-only">
-                                        Alianza Sureña
-                                    </span>
-                                    <Logo className="absolute w-auto h-16 m-auto transition-opacity duration-300 opacity-0 blur-sm hover:opacity-50" />
-                                    <Logo className="w-auto h-16" />
-                                </HeaderLink>
-                            </div>
-                            <div className="hidden sm:flex sm:space-x-8 sm:-my-px sm:ml-10">
+                    <div className="flex justify-between h-20">
+                        {/* Logo Section */}
+                        <div className="flex items-center">
+                            <HeaderLink
+                                checkActive={false}
+                                href="/"
+                                className="flex items-center lg:flex-1"
+                            >
+                                <span className="sr-only">Alianza Sureña</span>
+                                <Logo className="w-auto h-14" />
+                            </HeaderLink>
+                        </div>
+                        {/* Navigation Links */}
+                        <div className="hidden sm:flex sm:items-center sm:space-x-10">
+                            <NavLink
+                                href={route("dashboard")}
+                                active={route().current("dashboard")}
+                                className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                            >
+                                Inicio 🏠
+                            </NavLink>
+                            {user.role === "equipo" && (
                                 <NavLink
-                                    href={route("dashboard")}
-                                    active={route().current("dashboard")}
+                                    href="/equiposInvitados"
+                                    className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
                                 >
-                                    Inicio 🏠
+                                    Mis Equipos ⚽
                                 </NavLink>
-                                {user.role === "equipo" && (
+                            )}
+                            {user.role === "admin" && (
+                                <>
                                     <NavLink
-                                        href="/equiposInvitados"
+                                        href={route("equipos.index")}
+                                        active={route().current("equipos.index")}
+                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
                                     >
                                         Mis Equipos ⚽
                                     </NavLink>
-                                )}
-                                {user.role === "admin" && (
-                                    <>
-                                        <NavLink
-                                            href={route("equipos.index")}
-                                            active={route().current(
-                                                "equipos.index"
-                                            )}
-                                        >
-                                            Mis Equipos ⚽
-                                        </NavLink>
-
-                                        <NavLink
-                                            href={route("torneo.index")}
-                                            active={route().current(
-                                                "torneo.index"
-                                            )}
-                                        >
-                                            Torneos 🏟
-                                        </NavLink>
-                                        <NavLink
-                                            href={route("sistemaJuego.index")}
-                                            active={route().current(
-                                                "sistemaJuego.index"
-                                            )}
-                                        >
-                                            Sistema de Juego 🎲
-                                        </NavLink>
-                                    </>
-                                )}
-                            </div>
+                                    <NavLink
+                                        href={route("preTorneos.index")}
+                                        active={route().current("preTorneos.index")}
+                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                    >
+                                        Pre-Torneos 🏆
+                                    </NavLink>
+                                    <NavLink
+                                        href={route("torneo.index")}
+                                        active={route().current("torneo.index")}
+                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                    >
+                                        Torneos 🏟
+                                    </NavLink>
+                                    <NavLink
+                                        href={route("sistemaJuego.index")}
+                                        active={route().current("sistemaJuego.index")}
+                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                    >
+                                        Sistema de Juego 🎲
+                                    </NavLink>
+                                </>
+                            )}
                         </div>
-
+                        {/* User Dropdown */}
                         <div className="hidden sm:flex sm:items-center sm:ml-6">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <span className="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none"
+                                            className="inline-flex items-center px-4 py-3 text-lg font-medium leading-5 text-white uppercase transition duration-150 ease-in-out bg-transparent border border-transparent rounded-md hover:bg-opacity-75"
                                         >
                                             {user.name}
                                             <svg
-                                                className="ml-2 -mr-0.5 h-4 w-4"
+                                                className="ml-2 -mr-0.5 h-5 w-5"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20"
                                                 fill="currentColor"
@@ -103,7 +104,7 @@ export default function Authenticated({ user, header, children }) {
 
                                 <Dropdown.Content>
                                     <Dropdown.Link href={route("profile.edit")}>
-                                        Perfil 🧑{" "}
+                                        Perfil 🧑
                                     </Dropdown.Link>
                                     <Dropdown.Link
                                         href={route("logout")}
@@ -115,15 +116,11 @@ export default function Authenticated({ user, header, children }) {
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
-
+                        {/* Mobile Menu Button */}
                         <div className="flex items-center -mr-2 sm:hidden">
                             <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        !showingNavigationDropdown
-                                    )
-                                }
-                                className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
+                                onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
+                                className="inline-flex items-center justify-center p-2 text-white transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
                             >
                                 <svg
                                     className="w-6 h-6"
@@ -132,22 +129,14 @@ export default function Authenticated({ user, header, children }) {
                                     viewBox="0 0 24 24"
                                 >
                                     <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
+                                        className={!showingNavigationDropdown ? "inline-flex" : "hidden"}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
+                                        className={showingNavigationDropdown ? "inline-flex" : "hidden"}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
@@ -159,45 +148,30 @@ export default function Authenticated({ user, header, children }) {
                     </div>
                 </div>
 
-                <div
-                    className={`sm:hidden ${
-                        showingNavigationDropdown ? "block" : "hidden"
-                    }`}
-                >
+                {/* Mobile Navigation Dropdown */}
+                <div className={`sm:hidden ${showingNavigationDropdown ? "block" : "hidden"}`}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Inicio 🏠
+                        <ResponsiveNavLink href={route("dashboard")} active={route().current("dashboard")}>
+                            INICIO 🏠
                         </ResponsiveNavLink>
                         {user.role === "equipo" && (
-                            <ResponsiveNavLink
-                                href="/equiposInvitados"                                
-                                
-                            >
-                                Mis Equipos ⚽
+                            <ResponsiveNavLink href="/equiposInvitados">
+                                MIS EQUIPOS ⚽
                             </ResponsiveNavLink>
                         )}
                         {user.role === "admin" && (
                             <>
-                                <ResponsiveNavLink
-                                    href={route("equipos.index")}
-                                    active={route().current("equipos.index")}
-                                >
-                                    Mis Equipos ⚽
+                                <ResponsiveNavLink href={route("equipos.index")} active={route().current("equipos.index")}>
+                                    MIS EQUIPOS ⚽
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route("torneo.index")}
-                                    active={route().current("torneo.index")}
-                                >
-                                    Torneos 🏟
+                                <ResponsiveNavLink href={route("preTorneos.index")} active={route().current("preTorneos.index")}>
+                                    PRE-TORNEOS 🏆
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route("sistemaJuego.index")}
-                                    active={route().current("sistemaJuego.index")}
-                                >
-                                    Sistema de Juego 🎲
+                                <ResponsiveNavLink href={route("torneo.index")} active={route().current("torneo.index")}>
+                                    TORNEOS 🏟
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route("sistemaJuego.index")} active={route().current("sistemaJuego.index")}>
+                                    SISTEMA DE JUEGO 🎲
                                 </ResponsiveNavLink>
                             </>
                         )}
@@ -205,7 +179,7 @@ export default function Authenticated({ user, header, children }) {
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
+                            <div className="text-lg font-medium text-gray-800">
                                 {user.name}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
@@ -215,14 +189,10 @@ export default function Authenticated({ user, header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("profile.edit")}>
-                                Perfil 🧑
+                                PERFIL 🧑
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route("logout")}
-                                as="button"
-                            >
-                                Cerrar Sesión 🚪
+                            <ResponsiveNavLink method="post" href={route("logout")} as="button">
+                                CERRAR SESIÓN 🚪
                             </ResponsiveNavLink>
                         </div>
                     </div>
@@ -230,14 +200,14 @@ export default function Authenticated({ user, header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="mt-20 bg-white shadow">
                     <div className="container px-4 py-6 mx-auto sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="pt-20">{children}</main>
         </div>
     );
 }

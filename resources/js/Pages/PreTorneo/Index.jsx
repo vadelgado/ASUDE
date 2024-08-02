@@ -246,7 +246,7 @@ export default function Dashboard({
         >
             <Head title="Torneos" />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="min-h-screen py-6 bg-gray-100">
                         <div className="container px-4 mx-auto">
                             <div className="flex justify-end mb-4">
@@ -740,6 +740,7 @@ export default function Dashboard({
                                 id="flayer"
                                 ref={flayerInput}
                                 name="flayer"
+                                imageUrl={data.flayer}
                                 value={data.flayer}
                                 onChange={(e) => handleFileChange("flayer", e)}
                                 errorMessage={errors.flayer}
@@ -751,6 +752,7 @@ export default function Dashboard({
                                 id="imgBannerSuperior"
                                 ref={imgBannerSuperiorInput}
                                 name="imgBannerSuperior"
+                                imageUrl={data.imgBannerSuperior}
                                 value={data.imgBannerSuperior}
                                 onChange={(e) =>
                                     handleFileChange("imgBannerSuperior", e)
@@ -764,6 +766,7 @@ export default function Dashboard({
                                 id="imgBannerInferiorIz"
                                 ref={imgBannerInferiorIzInput}
                                 name="imgBannerInferiorIz"
+                                imageUrl={data.imgBannerInferiorIz}
                                 value={data.imgBannerInferiorIz}
                                 onChange={(e) =>
                                     handleFileChange("imgBannerInferiorIz", e)
@@ -777,6 +780,7 @@ export default function Dashboard({
                                 id="imgBannerInferiorDe"
                                 ref={imgBannerInferiorDeInput}
                                 name="imgBannerInferiorDe"
+                                imageUrl={data.imgBannerInferiorDe}
                                 value={data.imgBannerInferiorDe}
                                 onChange={(e) =>
                                     handleFileChange("imgBannerInferiorDe", e)

@@ -57,7 +57,7 @@ export default function ListarTorneos({
             <Header auth={auth}></Header>
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="mt-40 text-center">
                         <div className="flex items-center justify-center py-8">
                             <img

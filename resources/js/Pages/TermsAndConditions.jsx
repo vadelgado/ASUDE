@@ -8,13 +8,13 @@ export default function TermsAndConditions({ auth }) {
             <Head title="Términos y Condiciones" />
             <Header auth={auth} />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8 mt-32">
-                    <h1 className="text-3xl font-bold mb-4">
+                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                    <h1 className="mb-4 text-3xl font-bold">
                         Términos y Condiciones
                     </h1>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Introducción
                         </h2>
                         <p>
@@ -29,7 +29,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Definiciones
                         </h2>
                         <ul className="list-disc list-inside">
@@ -53,7 +53,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Uso de la Plataforma
                         </h2>
                         <ul className="list-disc list-inside">
@@ -76,7 +76,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Registro y Cuenta de Usuario
                         </h2>
                         <ul className="list-disc list-inside">
@@ -101,7 +101,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Propiedad Intelectual
                         </h2>
                         <ul className="list-disc list-inside">
@@ -124,7 +124,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Conducta del Usuario
                         </h2>
                         <ul className="list-disc list-inside">
@@ -148,7 +148,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Privacidad
                         </h2>
                         <p>
@@ -163,7 +163,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Limitación de Responsabilidad
                         </h2>
                         <ul className="list-disc list-inside">
@@ -183,7 +183,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Modificaciones de los Términos
                         </h2>
                         <p>
@@ -234,7 +234,7 @@ export default function TermsAndConditions({ auth }) {
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-2">
+                        <h2 className="mb-2 text-2xl font-semibold">
                             Contacto
                         </h2>
                         <p>

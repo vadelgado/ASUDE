@@ -431,7 +431,7 @@ export default function Index({
         >
             <Head title="⚽ Miembros del Equipo 👦👧" />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="py-6">
                         <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
                             <div className="flex justify-end mt-1 mb-4 space-x-4">

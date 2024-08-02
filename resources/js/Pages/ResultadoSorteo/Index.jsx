@@ -263,7 +263,7 @@ export default function Index({
         >
             <Head title="✋Sorteo" />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="container p-6 mx-auto mt-6 bg-white">
                         <div className="flex justify-end mt-2 mb-3">
                             <PrimaryButton onClick={() => openModal(1)}>

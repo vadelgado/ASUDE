@@ -170,7 +170,7 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
             <div className="flex flex-col min-h-screen">
-            <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+            <main className="container flex-grow px-4 py-8 mx-auto">
 
             <div className="grid bg-white v-screen place-items-center">
                 <div className="flex justify-end mt-2 mb-3">

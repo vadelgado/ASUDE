@@ -60,7 +60,7 @@ export default function Index({ auth, torneo, programaciones_faces, gallery }) {
             <Header auth={auth} />
             <Head title={`Partidos`} />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-2 py-8 mx-auto mt-32">
+                <main className="container flex-grow px-2 py-8 mx-auto">
                     <div className="mt-40 text-center">
                         <div className="flex items-center justify-center py-8">
                             <img

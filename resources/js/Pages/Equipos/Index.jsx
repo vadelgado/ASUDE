@@ -11,9 +11,9 @@ import ImgField from "@/Components/ImgField";
 import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
-import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Index({
     auth,
@@ -185,6 +185,7 @@ export default function Index({
             name: "Nombre del Equipo",
             selector: (row) => row.nombreEquipo,
             sortable: true,
+            wrap: true,
         },
         {
             name: "Categoría",
@@ -210,35 +211,56 @@ export default function Index({
             name: "Número de WhatsApp",
             selector: (row) => row.numeroWhatsapp,
             sortable: true,
+            wrap: true,
         },
         {
             name: "Correo Electrónico",
             selector: (row) => row.correoElectronico,
             sortable: true,
+            wrap: true,
+        },
+        {
+            name: "Miembros del Equipo",
+            cell: (row) => (
+                <button
+                    onClick={() => {
+                        const url =
+                            userRole === "admin"
+                                ? `/jugadoresAdmin?equipo_id=${row.id}`
+                                : `/jugadores?equipo_id=${row.id}`;
+                        window.location.href = url;
+                    }}
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 "
+                >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-users"></i>
+                    </span>
+                </button>
+            ),
         },
         {
             name: "Preinscribir",
-            cell: (row) =>
-                userRole === "admin" ? (
-                    <a
-                        className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                        href={`/inscripciones?equipo_id=${row.id}`}
-                    >
-                        <i className="mr-2 fa-solid fa-book"></i>Torneos
-                    </a>
-                ) : (
-                    <a
-                        className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                        href={`/inscripcionesEquipo?equipo_id=${row.id}`}
-                    >
-                        <i className="mr-2 fa-solid fa-book"></i>Torneos
-                    </a>
-                ),
+            cell: (row) => (
+                <button
+                    onClick={() => {
+                        const url =
+                            userRole === "admin"
+                                ? `/inscripciones?equipo_id=${row.id}`
+                                : `/inscripcionesEquipo?equipo_id=${row.id}`;
+                        window.location.href = url;
+                    }}
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white  focus:ring-4 focus:outline-none focus:ring-cyan-200 "
+                >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-book"></i>
+                    </span>
+                </button>
+            ),
         },
         {
             name: "Editar",
             cell: (row) => (
-                <WarningButton
+                <button
                     onClick={() =>
                         openModal(
                             2,
@@ -251,37 +273,28 @@ export default function Index({
                             row.fk_user
                         )
                     }
+                    class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
                 >
-                    <i className="fa-solid fa-edit"></i>
-                </WarningButton>
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-edit"></i>
+                    </span>
+                </button>
             ),
         },
-        {
+        userRole === "admin" && {
             name: "Eliminar",
             cell: (row) => (
-                <DangerButton
+                <button
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
                     onClick={() => eliminar(row.id, row.nombreEquipo)}
                 >
-                    <i className="fa-solid fa-trash"></i>
-                </DangerButton>
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-trash"></i>
+                    </span>
+                </button>
             ),
         },
-        {
-            name: "Miembros del Equipo",
-            cell: (row) => (
-                <a
-                    href={
-                        userRole === "admin"
-                            ? `/jugadoresAdmin?equipo_id=${row.id}`
-                            : `/jugadores?equipo_id=${row.id}`
-                    }
-                    className="text-blue-600 hover:text-blue-900"
-                >
-                    <i className="fa-solid fa-users"></i>
-                </a>
-            ),
-        },
-    ];
+    ].filter(Boolean);
 
     const filteredNombreEquipo = equipos.filter((equipo) =>
         equipo.nombreEquipo.toLowerCase().includes(filterText.toLowerCase())
@@ -305,125 +318,147 @@ export default function Index({
         >
             <Head title="⚽ Equipos 🥅" />
             <div className="flex flex-col min-h-screen">
-            <main className="container flex-grow px-4 py-8 mx-auto mt-32">
-            <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold">Lista de Equipos</h3>
-                    <PrimaryButton onClick={() => openModal(1)}>
-                        <i className="mr-2 fa-solid fa-plus-circle"></i>Agregar
-                    </PrimaryButton>
-                </div>
+                <main className="container flex-grow px-4 py-8 mx-auto">
+                    <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xl font-semibold">
+                                Lista de Equipos
+                            </h3>
+                            <PrimaryButton onClick={() => openModal(1)}>
+                                <i className="mr-2 fa-solid fa-plus-circle"></i>
+                                Agregar
+                            </PrimaryButton>
+                        </div>
 
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        className="w-full p-2 border rounded"
-                        placeholder="Buscar por nombre Equipo..."
-                        value={filterText}
-                        onChange={(e) => setFilterText(e.target.value)}
-                    />
-                </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                placeholder="Buscar por nombre Equipo..."
+                                value={filterText}
+                                onChange={(e) => setFilterText(e.target.value)}
+                            />
+                        </div>
 
-                <div className="overflow-x-auto">
-                    <DataTable
-                        title="Equipos"
-                        columns={columns}
-                        data={filteredNombreEquipo}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        highlightOnHover
-                        responsive
-                        noDataComponent="Usted no ha subido ningún Equipo. 👀"
-                    />
-                </div>
-            </div>
-            <Modal show={modal} onClose={closeModal}>
-            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                        <div className="overflow-x-auto">
+                            <DataTable
+                                title="Equipos"
+                                columns={columns}
+                                data={filteredNombreEquipo}
+                                pagination
+                                paginationComponentOptions={
+                                    paginationComponentOptions
+                                }
+                                highlightOnHover
+                                responsive
+                                noDataComponent="Usted no ha subido ningún Equipo. 👀"
+                            />
+                        </div>
+                    </div>
+                    <Modal show={modal} onClose={closeModal}>
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
-                <form
-                    onSubmit={save}
-                    className="p-6"
-                    encType="multipart/form-data"
-                >
-                    <FormField
-                        htmlFor="nombreEquipo"
-                        label="Nombre del Equipo"
-                        id="nombreEquipo"
-                        type="text"
-                        ref={nombreEquipoInput}
-                        name="nombreEquipo"
-                        placeholder="Nombre del Equipo"
-                        value={data.nombreEquipo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.nombreEquipo}
-                    />
-                    <SelectField
-                        htmlFor="fk_categoria_equipo"
-                        label="Categoría"
-                        id="fk_categoria_equipo"
-                        ref={fk_categoria_equipoInput}
-                        name="fk_categoria_equipo"
-                        value={data.fk_categoria_equipo}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fk_categoria_equipo}
-                        options={handleCategorias}
-                    />
-                    <ImgField
-                        htmlFor="escudoEquipo"
-                        label="Escudo del Equipo"
-                        id="escudoEquipo"
-                        ref={escudoEquipoInput}
-                        name="escudoEquipo"
-                        value={data.escudoEquipo}
-                        onChange={handleFileChange}
-                        errorMessage={errors.escudoEquipo}
-                        imageUrl={
-                            data.escudoEquipo
-                                ? `http://127.0.0.1:8000/storage/${data.escudoEquipo}`
-                                : null
-                        }
-                    />
-                    <FormField
-                        htmlFor="numeroWhatsApp"
-                        label="Número de WhatsApp"
-                        id="numeroWhatsApp"
-                        type="number"
-                        ref={numeroWhatsAppInput}
-                        name="numeroWhatsapp"
-                        placeholder="Número de WhatsApp"
-                        value={data.numeroWhatsapp}
-                        onChange={handleInputChange}
-                        errorMessage={errors.numeroWhatsapp}
-                    />
-                    <FormField
-                        htmlFor="correoElectronico"
-                        label="Correo Electrónico"
-                        id="correoElectronico"
-                        type="email"
-                        ref={correoElectronicoInput}
-                        name="correoElectronico"
-                        placeholder="Correo Electrónico"
-                        value={data.correoElectronico}
-                        onChange={handleInputChange}
-                        errorMessage={errors.correoElectronico}
-                    />
-                    <div className="mt-4">
-                        <PrimaryButton
-                            processing={processing.toString()}
-                            className="mt-2"
+                        <form
+                            onSubmit={save}
+                            className="p-6"
+                            encType="multipart/form-data"
                         >
-                            <i className="fa-solid fa-save"></i>Guardar
-                        </PrimaryButton>
-                    </div>
-                    <div className="flex justify-end mt-6">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
-                    </div>
-                </form>
-            </Modal>
-            </main>
+                            <FormField
+                                htmlFor="nombreEquipo"
+                                label={
+                                    <>
+                                        <span>Nombre del Equipo</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="nombreEquipo"
+                                type="text"
+                                ref={nombreEquipoInput}
+                                name="nombreEquipo"
+                                placeholder="Nombre del Equipo"
+                                value={data.nombreEquipo}
+                                onChange={handleInputChange}
+                                errorMessage={errors.nombreEquipo}
+                            />
+                            <SelectField
+                                htmlFor="fk_categoria_equipo"
+                                label={
+                                    <>
+                                        <span>Categoría</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="fk_categoria_equipo"
+                                ref={fk_categoria_equipoInput}
+                                name="fk_categoria_equipo"
+                                value={data.fk_categoria_equipo}
+                                onChange={handleInputChange}
+                                errorMessage={errors.fk_categoria_equipo}
+                                options={handleCategorias}
+                            />
+                            <ImgField
+                                htmlFor="escudoEquipo"
+                                label="Escudo del Equipo"
+                                id="escudoEquipo"
+                                ref={escudoEquipoInput}
+                                name="escudoEquipo"
+                                imageUrl={data.escudoEquipo}
+                                value={data.escudoEquipo}
+                                onChange={handleFileChange}
+                                errorMessage={errors.escudoEquipo}
+                            />
+                            <FormField
+                                htmlFor="numeroWhatsApp"
+                                label={
+                                    <>
+                                        <span>Número de WhatsApp</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }                               
+                                id="numeroWhatsApp"
+                                type="number"
+                                ref={numeroWhatsAppInput}
+                                name="numeroWhatsapp"
+                                placeholder="Número de WhatsApp"
+                                value={data.numeroWhatsapp}
+                                onChange={handleInputChange}
+                                errorMessage={errors.numeroWhatsapp}
+                            />
+                            <FormField
+                                htmlFor="correoElectronico"
+                                label={
+                                    <>
+                                        <span>Correo Electrónico</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="correoElectronico"
+                                type="email"
+                                ref={correoElectronicoInput}
+                                name="correoElectronico"
+                                placeholder="Correo Electrónico"
+                                value={data.correoElectronico}
+                                onChange={handleInputChange}
+                                errorMessage={errors.correoElectronico}
+                            />
+                            <div className="flex justify-between mt-4">
+                                <GuardarButton
+                                    processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                     Guardar
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                     Cancelar
+                                </CancelarButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </main>
             </div>
             <Footer />
         </AuthenticatedLayout>

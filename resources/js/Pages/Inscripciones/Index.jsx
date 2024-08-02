@@ -310,7 +310,7 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+                <main className="flex-grow container mx-auto px-4 py-8">
                     <div className="container min-h-screen p-6 mx-auto mt-6 bg-white">
                         <div className="flex justify-end mt-2 mb-3">
                             <PrimaryButton onClick={() => handleModal(1)}>

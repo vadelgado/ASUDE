@@ -105,7 +105,7 @@ export default function Index({ auth, sistemaJuegos }) {
         >
             <Head title="Sistemas de Juego" />
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+            <main className="flex-grow container mx-auto px-4 py-8">
             <div className="bg-white grid v-screen place-items-center">
                 <div className="mt-2 mb-3 flex justify-end">
                     <PrimaryButton onClick={() => handleModal(1)}>

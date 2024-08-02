@@ -84,7 +84,7 @@ Route::get('/', function () {
         'torneoEnCurso' => $torneoEnCurso,
         'programaciones_faces' => $programaciones_faces
     ]);
-});
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

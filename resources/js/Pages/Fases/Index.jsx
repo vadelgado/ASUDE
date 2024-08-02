@@ -184,7 +184,7 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
         >
             <Head title="Fases Partidos" />
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8 mt-32">
+            <main className="flex-grow container mx-auto px-4 py-8">
 
             <div className="container p-6 mx-auto mt-6 bg-white">
                 <div className="flex justify-end mt-2 mb-3">

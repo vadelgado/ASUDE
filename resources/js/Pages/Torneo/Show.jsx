@@ -16,7 +16,7 @@ export default function ListarTorneos({ auth, torneo }) {
             <Header auth={auth} />
             <Head title={`Torneo ⚽ ${torneo.nombreTorneo}`} />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-4 py-8 mx-auto mt-32">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                         <div className="relative flex flex-col">
                             <picture className="mb-8">
