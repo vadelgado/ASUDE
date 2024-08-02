@@ -85,7 +85,7 @@ export default function Dashboard({ auth }) {
             user={auth.user}
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Inicio
+                    🏡Inicio
                 </h2>
             }
         >

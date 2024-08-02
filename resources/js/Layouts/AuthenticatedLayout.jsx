@@ -73,6 +73,13 @@ export default function Authenticated({ user, header, children }) {
                                     >
                                         Sistema de Juego 🎲
                                     </NavLink>
+                                    <NavLink
+                                        href={route("admin.register")}
+                                        active={route().current("admin.register")}
+                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                    >
+                                        Registrar Admin 💼
+                                    </NavLink>
                                 </>
                             )}
                         </div>
@@ -172,6 +179,9 @@ export default function Authenticated({ user, header, children }) {
                                 </ResponsiveNavLink>
                                 <ResponsiveNavLink href={route("sistemaJuego.index")} active={route().current("sistemaJuego.index")}>
                                     SISTEMA DE JUEGO 🎲
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route("admin.register")} active={route().current("admin.register")}>
+                                    REGISTRAR ADMIN 💼 
                                 </ResponsiveNavLink>
                             </>
                         )}

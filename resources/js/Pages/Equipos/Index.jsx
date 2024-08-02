@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import DangerButton from "@/Components/DangerButton";
 import FormField from "@/Components/FormField";
 import ImgField from "@/Components/ImgField";
 import SelectField from "@/Components/SelectField";

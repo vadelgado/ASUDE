@@ -240,13 +240,13 @@ export default function Dashboard({
             user={auth.user}
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Torneos ⚽
+                    Torneos 🏟
                 </h2>
             }
         >
             <Head title="Torneos" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="min-h-screen py-6 bg-gray-100">
                         <div className="container px-4 mx-auto">
                             <div className="flex justify-end mb-4">

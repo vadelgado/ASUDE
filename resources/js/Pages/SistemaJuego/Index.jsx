@@ -98,23 +98,23 @@ export default function Index({ auth, sistemaJuegos }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    ✋Sorteo
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    Sistema de Juego 🎲
                 </h2>
             }
         >
             <Head title="Sistemas de Juego" />
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8">
-            <div className="bg-white grid v-screen place-items-center">
-                <div className="mt-2 mb-3 flex justify-end">
+            <main className="container flex-grow px-4 py-8 mx-auto">
+            <div className="grid bg-white v-screen place-items-center">
+                <div className="flex justify-end mt-2 mb-3">
                     <PrimaryButton onClick={() => handleModal(1)}>
                         <i className="fa-solid fa-plus-circle"></i>
                         Añadir Lugar
                     </PrimaryButton>
                 </div>
-                <div className="bg-white grid v-screen place-items-center py-6">
-                    <table className="table-auto border-gray-400">
+                <div className="grid py-6 bg-white v-screen place-items-center">
+                    <table className="border-gray-400 table-auto">
                         <thead>
                             <tr>
                                 <th className="px-4 py-2">Nombre</th>
@@ -127,13 +127,13 @@ export default function Index({ auth, sistemaJuegos }) {
                             {sistemaJuegos.length > 0 ? (
                                 sistemaJuegos.map((sistemaJuego) => (
                                     <tr key={sistemaJuego.id}>
-                                        <td className="border px-4 py-2">
+                                        <td className="px-4 py-2 border">
                                             {sistemaJuego.nombreSistema}
                                         </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="px-4 py-2 border">
                                             {sistemaJuego.descripcionSistema}
                                         </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="px-4 py-2 border">
                                             <WarningButton
                                                 onClick={() =>
                                                     handleModal(
@@ -147,7 +147,7 @@ export default function Index({ auth, sistemaJuegos }) {
                                                 <i className="fa-solid fa-pencil"></i>
                                             </WarningButton>
                                         </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="px-4 py-2 border">
                                             <DangerButton
                                                 onClick={() =>
                                                     handleDelete(
@@ -165,7 +165,7 @@ export default function Index({ auth, sistemaJuegos }) {
                                 <tr>
                                     <td
                                         colSpan="4"
-                                        className="border px-4 py-2"
+                                        className="px-4 py-2 border"
                                     >
                                         No hay sistemas de juego
                                     </td>
@@ -211,7 +211,7 @@ export default function Index({ auth, sistemaJuegos }) {
                         </PrimaryButton>
                     </div>
 
-                    <div className="mt-6 flex justify-end">
+                    <div className="flex justify-end mt-6">
                         <SecondaryButton onClick={closeModal}>
                             Cancel
                         </SecondaryButton>

@@ -116,7 +116,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth', 'role:admin')->group(function () {
 
     Route::get('registerAdmin', [RegisteredUserAdminController::class, 'create'])->name('admin.register');
-    Route::post('registerAdmin', [RegisteredUserAdminController::class, 'store']);
+    Route::post('registerAdmin', [RegisteredUserAdminController::class, 'store'])->name('admin.store');
     Route::delete('/profileAdmin', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
