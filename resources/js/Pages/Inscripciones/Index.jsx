@@ -14,6 +14,8 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Textarea2 from "@/Components/Textarea2";
 import Footer from "@/Components/DashBoard/Footer";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Index({
     auth,
@@ -74,10 +76,12 @@ export default function Index({
                 observacion: observacion,
             });
         }
+        
     };
 
     const closeModal = () => {
         setModal(false);
+        setData(InitialValues);
     };
 
     const handleSubmit = (e) => {
@@ -172,17 +176,18 @@ export default function Index({
 
     const columns = [
         {
-            name: '#',
+            name: "#",
             selector: (row, index) => index + 1,
             sortable: true,
         },
         {
-            name: 'Torneo',
+            name: "Torneo",
             selector: (row) => row.nombreTorneo,
             sortable: true,
+            wrap: true,
         },
         {
-            name: 'Estado',
+            name: "Estado",
             selector: (row) => row.estadoInscripcion,
             sortable: true,
             cell: (row) => (
@@ -202,72 +207,78 @@ export default function Index({
             ),
         },
         {
-            name: 'Observación',
+            name: "Observación",
             selector: (row) => row.observacion,
+            wrap: true,
+            sortable: true,
         },
         ...(auth.user.role === "admin"
             ? [
-                {
-                    name: 'Editar',
-                    cell: (row) => (
-                        <PrimaryButton
-                            onClick={() =>
-                                handleModal(
-                                    2,
-                                    row.id,
-                                    row.fk_torneo,
-                                    row.fk_equipo,
-                                    row.estadoInscripcion,
-                                    row.observacion
-                                )
-                            }
-                        >
-                            Editar
-                        </PrimaryButton>
-                    ),
-                },
-                {
-                    name: 'Eliminar',
-                    cell: (row) => (
-                        <DangerButton
-                            onClick={() =>
-                                eliminar(row.id, row.nombreTorneo)
-                            }
-                        >
-                            <i className="fa-solid fa-trash"></i>
-                        </DangerButton>
-                    ),
-                },
-            ]
+                  {
+                      name: "Editar",
+                      cell: (row) => (
+                          <button
+                              className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100 mt-2"
+                              onClick={() =>
+                                  handleModal(
+                                      2,
+                                      row.id,
+                                      row.fk_torneo,
+                                      row.fk_equipo,
+                                      row.estadoInscripcion,
+                                      row.observacion
+                                  )
+                              }
+                          >
+                              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                                  <i className="fa-solid fa-edit"></i>
+                              </span>
+                          </button>
+                      ),
+                  },
+                  {
+                      name: "Eliminar",
+                      cell: (row) => (
+                          <button
+                              onClick={() => eliminar(row.id, row.nombreTorneo)}
+                              className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
+                          >
+                              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                                  <i className="fa-solid fa-trash"></i>
+                              </span>
+                          </button>
+                      ),
+                  },
+              ]
             : []),
     ];
 
     const customStyles = {
         rows: {
             style: {
-                minHeight: '72px', // override the row height
+                minHeight: "72px", // override the row height
             },
         },
         headCells: {
             style: {
-                paddingLeft: '8px', // override the cell padding for head cells
-                paddingRight: '8px',
+                paddingLeft: "8px", // override the cell padding for head cells
+                paddingRight: "8px",
             },
         },
         cells: {
             style: {
-                paddingLeft: '8px', // override the cell padding for data cells
-                paddingRight: '8px',
+                paddingLeft: "8px", // override the cell padding for data cells
+                paddingRight: "8px",
             },
         },
     };
 
     const paginationOptions = {
-        rowsPerPageText: 'Filas por página',
-        rangeSeparatorText: 'de',
+        rowsPerPageText: "Filas por página",
+        rangeSeparatorText: "de",
         noRowsPerPage: false,
         selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos',
+        selectAllRowsItemText: "Todos",
     };
 
     const filterComponent = (
@@ -310,7 +321,7 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="container min-h-screen p-6 mx-auto mt-6 bg-white">
                         <div className="flex justify-end mt-2 mb-3">
                             <PrimaryButton onClick={() => handleModal(1)}>
@@ -332,26 +343,23 @@ export default function Index({
                                 striped
                                 fixedHeader
                                 noDataComponent={
-                                    <div>
-                                        No hay Inscripciones para mostrar
-                                    </div>
+                                    <div>No hay Inscripciones para mostrar</div>
                                 }
                             />
                         </div>
                     </div>
 
                     <Modal show={modal} onClose={closeModal}>
-                        
                         <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
-                            {title}                                
-                                <img
-                                    src={`/storage/${equipo.escudoEquipo}`}
-                                    alt={`Escudo equipo ${equipo.nombreEquipo}`}
-                                    className="w-10 h-10 ml-2 rounded-full"
-                                />
-                                {equipo.nombreEquipo}
-                            </h2>
-                        
+                            {title}
+                            <img
+                                src={`/storage/${equipo.escudoEquipo}`}
+                                alt={`Escudo equipo ${equipo.nombreEquipo}`}
+                                className="w-10 h-10 ml-2 rounded-full"
+                            />
+                            {equipo.nombreEquipo}
+                        </h2>
+
                         <form onSubmit={handleSubmit} className="p-6">
                             {["admin", "equipo"].includes(auth.user.role) && (
                                 <SelectField
@@ -359,14 +367,16 @@ export default function Index({
                                     label={
                                         <>
                                             <span>Torneo</span>
-                                            <span className="text-red-500">*</span>
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </>
                                     }
                                     id="fk_torneo"
                                     ref={fk_torneoInput}
                                     name="fk_torneo"
                                     value={data.fk_torneo}
-                                    onChange={handleInputChange}
+                                    onChange={handleInputChangeFlayer}
                                     options={handleSelectTorneos}
                                     errorMessage={errors.fk_torneo}
                                 />
@@ -385,7 +395,9 @@ export default function Index({
                                         label={
                                             <>
                                                 <span>Estado Inscripción</span>
-                                                <span className="text-red-500">*</span>
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
                                             </>
                                         }
                                         id="estadoInscripcion"
@@ -409,13 +421,20 @@ export default function Index({
                                     />
                                 </>
                             )}
-                            <div className="flex justify-end mt-4">
-                                <SecondaryButton onClick={closeModal}>
-                                    Cancelar
-                                </SecondaryButton>
-                                <PrimaryButton type="submit" className="ml-2">
+                            <div className="flex justify-between col-span-2 mt-1">
+                                <GuardarButton
+                                    processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
+                                    
+                                >
                                     Guardar
-                                </PrimaryButton>
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                    Cancelar
+                                </CancelarButton>
                             </div>
                         </form>
                     </Modal>

@@ -38,6 +38,7 @@ export default function Authenticated({ user, header, children }) {
                             {user.role === "equipo" && (
                                 <NavLink
                                     href="/equiposInvitados"
+                                    active={route().current("equiposInvitados.index")}
                                     className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
                                 >
                                     Mis Equipos ⚽

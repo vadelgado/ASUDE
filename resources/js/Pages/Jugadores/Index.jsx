@@ -13,6 +13,8 @@ import ImgField from "@/Components/ImgField";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Index({
     auth,
@@ -190,9 +192,6 @@ export default function Index({
                 );
             }
         } else {
-            alert(
-                "Debe aceptar la exoneración de responsabilidades para guardar."
-            );
         }
     };
 
@@ -301,7 +300,8 @@ export default function Index({
         {
             name: "EDITAR",
             cell: (row) => (
-                <WarningButton
+                <button
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100 mt-2"
                     onClick={() =>
                         openModal(
                             2,
@@ -325,8 +325,10 @@ export default function Index({
                         )
                     }
                 >
-                    <i className="fa-solid fa-pencil"></i>
-                </WarningButton>
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-edit"></i>
+                    </span>
+                </button>
             ),
         },
         {
@@ -431,7 +433,7 @@ export default function Index({
         >
             <Head title="⚽ Miembros del Equipo 👦👧" />
             <div className="flex flex-col min-h-screen">
-                <main className="container flex-grow px-4 py-8 mx-auto">
+                <main className="container flex-grow px-4 py-8 mx-auto ">
                     <div className="py-6">
                         <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
                             <div className="flex justify-end mt-1 mb-4 space-x-4">
@@ -775,9 +777,12 @@ export default function Index({
                                     onChange={handleDisclaimerChange}
                                     checked={disclaimerChecked}
                                 />
-                                <label htmlFor="disclaimer" className="ml-2">
+                                <label
+                                    htmlFor="disclaimer"
+                                    className="ml-2 text-sm"
+                                >
                                     <span className="text-red-500">*</span>
-                                    Acepto la exoneración de responsabilidades
+                                    Acepto la exoneración de responsabilidades .
                                     <a
                                         href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"
                                         target="_blank"
@@ -791,36 +796,24 @@ export default function Index({
                                     Alianza Sureña Grupo Empresarial para
                                     utilizar los datos personales de los Miembro
                                     del Equipo exclusivamente para la gestión y
-                                    organización de torneos de fútbol. La
-                                    información recopilada incluye datos
-                                    detallados como nombre completo, foto, tipo
-                                    y número de identificación, fecha y lugar de
-                                    nacimiento, entre otros. Estos datos serán
-                                    tratados de manera confidencial y solo se
-                                    usarán para verificar la elegibilidad de los
-                                    jugadores, organizar eventos y mantener
-                                    comunicación con los representantes legales
-                                    sobre actividades relacionadas con el
-                                    torneo. Los titulares de los datos pueden
-                                    ejercer sus derechos de acceso,
-                                    rectificación y actualización contactando a
-                                    través de CIMA_FUTURASESTRELLAS@hotmail.com
-                                    o llamando al +57 318 3773718.
+                                    organización de torneos de fútbol.
                                 </label>
                             </div>
 
                             <div className="flex justify-between col-span-2 mt-1">
-                                <PrimaryButton
+                                <GuardarButton
                                     processing={processing.toString()}
-                                    className="mt-2"
+                                    className="px-4 py-2 mt-2"
                                     disabled={!disclaimerChecked}
                                 >
-                                    <i className="mr-2 fa-solid fa-save"></i>
                                     Guardar
-                                </PrimaryButton>
-                                <SecondaryButton onClick={closeModal}>
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
                                     Cancelar
-                                </SecondaryButton>
+                                </CancelarButton>
                             </div>
                         </form>
                     </Modal>
