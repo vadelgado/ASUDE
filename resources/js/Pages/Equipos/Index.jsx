@@ -13,6 +13,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Footer from "@/Components/DashBoard/Footer";
 import GuardarButton from "@/Components/GuardarButton";
 import CancelarButton from "@/Components/CancelarButton";
+import BackButton from "@/Components/BackButton";
 
 export default function Index({
     auth,
@@ -327,6 +328,7 @@ export default function Index({
                                 <i className="mr-2 fa-solid fa-plus-circle"></i>
                                 Agregar
                             </PrimaryButton>
+                            <BackButton to={route('dashboard')} />
                         </div>
 
                         <div className="mb-4">

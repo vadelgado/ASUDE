@@ -4,7 +4,7 @@ import Footer from "@/Components/DashBoard/Footer";
 
 // Menú con colores e iconos diversificados
 const menuItems = [
-    { title: "Inicio", iconClass: "fa-solid fa-house", route: "welcome", gradient: "from-blue-500 to-indigo-500" },
+    { title: "Página Principal", iconClass: "fa-solid fa-house", route: "welcome", gradient: "from-blue-500 to-indigo-500" },
     { 
         title: "Mis Equipos", 
         iconClass: "fa-solid fa-users", 

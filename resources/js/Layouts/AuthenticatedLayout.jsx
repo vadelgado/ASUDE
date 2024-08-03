@@ -8,11 +8,12 @@ import Logo from "@/Components/Logo";
 import { Link } from "@inertiajs/react";
 
 export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="fixed top-0 z-50 w-full shadow-md bg-gradient-to-r from-green-400 via-green-500 to-green-700">
+            <nav className="fixed top-0 z-50 w-full text-center shadow-md bg-gradient-to-r from-green-400 via-green-500 to-green-700">
                 <div className="container px-4 mx-auto sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20">
                         {/* Logo Section */}
@@ -23,75 +24,85 @@ export default function Authenticated({ user, header, children }) {
                                 className="flex items-center lg:flex-1"
                             >
                                 <span className="sr-only">Alianza Sureña</span>
-                                <Logo className="w-auto h-14" />
+                                <Logo className="w-20 h-auto" />
                             </HeaderLink>
                         </div>
                         {/* Navigation Links */}
-                        <div className="hidden sm:flex sm:items-center sm:space-x-10">
+                        <div className="hidden lg:flex lg:items-center lg:space-x-6 xl:space-x-10">
                             <NavLink
                                 href={route("dashboard")}
                                 active={route().current("dashboard")}
-                                className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                             >
-                                Inicio 🏠
+                                🏠 Inicio
                             </NavLink>
                             {user.role === "equipo" && (
                                 <NavLink
                                     href="/equiposInvitados"
-                                    active={route().current("equiposInvitados.index")}
-                                    className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                    active={route().current(
+                                        "equiposInvitados.index"
+                                    )}
+                                    className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                 >
-                                    Mis Equipos ⚽
+                                    ⚽ Mis Equipos
                                 </NavLink>
                             )}
                             {user.role === "admin" && (
                                 <>
                                     <NavLink
                                         href={route("equipos.index")}
-                                        active={route().current("equipos.index")}
-                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                        active={route().current(
+                                            "equipos.index"
+                                        )}
+                                        className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                     >
-                                        Mis Equipos ⚽
+                                        ⚽ Mis Equipos
                                     </NavLink>
                                     <NavLink
                                         href={route("preTorneos.index")}
-                                        active={route().current("preTorneos.index")}
-                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                        active={route().current(
+                                            "preTorneos.index"
+                                        )}
+                                        className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                     >
-                                        Pre-Torneos 🏆
+                                        🏆 Pre-Torneos 
                                     </NavLink>
                                     <NavLink
                                         href={route("torneo.index")}
                                         active={route().current("torneo.index")}
-                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                        className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                     >
-                                        Torneos 🏟
+                                        🏟 Torneos
                                     </NavLink>
                                     <NavLink
                                         href={route("sistemaJuego.index")}
-                                        active={route().current("sistemaJuego.index")}
-                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                        active={route().current(
+                                            "sistemaJuego.index"
+                                        )}
+                                        className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                     >
-                                        Sistema de Juego 🎲
+                                        🎲 Sistema de Juego
                                     </NavLink>
                                     <NavLink
                                         href={route("admin.register")}
-                                        active={route().current("admin.register")}
-                                        className="text-lg text-white uppercase transition-colors duration-300 hover:text-gray-200"
+                                        active={route().current(
+                                            "admin.register"
+                                        )}
+                                        className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                     >
-                                        Registrar Admin 💼
+                                        💼 Nuevo Admin
                                     </NavLink>
                                 </>
                             )}
                         </div>
                         {/* User Dropdown */}
-                        <div className="hidden sm:flex sm:items-center sm:ml-6">
+                        <div className="hidden lg:flex lg:items-center lg:ml-6">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <span className="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            className="inline-flex items-center px-4 py-3 text-lg font-medium leading-5 text-white uppercase transition duration-150 ease-in-out bg-transparent border border-transparent rounded-md hover:bg-opacity-75"
+                                            className="inline-flex items-center px-4 py-2 text-base font-bold text-white uppercase transition duration-150 ease-in-out bg-transparent border border-transparent rounded-md xl:text-lg hover:bg-opacity-75"
                                         >
                                             {user.name}
                                             <svg
@@ -112,22 +123,26 @@ export default function Authenticated({ user, header, children }) {
 
                                 <Dropdown.Content>
                                     <Dropdown.Link href={route("profile.edit")}>
-                                        Perfil 🧑
+                                        🧑 Perfil
                                     </Dropdown.Link>
                                     <Dropdown.Link
                                         href={route("logout")}
                                         method="post"
                                         as="button"
                                     >
-                                        Cerrar Sesión 🚪
+                                        🚪 Cerrar Sesión
                                     </Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
                         {/* Mobile Menu Button */}
-                        <div className="flex items-center -mr-2 sm:hidden">
+                        <div className="flex items-center -mr-2 lg:hidden">
                             <button
-                                onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
+                                onClick={() =>
+                                    setShowingNavigationDropdown(
+                                        !showingNavigationDropdown
+                                    )
+                                }
                                 className="inline-flex items-center justify-center p-2 text-white transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
                             >
                                 <svg
@@ -137,14 +152,22 @@ export default function Authenticated({ user, header, children }) {
                                     viewBox="0 0 24 24"
                                 >
                                     <path
-                                        className={!showingNavigationDropdown ? "inline-flex" : "hidden"}
+                                        className={
+                                            !showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
-                                        className={showingNavigationDropdown ? "inline-flex" : "hidden"}
+                                        className={
+                                            showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
@@ -157,32 +180,56 @@ export default function Authenticated({ user, header, children }) {
                 </div>
 
                 {/* Mobile Navigation Dropdown */}
-                <div className={`sm:hidden ${showingNavigationDropdown ? "block" : "hidden"}`}>
+                <div
+                    className={`lg:hidden ${
+                        showingNavigationDropdown ? "block" : "hidden"
+                    }`}
+                >
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route("dashboard")} active={route().current("dashboard")}>
-                            INICIO 🏠
+                        <ResponsiveNavLink
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
+                        >
+                            🏠 INICIO
                         </ResponsiveNavLink>
                         {user.role === "equipo" && (
                             <ResponsiveNavLink href="/equiposInvitados">
-                                MIS EQUIPOS ⚽
+                                ⚽ MIS EQUIPOS
                             </ResponsiveNavLink>
                         )}
                         {user.role === "admin" && (
                             <>
-                                <ResponsiveNavLink href={route("equipos.index")} active={route().current("equipos.index")}>
-                                    MIS EQUIPOS ⚽
+                                <ResponsiveNavLink
+                                    href={route("equipos.index")}
+                                    active={route().current("equipos.index")}
+                                >
+                                    ⚽ MIS EQUIPOS
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("preTorneos.index")} active={route().current("preTorneos.index")}>
-                                    PRE-TORNEOS 🏆
+                                <ResponsiveNavLink
+                                    href={route("preTorneos.index")}
+                                    active={route().current("preTorneos.index")}
+                                >
+                                    🏆 PRE-TORNEOS
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("torneo.index")} active={route().current("torneo.index")}>
-                                    TORNEOS 🏟
+                                <ResponsiveNavLink
+                                    href={route("torneo.index")}
+                                    active={route().current("torneo.index")}
+                                >
+                                    🏟 TORNEOS
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("sistemaJuego.index")} active={route().current("sistemaJuego.index")}>
-                                    SISTEMA DE JUEGO 🎲
+                                <ResponsiveNavLink
+                                    href={route("sistemaJuego.index")}
+                                    active={route().current(
+                                        "sistemaJuego.index"
+                                    )}
+                                >
+                                    🎲 SISTEMA DE JUEGO
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("admin.register")} active={route().current("admin.register")}>
-                                    REGISTRAR ADMIN 💼 
+                                <ResponsiveNavLink
+                                    href={route("admin.register")}
+                                    active={route().current("admin.register")}
+                                >
+                                    💼 REGISTRAR ADMIN
                                 </ResponsiveNavLink>
                             </>
                         )}
@@ -190,7 +237,7 @@ export default function Authenticated({ user, header, children }) {
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="text-lg font-medium text-gray-800">
+                            <div className="text-base font-medium text-gray-800">
                                 {user.name}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
@@ -200,10 +247,14 @@ export default function Authenticated({ user, header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("profile.edit")}>
-                                PERFIL 🧑
+                                🧑 PERFIL
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route("logout")} as="button">
-                                CERRAR SESIÓN 🚪
+                            <ResponsiveNavLink
+                                method="post"
+                                href={route("logout")}
+                                as="button"
+                            >
+                                🚪 CERRAR SESIÓN
                             </ResponsiveNavLink>
                         </div>
                     </div>

@@ -10,7 +10,7 @@ import SelectField from "@/Components/SelectField";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import ImgField from "@/Components/ImgField";
-import SecondaryButton from "@/Components/SecondaryButton";
+import BackButton from "@/Components/BackButton";
 import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
 import GuardarButton from "@/Components/GuardarButton";
@@ -436,12 +436,18 @@ export default function Index({
                 <main className="container flex-grow px-4 py-8 mx-auto ">
                     <div className="py-6">
                         <div className="container p-6 mx-auto overflow-x-auto bg-white rounded-lg shadow-md">
-                            <div className="flex justify-end mt-1 mb-4 space-x-4">
-                                <PrimaryButton onClick={() => openModal(1)}>
-                                    <i className="mr-2 fa-solid fa-plus-circle"></i>
-                                    Agregar Miembro del Equipo
+                            <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
+                                <PrimaryButton
+                                    className="px-2 py-1 mb-2 text-xs me-2 sm:text-sm sm:px-4 sm:py-2"
+                                    onClick={() => openModal(1)}
+                                >
+                                    <i className="fa-solid fa-plus-circle"></i>
+                                    {""}Agregar {""}
+                                    <span className="hidden ml-1 sm:inline">
+                                        Miembro del Equipo
+                                    </span>
                                 </PrimaryButton>
-                                <PrimaryButton>
+                                <PrimaryButton className="px-2 py-1 mb-2 text-xs me-2 sm:text-sm sm:px-4 sm:py-2">
                                     <a
                                         href={route("jugadores.pdf", {
                                             equipo_id,
@@ -449,10 +455,14 @@ export default function Index({
                                         target="_blank"
                                         download
                                     >
-                                        <i className="mr-2 fa-solid fa-file-pdf"></i>
-                                        Descargar PDF
+                                        <i className=" fa-solid fa-file-pdf"></i>
+                                        <span className="hidden ml-1 sm:inline">
+                                            Descargar {" "}
+                                        </span>
+                                        PDF
                                     </a>
                                 </PrimaryButton>
+                                <BackButton />
                             </div>
 
                             <div className="mb-4">
