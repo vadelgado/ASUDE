@@ -16,6 +16,8 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Textarea2 from "@/Components/Textarea2";
 import Footer from "@/Components/DashBoard/Footer";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Dashboard({
     auth,
@@ -334,10 +336,7 @@ export default function Dashboard({
                                                         <i className="mr-2 fa-solid fa-trash"></i>{" "}
                                                         Eliminar
                                                     </a>
-
-
                                                 </div>
-
 
                                                 <div className="mb-2 text-base">
                                                     <strong>
@@ -789,24 +788,6 @@ export default function Dashboard({
                             />
 
                             <Textarea2
-                                htmlFor="caracteristicas"
-                                label={
-                                    <>
-                                        <span>Características</span>
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                id="caracteristicas"
-                                type="text"
-                                ref={caracteristicasInput}
-                                name="caracteristicas"
-                                placeholder="Caracteristicas"
-                                value={data.caracteristicas}
-                                onChange={handleInputChange}
-                                errorMessage={errors.caracteristicas}
-                            />
-
-                            <Textarea2
                                 htmlFor="premiacion"
                                 label={
                                     <>
@@ -841,17 +822,41 @@ export default function Dashboard({
                                 onChange={handleInputChange}
                                 errorMessage={errors.procesoInscripcion}
                             />
-
-                            <div className="mt-20 space-x-4 ">
-                                <PrimaryButton
+                            <div className="col-span-2">
+                                <Textarea2
+                                    htmlFor="caracteristicas"
+                                    label={
+                                        <>
+                                            <span>Características</span>
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </>
+                                    }
+                                    id="caracteristicas"
+                                    type="text"
+                                    ref={caracteristicasInput}
+                                    name="caracteristicas"
+                                    placeholder="Características"
+                                    value={data.caracteristicas}
+                                    onChange={handleInputChange}
+                                    errorMessage={errors.caracteristicas}
+                                    className="w-full" // Clase para ocupar todo el ancho
+                                />
+                            </div>
+                            <div className="flex justify-between col-span-2 mt-1">
+                                <GuardarButton
                                     processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
                                 >
-                                    <i className="fa-solid fa-save"></i>
-                                    <span>Guardar</span>
-                                </PrimaryButton>
-                                <SecondaryButton onClick={closeModal}>
-                                    Cancel
-                                </SecondaryButton>
+                                    Guardar
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                    Cancelar
+                                </CancelarButton>
                             </div>
                         </form>
                     </Modal>
