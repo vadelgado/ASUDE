@@ -13,6 +13,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
+import BackButton from "@/Components/BackButton";
 
 export default function Dashboard({ auth, lugarPartidos, torneo }) {
     const [modal, setModal] = useState(false);
@@ -215,13 +216,20 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
             <Head title="Lugar Partido" />
 
             <div className="flex flex-col min-h-screen">
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="container flex-grow px-4 py-8 mx-auto">
 
             <div className="container p-6 mx-auto mt-6 bg-white">
-                <div className="flex justify-end mt-2 mb-3">
-                    <PrimaryButton onClick={() => handleModal(1)}>
-                        <i className="mr-2 fa-solid fa-plus-circle"></i> Añadir Lugar
-                    </PrimaryButton>
+            <div className="flex items-center justify-between mb-4">
+
+                <h3 className="text-xl font-semibold">
+                                Lista de Lugares
+                            </h3>
+                    <div className="flex justify-end mt-2 mb-3">
+                        <PrimaryButton onClick={() => handleModal(1)}>
+                            <i className="mr-2 fa-solid fa-plus-circle"></i> Añadir Lugar
+                        </PrimaryButton>
+                        <BackButton to="/preTorneos" />
+                    </div>
                 </div>
 
                 <div className="mb-4">
@@ -282,7 +290,7 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
                     />
 
                     <FormField
-                        htmlFor="direccion"
+                        htmlFor="direccion" 
                         label="Dirección"
                         id="direccion"
                         type="text"
@@ -314,7 +322,6 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
             </Modal>
             </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

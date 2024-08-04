@@ -16,6 +16,7 @@ import Textarea2 from "@/Components/Textarea2";
 import Footer from "@/Components/DashBoard/Footer";
 import GuardarButton from "@/Components/GuardarButton";
 import CancelarButton from "@/Components/CancelarButton";
+import BackButton from "@/Components/BackButton";
 
 export default function Index({
     auth,
@@ -76,7 +77,6 @@ export default function Index({
                 observacion: observacion,
             });
         }
-        
     };
 
     const closeModal = () => {
@@ -323,11 +323,12 @@ export default function Index({
             <div className="flex flex-col min-h-screen">
                 <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="container min-h-screen p-6 mx-auto mt-6 bg-white">
-                        <div className="flex justify-end mt-2 mb-3">
+                        <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
                             <PrimaryButton onClick={() => handleModal(1)}>
                                 <i className="mr-2 fa-solid fa-plus-circle"></i>
                                 Realizar Pre Inscripción
                             </PrimaryButton>
+                            <BackButton to={route("equipos.index")} />
                         </div>
 
                         <div className="overflow-x-auto">
@@ -425,7 +426,6 @@ export default function Index({
                                 <GuardarButton
                                     processing={processing.toString()}
                                     className="px-4 py-2 mt-2"
-                                    
                                 >
                                     Guardar
                                 </GuardarButton>
@@ -440,7 +440,6 @@ export default function Index({
                     </Modal>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

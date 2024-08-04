@@ -362,7 +362,6 @@ export default function Index({
                     </Modal>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

@@ -219,7 +219,6 @@ export default function ResultadosPartidos({ auth, resultados, torneo }) {
             </Modal>
             </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

@@ -280,7 +280,6 @@ export default function ResultadosPartidos({
             </Modal>
             </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

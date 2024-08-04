@@ -324,11 +324,13 @@ export default function Index({
                             <h3 className="text-xl font-semibold">
                                 Lista de Equipos
                             </h3>
-                            <PrimaryButton onClick={() => openModal(1)}>
-                                <i className="mr-2 fa-solid fa-plus-circle"></i>
-                                Agregar
-                            </PrimaryButton>
-                            <BackButton to={route('dashboard')} />
+                            <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
+                                <PrimaryButton onClick={() => openModal(1)}>
+                                    <i className="mr-2 fa-solid fa-plus-circle"></i>
+                                    Agregar
+                                </PrimaryButton>
+                                <BackButton to={route("dashboard")} />
+                            </div>
                         </div>
 
                         <div className="mb-4">
@@ -416,7 +418,7 @@ export default function Index({
                                         <span>Número de WhatsApp</span>
                                         <span className="text-red-500">*</span>
                                     </>
-                                }                               
+                                }
                                 id="numeroWhatsApp"
                                 type="number"
                                 ref={numeroWhatsAppInput}
@@ -448,20 +450,19 @@ export default function Index({
                                     processing={processing.toString()}
                                     className="px-4 py-2 mt-2"
                                 >
-                                     Guardar
+                                    Guardar
                                 </GuardarButton>
                                 <CancelarButton
                                     onClick={closeModal}
                                     className="px-4 py-2 mt-2"
                                 >
-                                     Cancelar
+                                    Cancelar
                                 </CancelarButton>
                             </div>
                         </form>
                     </Modal>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

@@ -876,7 +876,6 @@ export default function Dashboard({
                     </Modal>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

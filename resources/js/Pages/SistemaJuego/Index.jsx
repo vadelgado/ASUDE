@@ -220,7 +220,6 @@ export default function Index({ auth, sistemaJuegos }) {
             </Modal>
             </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

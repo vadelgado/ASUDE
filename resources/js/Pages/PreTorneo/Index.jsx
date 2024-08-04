@@ -18,6 +18,7 @@ import Textarea2 from "@/Components/Textarea2";
 import Footer from "@/Components/DashBoard/Footer";
 import GuardarButton from "@/Components/GuardarButton";
 import CancelarButton from "@/Components/CancelarButton";
+import BackButton from "@/Components/BackButton";
 
 export default function Dashboard({
     auth,
@@ -251,12 +252,13 @@ export default function Dashboard({
                 <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="min-h-screen py-6 bg-gray-100">
                         <div className="container px-4 mx-auto">
-                            <div className="flex justify-end mb-4">
+                            <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
                                 <PrimaryButton onClick={() => openModal(1)}>
                                     <i className="mr-2 fa-solid fa-plus-circle"></i>{" "}
-                                    Agregar Torneo
+                                    Nuevo Torneo
                                 </PrimaryButton>
-                            </div>
+                                <BackButton to="/dashboard" />
+                            </div> 
 
                             <h1 className="mb-4 text-2xl font-bold">
                                 Listado de Torneos
@@ -284,7 +286,7 @@ export default function Dashboard({
                                             >
                                                 <div className="grid grid-cols-3 gap-4 mb-4">
                                                     <a
-                                                        className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+                                                        className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50   font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                                         onClick={() =>
                                                             openModal(
                                                                 2,
@@ -317,7 +319,7 @@ export default function Dashboard({
                                                     </a>
 
                                                     <a
-                                                        className="text-white bg-pink-500 hover:bg-pink-400 focus:ring-4 focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+                                                        className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 shadow-lg shadow-cyan-500/50   font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                                         href={`/lugarPartido?torneo_id=${torneo.id}`}
                                                     >
                                                         <i className="mr-2 fa-solid fa-location-dot"></i>{" "}
@@ -325,7 +327,7 @@ export default function Dashboard({
                                                     </a>
 
                                                     <a
-                                                        className="text-white bg-orange-500 hover:bg-orange-400 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+                                                        className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300  shadow-lg shadow-red-500/50   font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                                         onClick={() =>
                                                             eliminar(
                                                                 torneo.id,
@@ -862,7 +864,6 @@ export default function Dashboard({
                     </Modal>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

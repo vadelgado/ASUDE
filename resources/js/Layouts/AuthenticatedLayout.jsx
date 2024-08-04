@@ -6,6 +6,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import HeaderLink from "@/Components/DashBoard/HeaderLink";
 import Logo from "@/Components/Logo";
 import { Link } from "@inertiajs/react";
+import Footer from "@/Components/DashBoard/Footer";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -65,7 +66,7 @@ export default function Authenticated({ user, header, children }) {
                                         )}
                                         className="text-base font-bold tracking-wider text-white uppercase transition-colors duration-300 xl:text-lg hover:text-gray-200"
                                     >
-                                        🏆 Pre-Torneos 
+                                        🏆 Pre-Torneos
                                     </NavLink>
                                     <NavLink
                                         href={route("torneo.index")}
@@ -104,7 +105,7 @@ export default function Authenticated({ user, header, children }) {
                                             type="button"
                                             className="inline-flex items-center px-4 py-2 text-base font-bold text-white uppercase transition duration-150 ease-in-out bg-transparent border border-transparent rounded-md xl:text-lg hover:bg-opacity-75"
                                         >
-                                            {user.name}
+                                            👤{user.name.split(" ")[0]}
                                             <svg
                                                 className="ml-2 -mr-0.5 h-5 w-5"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -238,7 +239,7 @@ export default function Authenticated({ user, header, children }) {
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
-                                {user.name}
+                            👤{user.name.split(" ")[0]}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
                                 {user.email}
@@ -270,6 +271,7 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <main className="pt-20">{children}</main>
+            <Footer />
         </div>
     );
 }

@@ -202,7 +202,6 @@ export default function Register({ auth }) {
                     </form>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

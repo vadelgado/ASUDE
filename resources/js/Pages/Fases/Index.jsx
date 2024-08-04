@@ -251,7 +251,6 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
             </Modal>
             </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }

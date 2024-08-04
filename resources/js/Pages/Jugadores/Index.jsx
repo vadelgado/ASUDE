@@ -442,7 +442,7 @@ export default function Index({
                                     onClick={() => openModal(1)}
                                 >
                                     <i className="fa-solid fa-plus-circle"></i>
-                                    {""}Agregar {""}
+                                    {""}Agregar {""} 
                                     <span className="hidden ml-1 sm:inline">
                                         Miembro del Equipo
                                     </span>
@@ -462,7 +462,7 @@ export default function Index({
                                         PDF
                                     </a>
                                 </PrimaryButton>
-                                <BackButton />
+                                <BackButton to={route("equipos.index")} /> 
                             </div>
 
                             <div className="mb-4">
@@ -829,7 +829,6 @@ export default function Index({
                     </Modal>
                 </main>
             </div>
-            <Footer />
         </AuthenticatedLayout>
     );
 }
