@@ -544,12 +544,7 @@ export default function Index({
                                 onChange={handleFileChange}
                                 value={data.foto}
                                 errorMessage={errors.foto}
-                                imageUrl={
-                                    data.foto
-                                        ? `http://127.0.0.1:8000/storage/${data.foto}`
-                                        : null
-                                }
-                            />
+                                imageUrl={data.foto}                            />
                             <SelectField
                                 htmlFor="cuerpoTecnico"
                                 label={

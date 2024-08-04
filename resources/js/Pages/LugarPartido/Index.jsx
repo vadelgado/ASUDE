@@ -14,6 +14,8 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
 import BackButton from "@/Components/BackButton";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Dashboard({ auth, lugarPartidos, torneo }) {
     const [modal, setModal] = useState(false);
@@ -149,7 +151,12 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
         {
             name: "Geolocalización",
             cell: (row) => (
-                <a href={row.geolocalizacion} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                <a
+                    href={row.geolocalizacion}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                >
                     Ver en Google Maps
                 </a>
             ),
@@ -164,7 +171,11 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
             name: "Foto lugar",
             cell: (row) => (
                 <div className="flex items-center justify-center px-2 py-2">
-                    <img src={`/storage/${row.fotoLugar}`} alt={row.nomLugar} className="w-16 h-16 rounded-full" />
+                    <img
+                        src={`/storage/${row.fotoLugar}`}
+                        alt={row.nomLugar}
+                        className="w-16 h-16 rounded-full"
+                    />
                 </div>
             ),
             sortable: false,
@@ -172,22 +183,38 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
         {
             name: "Editar",
             cell: (row) => (
-                <WarningButton
+                <button
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100 mt-2"
                     onClick={() =>
-                        handleModal(2, row.id, row.nomLugar, row.geolocalizacion, row.direccion, row.fotoLugar, row.fk_torneo)
+                        handleModal(
+                            2,
+                            row.id,
+                            row.nomLugar,
+                            row.geolocalizacion,
+                            row.direccion,
+                            row.fotoLugar,
+                            row.fk_torneo
+                        )
                     }
                 >
-                    <i className="fa-solid fa-pencil"></i>
-                </WarningButton>
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-edit"></i>
+                    </span>
+                </button>
             ),
             ignoreRowClick: true,
         },
         {
             name: "Eliminar",
             cell: (row) => (
-                <DangerButton onClick={() => eliminar(row.id, row.nomLugar)}>
-                    <i className="fa-solid fa-trash"></i>
-                </DangerButton>
+                <button
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
+                    onClick={() => eliminar(row.id, row.nomLugar)}
+                >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-trash"></i>
+                    </span>
+                </button>
             ),
             ignoreRowClick: true,
         },
@@ -198,10 +225,10 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
     );
 
     const paginationComponentOptions = {
-        rowsPerPageText: 'Registros por página',
-        rangeSeparatorText: 'de',
+        rowsPerPageText: "Registros por página",
+        rangeSeparatorText: "de",
         selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos',
+        selectAllRowsItemText: "Todos",
     };
 
     return (
@@ -209,118 +236,137 @@ export default function Dashboard({ auth, lugarPartidos, torneo }) {
             user={auth.user}
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Lugares Partidos para el torneo {torneo[0].nombreTorneo} del {torneo[0].fechaInicio} al {torneo[0].fechaFin}
+                    Lugares Partidos para el torneo {torneo[0].nombreTorneo} del{" "}
+                    {torneo[0].fechaInicio} al {torneo[0].fechaFin}
                 </h2>
             }
         >
             <Head title="Lugar Partido" />
 
             <div className="flex flex-col min-h-screen">
-            <main className="container flex-grow px-4 py-8 mx-auto">
-
-            <div className="container p-6 mx-auto mt-6 bg-white">
-            <div className="flex items-center justify-between mb-4">
-
-                <h3 className="text-xl font-semibold">
+                <main className="container flex-grow px-4 py-8 mx-auto">
+                    <div className="container p-6 mx-auto mt-6 bg-white">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xl font-semibold">
                                 Lista de Lugares
                             </h3>
-                    <div className="flex justify-end mt-2 mb-3">
-                        <PrimaryButton onClick={() => handleModal(1)}>
-                            <i className="mr-2 fa-solid fa-plus-circle"></i> Añadir Lugar
-                        </PrimaryButton>
-                        <BackButton to="/preTorneos" />
+                            <div className="flex justify-end mt-2 mb-3">
+                                <PrimaryButton onClick={() => handleModal(1)}>
+                                    <i className="mr-2 fa-solid fa-plus-circle"></i>{" "}
+                                    Añadir Lugar
+                                </PrimaryButton>
+                                <BackButton to="/preTorneos" />
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                placeholder="Buscar por nombre"
+                                value={filterText}
+                                onChange={(e) => setFilterText(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="overflow-x-auto">
+                            <DataTable
+                                title="Lugares Partidos"
+                                columns={columns}
+                                data={filteredLugarPartidos}
+                                pagination
+                                paginationComponentOptions={
+                                    paginationComponentOptions
+                                }
+                                responsive
+                                fixedHeader
+                                noDataComponent={
+                                    <div>No hay lugares Registrados</div>
+                                }
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        className="w-full p-2 border rounded"
-                        placeholder="Buscar por nombre"
-                        value={filterText}
-                        onChange={(e) => setFilterText(e.target.value)}
-                    />
-                </div>
-
-                <div className="overflow-x-auto">
-                    <DataTable
-                        title="Lugares Partidos"
-                        columns={columns}
-                        data={filteredLugarPartidos}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        responsive
-                        fixedHeader
-                        noDataComponent={<div>No hay lugares Registrados</div>}
-                    />
-                </div>
-            </div>
-
-            <Modal show={modal} onClose={closeModal}>
-            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                    <Modal show={modal} onClose={closeModal}>
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
-                <form onSubmit={save} className="p-6">
-                    <input type="text" value={data.fk_torneo} name="fk_torneo" hidden readOnly />
+                        <form onSubmit={save} className="p-6">
+                            <input
+                                type="text"
+                                value={data.fk_torneo}
+                                name="fk_torneo"
+                                hidden
+                                readOnly
+                            />
 
-                    <FormField
-                        htmlFor="nomLugar"
-                        label="Nombre"
-                        id="nomLugar"
-                        type="text"
-                        name="nomLugar"
-                        ref={NomLugarInput}
-                        placeholder="Nombre del lugar"
-                        value={data.nomLugar}
-                        onChange={handleInputChange}
-                        errorMessage={errors.nomLugar}
-                    />
+                            <FormField
+                                htmlFor="nomLugar"
+                                label="Nombre"
+                                id="nomLugar"
+                                type="text"
+                                name="nomLugar"
+                                ref={NomLugarInput}
+                                placeholder="Nombre del lugar"
+                                value={data.nomLugar}
+                                onChange={handleInputChange}
+                                errorMessage={errors.nomLugar}
+                            />
 
-                    <FormField
-                        htmlFor="geolocalizacion"
-                        label="Geolocalización"
-                        id="geolocalizacion"
-                        type="text"
-                        name="geolocalizacion"
-                        ref={GeolocalizacionInput}
-                        placeholder="Geolocalización"
-                        value={data.geolocalizacion}
-                        onChange={handleInputChange}
-                        errorMessage={errors.geolocalizacion}
-                    />
+                            <FormField
+                                htmlFor="geolocalizacion"
+                                label="Geolocalización"
+                                id="geolocalizacion"
+                                type="text"
+                                name="geolocalizacion"
+                                ref={GeolocalizacionInput}
+                                placeholder="Geolocalización"
+                                value={data.geolocalizacion}
+                                onChange={handleInputChange}
+                                errorMessage={errors.geolocalizacion}
+                            />
 
-                    <FormField
-                        htmlFor="direccion" 
-                        label="Dirección"
-                        id="direccion"
-                        type="text"
-                        name="direccion"
-                        ref={DireccionInput}
-                        placeholder="Dirección"
-                        value={data.direccion}
-                        onChange={handleInputChange}
-                        errorMessage={errors.direccion}
-                    />
+                            <FormField
+                                htmlFor="direccion"
+                                label="Dirección"
+                                id="direccion"
+                                type="text"
+                                name="direccion"
+                                ref={DireccionInput}
+                                placeholder="Dirección"
+                                value={data.direccion}
+                                onChange={handleInputChange}
+                                errorMessage={errors.direccion}
+                            />
 
-                    <ImgField
-                        htmlFor="fotoLugar"
-                        label="Foto Lugar"
-                        id="fotoLugar"
-                        name="fotoLugar"
-                        ref={FotoLugarInput}
-                        onChange={handleFileChange}
-                        errorMessage={errors.fotoLugar}
-                    />
+                            <ImgField
+                                htmlFor="fotoLugar"
+                                label="Foto Lugar"
+                                id="fotoLugar"
+                                name="fotoLugar"
+                                imageUrl={data.fotoLugar}
+                                ref={FotoLugarInput}
+                                onChange={handleFileChange}
+                                errorMessage={errors.fotoLugar}
+                            />
 
-                    <div className="flex justify-end mt-4">
-                        <SecondaryButton onClick={closeModal}>Cancelar</SecondaryButton>
-                        <PrimaryButton className="ml-2" type="submit" disabled={processing}>
-                            {processing ? "Guardando..." : "Guardar"}
-                        </PrimaryButton>
-                    </div>
-                </form>
-            </Modal>
-            </main>
+                            <div className="flex justify-between col-span-2 mt-1">
+                                <GuardarButton
+                                    processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                    Guardar
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                    Cancelar
+                                </CancelarButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </main>
             </div>
         </AuthenticatedLayout>
     );
