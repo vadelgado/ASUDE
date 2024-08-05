@@ -11,12 +11,13 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Textarea2 from "@/Components/Textarea2";
 import Footer from "@/Components/DashBoard/Footer";
+import BackButton from "@/Components/BackButton";
 
 export default function ResultadosPartidos({
     auth,
-    jugadores,    
+    jugadores,
     idPartido,
-    resultados
+    resultados,
 }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
@@ -54,7 +55,7 @@ export default function ResultadosPartidos({
 
     const handleModal = (
         op,
-        id,        
+        id,
         fk_jugador_id,
         goles,
         tarjetas_amarillas,
@@ -123,7 +124,7 @@ export default function ResultadosPartidos({
         });
     };
 
-    const jugadoresOptions = [        
+    const jugadoresOptions = [
         { value: "", label: "Seleccione ..." },
         ...jugadores
             .filter((jugador) => jugador.estado === 1)
@@ -135,150 +136,217 @@ export default function ResultadosPartidos({
 
     return (
         <AuthenticatedLayout user={auth.user}>
-                    <div className="flex flex-col min-h-screen">
-                    <main className="container flex-grow px-4 py-8 mx-auto">
-            <div className="grid bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-2 mb-3">
-                    <PrimaryButton onClick={() => handleModal(1)}>
-                        <i className="fa-solid fa-plus-circle"> Añadir Resultado</i>
-                    </PrimaryButton>
-                </div>
-            </div>
-
-            <div className="grid py-6 bg-white v-screen place-items-center">
-            <table className="border-gray-400 table-auto">
-                <thead>
-                    <tr>
-                        <th className="px-4 py-2 border">Equipo</th>
-                        <th className="px-4 py-2 border">Jugador</th>
-                        <th className="px-4 py-2 border">Goles</th>
-                        <th className="px-4 py-2 border">Tarjetas Amarillas</th>
-                        <th className="px-4 py-2 border">Tarjetas Rojas</th>
-                        <th className="px-4 py-2 border">Observaciones</th>
-                        <th className="px-4 py-2 border">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {resultados.length > 0 ? (
-                        resultados.map((resultado) => (
-                            <tr key={resultado.id}>
-                                 <td className="px-4 py-2 border">{resultado.nombreEquipo}</td>
-                            <td className="px-4 py-2 border">{resultado.nombreCompleto}</td>
-                            <td className="px-4 py-2 border">{resultado.goles}</td>
-                            <td className="px-4 py-2 border">{resultado.tarjetas_amarillas}</td>
-                            <td className="px-4 py-2 border">{resultado.tarjetas_rojas}</td>
-                            <td className="px-4 py-2 border">{resultado.observaciones}</td>
-                            <td className="px-4 py-2 border">
-                                <PrimaryButton onClick={() => handleModal(2, resultado.id, resultado.fk_jugador_id, resultado.goles, resultado.tarjetas_amarillas, resultado.tarjetas_rojas, resultado.observaciones)}>
-                                    <i className="fa-solid fa-edit"></i>
+            <div className="flex flex-col min-h-screen">
+                <main className="container flex-grow px-4 py-8 mx-auto">
+                    <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xl font-semibold">
+                                Resultados del Partido
+                            </h3>
+                            <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
+                                <PrimaryButton onClick={() => handleModal(1)}>
+                                    <i className="fa-solid fa-plus-circle"></i>
+                                    Nuevo Resultado
                                 </PrimaryButton>
-                                <DangerButton onClick={() => deleteResult(resultado.id)}>
-                                    <i className="fa-solid fa-trash"></i>
-                                </DangerButton>
-                            </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="7" className="px-4 py-2 text-center border">
-                                No hay resultados
-                            </td>
-                        </tr>
-                    )}
-                    
-                </tbody>
-            </table>
+                                <BackButton to={route("dashboard")} />
+                            </div>
+                        </div>
 
-            </div>
+                        <div className="grid py-6 bg-white v-screen place-items-center">
+                            <table className="border-gray-400 table-auto">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 py-2 border">
+                                            Equipo
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Jugador
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Goles
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Tarjetas Amarillas
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Tarjetas Rojas
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Observaciones
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Editar
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Eliminar
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {resultados.length > 0 ? (
+                                        resultados.map((resultado) => (
+                                            <tr key={resultado.id}>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.nombreEquipo}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.nombreCompleto}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.goles}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {
+                                                        resultado.tarjetas_amarillas
+                                                    }
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.tarjetas_rojas}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {resultado.observaciones}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    <button
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
+                                                        onClick={() =>
+                                                            handleModal(
+                                                                2,
+                                                                resultado.id,
+                                                                resultado.fk_jugador_id,
+                                                                resultado.goles,
+                                                                resultado.tarjetas_amarillas,
+                                                                resultado.tarjetas_rojas,
+                                                                resultado.observaciones
+                                                            )
+                                                        }
+                                                    >
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                                                            <i className="fa-solid fa-edit"></i>
+                                                        </span>
+                                                    </button>
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    <button
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
+                                                        onClick={() =>
+                                                            deleteResult(
+                                                                resultado.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                                                            <i className="fa-solid fa-trash"></i>
+                                                        </span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan="7"
+                                                className="px-4 py-2 text-center border"
+                                            >
+                                                No hay resultados
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-            <Modal show={modal} onClose={closeModal}>
-            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                    <Modal show={modal} onClose={closeModal}>
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
-                <form onSubmit={save} className="p-6">                
-                    <input
-                        type="text"
-                        value={data.fk_programaciones_faces_id}
-                        name="fk_programaciones_faces_id"
-                        readOnly
-                        hidden
-                    />
+                        <form onSubmit={save} className="p-6">
+                            <input
+                                type="text"
+                                value={data.fk_programaciones_faces_id}
+                                name="fk_programaciones_faces_id"
+                                readOnly
+                                hidden
+                            />
 
-                    <SelectField
-                        label={
-                            <>
-                                <span>Jugador</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="fk_jugador_id"
-                        ref={fk_jugador_idSelect}
-                        name="fk_jugador_id"
-                        value={data.fk_jugador_id}
-                        onChange={handleInputChange}
-                        errorMessage={errors.fk_jugador_id}
-                        options={jugadoresOptions}
-                    />
-                    <FormField
-                        label="Goles"
-                        id="goles"
-                        type="number"
-                        name="goles"
-                        ref={golesInput}
-                        placeholder="Goles"
-                        value={data.goles}
-                        onChange={handleInputChange}
-                        errorMessage={errors.goles}
-                    />
-                    <FormField
-                        label="Tarjetas Amarillas"
-                        id="tarjetas_amarillas"
-                        type="number"
-                        name="tarjetas_amarillas"
-                        ref={tarjetas_amarillasInput}
-                        placeholder="Tarjetas Amarillas"
-                        value={data.tarjetas_amarillas}
-                        onChange={handleInputChange}
-                        errorMessage={errors.tarjetas_amarillas}
-                    />
-                    <FormField
-                        label="Tarjetas Rojas"
-                        id="tarjetas_rojas"
-                        type="number"
-                        name="tarjetas_rojas"
-                        ref={tarjetas_rojasInput}
-                        placeholder="Tarjetas Rojas"
-                        value={data.tarjetas_rojas}
-                        onChange={handleInputChange}
-                        errorMessage={errors.tarjetas_rojas}
-                    />
-                    <Textarea2
-                        label="Observaciones"
-                        type="text"
-                        ref={observacionesText}
-                        name="observaciones"
-                        value={data.observaciones}
-                        onChange={handleInputChange}
-                        errorMessage={errors.observaciones}
-                    />
-                    <div className="mt-6">
-                        <PrimaryButton
-                            processing={processing ? "true" : "false"}
-                            className="mt-2"
-                        >
-                            <i className="fa-solid fa-save">
-                                {processing ? " Procesando..." : " Guardar"}
-                            </i>
-                        </PrimaryButton>
-                    </div>
-                    <div className="flex justify-end mt-6">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
-                    </div>
-                </form>
-            </Modal>
-            </main>
+                            <SelectField
+                                label={
+                                    <>
+                                        <span>Jugador</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="fk_jugador_id"
+                                ref={fk_jugador_idSelect}
+                                name="fk_jugador_id"
+                                value={data.fk_jugador_id}
+                                onChange={handleInputChange}
+                                errorMessage={errors.fk_jugador_id}
+                                options={jugadoresOptions}
+                            />
+                            <FormField
+                                label="Goles"
+                                id="goles"
+                                type="number"
+                                name="goles"
+                                ref={golesInput}
+                                placeholder="Goles"
+                                value={data.goles}
+                                onChange={handleInputChange}
+                                errorMessage={errors.goles}
+                            />
+                            <FormField
+                                label="Tarjetas Amarillas"
+                                id="tarjetas_amarillas"
+                                type="number"
+                                name="tarjetas_amarillas"
+                                ref={tarjetas_amarillasInput}
+                                placeholder="Tarjetas Amarillas"
+                                value={data.tarjetas_amarillas}
+                                onChange={handleInputChange}
+                                errorMessage={errors.tarjetas_amarillas}
+                            />
+                            <FormField
+                                label="Tarjetas Rojas"
+                                id="tarjetas_rojas"
+                                type="number"
+                                name="tarjetas_rojas"
+                                ref={tarjetas_rojasInput}
+                                placeholder="Tarjetas Rojas"
+                                value={data.tarjetas_rojas}
+                                onChange={handleInputChange}
+                                errorMessage={errors.tarjetas_rojas}
+                            />
+                            <Textarea2
+                                label="Observaciones"
+                                type="text"
+                                ref={observacionesText}
+                                name="observaciones"
+                                value={data.observaciones}
+                                onChange={handleInputChange}
+                                errorMessage={errors.observaciones}
+                            />
+                            <div className="mt-6">
+                                <PrimaryButton
+                                    processing={processing ? "true" : "false"}
+                                    className="mt-2"
+                                >
+                                    <i className="fa-solid fa-save">
+                                        {processing
+                                            ? " Procesando..."
+                                            : " Guardar"}
+                                    </i>
+                                </PrimaryButton>
+                            </div>
+                            <div className="flex justify-end mt-6">
+                                <SecondaryButton onClick={closeModal}>
+                                    Cancelar
+                                </SecondaryButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </main>
             </div>
         </AuthenticatedLayout>
     );
