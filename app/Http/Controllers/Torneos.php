@@ -18,10 +18,12 @@ class Torneos extends Controller
     public function index()
     {
 
-        $sistemaJuegos = SistemaJuego::all();
-        $categoriaEquipos = Categorias::all();
-        $torneos = torneo::all();
-        return Inertia::render('Torneo/Index', ['torneos' => $torneos, 'sistemaJuegos' => $sistemaJuegos, 'categoriaEquipos' => $categoriaEquipos]);
+        $torneos = torneo::
+        where('estadoTorneo', 'En Juego', 'Finalizado')
+        ->select('id', 'nombreTorneo', 'fechaInicio')
+        ->orderBy('fechaInicio', 'asc')
+        ->get();
+        return Inertia::render('Torneo/Index', ['torneos' => $torneos,]);
     }
     //Listar los Torneos en la vista Todos
     public function listarTorneos()
