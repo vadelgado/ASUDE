@@ -18,6 +18,8 @@ class GalleryController extends Controller
         $fase = Fases::where('id' ,$fase_id)
             ->select('fases.nombreFase', 'fases.id')
             ->get();
+        $torneo_id = Fases::where('id', $fase_id)
+            ->value('fases.fk_torneo');
 
         $galleries = Gallery::join('fases', 'galleries.fk_fase', '=', 'fases.id')
             ->where('fk_fase', $fase_id)
@@ -26,7 +28,9 @@ class GalleryController extends Controller
             ->get();
         return Inertia::render('Gallery/Index', [
             'galleries' => $galleries, 
-            'fase' => $fase]);
+            'fase' => $fase,
+            'torneo_id' => $torneo_id
+        ]);
 
   
     }

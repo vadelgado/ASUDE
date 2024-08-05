@@ -14,8 +14,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
 import BackButton from "@/Components/BackButton";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
-export default function Dashboard({ auth, galleries, fase }) {
+export default function Dashboard({ auth, galleries, fase, torneo_id }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -150,10 +152,10 @@ export default function Dashboard({ auth, galleries, fase }) {
             sortable: true,
         },
         {
-            name: "Acciones",
+            name: "Editar",
             cell: (row) => (
                 <>
-                    <WarningButton
+                    <button
                         onClick={() =>
                             handleModal(
                                 2,
@@ -164,12 +166,30 @@ export default function Dashboard({ auth, galleries, fase }) {
                                 row.fk_fase
                             )
                         }
+                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
                     >
-                        <i className="fa-solid fa-pencil"></i>
-                    </WarningButton>
-                    <DangerButton onClick={() => eliminar(row.id)}>
-                        <i className="fa-solid fa-trash"></i>
-                    </DangerButton>
+                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                            <i className="fa-solid fa-edit"></i>
+                        </span>
+                    </button>
+                </>
+            ),
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+        },
+        {
+            name: "Eliminar",
+            cell: (row) => (
+                <>
+                    <button
+                        onClick={() => eliminar(row.id)}
+                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
+                    >
+                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                            <i className="fa-solid fa-trash"></i>
+                        </span>
+                    </button>
                 </>
             ),
             ignoreRowClick: true,
@@ -211,13 +231,12 @@ export default function Dashboard({ auth, galleries, fase }) {
             <div className="flex flex-col min-h-screen">
                 <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="container p-6 mx-auto mt-6 bg-white">
-                    <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
-
+                        <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
                             <PrimaryButton onClick={() => handleModal(1)}>
                                 <i className="mr-2 fa-solid fa-plus-circle"></i>
                                 Agregar Foto
                             </PrimaryButton>
-                            <BackButton to={route("torneo.index")} />
+                            <BackButton to={`/fases?torneo_id=${torneo_id}`} />
                         </div>
 
                         <DataTable
@@ -230,15 +249,13 @@ export default function Dashboard({ auth, galleries, fase }) {
                             striped
                             fixedHeader
                             noDataComponent={
-                                <div>
-                                    No hay Fotos Para Mostrar.{" "}
-                                </div>
+                                <div>No hay Fotos Para Mostrar. </div>
                             }
                         />
                     </div>
 
                     <Modal show={modal} onClose={closeModal}>
-                    <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
                         <form onSubmit={save} className="p-6">
@@ -264,11 +281,7 @@ export default function Dashboard({ auth, galleries, fase }) {
                                 onChange={handleFileChange}
                                 value={data.largeUrl}
                                 errorMessage={errors.largeUrl}
-                                imageUrl={
-                                    data.largeUrl
-                                        ? `http://127.0.0.1:8000/storage/${data.largeUrl}`
-                                        : null
-                                }
+                                imageUrl={data.largeUrl}
                             />
 
                             <FormField
@@ -307,24 +320,19 @@ export default function Dashboard({ auth, galleries, fase }) {
                                 errorMessage={errors.height}
                             />
 
-                            <div className="mt-6">
-                                <PrimaryButton
-                                    processing={
-                                        processing ? "true" : "false"
-                                    }
-                                    className="mt-2"
+                            <div className="flex justify-between mt-4">
+                                <GuardarButton
+                                    processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
                                 >
-                                    <i className="mr-2 fa-solid fa-save"></i>
-                                    {processing
-                                        ? "Procesando..."
-                                        : "Guardar"}
-                                </PrimaryButton>
-                            </div>
-
-                            <div className="flex justify-end mt-6">
-                                <SecondaryButton onClick={closeModal}>
+                                    Guardar
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
                                     Cancelar
-                                </SecondaryButton>
+                                </CancelarButton>
                             </div>
                         </form>
                     </Modal>
