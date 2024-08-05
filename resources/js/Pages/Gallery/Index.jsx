@@ -13,6 +13,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import WarningButton from "@/Components/WarningButton";
 import Footer from "@/Components/DashBoard/Footer";
+import BackButton from "@/Components/BackButton";
 
 export default function Dashboard({ auth, galleries, fase }) {
     const [modal, setModal] = useState(false);
@@ -208,13 +209,15 @@ export default function Dashboard({ auth, galleries, fase }) {
         >
             <Head title="Fotos Fase" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="container p-6 mx-auto mt-6 bg-white">
-                        <div className="flex justify-end mt-2 mb-3">
+                    <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
+
                             <PrimaryButton onClick={() => handleModal(1)}>
                                 <i className="mr-2 fa-solid fa-plus-circle"></i>
                                 Agregar Foto
                             </PrimaryButton>
+                            <BackButton to={route("torneo.index")} />
                         </div>
 
                         <DataTable

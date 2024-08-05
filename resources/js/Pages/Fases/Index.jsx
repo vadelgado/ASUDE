@@ -164,10 +164,10 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
         },
         {
             name: "Fotos",
-            cell: (row) => (
+            cell: (row) => ( 
                 <a
                     className="mt-2 text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                    href={`/galler y?fase_id=${row.id}`}
+                    href={`/gallery?fase_id=${row.id}`}
                 >
                     <i className="mr-2 fa-regular fa-image"></i>Fotos
                 </a>
@@ -198,7 +198,7 @@ export default function Dashboard({ auth, fases, torneo, fk_torneo }) {
         >
             <Head title="Fases Partidos" />
             <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8">
+                <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="container p-6 mx-auto mt-6 bg-white">
                         <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
                             <PrimaryButton onClick={() => handleModal(1)}>
