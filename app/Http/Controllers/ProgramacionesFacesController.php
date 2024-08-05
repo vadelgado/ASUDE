@@ -25,6 +25,8 @@ class ProgramacionesFacesController extends Controller
             $fase = Fases::where('id', $fase_id)
                 ->select('fases.nombreFase', 'fases.id', 'fases.fk_torneo')
                 ->get();
+            $torneo_id = Fases::where('id', $fase_id)
+                ->value('fases.fk_torneo');
             $programaciones = ProgramacionesFaces::where('fk_fase', $fase_id)
                 ->join('lugar_partidos', 'programaciones_faces.fk_lugarPartido', '=', 'lugar_partidos.id')
                 ->join('fases', 'programaciones_faces.fk_fase', '=', 'fases.id')
@@ -66,7 +68,8 @@ class ProgramacionesFacesController extends Controller
             'fk_fase' => $fase_id,
             'equipos' => $equipos,
             'lugares' => $lugares,
-            'cantidadEquipos' => $cantidadEquipos
+            'cantidadEquipos' => $cantidadEquipos,
+            'torneo_id' => $torneo_id,
         ]);
     }
 

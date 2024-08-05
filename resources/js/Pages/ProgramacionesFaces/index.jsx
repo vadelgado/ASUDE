@@ -12,6 +12,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Footer from "@/Components/DashBoard/Footer";
 import WarningButton from "@/Components/WarningButton";
+import BackButton from "@/Components/BackButton";
 
 export default function Index({
     auth,
@@ -20,7 +21,9 @@ export default function Index({
     equipos,
     lugares,
     cantidadEquipos,
+    torneo_id
 }) {
+    
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -170,214 +173,245 @@ export default function Index({
         >
             <Head title="Programación Torneo" />
             <div className="flex flex-col min-h-screen">
-            <main className="container flex-grow px-4 py-8 mx-auto">
+                <main className="container flex-grow px-4 py-8 mx-auto">
+                    <div className="min-h-screen py-6 bg-gray-100">
+                        <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
+                        <PrimaryButton
+                                    onClick={() => handleModal(1)}
+                                    
+                                >
+                                    {" "}
+                                    {/* Agregar margen al botón */}
+                                    <i className="fa-solid fa-plus-circle"></i>
+                                    Programar Partido
+                                </PrimaryButton>
+                                <BackButton to={`/fases?torneo_id=${torneo_id}`} />
+                        </div>
 
-            <div className="grid bg-white v-screen place-items-center">
-                <div className="flex justify-end mt-2 mb-3">
-                    <PrimaryButton onClick={() => handleModal(1)}>
-                        <i className="fa-solid fa-plus-circle"></i>
-                        Programar Partido
-                    </PrimaryButton>
-                </div>
-            </div>
-            <div className="grid py-6 bg-white v-screen place-items-center">
-                <table className="border-gray-400 table-auto">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 border">#</th>
-                            <th className="px-4 py-2 border">Local</th>
-                            <th className="px-4 py-2 border">Visitante</th>
-                            <th className="px-4 py-2 border">Fecha</th>
-                            <th className="px-4 py-2 border">Hora</th>
-                            <th className="px-4 py-2 border">Lugar</th>
-                            <th className="px-2 py-2 border">Editar</th>
-                            <th className="px-2 py-2 border">Eliminar</th>
-                            <th className="px-2 py-2 border">Resultados</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {programaciones.map((programacion, index) => (
-                            <tr key={programacion.id}>
-                                <td className="px-4 py-2 border">
-                                    {index + 1}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    {programacion.posicion_local}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    {programacion.posicion_visitante}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    {programacion.FechaPartido}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    {new Date(
-                                        `1970-01-01T${programacion.HoraPartido}`
-                                    ).toLocaleString("en-US", {
-                                        hour: "numeric",
-                                        minute: "numeric",
-                                        hour12: true,
-                                    })}
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    {programacion.nomLugar}
-                                </td>
-                                <td className="px-2 py-2 border">
-                                    <WarningButton
-                                        onClick={() =>
-                                            handleModal(
-                                                2,
-                                                programacion.id,
-                                                programacion.fk_fase,
-                                                programacion.posicion_local,
-                                                programacion.posicion_visitante,
-                                                programacion.FechaPartido,
-                                                programacion.HoraPartido,
-                                                programacion.fk_lugarPartido,
-                                            )
-                                        }
-                                    >
-                                        <i className="fa-solid fa-pencil"></i> 
-                                    </WarningButton>
-                                </td>
-                                <td className="px-2 py-2 border">
-                                    <DangerButton
-                                        onClick={() =>
-                                            showDeleteConfirmation(
-                                                programacion.id
-                                            )
-                                        }
-                                    >
-                                        <i className="fa-solid fa-trash"></i>
-                                    </DangerButton>
-                                </td>
-                                <td className="px-4 py-2 border">
-                                    <a
-                                        className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
-                                        href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
-                                    >
-                                        <i className="fa-regular fa-flag">
-                                            {" "}                                            
-                                        </i>
-                                    </a>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        <h1 className="mb-4 text-2xl font-bold">
+                            Listado de Partidos
+                        </h1>
+                        <div className="grid py-6 bg-white v-screen place-items-center">
+                            <table className="border-gray-400 table-auto">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 py-2 border">#</th>
+                                        <th className="px-4 py-2 border">
+                                            Local
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Visitante
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Fecha
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Hora
+                                        </th>
+                                        <th className="px-4 py-2 border">
+                                            Lugar
+                                        </th>
+                                        <th className="px-2 py-2 border">
+                                            Editar
+                                        </th>
+                                        <th className="px-2 py-2 border">
+                                            Eliminar
+                                        </th>
+                                        <th className="px-2 py-2 border">
+                                            Resultados
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {programaciones.map(
+                                        (programacion, index) => (
+                                            <tr key={programacion.id}>
+                                                <td className="px-4 py-2 border">
+                                                    {index + 1}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {
+                                                        programacion.posicion_local
+                                                    }
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {
+                                                        programacion.posicion_visitante
+                                                    }
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {programacion.FechaPartido}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {new Date(
+                                                        `1970-01-01T${programacion.HoraPartido}`
+                                                    ).toLocaleString("en-US", {
+                                                        hour: "numeric",
+                                                        minute: "numeric",
+                                                        hour12: true,
+                                                    })}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {programacion.nomLugar}
+                                                </td>
+                                                <td className="px-2 py-2 border">
+                                                    <WarningButton
+                                                        onClick={() =>
+                                                            handleModal(
+                                                                2,
+                                                                programacion.id,
+                                                                programacion.fk_fase,
+                                                                programacion.posicion_local,
+                                                                programacion.posicion_visitante,
+                                                                programacion.FechaPartido,
+                                                                programacion.HoraPartido,
+                                                                programacion.fk_lugarPartido
+                                                            )
+                                                        }
+                                                    >
+                                                        <i className="fa-solid fa-pencil"></i>
+                                                    </WarningButton>
+                                                </td>
+                                                <td className="px-2 py-2 border">
+                                                    <DangerButton
+                                                        onClick={() =>
+                                                            showDeleteConfirmation(
+                                                                programacion.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <i className="fa-solid fa-trash"></i>
+                                                    </DangerButton>
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    <a
+                                                        className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                                        href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
+                                                    >
+                                                        <i className="fa-regular fa-flag">
+                                                            {" "}
+                                                        </i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-            <Modal show={modal} onClose={closeModal}>
-            <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                    <Modal show={modal} onClose={closeModal}>
+                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
-                <form onSubmit={save} className="p-6">
-                    <input
-                        type="text"
-                        value={data.fk_fase}
-                        name="fk_fase"
-                        readOnly
-                        className="hidden"
-                    />
+                        <form onSubmit={save} className="p-6">
+                            <input
+                                type="text"
+                                value={data.fk_fase}
+                                name="fk_fase"
+                                readOnly
+                                className="hidden"
+                            />
 
-                    {errors.fk_fase && (
-                        <p className="text-red-500">{errors.fk_fase}</p>
-                    )}
-                    <SelectField
-                        htmlFor="posicion_local"
-                        label={
-                            <>
-                                <span>Equipo Local</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="posicion_local"
-                        ref={posicion_localSelect}
-                        name="posicion_local"
-                        value={data.posicion_local}
-                        onChange={handleInputChange}
-                        options={equiposSelect}
-                        errorMessage={errors.posicion_local}
-                    />
-                    <SelectField
-                        htmlFor="posicion_visitante"
-                        label={
-                            <>
-                                <span>Equipo Visitante</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="posicion_visitante"
-                        ref={posicion_visitanteSelect}
-                        name="posicion_visitante"
-                        value={data.posicion_visitante}
-                        onChange={handleInputChange}
-                        options={equiposSelect}
-                        errorMessage={errors.posicion_visitante}
-                    />
-                    <FormField
-                        htmlFor="FechaPartido"
-                        label={
-                            <>
-                                <span>Fecha del Partido</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        type="date"
-                        id="FechaPartido"
-                        ref={FechaPartidoInput}
-                        name="FechaPartido"
-                        value={data.FechaPartido}
-                        onChange={handleInputChange}
-                        errorMessage={errors.FechaPartido}
-                    />
-                    <FormField
-                        htmlFor="HoraPartido"
-                        label={
-                            <>
-                                <span>Hora del Partido</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        type="time"
-                        id="HoraPartido"
-                        ref={HoraPartidoInput}
-                        name="HoraPartido"
-                        value={data.HoraPartido}
-                        onChange={handleInputChange}
-                        errorMessage={errors.HoraPartido}
-                    />
-                    <SelectField
-                        htmlFor="fk_lugarPartido"
-                        label={
-                            <>
-                                <span>Lugar del Partido</span>
-                                <span className="text-red-500">*</span>
-                            </>
-                        }
-                        id="fk_lugarPartido"
-                        ref={fk_lugarPartidoSelect}
-                        name="fk_lugarPartido"
-                        value={data.fk_lugarPartido}
-                        onChange={handleInputChange}
-                        options={lugaresSelect}
-                        errorMessage={errors.fk_lugarPartido}
-                    />
-                    <div className="flex items-center justify-end mt-4">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
-                        <PrimaryButton
-                            className="ml-4"
-                            type="submit"
-                            disabled={processing}
-                        >
-                            Guardar
-                        </PrimaryButton>
-                    </div>
-                </form>
-            </Modal>
-            </main>
+                            {errors.fk_fase && (
+                                <p className="text-red-500">{errors.fk_fase}</p>
+                            )}
+                            <SelectField
+                                htmlFor="posicion_local"
+                                label={
+                                    <>
+                                        <span>Equipo Local</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="posicion_local"
+                                ref={posicion_localSelect}
+                                name="posicion_local"
+                                value={data.posicion_local}
+                                onChange={handleInputChange}
+                                options={equiposSelect}
+                                errorMessage={errors.posicion_local}
+                            />
+                            <SelectField
+                                htmlFor="posicion_visitante"
+                                label={
+                                    <>
+                                        <span>Equipo Visitante</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="posicion_visitante"
+                                ref={posicion_visitanteSelect}
+                                name="posicion_visitante"
+                                value={data.posicion_visitante}
+                                onChange={handleInputChange}
+                                options={equiposSelect}
+                                errorMessage={errors.posicion_visitante}
+                            />
+                            <FormField
+                                htmlFor="FechaPartido"
+                                label={
+                                    <>
+                                        <span>Fecha del Partido</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                type="date"
+                                id="FechaPartido"
+                                ref={FechaPartidoInput}
+                                name="FechaPartido"
+                                value={data.FechaPartido}
+                                onChange={handleInputChange}
+                                errorMessage={errors.FechaPartido}
+                            />
+                            <FormField
+                                htmlFor="HoraPartido"
+                                label={
+                                    <>
+                                        <span>Hora del Partido</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                type="time"
+                                id="HoraPartido"
+                                ref={HoraPartidoInput}
+                                name="HoraPartido"
+                                value={data.HoraPartido}
+                                onChange={handleInputChange}
+                                errorMessage={errors.HoraPartido}
+                            />
+                            <SelectField
+                                htmlFor="fk_lugarPartido"
+                                label={
+                                    <>
+                                        <span>Lugar del Partido</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="fk_lugarPartido"
+                                ref={fk_lugarPartidoSelect}
+                                name="fk_lugarPartido"
+                                value={data.fk_lugarPartido}
+                                onChange={handleInputChange}
+                                options={lugaresSelect}
+                                errorMessage={errors.fk_lugarPartido}
+                            />
+                            <div className="flex items-center justify-end mt-4">
+                                <SecondaryButton onClick={closeModal}>
+                                    Cancelar
+                                </SecondaryButton>
+                                <PrimaryButton
+                                    className="ml-4"
+                                    type="submit"
+                                    disabled={processing}
+                                >
+                                    Guardar
+                                </PrimaryButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </main>
             </div>
         </AuthenticatedLayout>
     );
