@@ -13,6 +13,8 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import Footer from "@/Components/DashBoard/Footer";
 import WarningButton from "@/Components/WarningButton";
 import BackButton from "@/Components/BackButton";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Index({
     auth,
@@ -21,9 +23,8 @@ export default function Index({
     equipos,
     lugares,
     cantidadEquipos,
-    torneo_id
+    torneo_id,
 }) {
-    
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
@@ -176,16 +177,13 @@ export default function Index({
                 <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="min-h-screen py-6 bg-gray-100">
                         <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
-                        <PrimaryButton
-                                    onClick={() => handleModal(1)}
-                                    
-                                >
-                                    {" "}
-                                    {/* Agregar margen al botón */}
-                                    <i className="fa-solid fa-plus-circle"></i>
-                                    Programar Partido
-                                </PrimaryButton>
-                                <BackButton to={`/fases?torneo_id=${torneo_id}`} />
+                            <PrimaryButton onClick={() => handleModal(1)}>
+                                {" "}
+                                {/* Agregar margen al botón */}
+                                <i className="fa-solid fa-plus-circle"></i>
+                                Programar Partido
+                            </PrimaryButton>
+                            <BackButton to={`/fases?torneo_id=${torneo_id}`} />
                         </div>
 
                         <h1 className="mb-4 text-2xl font-bold">
@@ -255,7 +253,8 @@ export default function Index({
                                                     {programacion.nomLugar}
                                                 </td>
                                                 <td className="px-2 py-2 border">
-                                                    <WarningButton
+                                                    <button
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
                                                         onClick={() =>
                                                             handleModal(
                                                                 2,
@@ -269,28 +268,33 @@ export default function Index({
                                                             )
                                                         }
                                                     >
-                                                        <i className="fa-solid fa-pencil"></i>
-                                                    </WarningButton>
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                                                            <i className="fa-solid fa-edit"></i>
+                                                        </span>
+                                                    </button>
                                                 </td>
                                                 <td className="px-2 py-2 border">
-                                                    <DangerButton
+                                                    <button
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
                                                         onClick={() =>
                                                             showDeleteConfirmation(
                                                                 programacion.id
                                                             )
                                                         }
                                                     >
-                                                        <i className="fa-solid fa-trash"></i>
-                                                    </DangerButton>
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                                                            <i className="fa-solid fa-trash"></i>
+                                                        </span>
+                                                    </button>
                                                 </td>
                                                 <td className="px-4 py-2 border">
                                                     <a
-                                                        className="text-white bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2"
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200  "
                                                         href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                                     >
-                                                        <i className="fa-regular fa-flag">
-                                                            {" "}
-                                                        </i>
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                                                            <i className="fa-solid fa-flag"></i>
+                                                        </span>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -397,17 +401,19 @@ export default function Index({
                                 options={lugaresSelect}
                                 errorMessage={errors.fk_lugarPartido}
                             />
-                            <div className="flex items-center justify-end mt-4">
-                                <SecondaryButton onClick={closeModal}>
-                                    Cancelar
-                                </SecondaryButton>
-                                <PrimaryButton
-                                    className="ml-4"
-                                    type="submit"
-                                    disabled={processing}
+                            <div className="flex justify-between mt-4">
+                                <GuardarButton
+                                    processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
                                 >
                                     Guardar
-                                </PrimaryButton>
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
+                                    Cancelar
+                                </CancelarButton>
                             </div>
                         </form>
                     </Modal>
