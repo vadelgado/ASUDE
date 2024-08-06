@@ -12,6 +12,9 @@ import { Head } from "@inertiajs/react";
 import SelectField from "@/Components/SelectField";
 import Footer from "@/Components/DashBoard/Footer";
 import JSConfetti from "js-confetti";
+import BackButton from "@/Components/BackButton";
+import GuardarButton from "@/Components/GuardarButton";
+import CancelarButton from "@/Components/CancelarButton";
 
 export default function Index({
     auth,
@@ -73,10 +76,8 @@ export default function Index({
                 "💃", // Mujer bailando
                 "🎶", // Notas musicales
             ],
-          
         });
     };
-    
 
     const openModal = (op, id, puesto, fk_equipo, fk_torneo) => {
         setModal(true);
@@ -111,6 +112,7 @@ export default function Index({
             post(route("resultadoSorteo.store"), {
                 onSuccess: () => {
                     closeModal();
+                    handleJsConfetti();
                     Swal.fire({
                         title: "Resultado Sorteo agregado correctamente",
                         icon: "success",
@@ -214,7 +216,7 @@ export default function Index({
         {
             name: "Editar",
             cell: (row) => (
-                <WarningButton
+                <button
                     onClick={() =>
                         openModal(
                             2,
@@ -224,17 +226,25 @@ export default function Index({
                             row.fk_torneo
                         )
                     }
+                    className="mt-2 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
                 >
-                    <i className="fa-solid fa-edit"></i>
-                </WarningButton>
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-edit"></i>
+                    </span>
+                </button>
             ),
         },
         {
             name: "Eliminar",
             cell: (row) => (
-                <DangerButton onClick={() => eliminar(row.id)}>
-                    <i className="fa-solid fa-trash"></i>
-                </DangerButton>
+                <button
+                    onClick={() => eliminar(row.id)}
+                    className="mt-2 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
+                >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                        <i className="fa-solid fa-trash"></i>
+                    </span>
+                </button>
             ),
         },
     ];
@@ -264,40 +274,48 @@ export default function Index({
             <Head title="✋Sorteo" />
             <div className="flex flex-col min-h-screen">
                 <main className="container flex-grow px-4 py-8 mx-auto">
-                    <div className="container p-6 mx-auto mt-6 bg-white">
-                        <div className="flex justify-end mt-2 mb-3">
-                            <PrimaryButton onClick={() => openModal(1)}>
-                                <i className="mr-2 fa-solid fa-plus-circle"></i>{" "}
-                                Añadir
-                            </PrimaryButton>
-                        </div>
-                        <div className="mb-4">
-                            <input
-                                type="text"
-                                className="w-full p-2 border rounded"
-                                placeholder="Buscar por nombre de equipo..."
-                                value={filterText}
-                                onChange={(e) => setFilterText(e.target.value)}
-                            />
-                        </div>
+                    <div className="min-h-screen py-6 bg-gray-100">
+                        <div className="container p-6 mx-auto mt-6 bg-white">
+                            <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
+                                <PrimaryButton onClick={() => openModal(1)}>
+                                    <i className="mr-2 fa-solid fa-plus-circle"></i>{" "}
+                                    Añadir
+                                </PrimaryButton>
+                                <BackButton to={route("torneo.index")} />
+                            </div>
+                            <h1 className="mb-4 text-2xl font-bold">
+                                Resultados Sorteos
+                            </h1>
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    className="w-full p-2 border rounded"
+                                    placeholder="Buscar por nombre de equipo..."
+                                    value={filterText}
+                                    onChange={(e) =>
+                                        setFilterText(e.target.value)
+                                    }
+                                />
+                            </div>
 
-                        <div className="overflow-x-auto">
-                            <DataTable
-                                columns={columns}
-                                data={filteredResultados}
-                                pagination
-                                paginationComponentOptions={
-                                    paginationComponentOptions
-                                }
-                                highlightOnHover
-                                responsive
-                                noDataComponent="No hay resultados. 👀"
-                            />
+                            <div className="overflow-x-auto">
+                                <DataTable
+                                    columns={columns}
+                                    data={filteredResultados}
+                                    pagination
+                                    paginationComponentOptions={
+                                        paginationComponentOptions
+                                    }
+                                    highlightOnHover
+                                    responsive
+                                    noDataComponent="No hay resultados. 👀"
+                                />
+                            </div>
                         </div>
                     </div>
 
                     <Modal show={modal} onClose={closeModal}>
-                        <h2 className="p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
+                        <h2 className=" p-4 text-2xl font-semibold text-white bg-gray-800 border-b border-gray-300 rounded-t-md">
                             {title}
                         </h2>
                         <form onSubmit={handleSubmit} className="p-6">
@@ -307,6 +325,23 @@ export default function Index({
                                 name="fk_torneo"
                                 hidden
                                 readOnly
+                            />
+
+<SelectField
+                                htmlFor="fk_equipo"
+                                label={
+                                    <>
+                                        <span>Equipo</span>
+                                        <span className="text-red-500">*</span>
+                                    </>
+                                }
+                                id="fk_equipo"
+                                ref={fk_equipoInput}
+                                name="fk_equipo"
+                                value={data.fk_equipo}
+                                onChange={handleInputChange}
+                                options={handleSelectEquipos}
+                                errorMessage={errors.fk_equipo}
                             />
 
                             <SelectField
@@ -326,37 +361,21 @@ export default function Index({
                                 errorMessage={errors.puesto}
                             />
 
-                            <SelectField
-                                htmlFor="fk_equipo"
-                                label={
-                                    <>
-                                        <span>Equipo</span>
-                                        <span className="text-red-500">*</span>
-                                    </>
-                                }
-                                id="fk_equipo"
-                                ref={fk_equipoInput}
-                                name="fk_equipo"
-                                value={data.fk_equipo}
-                                onChange={handleInputChange}
-                                options={handleSelectEquipos}
-                                errorMessage={errors.fk_equipo}
-                            />
+                            
 
-                            <div className="mt-6">
-                                <PrimaryButton
-                                    onClick={handleJsConfetti}
-                                    processing={processing ? "true" : "false"}
+                            <div className="flex justify-between mt-36">
+                                <GuardarButton
+                                    processing={processing.toString()}
+                                    className="px-4 py-2 mt-2"
                                 >
-                                    <i className="mr-2 fa-solid fa-save"></i>
                                     Guardar
-                                </PrimaryButton>
-                            </div>
-
-                            <div className="flex justify-end mt-6">
-                                <SecondaryButton onClick={closeModal}>
+                                </GuardarButton>
+                                <CancelarButton
+                                    onClick={closeModal}
+                                    className="px-4 py-2 mt-2"
+                                >
                                     Cancelar
-                                </SecondaryButton>
+                                </CancelarButton>
                             </div>
                         </form>
                     </Modal>
