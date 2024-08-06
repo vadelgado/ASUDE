@@ -79,7 +79,7 @@ export default function ListarTorneos({
     const handleDownloadPDF = () => {
         const element = document.getElementById("pdf-content");
         const opt = {
-            margin: [0, 0, 0, 0], // Márgenes ajustados
+            margin: [0, 1, 1, 1], // Márgenes ajustados
             filename: "ResultadosTorneo.pdf",
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2 },
@@ -101,14 +101,14 @@ export default function ListarTorneos({
                 </button>
                 <main
                     className="container flex-grow px-4 py-8 mx-auto"
-                    id="pdf-content"
+                    id="pdf-content" 
                 >
                     <div className="text-center ">
                         <div className="flex items-center justify-center py-8">
                             <img
                                 src={`/storage/${torneo[0].imgBannerSuperior}`}
                                 alt={torneo[0].nombreTorneo}
-                                className="h-auto"
+                                className="w-full h-auto max-w-lg"
                             />
                         </div>
                         <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
@@ -137,15 +137,13 @@ export default function ListarTorneos({
                             </span>
                         </h2>
                     </div>
-                    <div className="p-2 bg-gray-100 rounded-lg shadow-lg mt">
-                        <h2 className="font-extrabold tracking-wide text-center uppercase text-primary">
-                            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+                        <h2 className="font-extrabold tracking-wide text-center uppercase text-primary my-10">
+                            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                                 Resultados 🏆
                             </span>
                         </h2>
-                    </div>
 
-                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    <div className="my-20 text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                         <div className="overflow-x-auto">
                             <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
                                 <table className="w-full text-black table-auto">
@@ -185,12 +183,14 @@ export default function ListarTorneos({
                         </div>
                     </div>
 
-                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                            Tabla de Posiciones 🏆
-                        </span>
-                    </h2>
-                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    <h2 className="font-extrabold tracking-wide text-center uppercase text-primary my-10">
+                            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+                            Tabla de Puntos 🏆
+                            </span>
+                        </h2>
+
+                    
+                    <div className=" my-20 text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                         <div className="overflow-x-auto">
                             <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
                                 <table className="w-full text-black table-auto">
@@ -310,13 +310,15 @@ export default function ListarTorneos({
                         </div>
                     </div>
 
-                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                    <h2 className="font-extrabold tracking-wide text-center uppercase text-primary my-10">
+                            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                             Tabla de Juego Limpio ⚽
-                        </span>
-                    </h2>
+                            </span>
+                        </h2>
 
-                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                    
+
+                    <div className=" my-20 text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                         <div className="overflow-x-auto">
                             <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
                                 <table className="w-full text-black table-auto">
@@ -391,12 +393,14 @@ export default function ListarTorneos({
                             </div>
                         </div>
                     </div>
-                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+
+                    <h2 className="font-extrabold tracking-wide text-center uppercase text-primary my-10">
+                            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                             Observaciones 📋
-                        </span>
-                    </h2>
-                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                            </span>
+                        </h2>
+
+                    <div className=" my-20 text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                         <div className="overflow-x-auto">
                             <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
                                 <table className="w-full text-black table-auto">
@@ -464,13 +468,14 @@ export default function ListarTorneos({
                         </div>
                     </div>
 
-                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                    <h2 className="font-extrabold tracking-wide text-center uppercase text-primary my-10">
+                            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                             Tabla de Goles ⚽
-                        </span>
-                    </h2>
+                            </span>
+                        </h2>
 
-                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+
+                    <div className="my-20 text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                         <div className="overflow-x-auto">
                             <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
                                 <table className="w-full text-black table-auto">
