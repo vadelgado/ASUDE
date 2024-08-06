@@ -2,7 +2,8 @@ import { Link, Head } from "@inertiajs/react";
 import Footer from "@/Components/DashBoard/Footer";
 import Header from "@/Components/DashBoard/Header";
 import React, { useEffect, useState } from "react";
-import JSConfetti from 'js-confetti';
+import JSConfetti from "js-confetti";
+import html2pdf from "html2pdf.js";
 
 export default function ListarTorneos({
     auth,
@@ -72,392 +73,485 @@ export default function ListarTorneos({
                 "🕺", // Hombre bailando
                 "💃", // Mujer bailando
                 "🎶", // Notas musicales
-            ]// Ajusta este valor según la duración deseada
+            ], // Ajusta este valor según la duración deseada
         });
     }, []);
+    const handleDownloadPDF = () => {
+        const element = document.getElementById("pdf-content");
+        const opt = {
+            margin: [0, 0, 0, 0], // Márgenes ajustados
+            filename: "ResultadosTorneo.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "A2", orientation: "portrait" },
+        };
+        html2pdf().set(opt).from(element).save();
+    };
     return (
-        
         <>
             <Header auth={auth}></Header>
             <Head title={`Torneo ⚽ Tabla de Grupos`} />
 
-            <div className="flex flex-col min-h-screen">
-            <main className="container flex-grow px-4 py-8 mx-auto">
-
-            <div className="mt-40 text-center">
-                    <div className="flex items-center justify-center py-8">
-                        <img
-                            src={`/storage/${torneo[0].imgBannerSuperior}`}
-                            alt={torneo[0].nombreTorneo}
-                            className="h-auto"
-                        />
-                    </div>
-                    <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
-                        {torneo[0].nombreTorneo} <br />
-                        {new Date(torneo[0].fechaInicio).toLocaleDateString(
-                            "es-CO",
-                            {
-                                month: "long",
-                                day: "numeric",
-                            }
-                        ) +
-                            " al " +
-                            new Date(torneo[0].fechaFin).toLocaleDateString(
+            <div className="flex flex-col min-h-screen mt-40">
+                <button
+                    onClick={handleDownloadPDF}
+                    className="px-4 py-2 mt-2 text-white bg-blue-500 rounded hover:bg-blue-700 sm:mt-0 sm:ml-auto sm:text-base"
+                >
+                    Descargar PDF
+                </button>
+                <main
+                    className="container flex-grow px-4 py-8 mx-auto"
+                    id="pdf-content"
+                >
+                    <div className="text-center ">
+                        <div className="flex items-center justify-center py-8">
+                            <img
+                                src={`/storage/${torneo[0].imgBannerSuperior}`}
+                                alt={torneo[0].nombreTorneo}
+                                className="h-auto"
+                            />
+                        </div>
+                        <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
+                            {torneo[0].nombreTorneo} <br />
+                            {new Date(torneo[0].fechaInicio).toLocaleDateString(
                                 "es-CO",
                                 {
                                     month: "long",
                                     day: "numeric",
-                                    year: "numeric",
                                 }
-                            )}{" "}
-                        <br />
-                        {torneo[0].caracteristicas} <br />
-                        Apoyo:{" "}
-                        <span className="font-semibold">
-                            {torneo[0].ApoyoPrincipal}
+                            ) +
+                                " al " +
+                                new Date(torneo[0].fechaFin).toLocaleDateString(
+                                    "es-CO",
+                                    {
+                                        month: "long",
+                                        day: "numeric",
+                                        year: "numeric",
+                                    }
+                                )}{" "}
+                            <br />
+                            {torneo[0].caracteristicas} <br />
+                            Apoyo:{" "}
+                            <span className="font-semibold">
+                                {torneo[0].ApoyoPrincipal}
+                            </span>
+                        </h2>
+                    </div>
+                    <div className="p-2 bg-gray-100 rounded-lg shadow-lg mt">
+                        <h2 className="font-extrabold tracking-wide text-center uppercase text-primary">
+                            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+                                Resultados 🏆
+                            </span>
+                        </h2>
+                    </div>
+
+                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                        <div className="overflow-x-auto">
+                            <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
+                                <table className="w-full text-black table-auto">
+                                    <tbody>
+                                        {premiacion ? (
+                                            premiacion.map((premio, index) => (
+                                                <tr
+                                                    key={index}
+                                                    className={`${
+                                                        index % 2 === 0
+                                                            ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                            : "bg-white"
+                                                    } hover:bg-gray-200`}
+                                                >
+                                                    <td className="px-4 py-2 border">
+                                                        {premio.categoria}
+                                                    </td>
+                                                    <td className="px-4 py-2 border">
+                                                        {premio.resultado}
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="13"
+                                                    className="px-4 py-2 text-center border"
+                                                >
+                                                    No hay Premiación
+                                                    disponibles
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                            Tabla de Posiciones 🏆
                         </span>
                     </h2>
-                </div>
-
-                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                        Resultados 🏆
-                    </span>
-                </h2>
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-                    <div className="overflow-x-auto">
-                        <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
-                            <table className="w-full text-black table-auto">
-                                <tbody>
-                                    {premiacion ? (
-                                        premiacion.map((premio, index) => (
-                                            <tr
-                                                key={index}
-                                                className={`${
-                                                    index % 2 === 0
-                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
-                                                        : "bg-white"
-                                                } hover:bg-gray-200`}
-                                            >
-                                                <td className="px-4 py-2 border">
-                                                    {premio.categoria}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {premio.resultado}
+                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                        <div className="overflow-x-auto">
+                            <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
+                                <table className="w-full text-black table-auto">
+                                    <thead>
+                                        <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                #
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                Equipo
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                PJ
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                PG
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                PE
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                PP
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                GF
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                GC
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                DG
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                TA
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                TR
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                JL
+                                            </th>
+                                            <th className="px-4 py-2 font-bold text-center">
+                                                PTS
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {resultados ? (
+                                            resultados.map(
+                                                (resultado, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className={`${
+                                                            index % 2 === 0
+                                                                ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                                : "bg-white"
+                                                        } hover:bg-gray-200`}
+                                                    >
+                                                        <td className="px-4 py-2 border">
+                                                            {index + 1}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.nombreEquipo
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.PJ}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.PG}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.PE}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.PP}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.GF}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.GC}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.DG}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.TA}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.TR}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.JL}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.Pts}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="13"
+                                                    className="px-4 py-2 text-center border"
+                                                >
+                                                    No hay resultados
+                                                    disponibles
                                                 </td>
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="13"
-                                                className="px-4 py-2 text-center border"
-                                            >
-                                                No hay Premiación disponibles
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                        Tabla de Posiciones 🏆
-                    </span>
-                </h2>
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-                    <div className="overflow-x-auto">
-                        <div className="min-w-full overflow-x-auto rounded-lg shadow-md">
-                            <table className="w-full text-black table-auto">
-                                <thead>
-                                    <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
-                                        <th className="px-4 py-2 font-bold text-center">#</th>
-                                        <th className="px-4 py-2 font-bold text-center">Equipo</th>
-                                        <th className="px-4 py-2 font-bold text-center">PJ</th>
-                                        <th className="px-4 py-2 font-bold text-center">PG</th>
-                                        <th className="px-4 py-2 font-bold text-center">PE</th>
-                                        <th className="px-4 py-2 font-bold text-center">PP</th>
-                                        <th className="px-4 py-2 font-bold text-center">GF</th>
-                                        <th className="px-4 py-2 font-bold text-center">GC</th>
-                                        <th className="px-4 py-2 font-bold text-center">DG</th>
-                                        <th className="px-4 py-2 font-bold text-center">TA</th>
-                                        <th className="px-4 py-2 font-bold text-center">TR</th>                                                                                
-                                        <th className="px-4 py-2 font-bold text-center">JL</th>
-                                        <th className="px-4 py-2 font-bold text-center">PTS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {resultados ? (
-                                        resultados.map((resultado, index) => (
-                                            <tr
-                                                key={index}
-                                                className={`${
-                                                    index % 2 === 0
-                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
-                                                        : "bg-white"
-                                                } hover:bg-gray-200`}
-                                            >
-                                                <td className="px-4 py-2 border">
-                                                    {index+1}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.nombreEquipo}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.PJ}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.PG}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.PE}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.PP}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.GF}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.GC}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.DG}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.TA}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.TR}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.JL}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.Pts}
+                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                            Tabla de Juego Limpio ⚽
+                        </span>
+                    </h2>
+
+                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                        <div className="overflow-x-auto">
+                            <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
+                                <table className="w-full text-black table-auto">
+                                    <thead>
+                                        <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                            <th className="px-4 py-2">#</th>
+                                            <th className="px-4 py-2">
+                                                Equipo
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                Jugador
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                Tarjetas Amarillas 🟨{" "}
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                Tarjetas Rojas 🟥{" "}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {tablaJuegoLimpio ? (
+                                            tablaJuegoLimpio.map(
+                                                (resultado, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className={`${
+                                                            index % 2 === 0
+                                                                ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                                : "bg-white"
+                                                        } hover:bg-gray-200`}
+                                                    >
+                                                        <td className="px-4 py-2 border">
+                                                            {index + 1}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.nombreEquipo
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.nombreCompleto
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.tarjetas_amarillas
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.tarjetas_rojas
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="13"
+                                                    className="px-4 py-2 text-center border"
+                                                >
+                                                    No hay resultados
+                                                    disponibles
                                                 </td>
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="13"
-                                                className="px-4 py-2 text-center border"
-                                            >
-                                                No hay resultados disponibles
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                        Tabla de Juego Limpio ⚽
-                    </span>
-                </h2>
-
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-                    <div className="overflow-x-auto">
-                        <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
-                            <table className="w-full text-black table-auto">
-                                <thead>
-                                    <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
-                                        <th className="px-4 py-2">#</th>
-                                        <th className="px-4 py-2">Equipo</th>
-                                        <th className="px-4 py-2">Jugador</th>
-                                        <th className="px-4 py-2">Tarjetas Amarillas 🟨 </th>
-                                        <th className="px-4 py-2">Tarjetas Rojas 🟥 </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tablaJuegoLimpio ? (
-                                        tablaJuegoLimpio.map((resultado, index) => (
-                                            <tr
-                                                key={index}
-                                                className={`${
-                                                    index % 2 === 0
-                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
-                                                        : "bg-white"
-                                                } hover:bg-gray-200`}
-                                            >
-                                                <td className="px-4 py-2 border">
-                                                    {index+1}
+                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                            Observaciones 📋
+                        </span>
+                    </h2>
+                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                        <div className="overflow-x-auto">
+                            <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
+                                <table className="w-full text-black table-auto">
+                                    <thead>
+                                        <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                            <th className="px-4 py-2">#</th>
+                                            <th className="px-4 py-2">
+                                                Equipo⚽
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                Fecha📅
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                observaciones👀
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {observaciones ? (
+                                            observaciones.map(
+                                                (observacion, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className={`${
+                                                            index % 2 === 0
+                                                                ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                                : "bg-white"
+                                                        } hover:bg-gray-200`}
+                                                    >
+                                                        <td className="px-4 py-2 border">
+                                                            {index + 1}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                observacion.nombreEquipo
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {formatDate(
+                                                                observacion.fechaPartido
+                                                            )}{" "}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                observacion.observaciones
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="13"
+                                                    className="px-4 py-2 text-center border"
+                                                >
+                                                    No hay resultados
+                                                    Observaciones
                                                 </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.nombreEquipo}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.nombreCompleto}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.tarjetas_amarillas}
-                                                </td>      
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.tarjetas_rojas}
-                                                </td>                                             
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="13"
-                                                className="px-4 py-2 text-center border"
-                                            >
-                                                No hay resultados disponibles
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                        Observaciones 📋
-                    </span>
-                </h2>
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-                    <div className="overflow-x-auto">
-                        <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
-                            <table className="w-full text-black table-auto">
-                                <thead>
-                                    <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
-                                        <th className="px-4 py-2">#</th>
-                                        <th className="px-4 py-2">Equipo⚽</th>
-                                        <th className="px-4 py-2">Fecha📅</th>
-                                        <th className="px-4 py-2">observaciones👀</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {observaciones ? (
-                                        observaciones.map((observacion, index) => (
-                                            <tr
-                                                key={index}
-                                                className={`${
-                                                    index % 2 === 0
-                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
-                                                        : "bg-white"
-                                                } hover:bg-gray-200`}
-                                            >
-                                                <td className="px-4 py-2 border">
-                                                    {index+1}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {observacion.nombreEquipo}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    
-                                                    {formatDate(observacion.fechaPartido)}{" "}
+                    <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                        <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
+                            Tabla de Goles ⚽
+                        </span>
+                    </h2>
 
+                    <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+                        <div className="overflow-x-auto">
+                            <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
+                                <table className="w-full text-black table-auto">
+                                    <thead>
+                                        <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
+                                            <th className="px-4 py-2">#</th>
+                                            <th className="px-4 py-2">
+                                                Equipo
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                Jugador
+                                            </th>
+                                            <th className="px-4 py-2">
+                                                Numero Goles
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {resultadosGoles ? (
+                                            resultadosGoles.map(
+                                                (resultado, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className={`${
+                                                            index % 2 === 0
+                                                                ? "bg-gradient-to-r from-gray-100 to-gray-50"
+                                                                : "bg-white"
+                                                        } hover:bg-gray-200`}
+                                                    >
+                                                        <td className="px-4 py-2 border">
+                                                            {index + 1}
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.nombreEquipo
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {
+                                                                resultado.nombreCompleto
+                                                            }
+                                                        </td>
+                                                        <td className="px-4 py-2 border">
+                                                            {resultado.goles}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="13"
+                                                    className="px-4 py-2 text-center border"
+                                                >
+                                                    No hay resultados
+                                                    disponibles
                                                 </td>
-                                                <td className="px-4 py-2 border">
-                                                    {observacion.observaciones}
-                                                </td>                                                  
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="13"
-                                                className="px-4 py-2 text-center border"
-                                            >
-                                                No hay resultados Observaciones
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-
-
-                <h2 className="py-6 text-xl text-center text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
-                    <span className="px-6 font-medium text-white uppercase rounded-lg bg-gradient-to-r from-green-400 to-green-500 animate-fade-in animate-delay-300 mb-9">
-                        Tabla de Goles ⚽
-                    </span>
-                </h2>
-
-                <div className="text-xs text-primary sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-                    <div className="overflow-x-auto">
-                        <div className="min-w-full overflow-x-auto bg-white rounded-lg shadow-md">
-                            <table className="w-full text-black table-auto">
-                                <thead>
-                                    <tr className="text-sm font-semibold tracking-wide text-left text-white uppercase border-b border-gray-600 bg-gradient-to-r from-black to-gray-800 sm:text-base md:text-lg">
-                                        <th className="px-4 py-2">#</th>
-                                        <th className="px-4 py-2">Equipo</th>
-                                        <th className="px-4 py-2">Jugador</th>
-                                        <th className="px-4 py-2">Numero Goles</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {resultadosGoles ? (
-                                        resultadosGoles.map((resultado, index) => (
-                                            <tr
-                                                key={index}
-                                                className={`${
-                                                    index % 2 === 0
-                                                        ? "bg-gradient-to-r from-gray-100 to-gray-50"
-                                                        : "bg-white"
-                                                } hover:bg-gray-200`}
-                                            >
-                                                <td className="px-4 py-2 border">
-                                                    {index+1}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.nombreEquipo}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.nombreCompleto}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {resultado.goles}
-                                                </td>                                                
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="13"
-                                                className="px-4 py-2 text-center border"
-                                            >
-                                                No hay resultados disponibles
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                    <div className="flex items-center justify-center py-8">
+                        <img
+                            src={`/storage/${torneo[0].imgBannerInferiorIz}`}
+                            alt={torneo[0].nombreTorneo}
+                            className="w-1/6 h-auto mr-4 md:w-1/12"
+                        />
+                        <div className="mx-4 text-sm text-center text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
+                            {torneo[0].Aval}
                         </div>
+                        <img
+                            src={`/storage/${torneo[0].imgBannerInferiorDe}`}
+                            alt={torneo[0].nombreTorneo}
+                            className="w-1/6 h-auto ml-4 md:w-1/12"
+                        />
                     </div>
-                </div>
-
-                <div className="flex items-center justify-center py-8">
-                    <img
-                        src={`/storage/${torneo[0].imgBannerInferiorIz}`}
-                        alt={torneo[0].nombreTorneo}
-                        className="w-1/6 h-auto mr-4 md:w-1/12"
-                    />
-                    <div className="mx-4 text-sm text-center text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">
-                        {torneo[0].Aval}
-                    </div>
-                    <img
-                        src={`/storage/${torneo[0].imgBannerInferiorDe}`}
-                        alt={torneo[0].nombreTorneo}
-                        className="w-1/6 h-auto ml-4 md:w-1/12"
-                    />
-                </div>
-            </main>
+                </main>
             </div>
 
             <Footer></Footer>
