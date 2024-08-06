@@ -21,6 +21,7 @@ export default function ResultadosPartidos({
 }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
     const [operation, setOperation] = useState(1);
 
     const fk_jugador_idSelect = useRef();
@@ -134,6 +135,40 @@ export default function ResultadosPartidos({
             })),
     ];
 
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    // Agrupar resultados por jugador y equipo
+    const groupedResultados = resultados.reduce((acc, curr) => {
+        const key = `${curr.fk_jugador_id}-${curr.nombreEquipo}`;
+        if (!acc[key]) {
+            acc[key] = { ...curr, goles: 0, tarjetas_amarillas: 0, tarjetas_rojas: 0 };
+        }
+        acc[key].goles += curr.goles;
+        acc[key].tarjetas_amarillas += curr.tarjetas_amarillas;
+        acc[key].tarjetas_rojas += curr.tarjetas_rojas;
+        return acc;
+    }, {});
+
+    const resultadosAgrupados = Object.values(groupedResultados);
+
+    // Filtrar resultados según el término de búsqueda
+    const filteredResultados = resultadosAgrupados.filter((resultado) =>
+        resultado.nombreCompleto
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+    );
+
+    // Totalizar goles por equipo
+    const totalGolesPorEquipo = resultadosAgrupados.reduce((acc, curr) => {
+        if (!acc[curr.nombreEquipo]) {
+            acc[curr.nombreEquipo] = 0;
+        }
+        acc[curr.nombreEquipo] += curr.goles;
+        return acc;
+    }, {});
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <div className="flex flex-col min-h-screen">
@@ -143,6 +178,13 @@ export default function ResultadosPartidos({
                             <h3 className="text-xl font-semibold">
                                 Resultados del Partido
                             </h3>
+                            <input
+                                type="text"
+                                placeholder="Buscar por nombre..."
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                className="px-4 py-2 border rounded"
+                            />
                             <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
                                 <PrimaryButton onClick={() => handleModal(1)}>
                                     <i className="fa-solid fa-plus-circle"></i>
@@ -183,8 +225,8 @@ export default function ResultadosPartidos({
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {resultados.length > 0 ? (
-                                        resultados.map((resultado) => (
+                                    {filteredResultados.length > 0 ? (
+                                        filteredResultados.map((resultado) => (
                                             <tr key={resultado.id}>
                                                 <td className="px-4 py-2 border">
                                                     {resultado.nombreEquipo}
@@ -245,13 +287,32 @@ export default function ResultadosPartidos({
                                     ) : (
                                         <tr>
                                             <td
-                                                colSpan="7"
+                                                colSpan="8"
                                                 className="px-4 py-2 text-center border"
                                             >
                                                 No hay resultados
                                             </td>
                                         </tr>
                                     )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="grid py-6 bg-white v-screen place-items-center">
+                            <table className="border-gray-400 table-auto">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 py-2 border">Equipo</th>
+                                        <th className="px-4 py-2 border">Total de Goles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Object.entries(totalGolesPorEquipo).map(([equipo, goles]) => (
+                                        <tr key={equipo}>
+                                            <td className="px-4 py-2 border">{equipo}</td>
+                                            <td className="px-4 py-2 border">{goles}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
