@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jugadores;
 use App\Models\ResultadosPartidos;
 use App\Http\Requests\ResultadosPartidos\StoreRequest;
 use App\Http\Requests\ResultadosPartidos\UpdateRequest;
@@ -39,14 +38,15 @@ class ResultadosPartidosController extends Controller
                 ->select('pf.id')
                 ->get();
 
-               /* $partidoInfo = DB::table('programaciones_faces as pf')
+                $partidoInfo = DB::table('programaciones_faces as pf')
+                ->join('lugar_partidos as lp', 'pf.fk_lugarpartido', '=', 'lp.id')
                 ->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
                 ->join('equipos as e_local', 'rs_local.fk_equipo', '=', 'e_local.id')
                 ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
                 ->join('equipos as e_visitante', 'rs_visitante.fk_equipo', '=', 'e_visitante.id')
                 ->where('pf.id', $fk_programaciones_faces_id)
-                ->select('pf.id', 'pf.fecha', 'pf.hora', 'pf.lugar', 'e_local.nombreEquipo as equipoLocal', 'e_visitante.nombreEquipo as equipoVisitante')
-                ->first();*/
+                ->select('pf.id', 'pf.FechaPartido', 'pf.HoraPartido', 'lp.nomLugar', 'e_local.nombreEquipo as equipoLocal', 'e_visitante.nombreEquipo as equipoVisitante')
+                ->first();
 
                 $jugadores = DB::table('programaciones_faces as pf')
                 ->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
@@ -76,14 +76,13 @@ class ResultadosPartidosController extends Controller
             $idPartido = null;
             $partidoInfo = null;
                        
-        }
-      dd($partidoInfo);
+        }     
         return Inertia::render('ResultadosPartidos/Index', [
             'jugadores' => $jugadores,
             '$fk_programaciones_faces_id' => $fk_programaciones_faces_id,
             'idPartido' => $idPartido,
             'resultados' => $resultados,
-        //'partidoInfo' => $partidoInfo
+            'partidoInfo' => $partidoInfo
         ]);
         
     }
@@ -106,4 +105,96 @@ class ResultadosPartidosController extends Controller
         $resultadosPartidos = ResultadosPartidos::find($id);
         $resultadosPartidos->delete();
     }
+
+    public function showResultados(Request $request)     {
+        //id de la ProgramacionesFaces
+        $fk_programaciones_faces_id = $request->input('partido');
+        $torneo_id = $request->input('torneo');
+        if ($fk_programaciones_faces_id) {
+            /*$resultados = ResultadosPartidos::where('fk_programaciones_faces_id', $programacion_id)
+                ->join('jugadores', 'resultados_partidos.fk_jugador_id', '=', 'jugadores.id')
+                ->select('resultados_partidos.*', 'jugadores.id','jugadores.nombreCompleto')
+                ->get();*/
+                $resultados = DB::table('resultados_partidos')
+                ->join('jugadores', 'resultados_partidos.fk_jugador_id', '=', 'jugadores.id')
+                ->join('equipos', 'jugadores.fk_equipo', '=', 'equipos.id')
+                ->select('resultados_partidos.*', 'jugadores.nombreCompleto', 'equipos.nombreEquipo')
+                ->where('resultados_partidos.fk_programaciones_faces_id', $fk_programaciones_faces_id)
+                ->get();
+
+                $idPartido = DB::table('programaciones_faces as pf')
+                ->where('pf.id', $fk_programaciones_faces_id)
+                ->select('pf.id')
+                ->get();
+
+                $partidoInfo = DB::table('programaciones_faces as pf')
+                ->join('lugar_partidos as lp', 'pf.fk_lugarpartido', '=', 'lp.id')
+                ->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
+                ->join('equipos as e_local', 'rs_local.fk_equipo', '=', 'e_local.id')
+                ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
+                ->join('equipos as e_visitante', 'rs_visitante.fk_equipo', '=', 'e_visitante.id')
+                ->where('pf.id', $fk_programaciones_faces_id)
+                ->select('pf.id', 'pf.FechaPartido', 'pf.HoraPartido', 'lp.nomLugar', 'e_local.nombreEquipo as equipoLocal', 'e_visitante.nombreEquipo as equipoVisitante')
+                ->first();
+
+                $jugadores = DB::table('programaciones_faces as pf')
+                ->join('resultado_sorteos as rs_local', 'pf.posicion_local', '=', 'rs_local.puesto')
+                ->join('equipos as e_local', 'rs_local.fk_equipo', '=', 'e_local.id')
+                ->join('jugadores as j', 'e_local.id', '=', 'j.fk_equipo')
+                ->join('torneo as t', 'rs_local.fk_torneo', '=', 't.id')
+                ->where('pf.id', $fk_programaciones_faces_id)
+                ->where('t.id', $torneo_id)
+                ->where('j.estado', 1)
+                ->select(DB::raw("'Local' as equipo"), 'j.nombreCompleto', 'j.id', 'e_local.nombreEquipo', 'j.estado')
+                ->unionAll(
+                    DB::table('programaciones_faces as pf')
+                        ->join('resultado_sorteos as rs_visitante', 'pf.posicion_visitante', '=', 'rs_visitante.puesto')
+                        ->join('equipos as e_visitante', 'rs_visitante.fk_equipo', '=', 'e_visitante.id')
+                        ->join('jugadores as j', 'e_visitante.id', '=', 'j.fk_equipo')
+                        ->join('torneo as t', 'rs_visitante.fk_torneo', '=', 't.id')                        
+                        ->where('pf.id', $fk_programaciones_faces_id)
+                        ->where('t.id', $torneo_id)                        
+                        ->select(DB::raw("'Visitante' as equipo"), 'j.nombreCompleto', 'j.id', 'e_visitante.nombreEquipo', 'j.estado')
+                )
+                
+                ->get();
+
+                $torneoInfo = DB::table('torneo')
+                ->select(
+                    'torneo.nombreTorneo',
+                    'torneo.caracteristicas',
+                    'torneo.fechaInicio',
+                    'torneo.fechaFin',
+                    'torneo.cantidadGrupos',
+                    'torneo.cantidadEquiposParticipantes',
+                    'torneo.imgBannerSuperior',
+                    'torneo.imgBannerInferiorIz',
+                    'torneo.imgBannerInferiorDe',
+                    'torneo.Aval',
+                    'torneo.ApoyoPrincipal',
+                    'torneo.reglamentacion')
+                ->where('id', $torneo_id)
+                ->first();
+            
+        } else {
+            $resultados = null;
+            $jugadores = null;
+            $idPartido = null;
+            $partidoInfo = null;
+            $torneoInfo = null;
+                       
+        }     
+        //dd($resultados, $jugadores, $idPartido, $partidoInfo, $torneo);
+        return Inertia::render('ResultadosPartidos/ResultadosMostrar', [
+            'jugadores' => $jugadores,
+            '$fk_programaciones_faces_id' => $fk_programaciones_faces_id,
+            'idPartido' => $idPartido,
+            'resultados' => $resultados,
+            'partidoInfo' => $partidoInfo,
+            'torneo' => $torneoInfo
+        ]);
+        
+    }
+    
+    
 }

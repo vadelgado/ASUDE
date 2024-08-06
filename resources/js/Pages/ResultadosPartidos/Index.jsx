@@ -18,6 +18,7 @@ export default function ResultadosPartidos({
     jugadores,
     idPartido,
     resultados,
+    partidoInfo
 }) {
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState("");
@@ -155,9 +156,7 @@ export default function ResultadosPartidos({
 
     // Filtrar resultados según el término de búsqueda
     const filteredResultados = resultadosAgrupados.filter((resultado) =>
-        resultado.nombreCompleto
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+        resultado.nombreCompleto.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Totalizar goles por equipo
@@ -176,8 +175,13 @@ export default function ResultadosPartidos({
                     <div className="container min-h-screen p-6 mx-auto mt-1 bg-white">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-xl font-semibold">
-                                Resultados del Partido
+                                {`Partido: ${partidoInfo.equipoLocal} vs ${partidoInfo.equipoVisitante}`}
                             </h3>
+                            <div className="text-sm text-gray-600">
+                                <div>{`Fecha: ${partidoInfo.FechaPartido}`}</div>
+                                <div>{`Hora: ${partidoInfo.HoraPartido}`}</div>
+                                <div>{`Lugar: ${partidoInfo.nomLugar}`}</div>
+                            </div>
                             <input
                                 type="text"
                                 placeholder="Buscar por nombre..."
@@ -195,33 +199,17 @@ export default function ResultadosPartidos({
                         </div>
 
                         <div className="grid py-6 bg-white v-screen place-items-center">
-                            <table className="border-gray-400 table-auto">
+                            <table className="w-full border-gray-400 table-auto">
                                 <thead>
                                     <tr>
-                                        <th className="px-4 py-2 border">
-                                            Equipo
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Jugador
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Goles
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Tarjetas Amarillas
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Tarjetas Rojas
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Observaciones
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Editar
-                                        </th>
-                                        <th className="px-4 py-2 border">
-                                            Eliminar
-                                        </th>
+                                        <th className="px-4 py-2 border">Equipo</th>
+                                        <th className="px-4 py-2 border">Jugador</th>
+                                        <th className="px-4 py-2 border">Goles</th>
+                                        <th className="px-4 py-2 border">Tarjetas Amarillas</th>
+                                        <th className="px-4 py-2 border">Tarjetas Rojas</th>
+                                        <th className="px-4 py-2 border">Observaciones</th>
+                                        <th className="px-4 py-2 border">Editar</th>
+                                        <th className="px-4 py-2 border">Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -238,9 +226,7 @@ export default function ResultadosPartidos({
                                                     {resultado.goles}
                                                 </td>
                                                 <td className="px-4 py-2 border">
-                                                    {
-                                                        resultado.tarjetas_amarillas
-                                                    }
+                                                    {resultado.tarjetas_amarillas}
                                                 </td>
                                                 <td className="px-4 py-2 border">
                                                     {resultado.tarjetas_rojas}
@@ -250,7 +236,7 @@ export default function ResultadosPartidos({
                                                 </td>
                                                 <td className="px-4 py-2 border">
                                                     <button
-                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 focus:ring-4 focus:outline-none focus:ring-red-100"
                                                         onClick={() =>
                                                             handleModal(
                                                                 2,
@@ -263,7 +249,7 @@ export default function ResultadosPartidos({
                                                             )
                                                         }
                                                     >
-                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                                                             <i className="fa-solid fa-edit"></i>
                                                         </span>
                                                     </button>
@@ -272,9 +258,7 @@ export default function ResultadosPartidos({
                                                     <button
                                                         className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
                                                         onClick={() =>
-                                                            deleteResult(
-                                                                resultado.id
-                                                            )
+                                                            deleteResult(resultado.id)
                                                         }
                                                     >
                                                         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
@@ -286,10 +270,7 @@ export default function ResultadosPartidos({
                                         ))
                                     ) : (
                                         <tr>
-                                            <td
-                                                colSpan="8"
-                                                className="px-4 py-2 text-center border"
-                                            >
+                                            <td colSpan="8" className="px-4 py-2 text-center border">
                                                 No hay resultados
                                             </td>
                                         </tr>
@@ -299,7 +280,7 @@ export default function ResultadosPartidos({
                         </div>
 
                         <div className="grid py-6 bg-white v-screen place-items-center">
-                            <table className="border-gray-400 table-auto">
+                            <table className="w-full border-gray-400 table-auto">
                                 <thead>
                                     <tr>
                                         <th className="px-4 py-2 border">Equipo</th>
@@ -310,7 +291,9 @@ export default function ResultadosPartidos({
                                     {Object.entries(totalGolesPorEquipo).map(([equipo, goles]) => (
                                         <tr key={equipo}>
                                             <td className="px-4 py-2 border">{equipo}</td>
-                                            <td className="px-4 py-2 border">{goles}</td>
+                                            <td className="px-4 py-2 border">
+                                                {goles > 0 ? goles : "0 (Ningún gol anotado)"}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -394,9 +377,7 @@ export default function ResultadosPartidos({
                                     className="mt-2"
                                 >
                                     <i className="fa-solid fa-save">
-                                        {processing
-                                            ? " Procesando..."
-                                            : " Guardar"}
+                                        {processing ? " Procesando..." : " Guardar"}
                                     </i>
                                 </PrimaryButton>
                             </div>

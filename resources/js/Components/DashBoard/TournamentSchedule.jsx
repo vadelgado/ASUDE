@@ -77,6 +77,7 @@ const TournamentSchedule = ({ programaciones_faces }) => {
     };
 
     return (
+        console.log(programaciones_faces),
         <div className="flex items-center justify-center h-auto text-white bg-gray-900 mt-36">
             <div className="relative w-full p-4 overflow-hidden max-w-screen-2xl">
                 <div
@@ -117,9 +118,31 @@ const TournamentSchedule = ({ programaciones_faces }) => {
                                                             }
                                                         )}
                                                     </p>
-                                                    <p className="mb-4 text-gray-400">
-                                                        {match.nomLugar}
-                                                    </p>
+                                                    <a
+                                                        href={`${match.geolocalizacion}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
+                                                    >
+                                                        <span
+                                                            role="img"
+                                                            aria-label="geolocalización"
+                                                            className="mr-2"
+                                                        >
+                                                            📍
+                                                        </span>
+                                                        <p className="mb-4 text-gray-400">
+                                                            {match.nomLugar}
+                                                        </p>
+                                                    </a>
+                                                    <p className="text-gray-300 truncate">
+                                                            <Link
+                                                                href={`/resultados?partido=${match.partido}&torneo=${match.torneo}`}
+                                                                className="text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
+                                                            >
+                                                                {`Detalles Partido`}
+                                                            </Link>
+                                                        </p>
                                                     <div className="flex items-center mb-2">
                                                         <img
                                                             src={`/storage/${match.escudoEquipoLocal}`}

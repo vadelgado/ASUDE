@@ -40,7 +40,7 @@ class TournamentSchedule extends Controller
                 'pf.posicion_visitante',
                 'pf.FechaPartido',
                 'pf.HoraPartido',
-                'lp.nomLugar',
+                'lp.nomLugar',                
                 'lp.geolocalizacion',
                 'el.nombreEquipo as nombreEquipoLocal',
                 'el.escudoEquipo as escudoEquipoLocal',
@@ -48,6 +48,8 @@ class TournamentSchedule extends Controller
                 'ev.nombreEquipo as nombreEquipoVisitante',
                 'ev.escudoEquipo as escudoEquipoVisitante',
                 'rs_visitante.puesto as puestoVisitante',
+                't.id as torneo',
+                'pf.id as partido',
                 DB::raw('COALESCE(SUM(rp_local.goles), 0) as golesLocal'),
                 DB::raw('COALESCE(SUM(rp_visitante.goles), 0) as golesVisitante')
             )
@@ -65,7 +67,9 @@ class TournamentSchedule extends Controller
                 'rs_local.puesto',
                 'ev.nombreEquipo',
                 'ev.escudoEquipo',
-                'rs_visitante.puesto'
+                'rs_visitante.puesto',
+                't.id',
+                'pf.id'
             )
             ->get();
     

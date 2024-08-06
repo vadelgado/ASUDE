@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\JugadoresController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ResultadosPartidosController;
 use Inertia\Inertia;
 use App\Http\Controllers\TablasGruposController;
 
@@ -51,6 +52,8 @@ Route::get('/', function () {
             'ev.id as idEquipoVisitante',
             'ev.nombreEquipo as nombreEquipoVisitante',
             'ev.escudoEquipo as escudoEquipoVisitante',
+            'torneo.id as torneo',
+            'programaciones_faces.id as partido',
             DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.goles ELSE 0 END), 0) AS GolesLocal'),
             DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = ev.id THEN resultados_partidos.goles ELSE 0 END), 0) AS GolesVisitante'),
             DB::raw('COALESCE(SUM(CASE WHEN jugadores.fk_equipo = el.id THEN resultados_partidos.tarjetas_amarillas ELSE 0 END), 0) AS TarjetasAmarillasLocal'),
@@ -71,7 +74,9 @@ Route::get('/', function () {
             'el.escudoEquipo',
             'ev.id',
             'ev.nombreEquipo',
-            'ev.escudoEquipo'
+            'ev.escudoEquipo',
+            'torneo.id',
+            'programaciones_faces.id'
         )
         ->orderBy('programaciones_faces.FechaPartido')
         ->orderBy('programaciones_faces.HoraPartido')
@@ -97,9 +102,11 @@ Route::get('torneosIniciados', 'App\Http\Controllers\Torneos@torneosIniciados')-
 Route::get('listarTorneos/{id}', 'App\Http\Controllers\Torneos@show')->name('torneo.showUno');
 Route::get('torneoEnCurso', [TorneoEnCursoController::class, 'index'])->name('torneoEnCurso.index');
 Route::get('Equipo/{id}', [TablasGruposController::class, 'Equipo'])->name('equipo.showUno');
+Route::get('/resultados',[ResultadosPartidosController::class, 'showResultados'])->name('ResultadosMostrar.index');
 Route::resource('tablaGrupos', App\Http\Controllers\TablasGruposController::class);
 Route::resource('tablasJuego', App\Http\Controllers\TablasJuego::class);
 Route::resource('verResultados', App\Http\Controllers\VerResultadosController::class);
+
 
 Route::get('/PoliticasPrivacidad',[HomeController::class, 'PrivacyPolicy'])->name('politicasPrivacidad.index');
 Route::get('/TerminosCondiciones',[HomeController::class, 'TerminosCondiciones'])->name('terminosCondiciones.index');
