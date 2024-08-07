@@ -63,7 +63,7 @@ export default function ListarTorneos({
                             <img
                                 src={`/storage/${torneo[0].imgBannerSuperior}`}
                                 alt={torneo[0].nombreTorneo}
-                                className="h-auto "
+                                className="w-full h-auto max-w-lg"
                             />
                         </div>
                         <h2 className="text-sm text-primary sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl">

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, Head } from "@inertiajs/react";
 
 const EquiposParticipantes = ({ equiposParticipantes }) => {
     return (
@@ -15,20 +16,26 @@ const EquiposParticipantes = ({ equiposParticipantes }) => {
                             key={id}
                             className="relative flex flex-col items-center justify-center overflow-hidden company-link group h-34 md:h-44"
                         >
-                            <img
-                                loading="lazy"
-                                src={`/storage/${escudoEquipo}`}
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = "/escudo.svg";
-                                    e.target.style.filter = "brightness(0.5)";
-                                }}
-                                alt={`Logo de ${nombreEquipo}`}
-                                className="w-auto h-32 px-4 mx-auto transition company-logo group-hover:scale-105"
-                            />
-                            <h2 className="text-center group-hover:scale-105">
-                                {nombreEquipo}
-                            </h2>
+                            <Link
+                                href={`/Equipo/${id}`}
+                                className="text-blue-500 underline transition-colors duration-300 hover:text-blue-700 hover:underline hover:font-bold"
+                            >
+                                <img
+                                    loading="lazy"
+                                    src={`/storage/${escudoEquipo}`}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = "/escudo.svg";
+                                        e.target.style.filter =
+                                            "brightness(0.5)";
+                                    }}
+                                    alt={`Logo de ${nombreEquipo}`}
+                                    className="w-auto h-32 px-4 mx-auto transition company-logo group-hover:scale-105"
+                                />
+                                <h2 className="text-center group-hover:scale-105">
+                                    {nombreEquipo}
+                                </h2>
+                            </Link>
                         </div>
                     )
                 )}

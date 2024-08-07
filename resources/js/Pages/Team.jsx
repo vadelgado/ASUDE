@@ -4,11 +4,30 @@ import Header from "@/Components/DashBoard/Header";
 import Footer from "@/Components/DashBoard/Footer";
 
 export default function Team({ auth, equipo }) {
+    if (!equipo || equipo.length === 0) {
+        return (
+            <>
+                <Head title="Equipo" />
+                <Header auth={auth} />
+                <div className="flex flex-col min-h-screen bg-gray-900 mt-36">
+                    <main className="flex-grow">
+                        <div className="bg-[#FFD8B1] py-8">
+                            <div className="container px-4 mx-auto text-center">
+                                <p className="text-gray-700">No hay información del equipo disponible.</p>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <Footer auth={auth} />
+            </>
+        );
+    }
+
     return (
         <>
             <Head title="Equipo" />
             <Header auth={auth} />
-            <div className="flex flex-col min-h-screen bg-gray-900">
+            <div className="flex flex-col min-h-screen bg-gray-900 mt-36">
                 <main className="flex-grow">
                     {/* Encabezado del Equipo */}
                     <div className="bg-[#FFD8B1] py-8">
@@ -19,14 +38,12 @@ export default function Team({ auth, equipo }) {
                                     e.target.onerror = null;
                                     e.target.src = "/escudo.svg";
                                     e.target.style.filter = "brightness(0.5)";
-                                    
                                 }}
                                 alt="Escudo del Equipo" 
                                 className="mx-auto mb-4 aspect-w-4 aspect-h-5" 
                             /> 
                             <p className="text-gray-700">Presentando a los miembros del equipo</p>
                             <h1 className="mb-2 text-4xl font-bold text-gray-900">{equipo[0].nombreEquipo}</h1>
-                            
                         </div>
                     </div>
 
@@ -42,7 +59,6 @@ export default function Team({ auth, equipo }) {
                                             onError={(e) => {
                                                 e.target.onerror = null;
                                                 e.target.src = "/soccer-player.svg";
-                                                
                                             }}
                                             alt={player.nombreCompleto} 
                                             className="w-24 h-24 mb-3 rounded-full shadow-md" 
