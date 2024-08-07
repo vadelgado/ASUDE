@@ -390,7 +390,7 @@ limitations under the License.`}
                     </div>
                 </main>
             </div>
-            <Footer auth={auth} />
+            <Footer  />
         </>
     );
 }

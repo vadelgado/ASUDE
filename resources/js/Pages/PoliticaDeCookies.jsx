@@ -50,7 +50,7 @@ export default function PoliticaDeCookies({ auth }) {
                     </div>
                 </main>
             </div>
-            <Footer auth={auth} />
+            <Footer />
         </>
     );
 }
