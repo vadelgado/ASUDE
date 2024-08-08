@@ -177,45 +177,52 @@ export default function Index({
                 <main className="container flex-grow px-4 py-8 mx-auto">
                     <div className="min-h-screen py-6 bg-gray-100">
                         <div className="flex justify-end mt-1 mb-4 space-x-2 sm:space-x-4">
-                            <PrimaryButton onClick={() => handleModal(1)}>
-                                {" "}
-                                {/* Agregar margen al botón */}
-                                <i className="fa-solid fa-plus-circle"></i>
+                            <PrimaryButton
+                                onClick={() => handleModal(1)}
+                                className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                            >
+                                <i className="fa-solid fa-plus-circle"></i>{" "}
                                 Programar Partido
                             </PrimaryButton>
-                            <BackButton to={`/fases?torneo_id=${torneo_id}`} />
+                            <BackButton
+                                to={`/fases?torneo_id=${torneo_id}`}
+                                className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+                            />
                         </div>
 
-                        <h1 className="mb-4 text-2xl font-bold">
+                        <h1 className="mb-4 text-2xl font-bold text-gray-800 sm:text-3xl md:text-4xl">
                             Listado de Partidos
                         </h1>
-                        <div className="grid py-6 bg-white v-screen place-items-center">
-                            <table className="border-gray-400 table-auto">
+
+                        <div className="py-6 overflow-x-auto bg-white shadow-lg sm:rounded-lg">
+                            <table className="min-w-full border-collapse">
                                 <thead>
-                                    <tr>
-                                        <th className="px-4 py-2 border">#</th>
-                                        <th className="px-4 py-2 border">
+                                    <tr className="border border-gray-300">
+                                        <th className="px-4 py-2 text-left border border-gray-300">
+                                            #
+                                        </th>
+                                        <th className="px-4 py-2 text-left border border-gray-300">
                                             Local
                                         </th>
-                                        <th className="px-4 py-2 border">
+                                        <th className="px-4 py-2 text-left border border-gray-300">
                                             Visitante
                                         </th>
-                                        <th className="px-4 py-2 border">
+                                        <th className="px-4 py-2 text-left border border-gray-300">
                                             Fecha
                                         </th>
-                                        <th className="px-4 py-2 border">
+                                        <th className="px-4 py-2 text-left border border-gray-300">
                                             Hora
                                         </th>
-                                        <th className="px-4 py-2 border">
+                                        <th className="px-4 py-2 text-left border border-gray-300">
                                             Lugar
                                         </th>
-                                        <th className="px-2 py-2 border">
+                                        <th className="px-2 py-2 text-left border border-gray-300">
                                             Editar
                                         </th>
-                                        <th className="px-2 py-2 border">
+                                        <th className="px-2 py-2 text-left border border-gray-300">
                                             Eliminar
                                         </th>
-                                        <th className="px-2 py-2 border">
+                                        <th className="px-2 py-2 text-left border border-gray-300">
                                             Resultados
                                         </th>
                                     </tr>
@@ -223,38 +230,41 @@ export default function Index({
                                 <tbody>
                                     {programaciones.map(
                                         (programacion, index) => (
-                                            <tr key={programacion.id}>
-                                                <td className="px-4 py-2 border">
+                                            <tr
+                                                key={`${programacion.id}-${index}`}
+                                                className="border border-gray-300"
+                                            >
+                                                <td className="px-4 py-2 border border-gray-300">
                                                     {index + 1}
                                                 </td>
-                                                <td className="px-4 py-2 border">
-                                                    {
-                                                        programacion.posicion_local
-                                                    }
+                                                <td className="px-4 py-2 border border-gray-300">
+                                                    {programacion.nombreEquipoLocal
+                                                        ? `${programacion.posicion_local} - ${programacion.nombreEquipoLocal}`
+                                                        : programacion.posicion_local}
                                                 </td>
-                                                <td className="px-4 py-2 border">
-                                                    {
-                                                        programacion.posicion_visitante
-                                                    }
+                                                <td className="px-4 py-2 border border-gray-300">
+                                                    {programacion.nombreEquipoVisitante
+                                                        ? `${programacion.posicion_visitante} - ${programacion.nombreEquipoVisitante}`
+                                                        : programacion.posicion_visitante}
                                                 </td>
-                                                <td className="px-4 py-2 border">
+                                                <td className="px-4 py-2 border border-gray-300">
                                                     {programacion.FechaPartido}
                                                 </td>
-                                                <td className="px-4 py-2 border">
+                                                <td className="px-4 py-2 border border-gray-300">
                                                     {new Date(
                                                         `1970-01-01T${programacion.HoraPartido}`
-                                                    ).toLocaleString("en-US", {
+                                                    ).toLocaleString("es-ES", {
                                                         hour: "numeric",
                                                         minute: "numeric",
                                                         hour12: true,
                                                     })}
                                                 </td>
-                                                <td className="px-4 py-2 border">
+                                                <td className="px-4 py-2 border border-gray-300">
                                                     {programacion.nomLugar}
                                                 </td>
-                                                <td className="px-2 py-2 border">
+                                                <td className="px-2 py-2 border border-gray-300">
                                                     <button
-                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200   focus:ring-4 focus:outline-none focus:ring-red-100"
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 focus:ring-4 focus:outline-none focus:ring-red-100"
                                                         onClick={() =>
                                                             handleModal(
                                                                 2,
@@ -268,12 +278,12 @@ export default function Index({
                                                             )
                                                         }
                                                     >
-                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0">
+                                                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                                                             <i className="fa-solid fa-edit"></i>
                                                         </span>
                                                     </button>
                                                 </td>
-                                                <td className="px-2 py-2 border">
+                                                <td className="px-2 py-2 border border-gray-300">
                                                     <button
                                                         className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200"
                                                         onClick={() =>
@@ -287,9 +297,9 @@ export default function Index({
                                                         </span>
                                                     </button>
                                                 </td>
-                                                <td className="px-4 py-2 border">
+                                                <td className="px-4 py-2 border border-gray-300">
                                                     <a
-                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200  "
+                                                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200"
                                                         href={`/resultadosPartidos?partido=${programacion.id}&torneo=${programacion.torneo_id}`}
                                                     >
                                                         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
